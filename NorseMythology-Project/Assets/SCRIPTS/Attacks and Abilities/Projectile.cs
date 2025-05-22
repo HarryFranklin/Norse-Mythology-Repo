@@ -13,7 +13,7 @@ public class Projectile : MonoBehaviour
     private float traveledDistance;
     private bool returningToPlayer;
     
-    public void Initialize(Vector2 dir, float spd, float range, float dmg, bool returning, Transform playerTransform)
+    public void Initialise(Vector2 dir, float spd, float range, float dmg, bool returning, Transform playerTransform)
     {
         direction = dir;
         speed = spd;

@@ -34,17 +34,27 @@ public class EnemySpawner : MonoBehaviour
     }
     
     private void SpawnEnemy()
+{
+    Vector2 spawnPos = GetRandomSpawnPosition();
+    GameObject enemy = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
+
+    // Get the Enemy component once and set target as player
+    Enemy enemyScript = enemy.GetComponent<Enemy>();
+    if (enemyScript != null)
     {
-        Vector2 spawnPos = GetRandomSpawnPosition();
-        GameObject enemy = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
-        
-        // Subscribe to enemy death to decrease count
-        Enemy enemyScript = enemy.GetComponent<Enemy>();
-        currentEnemyCount++;
-        
-        // Decrease count when enemy is destroyed
-        StartCoroutine(WaitForEnemyDestroy(enemy));
+        enemyScript.target = player;
     }
+    else
+    {
+        Debug.LogWarning("Enemy prefab is missing the Enemy component!");
+        return;
+    }
+
+    currentEnemyCount++;
+    
+    // Decrease count when enemy is destroyed
+    StartCoroutine(WaitForEnemyDestroy(enemy));
+}
     
     private System.Collections.IEnumerator WaitForEnemyDestroy(GameObject enemy)
     {

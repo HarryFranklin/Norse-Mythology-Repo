@@ -9,6 +9,9 @@ public class AxeThrowAbility : AttackAbility
     public float axeRange = 8f;
     public bool returnsToPlayer = true;
     
+    [Header("Rotation Settings")]
+    public float rotationSpeed = 720f; // degrees per second
+    
     public override void Activate(PlayerController player, PlayerMovement playerMovement)
     {
         // Get direction based on player movement or last movement
@@ -27,31 +30,25 @@ public class AxeThrowAbility : AttackAbility
         Projectile axeProjectile = axe.GetComponent<Projectile>();
         if (axeProjectile == null)
             axeProjectile = axe.AddComponent<Projectile>();
+        
+        // Add rotation component for spinning
+        AxeRotation axeRotation = axe.GetComponent<AxeRotation>();
+        if (axeRotation == null)
+            axeRotation = axe.AddComponent<AxeRotation>();
+        
+        axeRotation.rotationSpeed = rotationSpeed;
             
         // Calculate damage based on player stats and ability damage
         float totalDamage = damage + (player.currentStats.attackDamage * 0.5f);
         
-        axeProjectile.Initialize(throwDirection, axeSpeed, axeRange, totalDamage, returnsToPlayer, player.transform);
+        axeProjectile.Initialise(throwDirection, axeSpeed, axeRange, totalDamage, returnsToPlayer, player.transform);
         
         Debug.Log($"Axe thrown in direction: {throwDirection}");
     }
     
     private Vector2 GetThrowDirection(PlayerMovement playerMovement)
     {
-        // First try current movement direction
-        if (playerMovement.moveDir != Vector2.zero)
-        {
-            return playerMovement.moveDir.normalized;
-        }
-        
-        // If not moving, use last movement direction
-        Vector2 lastDirection = new Vector2(playerMovement.lastHorizontalVector, playerMovement.lastVerticalVector);
-        if (lastDirection != Vector2.zero)
-        {
-            return lastDirection.normalized;
-        }
-        
-        // Default to right if no movement recorded
-        return Vector2.right;
+        // Use the facing direction from PlayerMovement
+        return playerMovement.facingDirection;
     }
 }

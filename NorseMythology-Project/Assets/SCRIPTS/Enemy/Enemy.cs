@@ -6,10 +6,24 @@ public class Enemy : MonoBehaviour
     public float maxHealth = 30f;
     public float currentHealth;
     public float damage = 5f;
+
+    [Header("Movement")]
+    public float moveSpeed = 2f;
+    public float attackRange = 1.5f;
+    public float attackCooldown = 1f;
+    private float lastAttackTime;
+
+    [Header("Targetting")]
+    public Transform target; // The player for now
     
     private void Start()
     {
         currentHealth = maxHealth;
+
+        if (target == null)
+        {
+            target = GameObject.FindGameObjectWithTag("Player").transform;
+        }
     }
     
     public void TakeDamage(float damage)

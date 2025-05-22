@@ -169,7 +169,7 @@ public class AttackManager : MonoBehaviour
                 projectileScript = projectile.AddComponent<Projectile>();
                 
             Vector2 direction = (target.transform.position - player.position).normalized;
-            projectileScript.Initialize(direction, playerController.currentStats.projectileSpeed, 
+            projectileScript.Initialise(direction, playerController.currentStats.projectileSpeed, 
                                       playerController.currentStats.projectileRange, 
                                       playerController.currentStats.attackDamage, returning, player);
         }

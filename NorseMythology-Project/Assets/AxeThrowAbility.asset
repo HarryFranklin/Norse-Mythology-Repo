@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 669c389f2836c014196326a6b988c2f3, type: 3}
+  m_Name: AxeThrowAbility
+  m_EditorClassIdentifier: 
+  abilityName: 
+  abilityType: 0
+  cooldown: 5
+  abilityIcon: {fileID: -1607197492, guid: 766cb97207789f04aa2e7cfb164d1f50, type: 3}
+  description: Axe Throw Ability
+  damage: 20
+  range: 5
+  axePrefab: {fileID: 5131123301474718387, guid: 4d50b6241863ed942a56c3845040826f, type: 3}
+  axeSpeed: 12
+  axeRange: 8
+  returnsToPlayer: 1
+  rotationSpeed: 720

@@ -13,10 +13,10 @@ public class PlayerController : MonoBehaviour
     
     private void Start()
     {
-        InitializePlayer();
+        InitialisePlayer();
     }
     
-    private void InitializePlayer()
+    private void InitialisePlayer()
     {
         // Create runtime copy of base stats
         currentStats = baseStats.CreateRuntimeCopy();
@@ -75,7 +75,7 @@ public class PlayerController : MonoBehaviour
         currentStats.experience -= currentStats.experienceToNextLevel;
         currentStats.level++;
         
-        // Increase stats on level up (customize as needed)
+        // Increase stats on level up (customise as needed)
         currentStats.maxHealth += 10f;
         currentStats.attackDamage += 2f;
         currentStats.experienceToNextLevel = Mathf.Floor(currentStats.experienceToNextLevel * 1.2f);
