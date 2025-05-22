@@ -77,10 +77,10 @@ public class AbilityManager : MonoBehaviour
     {
         if (slotIndex < 0 || slotIndex >= equippedAbilities.Length || equippedAbilities[slotIndex] == null)
             return 0f;
-            
+
         float cooldownReduction = 1f - (playerController.currentStats.abilityCooldownReduction / 100f);
         float adjustedCooldown = equippedAbilities[slotIndex].cooldown * cooldownReduction;
-        
+
         return Mathf.Max(0f, adjustedCooldown - (Time.time - lastAbilityUse[slotIndex]));
     }
 }
