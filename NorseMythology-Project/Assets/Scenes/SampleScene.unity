@@ -271,6 +271,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 2135908895}
   offset: {x: 0, y: 0, z: -10}
+--- !u!1 &861679034 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 897327056165970901, guid: 5ad64b2b8bb83874e936e073c9922113, type: 3}
+  m_PrefabInstance: {fileID: 1725611079066591972}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1256673165
 GameObject:
   m_ObjectHideFlags: 0
@@ -281,7 +286,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1256673167}
   - component: {fileID: 1256673166}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Map Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -309,7 +314,12 @@ MonoBehaviour:
   terrainMask:
     serializedVersion: 2
     m_Bits: 64
-  currentChunk: {fileID: 0}
+  currentChunk: {fileID: 861679034}
+  spawnedChunks:
+  - {fileID: 861679034}
+  maxOpDist: 50
+  optimiserCooldownDuration: 1
+  checkerCooldownDuration: 0.1
 --- !u!4 &1256673167
 Transform:
   m_ObjectHideFlags: 0
@@ -599,6 +609,10 @@ PrefabInstance:
       propertyPath: mapController
       value: 
       objectReference: {fileID: 1256673166}
+    - target: {fileID: 6183026012709323641, guid: 5ad64b2b8bb83874e936e073c9922113, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
