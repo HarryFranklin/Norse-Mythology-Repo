@@ -10,7 +10,7 @@ public class EnemyProjectile : MonoBehaviour
     {
         direction = shootDirection;
         damage = projectileDamage;
-        Destroy(gameObject, 5f); // Destroy if it lives too long
+        Destroy(gameObject, 3f); // Destroy if it lives too long
     }
 
     private void Update()

@@ -140,7 +140,7 @@ MonoBehaviour:
   moveSpeed: 2
   meleeAttackRange: 0.5
   projectileMinRange: 2
-  projectileMaxRange: 6
+  projectileMaxRange: 5
   attackCooldown: 1
   target: {fileID: 0}
   projectilePrefab: {fileID: 8069157385012977378, guid: 707b35287c7ab7145ac43af0da5da04c, type: 3}
