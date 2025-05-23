@@ -49,7 +49,8 @@ public class AxeThrowAbility : AttackAbility
         axeRotation.rotationSpeed = rotationSpeed;
             
         // Calculate damage based on player stats and ability damage
-        float totalDamage = damage + (player.currentStats.attackDamage * 0.5f);
+        //float totalDamage = damage + (player.currentStats.attackDamage * 0.5f); -- Override for now because want to use base damage
+        float totalDamage = 10;
         
         axeProjectile.Initialise(throwDirection, axeSpeed, axeRange, totalDamage, returnsToPlayer, player.transform);
         

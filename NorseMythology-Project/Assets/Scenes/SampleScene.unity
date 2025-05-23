@@ -892,10 +892,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4647804410163302743, guid: 94d987001f64ddb43a4b3c2f2186edfe, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6408606779111123246, guid: 94d987001f64ddb43a4b3c2f2186edfe, type: 3}
       propertyPath: target
       value: 
       objectReference: {fileID: 2135908895}
+    - target: {fileID: 6408606779111123246, guid: 94d987001f64ddb43a4b3c2f2186edfe, type: 3}
+      propertyPath: meleeAttackRange
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6408606779111123246, guid: 94d987001f64ddb43a4b3c2f2186edfe, type: 3}
+      propertyPath: projectileMaxRange
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6408606779111123246, guid: 94d987001f64ddb43a4b3c2f2186edfe, type: 3}
+      propertyPath: projectileMinRange
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6549350566530616831, guid: 94d987001f64ddb43a4b3c2f2186edfe, type: 3}
       propertyPath: m_Name
       value: Enemy-Projectile
@@ -2006,6 +2022,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4647804410163302743, guid: a8e644fb05298434c981a996cf930ac1, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6408606779111123246, guid: a8e644fb05298434c981a996cf930ac1, type: 3}
       propertyPath: target
       value: 
@@ -2101,6 +2121,7 @@ MonoBehaviour:
   lastHorizontalVector: 0
   lastVerticalVector: 0
   facingDirection: {x: 1, y: 0}
+  lastMovementDirection: {x: 1, y: 0}
 --- !u!61 &2135908892
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -102,7 +102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyType: 0
-  maxHealth: 30
+  maxHealth: 12
   currentHealth: 0
   damage: 5
   moveSpeed: 2
