@@ -17,7 +17,7 @@ MonoBehaviour:
   cooldown: 2
   abilityIcon: {fileID: -1607197492, guid: 766cb97207789f04aa2e7cfb164d1f50, type: 3}
   description: Axe Throw Ability
-  damage: 20
+  damage: 10
   range: 5
   axePrefab: {fileID: 5131123301474718387, guid: 4d50b6241863ed942a56c3845040826f, type: 3}
   axeSpeed: 12
