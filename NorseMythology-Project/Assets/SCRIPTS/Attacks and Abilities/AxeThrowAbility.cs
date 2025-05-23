@@ -26,6 +26,16 @@ public class AxeThrowAbility : AttackAbility
         // Create the axe projectile
         GameObject axe = Instantiate(axePrefab, player.transform.position, Quaternion.identity);
         
+        // Flip the axe sprite if facing left
+        if (throwDirection.x < 0)
+        {
+            SpriteRenderer axeSprite = axe.GetComponent<SpriteRenderer>();
+            if (axeSprite != null)
+            {
+                axeSprite.flipX = true;
+            }
+        }
+        
         // Set up the projectile component
         Projectile axeProjectile = axe.GetComponent<Projectile>();
         if (axeProjectile == null)
@@ -48,7 +58,17 @@ public class AxeThrowAbility : AttackAbility
     
     private Vector2 GetThrowDirection(PlayerMovement playerMovement)
     {
-        // Use the facing direction from PlayerMovement
+        // Use the last movement direction instead of facing direction
+        // This will give us the full diagonal movement direction
+        Vector2 lastMovement = playerMovement.lastMovementDirection;
+        
+        // If we have a last movement direction, use it
+        if (lastMovement != Vector2.zero)
+        {
+            return lastMovement.normalized;
+        }
+        
+        // Fallback to facing direction if no movement has occurred
         return playerMovement.facingDirection;
     }
 }

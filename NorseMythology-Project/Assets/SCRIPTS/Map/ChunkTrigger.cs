@@ -10,7 +10,7 @@ public class ChunkTrigger : MonoBehaviour
     {
         if (mapController == null)
         {
-            Debug.Log("MapController is not assigned in the inspector. Finding it in the scene.");
+            // Debug.Log("MapController is not assigned in the inspector. Finding it in the scene.");
             mapController = FindFirstObjectByType<MapController>();
         }
     }

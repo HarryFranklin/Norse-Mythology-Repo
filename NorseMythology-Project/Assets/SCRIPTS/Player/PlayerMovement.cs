@@ -11,6 +11,8 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector] public float lastVerticalVector = 0f;
     [HideInInspector] public Vector2 facingDirection = Vector2.right; // Current facing direction
 
+    public Vector2 lastMovementDirection = Vector2.right; // Default facing right
+
     void Start()
     {
         if (rigidBody == null)
@@ -48,6 +50,13 @@ public class PlayerMovement : MonoBehaviour
 
         moveDir = new Vector2(moveX, moveY).normalized;
 
+        // Update last movement direction when actually moving
+        if (moveDir != Vector2.zero)
+        {
+            lastMovementDirection = moveDir;
+        }
+
+        // Update individual axis tracking
         if (moveDir.x != 0)
         {
             lastHorizontalVector = moveDir.x;
@@ -63,7 +72,7 @@ public class PlayerMovement : MonoBehaviour
         // Update facing direction based on movement
         if (moveDir != Vector2.zero)
         {
-            facingDirection = moveDir.normalized;
+            facingDirection = moveDir;
         }
         else
         {
