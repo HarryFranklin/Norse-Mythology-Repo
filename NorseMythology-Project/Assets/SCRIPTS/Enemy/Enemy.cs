@@ -10,6 +10,10 @@ public class Enemy : MonoBehaviour
     public float currentHealth;
     public float damage = 5f;
 
+    [Header("XP")]
+    public float xpValue = 10f; // XP value for the player when this enemy is defeated
+    public int level = 1; // Level of the enemy, can be used for scaling difficulty
+
     [Header("Movement & Combat")]
     public float moveSpeed = 2f;
     public float meleeAttackRange = 0.5f;
@@ -156,6 +160,21 @@ public class Enemy : MonoBehaviour
 
     private void Die()
     {
+        // Award XP to the player before destroying the enemy
+        if (target != null)
+        {
+            PlayerController playerController = target.GetComponent<PlayerController>();
+            if (playerController != null)
+            {
+                playerController.GainExperience(xpValue);
+                Debug.Log($"Player gained {xpValue} XP from defeating {gameObject.name}");
+            }
+            else
+            {
+                Debug.LogWarning("Could not award XP: PlayerController not found on target.");
+            }
+        }
+
         // Add death effects, drops, etc.
         Destroy(gameObject);
     }

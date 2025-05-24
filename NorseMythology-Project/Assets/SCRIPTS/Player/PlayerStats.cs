@@ -15,6 +15,7 @@ public class PlayerStats : ScriptableObject
     [Header("Health")]
     public float maxHealth = 100f;
     public float healthRegen = 1f; // per second
+    public float healthRegenDelay = 2f; // seconds before health starts regenerating after taking damage
     
     [Header("Combat")]
     public float meleeRange = 2f;

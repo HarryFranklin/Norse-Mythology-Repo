@@ -11,6 +11,16 @@ public class PlayerController : MonoBehaviour
     public float currentHealth;
     public bool isDead = false;
     
+    [Header("Level Up System")]
+    public bool isLevelUpPending = false;
+    private float pendingExperience = 0f; // XP gained but not yet processed for level-ups
+    
+    [Header("UI References")]
+    public HealthXPUIManager uiManager;
+    
+    [Header("Health Regeneration")]
+    private float lastDamageTime = 0f; // Time when player last took damage
+    
     private void Start()
     {
         InitialisePlayer();
@@ -24,14 +34,21 @@ public class PlayerController : MonoBehaviour
         StartCoroutine(HealthRegeneration());
     }
     
-    private System.Collections.IEnumerator HealthRegeneration()
+    private IEnumerator HealthRegeneration()
     {
         while (!isDead)
         {
-            yield return new WaitForSeconds(1f);
-            if (currentHealth < currentStats.maxHealth)
+            yield return new WaitForSeconds(0.1f); // Check every 0.1 seconds for more responsive regeneration
+            
+            // Only regenerate if enough time has passed since last damage and health is not full
+            if (currentHealth < currentStats.maxHealth && 
+                Time.time >= lastDamageTime + currentStats.healthRegenDelay)
             {
-                currentHealth = Mathf.Min(currentStats.maxHealth, currentHealth + currentStats.healthRegen);
+                currentHealth = Mathf.Min(currentStats.maxHealth, currentHealth + (currentStats.healthRegen * 0.1f));
+                
+                // Update UI when health regenerates
+                if (uiManager != null)
+                    uiManager.OnHealthChanged();
             }
         }
     }
@@ -41,10 +58,16 @@ public class PlayerController : MonoBehaviour
         if (isDead) return;
         
         currentHealth -= damage;
+        lastDamageTime = Time.time; // Reset the damage timer
+        
         if (currentHealth <= 0)
         {
             Die();
         }
+        
+        // Update UI when health changes
+        if (uiManager != null)
+            uiManager.OnHealthChanged();
     }
     
     public void Heal(float amount)
@@ -52,21 +75,59 @@ public class PlayerController : MonoBehaviour
         if (isDead) return;
         
         currentHealth = Mathf.Min(currentStats.maxHealth, currentHealth + amount);
+        
+        // Update UI when health changes
+        if (uiManager != null)
+            uiManager.OnHealthChanged();
     }
     
     public void GainExperience(float xp)
     {
         if (isDead) return;
         
-        currentStats.experience += xp;
-        CheckLevelUp();
+        // Add XP to pending experience instead of directly to current stats
+        pendingExperience += xp;
+        
+        // Check if we'll have enough XP for a level up when processed
+        CheckForPendingLevelUp();
+        
+        // Update UI when XP changes
+        if (uiManager != null)
+            uiManager.OnXPChanged();
     }
     
-    private void CheckLevelUp()
+    private void CheckForPendingLevelUp()
     {
+        float totalXP = currentStats.experience + pendingExperience;
+        if (totalXP >= currentStats.experienceToNextLevel)
+        {
+            isLevelUpPending = true;
+        }
+    }
+    
+    // Call this method at the end of a level/stage to process all pending XP and level-ups
+    public void ProcessPendingExperience()
+    {
+        if (pendingExperience <= 0) return;
+        
+        // Add all pending XP to current stats
+        currentStats.experience += pendingExperience;
+        pendingExperience = 0f;
+        
+        // Process all level-ups that are now available
         while (currentStats.experience >= currentStats.experienceToNextLevel)
         {
             LevelUp();
+        }
+        
+        // Reset the pending flag
+        isLevelUpPending = false;
+        
+        // Update UI after processing all level-ups
+        if (uiManager != null)
+        {
+            uiManager.OnHealthChanged(); // Health may have changed due to level-ups
+            uiManager.OnXPChanged();
         }
     }
     
@@ -108,5 +169,21 @@ public class PlayerController : MonoBehaviour
         baseStats.projectileSpeed = currentStats.projectileSpeed;
         baseStats.projectileRange = currentStats.projectileRange;
         baseStats.abilityCooldownReduction = currentStats.abilityCooldownReduction;
+    }
+    
+    // Getter methods for UI display
+    public float GetTotalExperience()
+    {
+        return currentStats.experience + pendingExperience;
+    }
+    
+    public float GetCurrentExperience()
+    {
+        return currentStats.experience;
+    }
+    
+    public float GetPendingExperience()
+    {
+        return pendingExperience;
     }
 }
