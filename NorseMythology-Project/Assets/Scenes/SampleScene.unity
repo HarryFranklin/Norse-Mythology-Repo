@@ -2857,6 +2857,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Health
       objectReference: {fileID: 0}
+    - target: {fileID: 5261120777034600958, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
+      propertyPath: m_FillAmount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5261120777034600958, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
+      propertyPath: m_PreserveAspect
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5299478826762993521, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
