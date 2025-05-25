@@ -155,7 +155,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentWave: 1
   waveType: 0
-  waveDuration: 10
+  waveDuration: 60
   enemiesPerWave: 30
   healthScalingMultiplier: 1.05
   xpScalingMultiplier: 1.05
