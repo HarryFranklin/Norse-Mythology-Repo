@@ -7,6 +7,8 @@ public class EnemySpawner : MonoBehaviour
     public GameObject meleePrefab;
     public GameObject projectilePrefab;
 
+    public int totalEnemiesToSpawn = 50; // Total number of enemies to spawn
+
     [Range(0f, 1f)]
     public float meleeRatio = 0.6f; // 60% chance to spawn melee enemies from 0 to 1
     public float spawnRate = 2f;

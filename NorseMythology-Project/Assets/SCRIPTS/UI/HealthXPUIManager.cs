@@ -17,7 +17,7 @@ public class HealthXPUIManager : MonoBehaviour
     public TextMeshProUGUI healthText; // Optional: displays current/max health as text
     public TextMeshProUGUI xpText; // Optional: displays current XP progress as text
     public TextMeshProUGUI levelText; // Optional: displays current level
-    
+
     private void Start()
     {
         // Try to find PlayerController if not assigned
@@ -30,21 +30,17 @@ public class HealthXPUIManager : MonoBehaviour
                 return;
             }
         }
-        
+
         // Set this UI manager as a reference in the PlayerController
-        if (playerController.uiManager == null)
+        if (playerController.healthXPUIManager == null)
         {
-            playerController.uiManager = this;
+            playerController.healthXPUIManager = this;
         }
-        
-        // Initialise UI with current values, but only if currentStats is ready
-        // If not ready, the PlayerController will call the update methods when it initialises
-        if (playerController.currentStats != null)
-        {
-            UpdateHealthBar();
-            UpdateXPBar();
-            UpdateTextLabels();
-        }
+
+        UpdateHealthBar();
+        UpdateXPBar();
+        UpdateTextLabels();
+
     }
     
     // Called by PlayerController when health changes

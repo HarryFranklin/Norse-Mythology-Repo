@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
     private float pendingExperience = 0f; // XP gained but not yet processed for level-ups
     
     [Header("UI References")]
-    public HealthXPUIManager uiManager;
+    public HealthXPUIManager healthXPUIManager;
     
     [Header("Health Regeneration")]
     private float lastDamageTime = 0f; // Time when player last took damage
@@ -25,13 +25,19 @@ public class PlayerController : MonoBehaviour
     {
         InitialisePlayer();
     }
-    
+
     private void InitialisePlayer()
     {
         // Create runtime copy of base stats
-        currentStats = baseStats.CreateRuntimeCopy();
+        // currentStats = baseStats.CreateRuntimeCopy(); // Now in GameManager
         currentHealth = currentStats.maxHealth;
         StartCoroutine(HealthRegeneration());
+        
+        if (healthXPUIManager != null)
+        {
+            healthXPUIManager.OnHealthChanged();
+            healthXPUIManager.OnXPChanged();
+        }
     }
     
     private IEnumerator HealthRegeneration()
@@ -47,8 +53,8 @@ public class PlayerController : MonoBehaviour
                 currentHealth = Mathf.Min(currentStats.maxHealth, currentHealth + (currentStats.healthRegen * 0.1f));
                 
                 // Update UI when health regenerates
-                if (uiManager != null)
-                    uiManager.OnHealthChanged();
+                if (healthXPUIManager != null)
+                    healthXPUIManager.OnHealthChanged();
             }
         }
     }
@@ -66,8 +72,8 @@ public class PlayerController : MonoBehaviour
         }
         
         // Update UI when health changes
-        if (uiManager != null)
-            uiManager.OnHealthChanged();
+        if (healthXPUIManager != null)
+            healthXPUIManager.OnHealthChanged();
     }
     
     public void Heal(float amount)
@@ -77,8 +83,8 @@ public class PlayerController : MonoBehaviour
         currentHealth = Mathf.Min(currentStats.maxHealth, currentHealth + amount);
         
         // Update UI when health changes
-        if (uiManager != null)
-            uiManager.OnHealthChanged();
+        if (healthXPUIManager != null)
+            healthXPUIManager.OnHealthChanged();
     }
     
     public void GainExperience(float xp)
@@ -92,8 +98,8 @@ public class PlayerController : MonoBehaviour
         CheckForPendingLevelUp();
         
         // Update UI when XP changes
-        if (uiManager != null)
-            uiManager.OnXPChanged();
+        if (healthXPUIManager != null)
+            healthXPUIManager.OnXPChanged();
     }
     
     private void CheckForPendingLevelUp()
@@ -124,10 +130,10 @@ public class PlayerController : MonoBehaviour
         isLevelUpPending = false;
         
         // Update UI after processing all level-ups
-        if (uiManager != null)
+        if (healthXPUIManager != null)
         {
-            uiManager.OnHealthChanged(); // Health may have changed due to level-ups
-            uiManager.OnXPChanged();
+            healthXPUIManager.OnHealthChanged(); // Health may have changed due to level-ups
+            healthXPUIManager.OnXPChanged();
         }
     }
     

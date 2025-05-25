@@ -1346,6 +1346,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   meleePrefab: {fileID: 6549350566530616831, guid: a8e644fb05298434c981a996cf930ac1, type: 3}
   projectilePrefab: {fileID: 6549350566530616831, guid: 94d987001f64ddb43a4b3c2f2186edfe, type: 3}
+  totalEnemiesToSpawn: 50
   meleeRatio: 0.6
   spawnRate: 0.5
   spawnRadius: 12.5
@@ -1741,6 +1742,61 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1705909251}
   m_CullTransparentMesh: 1
+--- !u!1 &1753531476
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1753531478}
+  - component: {fileID: 1753531477}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1753531477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1753531476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ba3bc2da5334004fa2ce75d91dbc633, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerObject: {fileID: 2135908890}
+  gameOverScene:
+    m_Handle: 0
+  winScene:
+    m_Handle: 0
+  UI_to_Hide_When_Dead: []
+  abilityUIManager: {fileID: 1801585808}
+  healthXPUIManager: {fileID: 570491799}
+  basePlayerStats: {fileID: 11400000, guid: d502c6bd20489c74992235336485d903, type: 2}
+  currentPlayerStats: {fileID: 0}
+  enemySpawner: {fileID: 1261929403}
+--- !u!4 &1753531478
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1753531476}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 260.50882, y: 880.0185, z: -179.42297}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1775011073
 GameObject:
   m_ObjectHideFlags: 0
@@ -2986,3 +3042,4 @@ SceneRoots:
   - {fileID: 1801585806}
   - {fileID: 514065319}
   - {fileID: 570491798}
+  - {fileID: 1753531478}
