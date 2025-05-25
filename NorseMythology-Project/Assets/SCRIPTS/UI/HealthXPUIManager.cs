@@ -69,8 +69,8 @@ public class HealthXPUIManager : MonoBehaviour
         
         if (levelText != null)
         {
-            string levelUpIndicator = playerController.isLevelUpPending ? " (!)" : "";
-            levelText.text = $"Level {playerController.currentStats.level}{levelUpIndicator}";
+            string levelUpIndicator = playerController.isLevelUpPending ? " (!)" : ""; // if need to level up, show !
+            levelText.text = $"LEVEL: {playerController.currentStats.level}{levelUpIndicator}";
         }
     }
     

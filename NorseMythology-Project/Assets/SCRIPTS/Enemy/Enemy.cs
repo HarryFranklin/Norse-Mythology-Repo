@@ -175,7 +175,15 @@ public class Enemy : MonoBehaviour
             }
         }
 
-        // Add death effects, drops, etc.
+        // Notify the WaveManager that this enemy was killed
+        // Find a better way to reference WaveManager
+        WaveManager waveManager = FindFirstObjectByType<WaveManager>();
+        if (waveManager != null)
+        {
+            waveManager.OnEnemyKilled();
+        }
+
+        // Add drop effects before death, animations, ...
         Destroy(gameObject);
     }
 

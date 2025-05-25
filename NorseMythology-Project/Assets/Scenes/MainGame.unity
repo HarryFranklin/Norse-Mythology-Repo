@@ -124,6 +124,58 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5299478826762993521, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
   m_PrefabInstance: {fileID: 5158279704022946211}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &100481635
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 100481637}
+  - component: {fileID: 100481636}
+  m_Layer: 0
+  m_Name: WaveManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &100481636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100481635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aae39a9689205b04991586e9ba6f58f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentWave: 1
+  waveType: 0
+  waveDuration: 10
+  enemiesPerWave: 30
+  healthScalingMultiplier: 1.05
+  xpScalingMultiplier: 1.05
+  gameManager: {fileID: 1753531477}
+  enemySpawner: {fileID: 1261929403}
+--- !u!4 &100481637
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100481635}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &128635583
 GameObject:
   m_ObjectHideFlags: 0
@@ -545,7 +597,7 @@ GameObject:
   - component: {fileID: 570491799}
   m_Layer: 5
   m_Name: HealthXP Canvas
-  m_TagString: Untagged
+  m_TagString: HideOnDeath
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1346,7 +1398,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   meleePrefab: {fileID: 6549350566530616831, guid: a8e644fb05298434c981a996cf930ac1, type: 3}
   projectilePrefab: {fileID: 6549350566530616831, guid: 94d987001f64ddb43a4b3c2f2186edfe, type: 3}
-  totalEnemiesToSpawn: 50
   meleeRatio: 0.6
   spawnRate: 0.5
   spawnRadius: 12.5
@@ -1361,7 +1412,7 @@ Transform:
   m_GameObject: {fileID: 1261929402}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.1607165, y: 2.804534, z: 0.11781228}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1771,19 +1822,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ba3bc2da5334004fa2ce75d91dbc633, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerObject: {fileID: 2135908890}
-  gameOverScene:
-    m_Handle: 0
-  winScene:
-    m_Handle: 0
-  UI_to_Hide_When_Dead:
-  - {fileID: 570491794}
-  - {fileID: 1801585802}
-  abilityUIManager: {fileID: 1801585808}
-  healthXPUIManager: {fileID: 570491799}
+  mainGameSceneName: MainGame
+  gameOverSceneName: GameOver
+  winSceneName: Win
+  levelUpSceneName: LevelUp
+  waveManager: {fileID: 100481636}
   basePlayerStats: {fileID: 11400000, guid: d502c6bd20489c74992235336485d903, type: 2}
   currentPlayerStats: {fileID: 0}
-  enemySpawner: {fileID: 1261929403}
 --- !u!4 &1753531478
 Transform:
   m_ObjectHideFlags: 0
@@ -1793,7 +1838,7 @@ Transform:
   m_GameObject: {fileID: 1753531476}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 260.50882, y: 880.0185, z: -179.42297}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1890,7 +1935,7 @@ GameObject:
   - component: {fileID: 1801585808}
   m_Layer: 5
   m_Name: Abilities Canvas
-  m_TagString: Untagged
+  m_TagString: HideOnDeath
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2825,11 +2870,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseStats: {fileID: 11400000, guid: d502c6bd20489c74992235336485d903, type: 2}
+  gameManager: {fileID: 1753531477}
   currentStats: {fileID: 0}
-  currentHealth: 0
+  currentHealth: 100
   isDead: 0
   isLevelUpPending: 0
-  healthXPUIManager: {fileID: 0}
+  healthXPUIManager: {fileID: 570491799}
 --- !u!1001 &1725611079066591972
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3042,6 +3088,7 @@ SceneRoots:
   - {fileID: 2111238525}
   - {fileID: 1034595647}
   - {fileID: 1801585806}
-  - {fileID: 514065319}
   - {fileID: 570491798}
+  - {fileID: 514065319}
   - {fileID: 1753531478}
+  - {fileID: 100481637}

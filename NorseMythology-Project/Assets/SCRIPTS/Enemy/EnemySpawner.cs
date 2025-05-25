@@ -4,31 +4,64 @@ using System.Collections;
 public class EnemySpawner : MonoBehaviour
 {
     [Header("Spawning")]
+    // Put enemies in their own parent object in the hierarchy
+    // Put enemy projectie under its parent object
+
+    // Put prefabs for melee and projectiles in their own list to have various sprites for each type of enemy.
+
     public GameObject meleePrefab;
     public GameObject projectilePrefab;
 
-    public int totalEnemiesToSpawn = 50; // Total number of enemies to spawn
-
     [Range(0f, 1f)]
-    public float meleeRatio = 0.6f; // 60% chance to spawn melee enemies from 0 to 1
+    public float meleeRatio = 0.6f;
     public float spawnRate = 2f;
     public float spawnRadius = 15f;
     public int maxEnemies = 20;
     public Transform player;
 
     private int currentEnemyCount = 0;
+    private bool spawningActive = false;
+    private Coroutine spawnCoroutine;
+    
+    // Wave modifiers
+    private float currentHealthMultiplier = 1f;
+    private float currentXPMultiplier = 1f;
 
     private void Start()
     {
         if (player == null)
             player = FindFirstObjectByType<PlayerMovement>().transform;
+    }
 
-        StartCoroutine(SpawnEnemies());
+    public void StartSpawning()
+    {
+        spawningActive = true;
+        if (spawnCoroutine != null)
+        {
+            StopCoroutine(spawnCoroutine);
+        }
+        spawnCoroutine = StartCoroutine(SpawnEnemies());
+    }
+    
+    public void StopSpawning()
+    {
+        spawningActive = false;
+        if (spawnCoroutine != null)
+        {
+            StopCoroutine(spawnCoroutine);
+            spawnCoroutine = null;
+        }
+    }
+    
+    public void SetWaveModifiers(float healthMultiplier, float xpMultiplier)
+    {
+        currentHealthMultiplier = healthMultiplier;
+        currentXPMultiplier = xpMultiplier;
     }
 
     private IEnumerator SpawnEnemies()
     {
-        while (true)
+        while (spawningActive)
         {
             yield return new WaitForSeconds(1f / spawnRate);
 
@@ -43,16 +76,22 @@ public class EnemySpawner : MonoBehaviour
     {
         Vector2 spawnPos = GetRandomSpawnPosition();
 
-        // Decide type based on ratio
         float roundedMeleeRatio = Mathf.Round(meleeRatio * 100f) / 100f;
         GameObject prefabToSpawn = Random.value < roundedMeleeRatio ? meleePrefab : projectilePrefab;
         GameObject enemy = Instantiate(prefabToSpawn, spawnPos, Quaternion.identity);
 
-        // Assign target if needed
         Enemy enemyScript = enemy.GetComponent<Enemy>();
         if (enemyScript != null)
         {
             enemyScript.target = player;
+            
+            // Apply wave scaling
+            float newMaxHealth = Mathf.Round(enemyScript.maxHealth * currentHealthMultiplier);
+            float newXPValue = Mathf.Round(enemyScript.xpValue * currentXPMultiplier);
+            
+            enemyScript.maxHealth = newMaxHealth;
+            enemyScript.currentHealth = newMaxHealth;
+            enemyScript.xpValue = newXPValue;
         }
         else
         {
@@ -70,6 +109,13 @@ public class EnemySpawner : MonoBehaviour
             yield return null;
         }
         currentEnemyCount--;
+        
+        // Notify wave manager that an enemy was killed
+        WaveManager waveManager = FindFirstObjectByType<WaveManager>();
+        if (waveManager != null)
+        {
+            waveManager.OnEnemyKilled();
+        }
     }
 
     private Vector2 GetRandomSpawnPosition()

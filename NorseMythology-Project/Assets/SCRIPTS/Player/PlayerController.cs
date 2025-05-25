@@ -5,6 +5,7 @@ public class PlayerController : MonoBehaviour
 {
     [Header("References")]
     public PlayerStats baseStats; // ScriptableObject reference
+    public GameManager gameManager;
     
     [Header("Runtime Stats")]
     public PlayerStats currentStats; // Runtime copy
@@ -20,10 +21,15 @@ public class PlayerController : MonoBehaviour
     
     [Header("Health Regeneration")]
     private float lastDamageTime = 0f; // Time when player last took damage
-    
+
     private void Start()
     {
         InitialisePlayer();
+        
+        if (gameManager == null)
+        {
+            gameManager = FindFirstObjectByType<GameManager>();
+        }
     }
 
     private void InitialisePlayer()
@@ -152,12 +158,18 @@ public class PlayerController : MonoBehaviour
         
         Debug.Log($"Level Up! Now level {currentStats.level}");
     }
-    
+
     private void Die()
     {
         isDead = true;
         Debug.Log("Player died!");
-        // Handle death logic (restart level, game over screen, etc.)
+        gameManager.OnPlayerDied();
+
+        if (gameManager == null)
+        {
+            // Fallback if GameManager instance is not available
+            UnityEngine.SceneManagement.SceneManager.LoadScene("GameOver");
+        }
     }
     
     // Method to save current stats back to base stats (for persistence between levels)
