@@ -37,17 +37,25 @@ public class HealthXPUIManager : MonoBehaviour
             playerController.healthXPUIManager = this;
         }
 
+        // Wait a frame before updating UI to ensure PlayerController is fully initialized
+        StartCoroutine(DelayedInitialization());
+    }
+    
+    private System.Collections.IEnumerator DelayedInitialization()
+    {
+        yield return null; // Wait one frame
+        
+        // Now update the UI
         UpdateHealthBar();
         UpdateXPBar();
         UpdateTextLabels();
-
     }
     
     // Called by PlayerController when health changes
     public void OnHealthChanged()
     {
         UpdateHealthBar();
-        if (healthText != null)
+        if (healthText != null && playerController != null && playerController.currentStats != null)
         {
             healthText.text = $"{Mathf.Ceil(playerController.currentHealth)}/{playerController.currentStats.maxHealth}";
         }
@@ -57,6 +65,10 @@ public class HealthXPUIManager : MonoBehaviour
     public void OnXPChanged()
     {
         UpdateXPBar();
+        
+        // Add null checks before accessing player data
+        if (playerController == null || playerController.currentStats == null) return;
+        
         if (xpText != null)
         {
             // Use the current experience directly (not total) since we reset it on level up
@@ -97,8 +109,12 @@ public class HealthXPUIManager : MonoBehaviour
     
     private void UpdateTextLabels()
     {
-        OnHealthChanged();
-        OnXPChanged();
+        // Only update if playerController and its stats are available
+        if (playerController != null && playerController.currentStats != null)
+        {
+            OnHealthChanged();
+            OnXPChanged();
+        }
     }
     
     // Public methods for manual UI updates if needed

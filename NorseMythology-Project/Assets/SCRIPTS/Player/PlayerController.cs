@@ -34,11 +34,27 @@ public class PlayerController : MonoBehaviour
 
     private void InitialisePlayer()
     {
-        // Create runtime copy of base stats
-        // currentStats = baseStats.CreateRuntimeCopy(); // Now in GameManager
+        // Check if currentStats is null and handle appropriately
+        if (currentStats == null)
+        {
+            if (baseStats != null)
+            {
+                // Create runtime copy from base stats if available
+                currentStats = ScriptableObject.CreateInstance<PlayerStats>();
+                // Copy all values from baseStats to currentStats
+                CopyStatsFromBase();
+            }
+            else
+            {
+                Debug.LogError("PlayerController: Both currentStats and baseStats are null! Please assign baseStats in the inspector.");
+                return;
+            }
+        }
+        
         currentHealth = currentStats.maxHealth;
         StartCoroutine(HealthRegeneration());
         
+        // Update UI if available (it might not be ready yet due to initialization order)
         if (healthXPUIManager != null)
         {
             healthXPUIManager.OnHealthChanged();
@@ -46,11 +62,33 @@ public class PlayerController : MonoBehaviour
         }
     }
     
+    private void CopyStatsFromBase()
+    {
+        if (baseStats == null || currentStats == null) return;
+        
+        currentStats.level = baseStats.level;
+        currentStats.experience = baseStats.experience;
+        currentStats.experienceToNextLevel = baseStats.experienceToNextLevel;
+        currentStats.moveSpeed = baseStats.moveSpeed;
+        currentStats.maxHealth = baseStats.maxHealth;
+        currentStats.healthRegen = baseStats.healthRegen;
+        currentStats.healthRegenDelay = baseStats.healthRegenDelay;
+        currentStats.meleeRange = baseStats.meleeRange;
+        currentStats.attackDamage = baseStats.attackDamage;
+        currentStats.attackSpeed = baseStats.attackSpeed;
+        currentStats.projectileSpeed = baseStats.projectileSpeed;
+        currentStats.projectileRange = baseStats.projectileRange;
+        currentStats.abilityCooldownReduction = baseStats.abilityCooldownReduction;
+    }
+    
     private IEnumerator HealthRegeneration()
     {
         while (!isDead)
         {
             yield return new WaitForSeconds(0.1f); // Check every 0.1 seconds for more responsive regeneration
+            
+            // Add null check for currentStats
+            if (currentStats == null) continue;
             
             // Only regenerate if enough time has passed since last damage and health is not full
             if (currentHealth < currentStats.maxHealth && 
@@ -84,7 +122,7 @@ public class PlayerController : MonoBehaviour
     
     public void Heal(float amount)
     {
-        if (isDead) return;
+        if (isDead || currentStats == null) return;
         
         currentHealth = Mathf.Min(currentStats.maxHealth, currentHealth + amount);
         
@@ -95,7 +133,7 @@ public class PlayerController : MonoBehaviour
     
     public void GainExperience(float xp)
     {
-        if (isDead) return;
+        if (isDead || currentStats == null) return;
         
         // Add XP to pending experience instead of directly to current stats
         pendingExperience += xp;
@@ -110,6 +148,8 @@ public class PlayerController : MonoBehaviour
     
     private void CheckForPendingLevelUp()
     {
+        if (currentStats == null) return;
+        
         float totalXP = currentStats.experience + pendingExperience;
         if (totalXP >= currentStats.experienceToNextLevel)
         {
@@ -120,7 +160,7 @@ public class PlayerController : MonoBehaviour
     // Call this method at the end of a level/stage to process all pending XP and level-ups
     public void ProcessPendingExperience()
     {
-        if (pendingExperience <= 0) return;
+        if (pendingExperience <= 0 || currentStats == null) return;
         
         // Add all pending XP to current stats
         currentStats.experience += pendingExperience;
@@ -145,6 +185,8 @@ public class PlayerController : MonoBehaviour
     
     private void LevelUp()
     {
+        if (currentStats == null) return;
+        
         currentStats.experience -= currentStats.experienceToNextLevel;
         currentStats.level++;
         
@@ -163,9 +205,12 @@ public class PlayerController : MonoBehaviour
     {
         isDead = true;
         Debug.Log("Player died!");
-        gameManager.OnPlayerDied();
-
-        if (gameManager == null)
+        
+        if (gameManager != null)
+        {
+            gameManager.OnPlayerDied();
+        }
+        else
         {
             // Fallback if GameManager instance is not available
             UnityEngine.SceneManagement.SceneManager.LoadScene("GameOver");
@@ -175,6 +220,8 @@ public class PlayerController : MonoBehaviour
     // Method to save current stats back to base stats (for persistence between levels)
     public void SaveStatsToBase()
     {
+        if (baseStats == null || currentStats == null) return;
+        
         baseStats.level = currentStats.level;
         baseStats.experience = currentStats.experience;
         baseStats.experienceToNextLevel = currentStats.experienceToNextLevel;
@@ -192,11 +239,13 @@ public class PlayerController : MonoBehaviour
     // Getter methods for UI display
     public float GetTotalExperience()
     {
+        if (currentStats == null) return 0f;
         return currentStats.experience + pendingExperience;
     }
     
     public float GetCurrentExperience()
     {
+        if (currentStats == null) return 0f;
         return currentStats.experience;
     }
     

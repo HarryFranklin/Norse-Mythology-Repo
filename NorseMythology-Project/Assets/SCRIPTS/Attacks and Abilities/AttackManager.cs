@@ -40,7 +40,7 @@ public class AttackManager : MonoBehaviour
     
     private void Update()
     {
-        if (hasBasicAttack && !playerController.isDead)
+        if (hasBasicAttack && playerController != null && !playerController.isDead)
         {
             // Only scan for enemies at intervals for performance
             if (Time.time - lastEnemyScan >= enemyScanInterval)
@@ -55,6 +55,10 @@ public class AttackManager : MonoBehaviour
     
     private void UpdateClosestEnemy()
     {
+        // Add null check for playerController and currentStats
+        if (playerController == null || playerController.currentStats == null)
+            return;
+            
         GameObject[] enemyObjects = GameObject.FindGameObjectsWithTag("Enemy");
         
         closestEnemy = null;
@@ -76,6 +80,10 @@ public class AttackManager : MonoBehaviour
     
     private void HandleBasicAttack()
     {
+        // Add null check for playerController and currentStats
+        if (playerController == null || playerController.currentStats == null)
+            return;
+            
         if (Time.time - lastAttackTime >= 1f / playerController.currentStats.attackSpeed)
         {
             if (closestEnemy != null && IsEnemyStillValid())
@@ -88,7 +96,8 @@ public class AttackManager : MonoBehaviour
     
     private bool IsEnemyStillValid()
     {
-        if (closestEnemy == null) return false;
+        if (closestEnemy == null || playerController == null || playerController.currentStats == null) 
+            return false;
         
         // Quick distance check without recalculating all enemies
         float currentDistance = Vector2.Distance(player.position, closestEnemy.transform.position);
@@ -134,7 +143,7 @@ public class AttackManager : MonoBehaviour
             }
             
             // Deal damage
-            if (target != null)
+            if (target != null && playerController != null && playerController.currentStats != null)
             {
                 target.TakeDamage(playerController.currentStats.attackDamage);
             }
@@ -154,13 +163,16 @@ public class AttackManager : MonoBehaviour
         else
         {
             // Direct damage if no weapon prefab
-            target.TakeDamage(playerController.currentStats.attackDamage);
+            if (target != null && playerController != null && playerController.currentStats != null)
+            {
+                target.TakeDamage(playerController.currentStats.attackDamage);
+            }
         }
     }
     
     private void LaunchProjectile(Enemy target, bool returning)
     {
-        if (projectilePrefab != null)
+        if (projectilePrefab != null && playerController != null && playerController.currentStats != null)
         {
             GameObject projectile = Instantiate(projectilePrefab, player.position, Quaternion.identity);
             Projectile projectileScript = projectile.GetComponent<Projectile>();

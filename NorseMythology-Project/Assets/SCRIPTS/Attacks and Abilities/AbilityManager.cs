@@ -13,7 +13,7 @@ public class AbilityManager : MonoBehaviour
     
     private void Update()
     {
-        if (!playerController.isDead)
+        if (playerController != null && !playerController.isDead)
         {
             HandleAbilityInput();
         }
@@ -35,6 +35,13 @@ public class AbilityManager : MonoBehaviour
         if (equippedAbilities[index] == null)
         {
             Debug.Log($"No ability equipped in slot {index + 1}");
+            return;
+        }
+        
+        // Add null check for playerController
+        if (playerController == null || playerController.currentStats == null)
+        {
+            Debug.LogWarning("AbilityManager: PlayerController or currentStats is null");
             return;
         }
         
@@ -76,6 +83,10 @@ public class AbilityManager : MonoBehaviour
     public float GetAbilityCooldownRemaining(int slotIndex)
     {
         if (slotIndex < 0 || slotIndex >= equippedAbilities.Length || equippedAbilities[slotIndex] == null)
+            return 0f;
+
+        // Add null check for playerController and currentStats
+        if (playerController == null || playerController.currentStats == null)
             return 0f;
 
         float cooldownReduction = 1f - (playerController.currentStats.abilityCooldownReduction / 100f);
