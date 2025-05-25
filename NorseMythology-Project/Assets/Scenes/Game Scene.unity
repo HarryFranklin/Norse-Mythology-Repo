@@ -1776,7 +1776,9 @@ MonoBehaviour:
     m_Handle: 0
   winScene:
     m_Handle: 0
-  UI_to_Hide_When_Dead: []
+  UI_to_Hide_When_Dead:
+  - {fileID: 570491794}
+  - {fileID: 1801585802}
   abilityUIManager: {fileID: 1801585808}
   healthXPUIManager: {fileID: 570491799}
   basePlayerStats: {fileID: 11400000, guid: d502c6bd20489c74992235336485d903, type: 2}
@@ -2620,7 +2622,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -2634,7 +2636,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.56, y: 1.16}
+  m_Size: {x: 0.5, y: 1}
   m_EdgeRadius: 0
 --- !u!50 &2135908893
 Rigidbody2D:
@@ -2706,7 +2708,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: -978791688, guid: e20ffde0bbe61624695318427c9d6d54, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -2827,7 +2829,7 @@ MonoBehaviour:
   currentHealth: 0
   isDead: 0
   isLevelUpPending: 0
-  uiManager: {fileID: 0}
+  healthXPUIManager: {fileID: 0}
 --- !u!1001 &1725611079066591972
 PrefabInstance:
   m_ObjectHideFlags: 0

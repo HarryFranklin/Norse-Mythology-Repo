@@ -5,6 +5,13 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    // Singleton instance
+    // Add logic for waves
+    // Current wave number
+    // Wave type
+    // Wave timer
+    // Wave max enemies (ref to enemy spawner)
+
     [Header("Player Reference")]
     [SerializeField] private GameObject playerObject;
 
@@ -23,6 +30,9 @@ public class GameManager : MonoBehaviour
 
     [Header("Enemy Spawner")]
     [SerializeField] private EnemySpawner enemySpawner;
+
+    [Header("Wave Manager")]
+    [SerializeField] private WaveManager waveManager;
 
     void Start()
     {
