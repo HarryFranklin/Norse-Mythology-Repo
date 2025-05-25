@@ -16,6 +16,17 @@ public class AxeThrowAbility : AttackAbility
     {
         // Get direction based on player movement or last movement
         Vector2 throwDirection = GetThrowDirection(playerMovement);
+
+        if (throwDirection.x < 0)
+        {
+            // If facing left, flip the sprite
+            playerMovement.facingDirection = Vector2.left;
+        }
+        else if (throwDirection.x > 0)
+        {
+            // If facing right, ensure facing direction is right
+            playerMovement.facingDirection = Vector2.right;
+        }
         
         if (throwDirection == Vector2.zero)
         {
