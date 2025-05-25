@@ -156,32 +156,7 @@ public class PlayerController : MonoBehaviour
             isLevelUpPending = true;
         }
     }
-    
-    // Call this method at the end of a level/stage to process all pending XP and level-ups
-    public void ProcessPendingExperience()
-    {
-        if (pendingExperience <= 0 || currentStats == null) return;
-        
-        // Add all pending XP to current stats
-        currentStats.experience += pendingExperience;
-        pendingExperience = 0f;
-        
-        // Process all level-ups that are now available
-        while (currentStats.experience >= currentStats.experienceToNextLevel)
-        {
-            LevelUp();
-        }
-        
-        // Reset the pending flag
-        isLevelUpPending = false;
-        
-        // Update UI after processing all level-ups
-        if (healthXPUIManager != null)
-        {
-            healthXPUIManager.OnHealthChanged(); // Health may have changed due to level-ups
-            healthXPUIManager.OnXPChanged();
-        }
-    }
+
     
     private void LevelUp()
     {
@@ -200,12 +175,48 @@ public class PlayerController : MonoBehaviour
         
         Debug.Log($"Level Up! Now level {currentStats.level}");
     }
+    
+    public int ProcessPendingExperienceAndReturnLevelUps()
+    {
+        // Returns the number of level-ups that occurreds
+        if (pendingExperience <= 0 || currentStats == null) return 0;
+        
+        // Add all pending XP to current stats
+        currentStats.experience += pendingExperience;
+        pendingExperience = 0f;
+        
+        // Count and process all level-ups that are now available
+        int levelUpsGained = 0;
+        while (currentStats.experience >= currentStats.experienceToNextLevel)
+        {
+            LevelUp();
+            levelUpsGained++;
+        }
+        
+        // Reset the pending flag
+        isLevelUpPending = false;
+        
+        // Update UI after processing all level-ups
+        if (healthXPUIManager != null)
+        {
+            healthXPUIManager.OnHealthChanged(); // Health may have changed due to level-ups
+            healthXPUIManager.OnXPChanged();
+        }
+        
+        Debug.Log($"Processed pending XP and gained {levelUpsGained} levels");
+        return levelUpsGained;
+    }
+
+    public void ProcessPendingExperience()
+    {
+        ProcessPendingExperienceAndReturnLevelUps();
+    }
 
     private void Die()
     {
         isDead = true;
         Debug.Log("Player died!");
-        
+
         if (gameManager != null)
         {
             gameManager.OnPlayerDied();

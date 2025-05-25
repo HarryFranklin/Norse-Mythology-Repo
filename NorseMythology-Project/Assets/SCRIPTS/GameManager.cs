@@ -26,7 +26,8 @@ public class GameManager : MonoBehaviour
 
     [Header("Player Stats")]
     [SerializeField] private PlayerStats basePlayerStats;
-    [SerializeField] private PlayerStats currentPlayerStats;
+    [SerializeField] private PlayerStats currentPlayerStats; // This will persist between scenes
+    [SerializeField] private int upgradePoints = 0; // Points available for upgrades
     
     // Game state
     private bool gameActive = true;
@@ -46,11 +47,24 @@ public class GameManager : MonoBehaviour
                 DontDestroyOnLoad(waveManager.gameObject);
             }
             
+            // Initialize persistent player stats if not already done
+            InitializePersistentPlayerStats();
+            
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
         else
         {
             Destroy(gameObject);
+        }
+    }
+    
+    private void InitializePersistentPlayerStats()
+    {
+        if (currentPlayerStats == null && basePlayerStats != null)
+        {
+            // Create a runtime copy that will persist
+            currentPlayerStats = basePlayerStats.CreateRuntimeCopy();
+            Debug.Log("Initialized persistent player stats");
         }
     }
     
@@ -105,14 +119,30 @@ public class GameManager : MonoBehaviour
         {
             playerObject = playerController.gameObject;
             
-            // Set up player stats
-            if (playerController.currentStats == null && basePlayerStats != null)
+            // Use the persistent stats instead of creating new ones
+            if (currentPlayerStats != null)
             {
-                playerController.currentStats = basePlayerStats.CreateRuntimeCopy();
+                playerController.currentStats = currentPlayerStats;
+                // Set current health to max health if this is a fresh start or returning from level up
+                if (returningFromLevelUp)
+                {
+                    playerController.currentHealth = currentPlayerStats.maxHealth; // Full heal on wave transition
+                }
+                else if (playerController.currentHealth <= 0)
+                {
+                    playerController.currentHealth = currentPlayerStats.maxHealth;
+                }
             }
-            
-            // Load saved progress if returning from level up
-            LoadPlayerProgress();
+            else
+            {
+                // Fallback - create new stats from base
+                if (basePlayerStats != null)
+                {
+                    currentPlayerStats = basePlayerStats.CreateRuntimeCopy();
+                    playerController.currentStats = currentPlayerStats;
+                    playerController.currentHealth = currentPlayerStats.maxHealth;
+                }
+            }
         }
         
         // Find UI managers
@@ -153,6 +183,14 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log($"Wave {waveManager.GetCurrentWave()} completed! Loading level up scene...");
         
+        // Process any pending XP and calculate upgrade points before transitioning
+        PlayerController playerController = FindFirstObjectByType<PlayerController>();
+        if (playerController != null)
+        {
+            upgradePoints += playerController.ProcessPendingExperienceAndReturnLevelUps();
+            Debug.Log($"Player earned {upgradePoints} total upgrade points");
+        }
+        
         // Save current player stats and wave progress before transitioning
         SavePlayerProgress();
         
@@ -172,6 +210,13 @@ public class GameManager : MonoBehaviour
                 if (uiElement != null)
                     uiElement.SetActive(false);
             }
+        }
+        
+        // Reset persistent stats for new game
+        if (basePlayerStats != null)
+        {
+            currentPlayerStats = basePlayerStats.CreateRuntimeCopy();
+            upgradePoints = 0; // Reset upgrade points on death
         }
         
         // Load game over scene
@@ -200,12 +245,78 @@ public class GameManager : MonoBehaviour
 
     private void SavePlayerProgress()
     {
-
+        // Save player stats to PlayerPrefs for persistence across sessions
+        if (currentPlayerStats != null)
+        {
+            PlayerPrefs.SetInt("PlayerLevel", currentPlayerStats.level);
+            PlayerPrefs.SetFloat("PlayerExperience", currentPlayerStats.experience);
+            PlayerPrefs.SetFloat("PlayerExpToNext", currentPlayerStats.experienceToNextLevel);
+            PlayerPrefs.SetFloat("PlayerMaxHealth", currentPlayerStats.maxHealth);
+            PlayerPrefs.SetFloat("PlayerMoveSpeed", currentPlayerStats.moveSpeed);
+            PlayerPrefs.SetFloat("PlayerHealthRegen", currentPlayerStats.healthRegen);
+            PlayerPrefs.SetFloat("PlayerAttackDamage", currentPlayerStats.attackDamage);
+            PlayerPrefs.SetFloat("PlayerAttackSpeed", currentPlayerStats.attackSpeed);
+            PlayerPrefs.SetFloat("PlayerMeleeRange", currentPlayerStats.meleeRange);
+            PlayerPrefs.SetFloat("PlayerProjectileSpeed", currentPlayerStats.projectileSpeed);
+            PlayerPrefs.SetFloat("PlayerProjectileRange", currentPlayerStats.projectileRange);
+            PlayerPrefs.SetFloat("PlayerAbilityCDR", currentPlayerStats.abilityCooldownReduction);
+            PlayerPrefs.SetInt("UpgradePoints", upgradePoints);
+            PlayerPrefs.Save();
+            
+            Debug.Log($"Saved player progress - Level: {currentPlayerStats.level}, XP: {currentPlayerStats.experience}, Upgrade Points: {upgradePoints}");
+        }
     }
     
     public void LoadPlayerProgress()
     {
-
+        // Load player stats from PlayerPrefs if they exist
+        if (PlayerPrefs.HasKey("PlayerLevel"))
+        {
+            if (currentPlayerStats == null)
+            {
+                currentPlayerStats = ScriptableObject.CreateInstance<PlayerStats>();
+            }
+            
+            currentPlayerStats.level = PlayerPrefs.GetInt("PlayerLevel", 1);
+            currentPlayerStats.experience = PlayerPrefs.GetFloat("PlayerExperience", 0f);
+            currentPlayerStats.experienceToNextLevel = PlayerPrefs.GetFloat("PlayerExpToNext", 100f);
+            currentPlayerStats.maxHealth = PlayerPrefs.GetFloat("PlayerMaxHealth", 100f);
+            currentPlayerStats.moveSpeed = PlayerPrefs.GetFloat("PlayerMoveSpeed", 5f);
+            currentPlayerStats.healthRegen = PlayerPrefs.GetFloat("PlayerHealthRegen", 1f);
+            currentPlayerStats.attackDamage = PlayerPrefs.GetFloat("PlayerAttackDamage", 10f);
+            currentPlayerStats.attackSpeed = PlayerPrefs.GetFloat("PlayerAttackSpeed", 1f);
+            currentPlayerStats.meleeRange = PlayerPrefs.GetFloat("PlayerMeleeRange", 2f);
+            currentPlayerStats.projectileSpeed = PlayerPrefs.GetFloat("PlayerProjectileSpeed", 8f);
+            currentPlayerStats.projectileRange = PlayerPrefs.GetFloat("PlayerProjectileRange", 10f);
+            currentPlayerStats.abilityCooldownReduction = PlayerPrefs.GetFloat("PlayerAbilityCDR", 0f);
+            upgradePoints = PlayerPrefs.GetInt("UpgradePoints", 0);
+            
+            Debug.Log($"Loaded player progress - Level: {currentPlayerStats.level}, XP: {currentPlayerStats.experience}, Upgrade Points: {upgradePoints}");
+        }
+    }
+    
+    // Method to start a new game (resets stats)
+    public void StartNewGame()
+    {
+        if (basePlayerStats != null)
+        {
+            currentPlayerStats = basePlayerStats.CreateRuntimeCopy();
+        }
+        
+        upgradePoints = 0;
+        
+        if (waveManager != null)
+        {
+            waveManager.currentWave = 1;
+        }
+        
+        // Clear saved progress
+        PlayerPrefs.DeleteKey("PlayerLevel");
+        PlayerPrefs.DeleteKey("CurrentWave");
+        PlayerPrefs.DeleteKey("UpgradePoints");
+        // Delete other keys as needed
+        
+        SceneManager.LoadScene(mainGameSceneName);
     }
     
     private void OnDestroy()
@@ -219,4 +330,17 @@ public class GameManager : MonoBehaviour
     public HealthXPUIManager GetHealthXPUIManager() => healthXPUIManager;
     public AbilityUIManager GetAbilityUIManager() => abilityUIManager;
     public GameObject GetPlayerObject() => playerObject;
+    public PlayerStats GetCurrentPlayerStats() => currentPlayerStats; // New getter for persistent stats
+    public int GetUpgradePoints() => upgradePoints;
+    
+    // Method to spend upgrade points
+    public bool SpendUpgradePoint()
+    {
+        if (upgradePoints > 0)
+        {
+            upgradePoints--;
+            return true;
+        }
+        return false;
+    }
 }
