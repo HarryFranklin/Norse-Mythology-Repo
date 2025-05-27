@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class Enemy : MonoBehaviour
 {
@@ -28,6 +29,9 @@ public class Enemy : MonoBehaviour
     [Header("Projectile")]
     public GameObject projectilePrefab;
     public Transform firePoint; // A child object indicating where to shoot from
+    
+    // Track active projectiles spawned by this enemy
+    private List<GameObject> activeProjectiles = new List<GameObject>();
 
     private void Start()
     {
@@ -57,6 +61,9 @@ public class Enemy : MonoBehaviour
                 HandleProjectileBehavior(distanceToTarget);
                 break;
         }
+        
+        // Clean up destroyed projectiles from our tracking list
+        CleanupDestroyedProjectiles();
     }
 
     private void HandleMeleeBehavior(float distance)
@@ -124,7 +131,11 @@ public class Enemy : MonoBehaviour
 
         Vector2 direction = (target.position - firePoint.position).normalized;
 
-        GameObject projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
+        // Spawn projectile as child of this enemy initially
+        GameObject projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity, transform);
+        
+        // Track this projectile
+        activeProjectiles.Add(projectile);
 
         EnemyProjectile enemyProjectile = projectile.GetComponent<EnemyProjectile>();
         if (enemyProjectile != null)
@@ -135,6 +146,12 @@ public class Enemy : MonoBehaviour
         {
             Debug.LogWarning("Projectile prefab missing EnemyProjectile component.");
         }
+    }
+    
+    private void CleanupDestroyedProjectiles()
+    {
+        // Remove null references (destroyed projectiles) from our tracking list
+        activeProjectiles.RemoveAll(projectile => projectile == null);
     }
 
     public void TakeDamage(float damage)
@@ -160,6 +177,9 @@ public class Enemy : MonoBehaviour
 
     private void Die()
     {
+        // Move any active projectiles to the enemies parent before this enemy is destroyed
+        MoveProjectilesToParent();
+        
         // Award XP to the player before destroying the enemy
         if (target != null)
         {
@@ -185,6 +205,36 @@ public class Enemy : MonoBehaviour
 
         // Add drop effects before death, animations, ...
         Destroy(gameObject);
+    }
+    
+    private void MoveProjectilesToParent()
+    {
+        // Find the enemies parent object (should be the same parent this enemy is under)
+        Transform enemiesParent = transform.parent;
+        
+        if (enemiesParent == null)
+        {
+            // If no parent, try to find or create the "Enemies Parent" object
+            GameObject enemiesObject = GameObject.Find("Enemies Parent");
+            if (enemiesObject == null)
+            {
+                enemiesObject = new GameObject("Enemies Parent");
+                enemiesObject.transform.position = Vector3.zero;
+            }
+            enemiesParent = enemiesObject.transform;
+        }
+        
+        // Move all active projectiles to the enemies parent
+        foreach (GameObject projectile in activeProjectiles)
+        {
+            if (projectile != null)
+            {
+                projectile.transform.SetParent(enemiesParent);
+            }
+        }
+        
+        // Clear the list since we're about to be destroyed
+        activeProjectiles.Clear();
     }
 
     private void OnDrawGizmosSelected()
