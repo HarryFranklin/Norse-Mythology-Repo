@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2559649854736445953}
   - component: {fileID: 6408606779111123246}
   - component: {fileID: 4647804410163302743}
+  - component: {fileID: -7398349980886543588}
   m_Layer: 0
   m_Name: Enemy-Melee 1
   m_TagString: Enemy
@@ -112,6 +113,8 @@ MonoBehaviour:
   projectileMinRange: 2
   projectileMaxRange: 6
   attackCooldown: 1
+  isStunned: 0
+  stunDuration: 2
   target: {fileID: 0}
   projectilePrefab: {fileID: 0}
   firePoint: {fileID: 0}
@@ -151,3 +154,30 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.4
+--- !u!50 &-7398349980886543588
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6549350566530616831}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

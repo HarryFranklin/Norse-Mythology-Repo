@@ -5,6 +5,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float moveSpeed;
     private Rigidbody2D rigidBody;
     private PlayerController playerController;
+    public bool isMovementLocked = false;
     
     [HideInInspector] public Vector2 moveDir;
     [HideInInspector] public float lastHorizontalVector = 1f; // Default facing right
@@ -83,12 +84,17 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move()
     {
-        // Update move speed from player stats if available
+        if (isMovementLocked)
+        {
+            rigidBody.linearVelocity = Vector2.zero;
+            return;
+        }
+
         if (playerController != null && playerController.currentStats != null)
         {
             moveSpeed = playerController.currentStats.moveSpeed;
         }
-        
+
         rigidBody.linearVelocity = new Vector2(moveDir.x * moveSpeed, moveDir.y * moveSpeed);
     }
 }
