@@ -172,15 +172,7 @@ public class HammerSlamAbility : DefendAbility
     {
         if (enemy == null) return;
         
-        // Check if enemy already has stun component
-        EnemyStunEffect stunEffect = enemy.GetComponent<EnemyStunEffect>();
-        if (stunEffect == null)
-        {
-            stunEffect = enemy.gameObject.AddComponent<EnemyStunEffect>();
-        }
-        
-        stunEffect.ApplyStun(duration);
-        Debug.Log($"Applied {duration}s stun to {enemy.name}");
+        // Empty for now
     }
     
     private void CreateVisualEffects(Vector3 position)

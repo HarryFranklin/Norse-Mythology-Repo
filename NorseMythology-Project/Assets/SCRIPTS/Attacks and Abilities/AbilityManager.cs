@@ -5,12 +5,12 @@ public class AbilityManager : MonoBehaviour
     [Header("References")]
     public PlayerController playerController;
     public PlayerMovement playerMovement;
-    
+
     [Header("Equipped Abilities")]
     public Ability[] equippedAbilities = new Ability[4];
-    
+
     private float[] lastAbilityUse = new float[4];
-    
+
     private void Update()
     {
         if (playerController != null && !playerController.isDead)
@@ -18,7 +18,7 @@ public class AbilityManager : MonoBehaviour
             HandleAbilityInput();
         }
     }
-    
+
     private void HandleAbilityInput()
     {
         for (int i = 0; i < 4; i++)
@@ -29,7 +29,7 @@ public class AbilityManager : MonoBehaviour
             }
         }
     }
-    
+
     private void TryActivateAbility(int index)
     {
         if (equippedAbilities[index] == null)
@@ -37,20 +37,20 @@ public class AbilityManager : MonoBehaviour
             Debug.Log($"No ability equipped in slot {index + 1}");
             return;
         }
-        
+
         // Add null check for playerController
         if (playerController == null || playerController.currentStats == null)
         {
             Debug.LogWarning("AbilityManager: PlayerController or currentStats is null");
             return;
         }
-        
+
         Ability ability = equippedAbilities[index];
-        
+
         // Calculate cooldown with player's cooldown reduction
         float cooldownReduction = 1f - (playerController.currentStats.abilityCooldownReduction / 100f);
         float adjustedCooldown = ability.cooldown * cooldownReduction;
-        
+
         if (Time.time - lastAbilityUse[index] >= adjustedCooldown)
         {
             if (ability.CanActivate(playerController))
@@ -70,7 +70,7 @@ public class AbilityManager : MonoBehaviour
             Debug.Log($"{ability.abilityName} on cooldown: {timeLeft:F1}s remaining");
         }
     }
-    
+
     public void EquipAbility(Ability ability, int slotIndex)
     {
         if (slotIndex >= 0 && slotIndex < equippedAbilities.Length)
@@ -79,7 +79,7 @@ public class AbilityManager : MonoBehaviour
             Debug.Log($"{ability.abilityName} equipped to slot {slotIndex + 1}");
         }
     }
-    
+
     public float GetAbilityCooldownRemaining(int slotIndex)
     {
         if (slotIndex < 0 || slotIndex >= equippedAbilities.Length || equippedAbilities[slotIndex] == null)
