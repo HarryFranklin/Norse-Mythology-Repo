@@ -47,7 +47,7 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        if (target == null) return;
+        if (target == null || IsStunned()) return; // Exit early if stunned
 
         float distanceToTarget = Vector2.Distance(transform.position, target.position);
 
@@ -68,6 +68,8 @@ public class Enemy : MonoBehaviour
 
     private void HandleMeleeBehavior(float distance)
     {
+        if (IsStunned()) return; // Don't do anything if stunned
+
         if (distance > meleeAttackRange)
         {
             MoveTowardsTarget();
@@ -81,6 +83,8 @@ public class Enemy : MonoBehaviour
 
     private void HandleProjectileBehavior(float distance)
     {
+        if (IsStunned()) return; // Don't do anything if stunned
+
         if (distance > projectileMaxRange)
         {
             MoveTowardsTarget();
@@ -165,7 +169,7 @@ public class Enemy : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (enemyType != EnemyType.Melee) return;
+        if (enemyType != EnemyType.Melee || IsStunned()) return; // Don't attack if stunned
 
         PlayerController player = collision.collider.GetComponent<PlayerController>();
         if (player != null && Time.time >= lastAttackTime + attackCooldown)
@@ -235,6 +239,12 @@ public class Enemy : MonoBehaviour
         
         // Clear the list since we're about to be destroyed
         activeProjectiles.Clear();
+    }
+
+    private bool IsStunned()
+    {
+        EnemyStunEffect stunEffect = GetComponent<EnemyStunEffect>();
+        return stunEffect != null && stunEffect.IsStunned();
     }
 
     private void OnDrawGizmosSelected()
