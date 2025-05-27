@@ -35,8 +35,8 @@ public class AbilitySlotUI : MonoBehaviour
 
         float remaining = abilityManager.GetAbilityCooldownRemaining(abilityIndex);
         float max = ability.cooldown * (1f - (abilityManager.playerController.currentStats.abilityCooldownReduction / 100f));
-
-        // Need to invert this so the bar goes the other way
+        if (max <= 0f) max = 0.01f; // prevent divide by zero
+        
         cooldownOverlay.fillAmount = Mathf.Clamp01(remaining / max);
     }
 }

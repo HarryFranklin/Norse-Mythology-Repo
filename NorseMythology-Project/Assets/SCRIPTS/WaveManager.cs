@@ -15,12 +15,11 @@ public class WaveManager : MonoBehaviour
     }
 
     [System.Serializable]
-    public struct WaveItem
+    public class WaveItem
     {
         public WaveType waveType;
         public float criteria;
     }
-
 
     [Header("Wave Configuration")]
     [SerializeField] private WaveItem[] waveItems; // Array of wave items for future expansion

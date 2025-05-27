@@ -154,14 +154,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waveItems:
-  - waveType: 0
-    criteria: 60
   - waveType: 1
-    criteria: 20
+    criteria: 1
   - waveType: 0
-    criteria: 60
+    criteria: 1
   - waveType: 1
-    criteria: 20
+    criteria: 1
+  - waveType: 1
+    criteria: 1
   currentWave: 1
   currentWaveType: 0
   waveDuration: 60

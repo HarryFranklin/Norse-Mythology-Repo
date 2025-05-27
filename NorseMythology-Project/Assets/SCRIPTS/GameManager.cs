@@ -74,7 +74,7 @@ public class GameManager : MonoBehaviour
         if (WaveManager.Instance != null)
         {
             // Load wave number from PlayerPrefs
-            if (PlayerPrefs.HasKey("CurrentWave"))
+            if (returningFromLevelUp && PlayerPrefs.HasKey("CurrentWave"))
             {
                 WaveManager.Instance.currentWave = PlayerPrefs.GetInt("CurrentWave", 1);
             }
@@ -161,7 +161,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-
+    
     }
 
     void Update()
@@ -299,20 +299,19 @@ public class GameManager : MonoBehaviour
         {
             currentPlayerStats = basePlayerStats.CreateRuntimeCopy();
         }
-        
+
         upgradePoints = 0;
-        
+
         if (WaveManager.Instance != null)
         {
             WaveManager.Instance.currentWave = 1;
         }
-        
+
         // Clear saved progress
         PlayerPrefs.DeleteKey("PlayerLevel");
         PlayerPrefs.DeleteKey("CurrentWave");
         PlayerPrefs.DeleteKey("UpgradePoints");
-        // Delete other keys as needed
-        
+
         SceneManager.LoadScene(mainGameSceneName);
     }
     
