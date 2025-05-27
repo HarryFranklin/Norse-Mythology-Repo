@@ -1738,6 +1738,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemiesParent: {fileID: 1442276654}
+  meleeEnemyPrefabs:
+  - {fileID: 6549350566530616831, guid: a8e644fb05298434c981a996cf930ac1, type: 3}
+  - {fileID: 6549350566530616831, guid: 67ce8c5c1688ba74e9703c686603212e, type: 3}
+  projectileEnemyPrefabs:
+  - {fileID: 6549350566530616831, guid: 94d987001f64ddb43a4b3c2f2186edfe, type: 3}
+  - {fileID: 6549350566530616831, guid: 088a376ce9adb8a48a576de1d445c5bf, type: 3}
   meleePrefab: {fileID: 6549350566530616831, guid: a8e644fb05298434c981a996cf930ac1, type: 3}
   projectilePrefab: {fileID: 6549350566530616831, guid: 94d987001f64ddb43a4b3c2f2186edfe, type: 3}
   meleeRatio: 0.6

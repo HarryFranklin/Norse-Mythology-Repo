@@ -1,12 +1,18 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [Header("Spawning")]
+    [Header("Spawning and Prefabs")]
     public Transform enemiesParent; // Parent object to store all spawned enemies
-    public GameObject meleePrefab; // Replace later with prefabs for various enemies
-    public GameObject projectilePrefab; // Replace later with prefabs for various enemies
+
+    [SerializeField] private List<GameObject> meleeEnemyPrefabs = new List<GameObject>();
+    [SerializeField] private List<GameObject> projectileEnemyPrefabs = new List<GameObject>();
+
+    [Header("Fallback Prefabs")]
+    public GameObject meleePrefab;
+    public GameObject projectilePrefab;
 
     [Range(0f, 1f)]
     public float meleeRatio = 0.6f;
@@ -108,8 +114,14 @@ public class EnemySpawner : MonoBehaviour
         if (spawnPos == Vector2.zero)
             return;
 
-        float roundedMeleeRatio = Mathf.Round(meleeRatio * 100f) / 100f;
-        GameObject prefabToSpawn = Random.value < roundedMeleeRatio ? meleePrefab : projectilePrefab;
+        GameObject prefabToSpawn = GetRandomEnemyPrefab();
+        
+        if (prefabToSpawn == null)
+        {
+            Debug.LogWarning("No valid enemy prefab found!");
+            return;
+        }
+
         GameObject enemy = Instantiate(prefabToSpawn, spawnPos, Quaternion.identity, enemiesParent);
 
         Enemy enemyScript = enemy.GetComponent<Enemy>();
@@ -132,6 +144,41 @@ public class EnemySpawner : MonoBehaviour
 
         currentEnemyCount++;
         StartCoroutine(WaitForEnemyDestroy(enemy));
+    }
+    
+    private GameObject GetRandomEnemyPrefab()
+    {
+        float roundedMeleeRatio = Mathf.Round(meleeRatio * 100f) / 100f;
+        bool spawnMelee = Random.value < roundedMeleeRatio;
+        
+        if (spawnMelee)
+        {
+            // Try to use list first, fallback to single prefab
+            if (meleeEnemyPrefabs.Count > 0)
+            {
+                int randomIndex = Random.Range(0, meleeEnemyPrefabs.Count);
+                return meleeEnemyPrefabs[randomIndex];
+            }
+            else if (meleePrefab != null)
+            {
+                return meleePrefab;
+            }
+        }
+        else
+        {
+            // Try to use list first, fallback to single prefab
+            if (projectileEnemyPrefabs.Count > 0)
+            {
+                int randomIndex = Random.Range(0, projectileEnemyPrefabs.Count);
+                return projectileEnemyPrefabs[randomIndex];
+            }
+            else if (projectilePrefab != null)
+            {
+                return projectilePrefab;
+            }
+        }
+        
+        return null;
     }
 
     private IEnumerator WaitForEnemyDestroy(GameObject enemy)
