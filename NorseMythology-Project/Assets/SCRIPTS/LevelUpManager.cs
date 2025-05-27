@@ -41,7 +41,7 @@ public class LevelUpManager : MonoBehaviour
             continueButton.onClick.AddListener(OnContinueClicked);
         }
         
-        InitializeButtonData();
+        InitialiseButtonData();
         SetupUpgradeButtons();
         
         // Get the persistent player stats from GameManager
@@ -50,7 +50,7 @@ public class LevelUpManager : MonoBehaviour
         UpdateUI();
     }
     
-    private void InitializeButtonData()
+    private void InitialiseButtonData()
     {
         // Store original button texts and corresponding upgrade amounts
         originalButtonTexts = new string[8];

@@ -3380,7 +3380,7 @@ MonoBehaviour:
   upgradeHealthButton: {fileID: 1410549876}
   upgradeDamageButton: {fileID: 1043312578}
   upgradeSpeedButton: {fileID: 2045134722}
-  upgradeAttackSpeedButton: {fileID: 1043312578}
+  upgradeAttackSpeedButton: {fileID: 172062776}
   upgradeHealthRegenButton: {fileID: 1604725205}
   upgradeMeleeRangeButton: {fileID: 1368977697}
   upgradeProjectileSpeedButton: {fileID: 346235646}

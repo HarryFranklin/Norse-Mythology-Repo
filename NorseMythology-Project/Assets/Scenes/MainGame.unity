@@ -6420,7 +6420,6 @@ MonoBehaviour:
   gameOverSceneName: GameOver
   winSceneName: Win
   levelUpSceneName: LevelUp
-  waveManager: {fileID: 100481636}
   basePlayerStats: {fileID: 11400000, guid: d502c6bd20489c74992235336485d903, type: 2}
   currentPlayerStats: {fileID: 0}
   upgradePoints: 0
