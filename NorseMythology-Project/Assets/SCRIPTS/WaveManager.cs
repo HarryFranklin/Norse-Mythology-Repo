@@ -3,6 +3,9 @@ using System.Collections;
 
 public class WaveManager : MonoBehaviour
 {
+    // Singleton instance
+    public static WaveManager Instance { get; private set; }
+    
     [System.Serializable]
     public enum WaveType
     {
@@ -34,16 +37,27 @@ public class WaveManager : MonoBehaviour
     
     private void Awake()
     {
-        // This WaveManager persists between scenes, so don't destroy it
-        if (transform.parent == null) // Only if it's not a child of GameManager
+        // Singleton pattern - prevent duplicates
+        if (Instance == null)
         {
+            Instance = this;
             DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            // Destroy duplicate WaveManager
+            Destroy(gameObject);
+            return;
         }
     }
     
     private void Start()
     {
-        FindReferences();
+        // Only run Start logic if this is the singleton instance
+        if (Instance == this)
+        {
+            FindReferences();
+        }
     }
     
     public void FindReferences()

@@ -13,9 +13,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private string gameOverSceneName = "GameOver";
     [SerializeField] private string winSceneName = "Win"; // Not sure if needed
     [SerializeField] private string levelUpSceneName = "LevelUp"; // New scene for between waves
-
-    [Header("Persistent Managers")]
-    [SerializeField] private WaveManager waveManager;
     
     // References that get found dynamically in each scene
     private GameObject playerObject;
@@ -41,14 +38,8 @@ public class GameManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
             
-            // Make WaveManager persist too
-            if (waveManager != null)
-            {
-                DontDestroyOnLoad(waveManager.gameObject);
-            }
-            
-            // Initialize persistent player stats if not already done
-            InitializePersistentPlayerStats();
+            // Initialise persistent player stats if not already done
+            InitialisePersistentPlayerStats();
             
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
@@ -58,13 +49,13 @@ public class GameManager : MonoBehaviour
         }
     }
     
-    private void InitializePersistentPlayerStats()
+    private void InitialisePersistentPlayerStats()
     {
         if (currentPlayerStats == null && basePlayerStats != null)
         {
             // Create a runtime copy that will persist
             currentPlayerStats = basePlayerStats.CreateRuntimeCopy();
-            Debug.Log("Initialized persistent player stats");
+            Debug.Log("Initialised persistent player stats");
         }
     }
     
@@ -76,7 +67,7 @@ public class GameManager : MonoBehaviour
     
     private IEnumerator FindSceneReferences()
     {
-        // Wait one frame to ensure all objects are initialized
+        // Wait one frame to ensure all objects are initialised
         yield return null;
         
         string currentSceneName = SceneManager.GetActiveScene().name;
@@ -90,17 +81,17 @@ public class GameManager : MonoBehaviour
             {
                 // We're returning from level up, start next wave
                 returningFromLevelUp = false;
-                if (waveManager != null)
+                if (WaveManager.Instance != null)
                 {
-                    waveManager.StartWave();
+                    WaveManager.Instance.StartWave();
                 }
             }
             else
             {
                 // Fresh start, begin first wave
-                if (waveManager != null)
+                if (WaveManager.Instance != null)
                 {
-                    waveManager.StartWave();
+                    WaveManager.Instance.StartWave();
                 }
             }
         }
@@ -152,11 +143,11 @@ public class GameManager : MonoBehaviour
         // Find enemy spawner
         enemySpawner = FindFirstObjectByType<EnemySpawner>();
         
-        // Update WaveManager references
-        if (waveManager != null)
+        // Update WaveManager references using singleton
+        if (WaveManager.Instance != null)
         {
-            waveManager.gameManager = this;
-            waveManager.enemySpawner = enemySpawner;
+            WaveManager.Instance.gameManager = this;
+            WaveManager.Instance.enemySpawner = enemySpawner;
         }
         
         FindUIElementsToHide();
@@ -181,7 +172,7 @@ public class GameManager : MonoBehaviour
     
     public void OnWaveCompleted()
     {
-        Debug.Log($"Wave {waveManager.GetCurrentWave()} completed! Loading level up scene...");
+        Debug.Log($"Wave {GetWaveManager().GetCurrentWave()} completed! Loading level up scene...");
         
         // Process any pending XP and calculate upgrade points before transitioning
         PlayerController playerController = FindFirstObjectByType<PlayerController>();
@@ -229,11 +220,11 @@ public class GameManager : MonoBehaviour
         Debug.Log("ContinueToNextWave called");
         
         // Prepare next wave (increment wave number) BEFORE loading the scene
-        if (waveManager != null)
+        if (WaveManager.Instance != null)
         {
-            waveManager.PrepareNextWave();
+            WaveManager.Instance.PrepareNextWave();
             // Update PlayerPrefs with new wave number
-            PlayerPrefs.SetInt("CurrentWave", waveManager.GetCurrentWave());
+            PlayerPrefs.SetInt("CurrentWave", WaveManager.Instance.GetCurrentWave());
             PlayerPrefs.Save();
         }
         
@@ -305,9 +296,9 @@ public class GameManager : MonoBehaviour
         
         upgradePoints = 0;
         
-        if (waveManager != null)
+        if (WaveManager.Instance != null)
         {
-            waveManager.currentWave = 1;
+            WaveManager.Instance.currentWave = 1;
         }
         
         // Clear saved progress
@@ -325,12 +316,12 @@ public class GameManager : MonoBehaviour
     }
     
     // Getter methods for other scripts
-    public WaveManager GetWaveManager() => waveManager;
+    public WaveManager GetWaveManager() => WaveManager.Instance; // Use singleton instead
     public EnemySpawner GetEnemySpawner() => enemySpawner;
     public HealthXPUIManager GetHealthXPUIManager() => healthXPUIManager;
     public AbilityUIManager GetAbilityUIManager() => abilityUIManager;
     public GameObject GetPlayerObject() => playerObject;
-    public PlayerStats GetCurrentPlayerStats() => currentPlayerStats; // New getter for persistent stats
+    public PlayerStats GetCurrentPlayerStats() => currentPlayerStats;
     public int GetUpgradePoints() => upgradePoints;
     
     // Method to spend upgrade points
