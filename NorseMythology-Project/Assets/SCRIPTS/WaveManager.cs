@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class WaveManager : MonoBehaviour
 {
@@ -12,10 +13,21 @@ public class WaveManager : MonoBehaviour
         TimeBased,
         KillCountBased
     }
+
+    [System.Serializable]
+    public struct WaveItem
+    {
+        public WaveType waveType;
+        public float criteria;
+    }
+
+
+    [Header("Wave Configuration")]
+    [SerializeField] private WaveItem[] waveItems; // Array of wave items for future expansion
     
     [Header("Wave Settings")]
     public int currentWave = 1;
-    public WaveType waveType = WaveType.TimeBased; // Default
+    public WaveType currentWaveType = WaveType.TimeBased; // Default
     public float waveDuration = 60f; // Duration for time-based waves
     public int enemiesPerWave = 30; // Target kills for kill-count-based waves
     
@@ -59,75 +71,77 @@ public class WaveManager : MonoBehaviour
             FindReferences();
         }
     }
-    
+
     public void FindReferences()
     {
         if (gameManager == null)
             gameManager = GameManager.Instance;
-            
+
         if (enemySpawner == null)
             enemySpawner = FindFirstObjectByType<EnemySpawner>();
     }
     
     public void StartWave()
     {
-        // Make sure we have current references
         FindReferences();
-        
+
+        if (waveItems == null || waveItems.Length < currentWave)
+        {
+            Debug.LogError("WaveManager: No configuration for current wave.");
+            return;
+        }
+
+        WaveItem waveConfig = waveItems[currentWave - 1];
+        currentWaveType = waveConfig.waveType;
+
         waveActive = true;
         waveTimer = 0f;
         enemiesKilledThisWave = 0;
-        
+
         // Calculate wave modifiers
         float healthMultiplier = Mathf.Pow(healthScalingMultiplier, currentWave - 1);
         float xpMultiplier = Mathf.Pow(xpScalingMultiplier, currentWave - 1);
-        
-        // Apply wave modifiers to enemy spawner
+
         if (enemySpawner != null)
         {
             enemySpawner.SetWaveModifiers(healthMultiplier, xpMultiplier);
             enemySpawner.StartSpawning();
         }
-        else
-        {
-            Debug.LogWarning("WaveManager: EnemySpawner not found! Trying to find it...");
-            FindReferences();
-            if (enemySpawner != null)
-            {
-                enemySpawner.SetWaveModifiers(healthMultiplier, xpMultiplier);
-                enemySpawner.StartSpawning();
-            }
-        }
-        
+
         OnWaveStart?.Invoke(currentWave);
-        
-        string waveTypeStr = waveType == WaveType.TimeBased ? "Time-based" : "Kill-count-based";
+
+        string waveTypeStr = currentWaveType == WaveType.TimeBased ? "Time-based" : "Kill-count-based";
         Debug.Log($"Wave {currentWave} started! ({waveTypeStr}) Health multiplier: {healthMultiplier:F2}, XP multiplier: {xpMultiplier:F2}");
     }
     
     private void Update()
     {
         if (!waveActive) return;
-        
-        switch (waveType)
+
+        if (waveItems == null || waveItems.Length < currentWave)
+            return;
+
+        WaveItem waveConfig = waveItems[currentWave - 1];
+
+        switch (waveConfig.waveType)
         {
             case WaveType.TimeBased:
                 waveTimer += Time.deltaTime;
-                if (waveTimer >= waveDuration)
+                if (waveTimer >= waveConfig.criteria)
                 {
                     CompleteWave();
                 }
                 break;
-                
+
             case WaveType.KillCountBased:
-                if (enemiesKilledThisWave >= enemiesPerWave)
+                if (enemiesKilledThisWave >= waveConfig.criteria)
                 {
                     CompleteWave();
                 }
                 break;
         }
     }
-    
+
     public void OnEnemyKilled()
     {
         enemiesKilledThisWave++;
@@ -153,29 +167,46 @@ public class WaveManager : MonoBehaviour
         }
     }
     
+    public bool AreAllWavesCompleted()
+    {
+        return currentWave > waveItems.Length;
+    }
+
     public void PrepareNextWave()
     {
         currentWave++;
+
+        if (AreAllWavesCompleted())
+        {
+            Debug.Log("All waves completed!");
+            // Don't load scenes here - just notify GameManager or handle state
+            waveActive = false;
+            return;
+        }
+
         Debug.Log($"Prepared for wave {currentWave}");
     }
-    
+
     public float GetWaveProgress()
     {
-        if (!waveActive) return 0f;
-        
-        switch (waveType)
+        if (!waveActive || waveItems == null || waveItems.Length < currentWave)
+            return 0f;
+
+        WaveItem waveConfig = waveItems[currentWave - 1];
+
+        switch (waveConfig.waveType)
         {
             case WaveType.TimeBased:
-                return waveTimer / waveDuration;
-                
+                return waveTimer / waveConfig.criteria;
+
             case WaveType.KillCountBased:
-                return (float)enemiesKilledThisWave / enemiesPerWave;
-                
+                return enemiesKilledThisWave / waveConfig.criteria;
+
             default:
                 return 0f;
         }
     }
-    
+
     public int GetCurrentWave()
     {
         return currentWave;
@@ -188,7 +219,7 @@ public class WaveManager : MonoBehaviour
     
     public WaveType GetWaveType()
     {
-        return waveType;
+        return currentWaveType;
     }
     
     public int GetEnemiesKilledThisWave()

@@ -67,38 +67,37 @@ public class GameManager : MonoBehaviour
     
     private IEnumerator FindSceneReferences()
     {
-        // Wait one frame to ensure all objects are initialised
         yield return null;
-        
+
         string currentSceneName = SceneManager.GetActiveScene().name;
-        
+
+        if (WaveManager.Instance != null)
+        {
+            // Load wave number from PlayerPrefs
+            if (PlayerPrefs.HasKey("CurrentWave"))
+            {
+                WaveManager.Instance.currentWave = PlayerPrefs.GetInt("CurrentWave", 1);
+            }
+        }
+
         if (currentSceneName == mainGameSceneName)
         {
-            // Find main game references
             FindMainGameReferences();
-            
+
             if (returningFromLevelUp)
             {
-                // We're returning from level up, start next wave
                 returningFromLevelUp = false;
+
+                // Start next wave after leveling up
                 if (WaveManager.Instance != null)
-                {
                     WaveManager.Instance.StartWave();
-                }
             }
             else
             {
-                // Fresh start, begin first wave
+                // Fresh start
                 if (WaveManager.Instance != null)
-                {
                     WaveManager.Instance.StartWave();
-                }
             }
-        }
-        else if (currentSceneName == levelUpSceneName)
-        {
-            // No specific references needed for level up scene
-            // LevelUpManager handles its own UI
         }
     }
     
@@ -109,7 +108,7 @@ public class GameManager : MonoBehaviour
         if (playerController != null)
         {
             playerObject = playerController.gameObject;
-            
+
             // Use the persistent stats instead of creating new ones
             if (currentPlayerStats != null)
             {
@@ -135,21 +134,21 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-        
+
         // Find UI managers
         healthXPUIManager = FindFirstObjectByType<HealthXPUIManager>();
         abilityUIManager = FindFirstObjectByType<AbilityUIManager>();
-        
+
         // Find enemy spawner
         enemySpawner = FindFirstObjectByType<EnemySpawner>();
-        
+
         // Update WaveManager references using singleton
         if (WaveManager.Instance != null)
         {
             WaveManager.Instance.gameManager = this;
             WaveManager.Instance.enemySpawner = enemySpawner;
         }
-        
+
         FindUIElementsToHide();
     }
     
@@ -172,20 +171,27 @@ public class GameManager : MonoBehaviour
     
     public void OnWaveCompleted()
     {
-        Debug.Log($"Wave {GetWaveManager().GetCurrentWave()} completed! Loading level up scene...");
-        
-        // Process any pending XP and calculate upgrade points before transitioning
+        int currentWave = WaveManager.Instance.GetCurrentWave();
+        Debug.Log($"Wave {currentWave} completed! Handling transition...");
+
+        // Check if all waves completed
+        if (WaveManager.Instance.AreAllWavesCompleted())
+        {
+            Debug.Log("All waves completed! Loading Win scene...");
+            SceneManager.LoadScene(winSceneName);
+            return;
+        }
+
+        // Normal wave complete flow:
         PlayerController playerController = FindFirstObjectByType<PlayerController>();
         if (playerController != null)
         {
             upgradePoints += playerController.ProcessPendingExperienceAndReturnLevelUps();
             Debug.Log($"Player earned {upgradePoints} total upgrade points");
         }
-        
-        // Save current player stats and wave progress before transitioning
+
         SavePlayerProgress();
-        
-        // Load the level up scene
+
         SceneManager.LoadScene(levelUpSceneName);
     }
     

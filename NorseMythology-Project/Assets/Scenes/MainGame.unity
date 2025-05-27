@@ -153,8 +153,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aae39a9689205b04991586e9ba6f58f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  waveItems:
+  - waveType: 0
+    criteria: 60
+  - waveType: 1
+    criteria: 20
+  - waveType: 0
+    criteria: 60
+  - waveType: 1
+    criteria: 20
   currentWave: 1
-  waveType: 0
+  currentWaveType: 0
   waveDuration: 60
   enemiesPerWave: 30
   healthScalingMultiplier: 1.05
@@ -7198,6 +7207,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
+  isMovementLocked: 0
   moveDir: {x: 0, y: 0}
   lastHorizontalVector: 0
   lastVerticalVector: 0
