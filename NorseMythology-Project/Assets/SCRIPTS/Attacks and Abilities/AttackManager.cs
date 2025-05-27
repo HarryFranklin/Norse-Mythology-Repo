@@ -14,6 +14,8 @@ public class AttackManager : MonoBehaviour
     [Header("Basic Attack Settings")]
     public bool hasBasicAttack = true;
     public AttackType basicAttackType = AttackType.Melee;
+    public bool doesMeleeWeaponStun = true; // Whether the melee weapon can stun enemies
+    public float meleeStunDuration = 0.2f; // Duration of stun effect from melee weapon
     
     [Header("Performance")]
     public float enemyScanInterval = 0.1f; // How often to scan for enemies (in seconds)
@@ -129,6 +131,17 @@ public class AttackManager : MonoBehaviour
             Vector2 direction = (target.transform.position - weaponHolder.position).normalized;
             Vector2 startPos = weaponHolder.localPosition;
             Vector2 attackPos = startPos + direction * 0.5f;
+
+            if (direction.x < 0)
+            {
+                // Flip weapon for left direction
+                weapon.transform.localScale = new Vector3(-1, 1, 1);
+            }
+            else
+            {
+                // Reset scale for right direction
+                weapon.transform.localScale = new Vector3(1, 1, 1);
+            }
             
             // Move weapon towards enemy
             float duration = 0.2f;
@@ -142,10 +155,12 @@ public class AttackManager : MonoBehaviour
                 yield return null;
             }
             
-            // Deal damage
+            // Deal damage + optional stun
             if (target != null && playerController != null && playerController.currentStats != null)
             {
-                target.TakeDamage(playerController.currentStats.attackDamage);
+                float damage = playerController.currentStats.attackDamage;
+                float stun = doesMeleeWeaponStun ? meleeStunDuration : 0f;
+                target.TakeDamage(damage, stun);
             }
             
             // Return weapon

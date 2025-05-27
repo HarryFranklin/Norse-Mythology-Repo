@@ -23,6 +23,9 @@ public class Enemy : MonoBehaviour
     public float attackCooldown = 1f;
     private float lastAttackTime;
 
+    public bool isStunned = false;
+    public float stunDuration = 2f; // Duration of stun effect
+
     [Header("Targeting")]
     public Transform target;
 
@@ -47,7 +50,7 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        if (target == null) return;
+        if (isStunned || target == null) return; // Skip update if stunned or no target
 
         float distanceToTarget = Vector2.Distance(transform.position, target.position);
 
@@ -154,9 +157,15 @@ public class Enemy : MonoBehaviour
         activeProjectiles.RemoveAll(projectile => projectile == null);
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, float stunDuration = 0f)
     {
         currentHealth -= damage;
+
+        if (stunDuration > 0f)
+        {
+            Stun(stunDuration);
+        }
+
         if (currentHealth <= 0)
         {
             Die();
@@ -235,6 +244,43 @@ public class Enemy : MonoBehaviour
         
         // Clear the list since we're about to be destroyed
         activeProjectiles.Clear();
+    }
+
+    public void Stun(float duration)
+    {
+        if (!isStunned)
+            StartCoroutine(StunRoutine(duration));
+    }
+
+    private IEnumerator<WaitForSeconds> StunRoutine(float duration)
+    {
+        isStunned = true;
+
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        Color originalColor = sr != null ? sr.color : Color.white;
+
+        float elapsed = 0f;
+        float flashInterval = 0.1f;
+
+        while (elapsed < duration)
+        {
+            if (sr != null)
+                sr.color = Color.white;
+
+            yield return new WaitForSeconds(flashInterval / 2f);
+
+            if (sr != null)
+                sr.color = originalColor;
+
+            yield return new WaitForSeconds(flashInterval / 2f);
+
+            elapsed += flashInterval;
+        }
+
+        if (sr != null)
+            sr.color = originalColor;
+
+        isStunned = false;
     }
 
     private void OnDrawGizmosSelected()
