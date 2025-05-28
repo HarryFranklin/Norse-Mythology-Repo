@@ -50,6 +50,6 @@ public class HammerSlamAbility : DefendAbility
 
     private IEnumerator PerformHammerSlam(PlayerController playerController)
     {
-
+        yield return new WaitForSeconds(0.1f); // Small delay before slam
     }
 }

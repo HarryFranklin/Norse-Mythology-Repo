@@ -6540,7 +6540,6 @@ GameObject:
   - component: {fileID: 1801585805}
   - component: {fileID: 1801585804}
   - component: {fileID: 1801585803}
-  - component: {fileID: 1801585807}
   - component: {fileID: 1801585808}
   m_Layer: 5
   m_Name: Abilities Canvas
@@ -6635,25 +6634,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &1801585807
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1801585802}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee57f1944d842a8458d7fe295e42d99e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerController: {fileID: 2135908900}
-  playerMovement: {fileID: 2135908891}
-  equippedAbilities:
-  - {fileID: 11400000, guid: 1ba6f0d352a07314cbb97c9eef69b221, type: 2}
-  - {fileID: 0}
-  - {fileID: 11400000, guid: 31d15f54104a34f45833dc91cbc72dbd, type: 2}
-  - {fileID: 0}
 --- !u!114 &1801585808
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6666,7 +6646,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 168d73fdbc2b0c549a1055ed7a8b9b6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  abilityManager: {fileID: 1801585807}
+  abilityManager: {fileID: 2135908899}
   abilitySlots:
   - {fileID: 614230768}
   - {fileID: 977955350}
