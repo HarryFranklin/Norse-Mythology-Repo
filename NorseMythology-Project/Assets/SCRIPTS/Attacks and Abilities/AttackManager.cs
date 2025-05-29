@@ -6,7 +6,7 @@ public class AttackManager : MonoBehaviour
 {
     [Header("References")]
     public Transform player;
-    public Player playerComponent; // Changed from PlayerController to Player
+    public Player playerComponent;
     public GameObject meleeWeaponPrefab;
     public GameObject projectilePrefab;
     public Transform weaponHolder; // Empty GameObject child of player for weapon positioning
@@ -37,7 +37,7 @@ public class AttackManager : MonoBehaviour
         if (player == null)
             player = GetComponent<Transform>();
         if (playerComponent == null)
-            playerComponent = GetComponent<Player>(); // Changed from PlayerController to Player
+            playerComponent = GetComponent<Player>();
     }
     
     private void Update()
