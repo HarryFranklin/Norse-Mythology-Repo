@@ -24,7 +24,7 @@ public class LevelUpManager : MonoBehaviour
     
     [Header("Upgrade Display Settings")]
     [Tooltip("If true, upgrade amounts show only on hover. If false, they show all the time.")]
-    public bool showUpgradeAmountsOnHoverOnly = false;
+    public bool showUpgradeAmountsOnHoverOnly = true;
     
     private PlayerStats currentPlayerStats;
     private int availableUpgradePoints;
@@ -129,7 +129,8 @@ public class LevelUpManager : MonoBehaviour
             TextMeshProUGUI buttonText = button.GetComponentInChildren<TextMeshProUGUI>();
             if (buttonText != null)
             {
-                buttonText.text = $"{originalButtonTexts[index]} (+{FormatUpgradeAmount(upgradeAmounts[index])})";
+                // buttonText.text = $"{originalButtonTexts[index]} (+{FormatUpgradeAmount(upgradeAmounts[index])})"; // Stat name and amount
+                buttonText.text = $"(+{FormatUpgradeAmount(upgradeAmounts[index])})"; // Just amount
             }
         });
         trigger.triggers.Add(pointerEnter);

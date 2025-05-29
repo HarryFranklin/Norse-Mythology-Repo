@@ -3385,7 +3385,7 @@ MonoBehaviour:
   upgradeMeleeRangeButton: {fileID: 1368977697}
   upgradeProjectileSpeedButton: {fileID: 346235646}
   upgradeProjectileRangeButton: {fileID: 922009196}
-  showUpgradeAmountsOnHoverOnly: 0
+  showUpgradeAmountsOnHoverOnly: 1
 --- !u!4 &1862888600
 Transform:
   m_ObjectHideFlags: 0
