@@ -5,7 +5,7 @@ using TMPro;
 public class HealthXPUIManager : MonoBehaviour
 {
     [Header("Player Reference")]
-    public PlayerController playerController;
+    public Player player;
     
     [Header("Health Bar")]
     public Image healthFillImage;
@@ -20,24 +20,24 @@ public class HealthXPUIManager : MonoBehaviour
 
     private void Start()
     {
-        // Try to find PlayerController if not assigned
-        if (playerController == null)
+        // Try to find Player if not assigned
+        if (player == null)
         {
-            playerController = FindFirstObjectByType<PlayerController>();
-            if (playerController == null)
+            player = FindFirstObjectByType<Player>();
+            if (player == null)
             {
-                Debug.LogError("HealthXPUIManager: PlayerController not found! Please assign it in the inspector.");
+                Debug.LogError("HealthXPUIManager: Player not found! Please assign it in the inspector.");
                 return;
             }
         }
 
-        // Set this UI manager as a reference in the PlayerController
-        if (playerController.healthXPUIManager == null)
+        // Set this UI manager as a reference in the Player
+        if (player.healthXPUIManager == null)
         {
-            playerController.healthXPUIManager = this;
+            player.healthXPUIManager = this;
         }
 
-        // Wait a frame before updating UI to ensure PlayerController is fully initialized
+        // Wait a frame before updating UI to ensure Player is fully initialized
         StartCoroutine(DelayedInitialization());
     }
     
@@ -51,66 +51,66 @@ public class HealthXPUIManager : MonoBehaviour
         UpdateTextLabels();
     }
     
-    // Called by PlayerController when health changes
+    // Called by Player when health changes
     public void OnHealthChanged()
     {
         UpdateHealthBar();
-        if (healthText != null && playerController != null && playerController.currentStats != null)
+        if (healthText != null && player != null && player.currentStats != null)
         {
-            healthText.text = $"{Mathf.Ceil(playerController.currentHealth)}/{playerController.currentStats.maxHealth}";
+            healthText.text = $"{Mathf.Ceil(player.currentHealth)}/{player.currentStats.maxHealth}";
         }
     }
     
-    // Called by PlayerController when XP changes
+    // Called by Player when XP changes
     public void OnXPChanged()
     {
         UpdateXPBar();
         
         // Add null checks before accessing player data
-        if (playerController == null || playerController.currentStats == null) return;
+        if (player == null || player.currentStats == null) return;
         
         if (xpText != null)
         {
             // Use the current experience directly (not total) since we reset it on level up
-            float currentXP = playerController.GetCurrentExperience();
-            float pendingXP = playerController.GetPendingExperience();
+            float currentXP = player.GetCurrentExperience();
+            float pendingXP = player.GetPendingExperience();
             float displayXP = currentXP + pendingXP;
             
-            xpText.text = $"{Mathf.Floor(displayXP)}/{playerController.currentStats.experienceToNextLevel}";
+            xpText.text = $"{Mathf.Floor(displayXP)}/{player.currentStats.experienceToNextLevel}";
         }
         
         if (levelText != null)
         {
-            string levelUpIndicator = playerController.isLevelUpPending ? " (!)" : ""; // if need to level up, show !
-            levelText.text = $"LEVEL: {playerController.currentStats.level}{levelUpIndicator}";
+            string levelUpIndicator = player.isLevelUpPending ? " (!)" : ""; // if need to level up, show !
+            levelText.text = $"LEVEL: {player.currentStats.level}{levelUpIndicator}";
         }
     }
     
     private void UpdateHealthBar()
     {
-        if (healthFillImage == null || playerController == null || playerController.currentStats == null) return;
+        if (healthFillImage == null || player == null || player.currentStats == null) return;
         
-        float healthPercentage = playerController.currentHealth / playerController.currentStats.maxHealth;
+        float healthPercentage = player.currentHealth / player.currentStats.maxHealth;
         healthFillImage.fillAmount = Mathf.Clamp01(healthPercentage);
     }
     
     private void UpdateXPBar()
     {
-        if (xpFillImage == null || playerController == null || playerController.currentStats == null) return;
+        if (xpFillImage == null || player == null || player.currentStats == null) return;
         
         // Calculate XP progress using current experience + pending experience
-        float currentXP = playerController.GetCurrentExperience();
-        float pendingXP = playerController.GetPendingExperience();
+        float currentXP = player.GetCurrentExperience();
+        float pendingXP = player.GetPendingExperience();
         float displayXP = currentXP + pendingXP;
-        float xpPercentage = displayXP / playerController.currentStats.experienceToNextLevel;
+        float xpPercentage = displayXP / player.currentStats.experienceToNextLevel;
         
         xpFillImage.fillAmount = Mathf.Clamp01(xpPercentage);
     }
     
     private void UpdateTextLabels()
     {
-        // Only update if playerController and its stats are available
-        if (playerController != null && playerController.currentStats != null)
+        // Only update if player and its stats are available
+        if (player != null && player.currentStats != null)
         {
             OnHealthChanged();
             OnXPChanged();

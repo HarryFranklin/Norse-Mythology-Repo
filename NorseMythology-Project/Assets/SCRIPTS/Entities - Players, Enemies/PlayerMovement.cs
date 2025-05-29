@@ -4,7 +4,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float moveSpeed;
     private Rigidbody2D rigidBody;
-    private PlayerController playerController;
+    private Player player;
     public bool isMovementLocked = false;
     
     [HideInInspector] public Vector2 moveDir;
@@ -21,15 +21,15 @@ public class PlayerMovement : MonoBehaviour
             rigidBody = GetComponent<Rigidbody2D>();
         }
         
-        if (playerController == null)
+        if (player == null)
         {
-            playerController = GetComponent<PlayerController>();
+            player = GetComponent<Player>();
         }
         
         // Use player's move speed from stats if available
-        if (playerController != null && playerController.currentStats != null)
+        if (player != null && player.currentStats != null)
         {
-            moveSpeed = playerController.currentStats.moveSpeed;
+            moveSpeed = player.currentStats.moveSpeed;
         }
     }
 
@@ -90,9 +90,9 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        if (playerController != null && playerController.currentStats != null)
+        if (player != null && player.currentStats != null)
         {
-            moveSpeed = playerController.currentStats.moveSpeed;
+            moveSpeed = player.currentStats.moveSpeed;
         }
 
         rigidBody.linearVelocity = new Vector2(moveDir.x * moveSpeed, moveDir.y * moveSpeed);

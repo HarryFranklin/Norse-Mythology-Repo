@@ -35,20 +35,20 @@ public class HammerSlamAbility : DefendAbility
         effectStrength = innerDamage;
     }
 
-    public override bool CanActivate(PlayerController playerController)
+    public override bool CanActivate(Player player)
     {
-        return playerController != null && !playerController.isDead;
+        return player != null && !player.isDead;
     }
 
-    public override void Activate(PlayerController playerController, PlayerMovement playerMovement = null)
+    public override void Activate(Player player, PlayerMovement playerMovement = null)
     {
-        if (playerController == null) return;
+        if (player == null) return;
 
         // Start the hammer slam coroutine
-        playerController.StartCoroutine(PerformHammerSlam(playerController));
+        player.StartCoroutine(PerformHammerSlam(player));
     }
 
-    private IEnumerator PerformHammerSlam(PlayerController playerController)
+    private IEnumerator PerformHammerSlam(Player player)
     {
         yield return new WaitForSeconds(0.1f); // Small delay before slam
     }

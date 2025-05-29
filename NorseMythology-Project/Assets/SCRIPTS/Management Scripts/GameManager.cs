@@ -104,23 +104,23 @@ public class GameManager : MonoBehaviour
     private void FindMainGameReferences()
     {
         // Find player
-        PlayerController playerController = FindFirstObjectByType<PlayerController>();
-        if (playerController != null)
+        Player player = FindFirstObjectByType<Player>();
+        if (player != null)
         {
-            playerObject = playerController.gameObject;
+            playerObject = player.gameObject;
 
             // Use the persistent stats instead of creating new ones
             if (currentPlayerStats != null)
             {
-                playerController.currentStats = currentPlayerStats;
+                player.currentStats = currentPlayerStats;
                 // Set current health to max health if this is a fresh start or returning from level up
                 if (returningFromLevelUp)
                 {
-                    playerController.currentHealth = currentPlayerStats.maxHealth; // Full heal on wave transition
+                    player.currentHealth = currentPlayerStats.maxHealth; // Full heal on wave transition
                 }
-                else if (playerController.currentHealth <= 0)
+                else if (player.currentHealth <= 0)
                 {
-                    playerController.currentHealth = currentPlayerStats.maxHealth;
+                    player.currentHealth = currentPlayerStats.maxHealth;
                 }
             }
             else
@@ -129,8 +129,8 @@ public class GameManager : MonoBehaviour
                 if (basePlayerStats != null)
                 {
                     currentPlayerStats = basePlayerStats.CreateRuntimeCopy();
-                    playerController.currentStats = currentPlayerStats;
-                    playerController.currentHealth = currentPlayerStats.maxHealth;
+                    player.currentStats = currentPlayerStats;
+                    player.currentHealth = currentPlayerStats.maxHealth;
                 }
             }
         }
@@ -183,10 +183,10 @@ public class GameManager : MonoBehaviour
         }
 
         // Normal wave complete flow:
-        PlayerController playerController = FindFirstObjectByType<PlayerController>();
-        if (playerController != null)
+        Player player = FindFirstObjectByType<Player>();
+        if (player != null)
         {
-            upgradePoints += playerController.ProcessPendingExperienceAndReturnLevelUps();
+            upgradePoints += player.ProcessPendingExperienceAndReturnLevelUps();
             Debug.Log($"Player earned {upgradePoints} total upgrade points");
         }
 

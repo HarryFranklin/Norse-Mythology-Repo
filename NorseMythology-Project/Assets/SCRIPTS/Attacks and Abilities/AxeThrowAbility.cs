@@ -12,7 +12,7 @@ public class AxeThrowAbility : AttackAbility
     [Header("Rotation Settings")]
     public float rotationSpeed = 720f; // degrees per second
     
-    public override void Activate(PlayerController player, PlayerMovement playerMovement)
+    public override void Activate(Player player, PlayerMovement playerMovement)
     {
         // Get direction based on player movement or last movement
         Vector2 throwDirection = GetThrowDirection(playerMovement);

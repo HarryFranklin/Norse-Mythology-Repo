@@ -18,9 +18,9 @@ public abstract class Ability : ScriptableObject
     [TextArea(2, 4)]
     public string description;
     
-    public abstract void Activate(PlayerController player, PlayerMovement playerMovement);
+    public abstract void Activate(Player player, PlayerMovement playerMovement);
     
-    public virtual bool CanActivate(PlayerController player)
+    public virtual bool CanActivate(Player player)
     {
         return !player.isDead;
     }

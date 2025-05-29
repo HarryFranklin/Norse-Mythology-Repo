@@ -3,7 +3,7 @@ using UnityEngine;
 public class AbilityManager : MonoBehaviour
 {
     [Header("References")]
-    public PlayerController playerController;
+    public Player player;
     public PlayerMovement playerMovement;
 
     [Header("Equipped Abilities")]
@@ -13,7 +13,7 @@ public class AbilityManager : MonoBehaviour
 
     private void Update()
     {
-        if (playerController != null && !playerController.isDead)
+        if (player != null && !player.isDead)
         {
             HandleAbilityInput();
         }
@@ -38,24 +38,24 @@ public class AbilityManager : MonoBehaviour
             return;
         }
 
-        // Add null check for playerController
-        if (playerController == null || playerController.currentStats == null)
+        // Add null check for player
+        if (player == null || player.currentStats == null)
         {
-            Debug.LogWarning("AbilityManager: PlayerController or currentStats is null");
+            Debug.LogWarning("AbilityManager: Player or currentStats is null");
             return;
         }
 
         Ability ability = equippedAbilities[index];
 
         // Calculate cooldown with player's cooldown reduction
-        float cooldownReduction = 1f - (playerController.currentStats.abilityCooldownReduction / 100f);
+        float cooldownReduction = 1f - (player.currentStats.abilityCooldownReduction / 100f);
         float adjustedCooldown = ability.cooldown * cooldownReduction;
 
         if (Time.time - lastAbilityUse[index] >= adjustedCooldown)
         {
-            if (ability.CanActivate(playerController))
+            if (ability.CanActivate(player))
             {
-                ability.Activate(playerController, playerMovement);
+                ability.Activate(player, playerMovement);
                 lastAbilityUse[index] = Time.time;
                 Debug.Log($"{ability.abilityName} activated!");
             }
@@ -85,11 +85,11 @@ public class AbilityManager : MonoBehaviour
         if (slotIndex < 0 || slotIndex >= equippedAbilities.Length || equippedAbilities[slotIndex] == null)
             return 0f;
 
-        // Add null check for playerController and currentStats
-        if (playerController == null || playerController.currentStats == null)
+        // Add null check for player and currentStats
+        if (player == null || player.currentStats == null)
             return 0f;
 
-        float cooldownReduction = 1f - (playerController.currentStats.abilityCooldownReduction / 100f);
+        float cooldownReduction = 1f - (player.currentStats.abilityCooldownReduction / 100f);
         float adjustedCooldown = equippedAbilities[slotIndex].cooldown * cooldownReduction;
 
         return Mathf.Max(0f, adjustedCooldown - (Time.time - lastAbilityUse[slotIndex]));

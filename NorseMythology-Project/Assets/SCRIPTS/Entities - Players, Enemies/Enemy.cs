@@ -1,30 +1,21 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class Enemy : MonoBehaviour
+public class Enemy : Entity
 {
     public enum EnemyType { Melee, Projectile }
     public EnemyType enemyType = EnemyType.Melee;
 
-    [Header("Enemy Stats")]
-    public float maxHealth = 30f;
-    public float currentHealth;
-    public float damage = 5f;
-
-    [Header("XP")]
+    [Header("Enemy XP & Level")]
     public float xpValue = 10f; // XP value for the player when this enemy is defeated
     public int level = 1; // Level of the enemy, can be used for scaling difficulty
 
-    [Header("Movement & Combat")]
-    public float moveSpeed = 2f;
+    [Header("Combat Settings")]
     public float meleeAttackRange = 0.5f;
     public float projectileMinRange = 2f;
     public float projectileMaxRange = 6f;
     public float attackCooldown = 1f;
     private float lastAttackTime;
-
-    public bool isStunned = false;
-    public float stunDuration = 2f; // Duration of stun effect
 
     [Header("Targeting")]
     public Transform target;
@@ -36,10 +27,10 @@ public class Enemy : MonoBehaviour
     // Track active projectiles spawned by this enemy
     private List<GameObject> activeProjectiles = new List<GameObject>();
 
-    private void Start()
+    protected override void Start()
     {
-        currentHealth = maxHealth;
-
+        base.Start(); // Call Entity's Start method
+        
         if (target == null)
         {
             GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
@@ -52,7 +43,7 @@ public class Enemy : MonoBehaviour
     {
         if (isStunned || target == null) return; // Skip update if stunned or no target
 
-        float distanceToTarget = Vector2.Distance(transform.position, target.position);
+        float distanceToTarget = GetDistanceTo(target);
 
         switch (enemyType)
         {
@@ -73,7 +64,7 @@ public class Enemy : MonoBehaviour
     {
         if (distance > meleeAttackRange)
         {
-            MoveTowardsTarget();
+            MoveTowards(target.position);
         }
         else if (Time.time >= lastAttackTime + attackCooldown)
         {
@@ -86,11 +77,11 @@ public class Enemy : MonoBehaviour
     {
         if (distance > projectileMaxRange)
         {
-            MoveTowardsTarget();
+            MoveTowards(target.position);
         }
         else if (distance < projectileMinRange)
         {
-            MoveAwayFromTarget();
+            MoveAwayFrom(target.position);
         }
         else if (Time.time >= lastAttackTime + attackCooldown)
         {
@@ -99,28 +90,16 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void MoveTowardsTarget()
-    {
-        Vector2 direction = (target.position - transform.position).normalized;
-        transform.position += (Vector3)(direction * moveSpeed * Time.deltaTime);
-    }
-
-    private void MoveAwayFromTarget()
-    {
-        Vector2 direction = (transform.position - target.position).normalized;
-        transform.position += (Vector3)(direction * moveSpeed * Time.deltaTime);
-    }
-
     private void Attack()
     {
-        PlayerController playerController = target.GetComponent<PlayerController>(); // Get playerController from target
-        if (playerController != null)
+        Player player = target.GetComponent<Player>();
+        if (player != null)
         {
-            playerController.TakeDamage(damage); // Call its takeDamage method
+            player.TakeDamage(damage); // Call Entity's TakeDamage method
         }
         else
         {
-            Debug.LogWarning("Enemy attack failed: PlayerController not found on target.");
+            Debug.LogWarning("Enemy attack failed: Player not found on target.");
         }
     }
 
@@ -157,26 +136,11 @@ public class Enemy : MonoBehaviour
         activeProjectiles.RemoveAll(projectile => projectile == null);
     }
 
-    public void TakeDamage(float damage, float stunDuration = 0f)
-    {
-        currentHealth -= damage;
-
-        if (stunDuration > 0f)
-        {
-            Stun(stunDuration);
-        }
-
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
-    }
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (enemyType != EnemyType.Melee) return;
 
-        PlayerController player = collision.collider.GetComponent<PlayerController>();
+        Player player = collision.collider.GetComponent<Player>();
         if (player != null && Time.time >= lastAttackTime + attackCooldown)
         {
             player.TakeDamage(damage);
@@ -184,7 +148,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void Die()
+    protected override void OnDeath()
     {
         // Move any active projectiles to the enemies parent before this enemy is destroyed
         MoveProjectilesToParent();
@@ -192,15 +156,15 @@ public class Enemy : MonoBehaviour
         // Award XP to the player before destroying the enemy
         if (target != null)
         {
-            PlayerController playerController = target.GetComponent<PlayerController>();
-            if (playerController != null)
+            Player player = target.GetComponent<Player>();
+            if (player != null)
             {
-                playerController.GainExperience(xpValue);
+                player.GainExperience(xpValue);
                 Debug.Log($"Player gained {xpValue} XP from defeating {gameObject.name}");
             }
             else
             {
-                Debug.LogWarning("Could not award XP: PlayerController not found on target.");
+                Debug.LogWarning("Could not award XP: Player not found on target.");
             }
         }
 
@@ -244,43 +208,6 @@ public class Enemy : MonoBehaviour
         
         // Clear the list since we're about to be destroyed
         activeProjectiles.Clear();
-    }
-
-    public void Stun(float duration)
-    {
-        if (!isStunned)
-            StartCoroutine(StunRoutine(duration));
-    }
-
-    private IEnumerator<WaitForSeconds> StunRoutine(float duration)
-    {
-        isStunned = true;
-
-        SpriteRenderer sr = GetComponent<SpriteRenderer>();
-        Color originalColor = sr != null ? sr.color : Color.white;
-
-        float elapsed = 0f;
-        float flashInterval = 0.1f;
-
-        while (elapsed < duration)
-        {
-            if (sr != null)
-                sr.color = Color.white;
-
-            yield return new WaitForSeconds(flashInterval / 2f);
-
-            if (sr != null)
-                sr.color = originalColor;
-
-            yield return new WaitForSeconds(flashInterval / 2f);
-
-            elapsed += flashInterval;
-        }
-
-        if (sr != null)
-            sr.color = originalColor;
-
-        isStunned = false;
     }
 
     private void OnDrawGizmosSelected()

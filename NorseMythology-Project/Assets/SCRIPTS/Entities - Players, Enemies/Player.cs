@@ -1,16 +1,14 @@
 using UnityEngine;
 using System.Collections;
 
-public class PlayerController : MonoBehaviour
+public class Player : Entity
 {
-    [Header("References")]
+    [Header("Player References")]
     public PlayerStats baseStats; // ScriptableObject reference
     public GameManager gameManager;
     
-    [Header("Runtime Stats")]
+    [Header("Player Runtime Stats")]
     public PlayerStats currentStats; // Runtime copy
-    public float currentHealth;
-    public bool isDead = false;
     
     [Header("Level Up System")]
     public bool isLevelUpPending = false;
@@ -20,16 +18,22 @@ public class PlayerController : MonoBehaviour
     public HealthXPUIManager healthXPUIManager;
     
     [Header("Health Regeneration")]
-    private float lastDamageTime = 0f; // Time when player last took damage
+    private float healthRegenDelay = 5f; // Default delay before regen starts
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start(); // Call Entity's Start method
         InitialisePlayer();
         
         if (gameManager == null)
         {
             gameManager = FindFirstObjectByType<GameManager>();
         }
+    }
+
+    protected override void InitialiseEntity()
+    {
+        InitialisePlayer();
     }
 
     private void InitialisePlayer()
@@ -46,12 +50,18 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                Debug.LogError("PlayerController: Both currentStats and baseStats are null! Please assign baseStats in the inspector.");
+                Debug.LogError("Player: Both currentStats and baseStats are null! Please assign baseStats in the inspector.");
                 return;
             }
         }
         
-        currentHealth = currentStats.maxHealth;
+        // Set Entity values from PlayerStats
+        maxHealth = currentStats.maxHealth;
+        currentHealth = maxHealth;
+        moveSpeed = currentStats.moveSpeed;
+        damage = currentStats.attackDamage;
+        healthRegenDelay = currentStats.healthRegenDelay;
+        
         StartCoroutine(HealthRegeneration());
         
         // Update UI if available (it might not be ready yet due to initialization order)
@@ -91,10 +101,10 @@ public class PlayerController : MonoBehaviour
             if (currentStats == null) continue;
             
             // Only regenerate if enough time has passed since last damage and health is not full
-            if (currentHealth < currentStats.maxHealth && 
-                Time.time >= lastDamageTime + currentStats.healthRegenDelay)
+            if (currentHealth < maxHealth && 
+                Time.time >= lastDamageTime + healthRegenDelay)
             {
-                currentHealth = Mathf.Min(currentStats.maxHealth, currentHealth + (currentStats.healthRegen * 0.1f));
+                currentHealth = Mathf.Min(maxHealth, currentHealth + (currentStats.healthRegen * 0.1f));
                 
                 // Update UI when health regenerates
                 if (healthXPUIManager != null)
@@ -103,29 +113,22 @@ public class PlayerController : MonoBehaviour
         }
     }
     
-    public void TakeDamage(float damage)
+    public override void Heal(float amount)
     {
-        if (isDead) return;
+        if (isDead || currentStats == null) return;
         
-        currentHealth -= damage;
-        lastDamageTime = Time.time; // Reset the damage timer
-        
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
-        
+        base.Heal(amount);
+    }
+
+    protected override void OnHealed(float amount)
+    {
         // Update UI when health changes
         if (healthXPUIManager != null)
             healthXPUIManager.OnHealthChanged();
     }
-    
-    public void Heal(float amount)
+
+    protected override void OnDamageTaken(float damageAmount)
     {
-        if (isDead || currentStats == null) return;
-        
-        currentHealth = Mathf.Min(currentStats.maxHealth, currentHealth + amount);
-        
         // Update UI when health changes
         if (healthXPUIManager != null)
             healthXPUIManager.OnHealthChanged();
@@ -156,7 +159,6 @@ public class PlayerController : MonoBehaviour
             isLevelUpPending = true;
         }
     }
-
     
     private void LevelUp()
     {
@@ -170,15 +172,19 @@ public class PlayerController : MonoBehaviour
         currentStats.attackDamage += 2f;
         currentStats.experienceToNextLevel = Mathf.Floor(currentStats.experienceToNextLevel * 1.2f);
         
+        // Update Entity's maxHealth and damage
+        maxHealth = currentStats.maxHealth;
+        damage = currentStats.attackDamage;
+        
         // Heal to full on level up
-        currentHealth = currentStats.maxHealth;
+        currentHealth = maxHealth;
         
         Debug.Log($"Level Up! Now level {currentStats.level}");
     }
     
     public int ProcessPendingExperienceAndReturnLevelUps()
     {
-        // Returns the number of level-ups that occurreds
+        // Returns the number of level-ups that occurred
         if (pendingExperience <= 0 || currentStats == null) return 0;
         
         // Add all pending XP to current stats
@@ -212,9 +218,8 @@ public class PlayerController : MonoBehaviour
         ProcessPendingExperienceAndReturnLevelUps();
     }
 
-    private void Die()
+    protected override void OnDeath()
     {
-        isDead = true;
         Debug.Log("Player died!");
 
         if (gameManager != null)

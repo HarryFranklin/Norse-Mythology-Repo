@@ -877,7 +877,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a89a473e9b1ad64d8e350b24d1cc8b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerController: {fileID: 2135908900}
+  player: {fileID: 2135908900}
   healthFillImage: {fileID: 5158279704022946213}
   xpFillImage: {fileID: 2012198306}
   healthText: {fileID: 5158279704022946212}
@@ -7387,7 +7387,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 2135908895}
-  playerController: {fileID: 2135908900}
+  playerComponent: {fileID: 2135908900}
   meleeWeaponPrefab: {fileID: 5131123301474718387, guid: 3ea159a53e8b45447bdf1c752017d88e, type: 3}
   projectilePrefab: {fileID: 5131123301474718387, guid: 4d50b6241863ed942a56c3845040826f, type: 3}
   weaponHolder: {fileID: 1194572341}
@@ -7408,7 +7408,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee57f1944d842a8458d7fe295e42d99e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerController: {fileID: 2135908900}
+  player: {fileID: 2135908900}
   playerMovement: {fileID: 2135908891}
   equippedAbilities:
   - {fileID: 11400000, guid: 1ba6f0d352a07314cbb97c9eef69b221, type: 2}
@@ -7424,14 +7424,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 2135908890}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8397dc7f26e2bc1418700be0596520d0, type: 3}
+  m_Script: {fileID: 11500000, guid: 4de6e68fb534fb946831fb1d24c4bcf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 100
+  currentHealth: 0
+  isDead: 0
+  moveSpeed: 2
+  damage: 5
+  isStunned: 0
   baseStats: {fileID: 11400000, guid: d502c6bd20489c74992235336485d903, type: 2}
   gameManager: {fileID: 1753531477}
   currentStats: {fileID: 0}
-  currentHealth: 100
-  isDead: 0
   isLevelUpPending: 0
   healthXPUIManager: {fileID: 570491799}
 --- !u!1001 &5158279704022946211

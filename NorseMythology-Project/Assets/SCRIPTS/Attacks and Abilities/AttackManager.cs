@@ -6,7 +6,7 @@ public class AttackManager : MonoBehaviour
 {
     [Header("References")]
     public Transform player;
-    public PlayerController playerController;
+    public Player playerComponent; // Changed from PlayerController to Player
     public GameObject meleeWeaponPrefab;
     public GameObject projectilePrefab;
     public Transform weaponHolder; // Empty GameObject child of player for weapon positioning
@@ -36,13 +36,13 @@ public class AttackManager : MonoBehaviour
     {
         if (player == null)
             player = GetComponent<Transform>();
-        if (playerController == null)
-            playerController = GetComponent<PlayerController>();
+        if (playerComponent == null)
+            playerComponent = GetComponent<Player>(); // Changed from PlayerController to Player
     }
     
     private void Update()
     {
-        if (hasBasicAttack && playerController != null && !playerController.isDead)
+        if (hasBasicAttack && playerComponent != null && !playerComponent.isDead)
         {
             // Only scan for enemies at intervals for performance
             if (Time.time - lastEnemyScan >= enemyScanInterval)
@@ -57,14 +57,14 @@ public class AttackManager : MonoBehaviour
     
     private void UpdateClosestEnemy()
     {
-        // Add null check for playerController and currentStats
-        if (playerController == null || playerController.currentStats == null)
+        // Add null check for playerComponent and currentStats
+        if (playerComponent == null || playerComponent.currentStats == null)
             return;
             
         GameObject[] enemyObjects = GameObject.FindGameObjectsWithTag("Enemy");
         
         closestEnemy = null;
-        closestEnemyDistance = playerController.currentStats.meleeRange;
+        closestEnemyDistance = playerComponent.currentStats.meleeRange;
         
         foreach (GameObject enemyObject in enemyObjects)
         {
@@ -72,7 +72,7 @@ public class AttackManager : MonoBehaviour
             if (enemy == null) continue;
             
             float distance = Vector2.Distance(player.position, enemy.transform.position);
-            if (distance <= playerController.currentStats.meleeRange && distance < closestEnemyDistance)
+            if (distance <= playerComponent.currentStats.meleeRange && distance < closestEnemyDistance)
             {
                 closestEnemy = enemy;
                 closestEnemyDistance = distance;
@@ -82,11 +82,11 @@ public class AttackManager : MonoBehaviour
     
     private void HandleBasicAttack()
     {
-        // Add null check for playerController and currentStats
-        if (playerController == null || playerController.currentStats == null)
+        // Add null check for playerComponent and currentStats
+        if (playerComponent == null || playerComponent.currentStats == null)
             return;
             
-        if (Time.time - lastAttackTime >= 1f / playerController.currentStats.attackSpeed)
+        if (Time.time - lastAttackTime >= 1f / playerComponent.currentStats.attackSpeed)
         {
             if (closestEnemy != null && IsEnemyStillValid())
             {
@@ -98,12 +98,12 @@ public class AttackManager : MonoBehaviour
     
     private bool IsEnemyStillValid()
     {
-        if (closestEnemy == null || playerController == null || playerController.currentStats == null) 
+        if (closestEnemy == null || playerComponent == null || playerComponent.currentStats == null) 
             return false;
         
         // Quick distance check without recalculating all enemies
         float currentDistance = Vector2.Distance(player.position, closestEnemy.transform.position);
-        return currentDistance <= playerController.currentStats.meleeRange;
+        return currentDistance <= playerComponent.currentStats.meleeRange;
     }
     
     private void PerformBasicAttack(Enemy target)
@@ -156,9 +156,9 @@ public class AttackManager : MonoBehaviour
             }
             
             // Deal damage + optional stun
-            if (target != null && playerController != null && playerController.currentStats != null)
+            if (target != null && playerComponent != null && playerComponent.currentStats != null)
             {
-                float damage = playerController.currentStats.attackDamage;
+                float damage = playerComponent.currentStats.attackDamage;
                 float stun = doesMeleeWeaponStun ? meleeStunDuration : 0f;
                 target.TakeDamage(damage, stun);
             }
@@ -178,16 +178,16 @@ public class AttackManager : MonoBehaviour
         else
         {
             // Direct damage if no weapon prefab
-            if (target != null && playerController != null && playerController.currentStats != null)
+            if (target != null && playerComponent != null && playerComponent.currentStats != null)
             {
-                target.TakeDamage(playerController.currentStats.attackDamage);
+                target.TakeDamage(playerComponent.currentStats.attackDamage);
             }
         }
     }
     
     private void LaunchProjectile(Enemy target, bool returning)
     {
-        if (projectilePrefab != null && playerController != null && playerController.currentStats != null)
+        if (projectilePrefab != null && playerComponent != null && playerComponent.currentStats != null)
         {
             GameObject projectile = Instantiate(projectilePrefab, player.position, Quaternion.identity);
             Projectile projectileScript = projectile.GetComponent<Projectile>();
@@ -196,9 +196,9 @@ public class AttackManager : MonoBehaviour
                 projectileScript = projectile.AddComponent<Projectile>();
                 
             Vector2 direction = (target.transform.position - player.position).normalized;
-            projectileScript.Initialise(direction, playerController.currentStats.projectileSpeed, 
-                                      playerController.currentStats.projectileRange, 
-                                      playerController.currentStats.attackDamage, returning, player);
+            projectileScript.Initialise(direction, playerComponent.currentStats.projectileSpeed, 
+                                      playerComponent.currentStats.projectileRange, 
+                                      playerComponent.currentStats.attackDamage, returning, player);
         }
     }
     
