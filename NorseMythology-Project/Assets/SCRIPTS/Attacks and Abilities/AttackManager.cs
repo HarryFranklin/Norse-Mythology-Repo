@@ -132,16 +132,20 @@ public class AttackManager : MonoBehaviour
             Vector2 startPos = weaponHolder.localPosition;
             Vector2 attackPos = startPos + direction * 0.5f;
 
+            Vector3 scale = weapon.transform.localScale; // Consider re-writing this with a flip function
+
             if (direction.x < 0)
             {
                 // Flip weapon for left direction
-                weapon.transform.localScale = new Vector3(-1, 1, 1);
+                scale.x *= -1;
             }
             else
             {
                 // Reset scale for right direction
-                weapon.transform.localScale = new Vector3(1, 1, 1);
+                scale.x = Mathf.Abs(scale.x);    
             }
+
+            weapon.transform.localScale = scale;
             
             // Move weapon towards enemy
             float duration = 0.2f;

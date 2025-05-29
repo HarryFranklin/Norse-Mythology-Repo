@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class AxeRotation : MonoBehaviour
+public class SpriteRotation : MonoBehaviour
 {
     [Header("Rotation Settings")]
     public float rotationSpeed = 720f; // degrees per second
