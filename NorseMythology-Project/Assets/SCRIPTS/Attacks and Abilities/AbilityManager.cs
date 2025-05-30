@@ -5,18 +5,19 @@ public class AbilityManager : MonoBehaviour
     [Header("References")]
     public Player player;
     public PlayerMovement playerMovement;
-    public Camera playerCamera;  // Reference to the camera for world position calculations
+    public Camera playerCamera;
     
     [Header("Equipped Abilities")]
     public Ability[] equippedAbilities = new Ability[4];
     
     [Header("Targeting UI")]
-    public LineRenderer targetingLine;  // Optional line renderer for showing targeting line
+    public LineRenderer targetingLine;
     
     [Header("Dashed Line Settings")]
-    public float dashLength = 0.2f;      // Length of each dash
-    public float gapLength = 0.2f;       // Length of each gap
-    public float lineWidth = 0.05f;      // Width of the line
+    public Material solidLineMaterial;   // Use a solid white material instead of textured
+    public float lineWidth = 0.05f;
+    public float dashLength = 0.1f;      // Length of each dash segment
+    public float gapLength = 0.1f;       // Length of each gap between dashes
     
     private float[] lastAbilityUse = new float[4];
     private bool isInTargetingMode = false;
@@ -27,56 +28,59 @@ public class AbilityManager : MonoBehaviour
     private Texture2D originalCursor;
     private Vector2 originalHotspot;
     
-    // For dashed line rendering
-    private LineRenderer[] dashLineRenderers;
-    private int maxDashCount = 50; // Maximum number of dash segments we might need
+    // Cache for efficiency
+    private MaterialPropertyBlock materialPropertyBlock;
+    private static readonly int MainTexScaleID = Shader.PropertyToID("_MainTex_ST");
+    private static readonly int ColorID = Shader.PropertyToID("_Color");
 
     private void Start()
     {
         // Store original cursor
-        // Note: Unity doesn't provide a way to get current cursor, so we assume default
-        originalCursor = null;  // null means default system cursor
+        originalCursor = null;
         originalHotspot = Vector2.zero;
         
-        // Set up targeting line if available
+        // Initialize material property block for efficient material updates
+        materialPropertyBlock = new MaterialPropertyBlock();
+        
+        // Set up targeting line
         if (targetingLine != null)
         {
-            targetingLine.enabled = false;
+            SetupTargetingLine();
         }
-        
-        // Initialise dash line renderers
-        InitialiseDashLineRenderers();
+        else
+        {
+            CreateTargetingLineRenderer();
+        }
     }
     
-    private void InitialiseDashLineRenderers()
+    private void SetupTargetingLine()
     {
-        // Create a parent object to hold all dash line renderers
-        GameObject dashParent = new GameObject("DashLineRenderers");
-        dashParent.transform.SetParent(transform);
+        targetingLine.enabled = false;
+        targetingLine.useWorldSpace = true;
+        targetingLine.startWidth = lineWidth;
+        targetingLine.endWidth = lineWidth;
         
-        dashLineRenderers = new LineRenderer[maxDashCount];
-        
-        for (int i = 0; i < maxDashCount; i++)
+        // Use solid material - we'll create dashes by controlling segments
+        if (solidLineMaterial != null)
         {
-            GameObject dashObject = new GameObject($"Dash_{i}");
-            dashObject.transform.SetParent(dashParent.transform);
-            
-            LineRenderer lr = dashObject.AddComponent<LineRenderer>();
-            lr.positionCount = 2;
-            lr.startWidth = lineWidth;
-            lr.endWidth = lineWidth;
-            lr.useWorldSpace = true;
-            lr.enabled = false;
-            
-            // Use a simple material - you can assign a material in the inspector if needed
-            // or create a default material
-            if (lr.material == null)
-            {
-                lr.material = new Material(Shader.Find("Sprites/Default"));
-            }
-            
-            dashLineRenderers[i] = lr;
+            targetingLine.material = solidLineMaterial;
         }
+        else
+        {
+            // Create a simple unlit material
+            Material mat = new Material(Shader.Find("Unlit/Color"));
+            mat.color = Color.white;
+            targetingLine.material = mat;
+        }
+    }
+    
+    private void CreateTargetingLineRenderer()
+    {
+        GameObject lineObject = new GameObject("TargetingLine");
+        lineObject.transform.SetParent(transform);
+        
+        targetingLine = lineObject.AddComponent<LineRenderer>();
+        SetupTargetingLine();
     }
 
     private void Update()
@@ -107,23 +111,19 @@ public class AbilityManager : MonoBehaviour
 
     private void HandleTargetingMode()
     {
-        // Update targeting visuals
         UpdateTargetingVisuals();
         
-        // Check if the same ability key is pressed again to cancel targeting
         if (Input.GetKeyDown(KeyCode.Alpha1 + targetingAbilityIndex))
         {
             CancelTargeting();
             return;
         }
         
-        // Check for mouse click to execute ability
-        if (Input.GetMouseButtonDown(0))  // Left click
+        if (Input.GetMouseButtonDown(0))
         {
             ExecuteTargetedAbility();
         }
         
-        // Check for escape or right click to cancel
         if (Input.GetKeyDown(KeyCode.Escape) || Input.GetMouseButtonDown(1))
         {
             CancelTargeting();
@@ -148,7 +148,7 @@ public class AbilityManager : MonoBehaviour
             }
         }
         
-        // Update dashed targeting line
+        // Update dashed line
         if (currentTargetingAbility.showTargetingLine)
         {
             UpdateDashedLine(playerPos, mouseWorldPos, currentTargetingAbility.targetingLineColor);
@@ -161,48 +161,71 @@ public class AbilityManager : MonoBehaviour
     
     private void UpdateDashedLine(Vector3 startPos, Vector3 endPos, Color lineColor)
     {
-        Vector3 direction = endPos - startPos;
-        float totalDistance = direction.magnitude;
-        Vector3 normalizedDirection = direction.normalized;
+        if (targetingLine == null) return;
         
-        // Calculate how many dashes we can fit
-        float dashAndGapLength = dashLength + gapLength;
-        int dashCount = Mathf.FloorToInt(totalDistance / dashAndGapLength);
+        float totalDistance = Vector3.Distance(startPos, endPos);
         
-        // Hide all dash renderers first
-        HideDashedLine();
-        
-        // Create dashes
-        for (int i = 0; i < dashCount && i < maxDashCount; i++)
+        if (totalDistance < 0.01f)
         {
-            float dashStartDistance = i * dashAndGapLength;
-            float dashEndDistance = dashStartDistance + dashLength;
-            
-            // Make sure we don't exceed the total distance
-            if (dashEndDistance > totalDistance)
-            {
-                dashEndDistance = totalDistance;
-            }
-            
-            Vector3 dashStart = startPos + normalizedDirection * dashStartDistance;
-            Vector3 dashEnd = startPos + normalizedDirection * dashEndDistance;
-            
-            LineRenderer lr = dashLineRenderers[i];
-            lr.enabled = true;
-            lr.material.color = lineColor;
-            lr.SetPosition(0, dashStart);
-            lr.SetPosition(1, dashEnd);
+            HideDashedLine();
+            return;
         }
+        
+        // Calculate direction
+        Vector3 direction = (endPos - startPos).normalized;
+        
+        // Calculate dash pattern
+        float cycleLength = dashLength + gapLength;
+        int totalCycles = Mathf.FloorToInt(totalDistance / cycleLength);
+        
+        // Create list of dash segments
+        var dashPositions = new System.Collections.Generic.List<Vector3>();
+        
+        float currentDistance = 0f;
+        
+        // Add dash segments
+        for (int i = 0; i <= totalCycles; i++)
+        {
+            float dashStart = i * cycleLength;
+            float dashEnd = dashStart + dashLength;
+            
+            // Clamp to total distance
+            if (dashStart >= totalDistance) break;
+            if (dashEnd > totalDistance) dashEnd = totalDistance;
+            
+            // Add start and end points for this dash
+            Vector3 segmentStart = startPos + direction * dashStart;
+            Vector3 segmentEnd = startPos + direction * dashEnd;
+            
+            dashPositions.Add(segmentStart);
+            dashPositions.Add(segmentEnd);
+        }
+        
+        // If we have no dashes, hide the line
+        if (dashPositions.Count == 0)
+        {
+            HideDashedLine();
+            return;
+        }
+        
+        // Set up LineRenderer with all dash segments
+        targetingLine.enabled = true;
+        targetingLine.positionCount = dashPositions.Count;
+        
+        for (int i = 0; i < dashPositions.Count; i++)
+        {
+            targetingLine.SetPosition(i, dashPositions[i]);
+        }
+        
+        // Set color
+        targetingLine.material.color = lineColor;
     }
     
     private void HideDashedLine()
     {
-        if (dashLineRenderers != null)
+        if (targetingLine != null)
         {
-            for (int i = 0; i < dashLineRenderers.Length; i++)
-            {
-                dashLineRenderers[i].enabled = false;
-            }
+            targetingLine.enabled = false;
         }
     }
 
@@ -242,14 +265,12 @@ public class AbilityManager : MonoBehaviour
         // Handle different activation modes
         if (ability.activationMode == ActivationMode.Instant)
         {
-            // Instant activation
             ability.Activate(player, playerMovement);
             lastAbilityUse[index] = Time.time;
             Debug.Log($"{ability.abilityName} activated instantly!");
         }
         else if (ability.activationMode == ActivationMode.ClickToTarget)
         {
-            // Enter targeting mode
             EnterTargetingMode(ability, index);
         }
     }
@@ -268,7 +289,6 @@ public class AbilityManager : MonoBehaviour
             Cursor.SetCursor(cursorTexture, hotspot, CursorMode.Auto);
         }
         
-        // Call ability's enter targeting mode method
         ability.EnterTargetingMode(player);
         
         Debug.Log($"Entered targeting mode for {ability.abilityName}. Click to target or press {abilityIndex + 1} again to cancel!");
@@ -293,7 +313,6 @@ public class AbilityManager : MonoBehaviour
             }
         }
         
-        // Execute the ability
         currentTargetingAbility.ActivateWithTarget(player, playerMovement, targetDirection, clampedWorldPos);
         lastAbilityUse[targetingAbilityIndex] = Time.time;
         
@@ -315,10 +334,7 @@ public class AbilityManager : MonoBehaviour
             currentTargetingAbility.ExitTargetingMode(player);
         }
         
-        // Restore original cursor
         Cursor.SetCursor(originalCursor, originalHotspot, CursorMode.Auto);
-        
-        // Hide dashed targeting line
         HideDashedLine();
         
         isInTargetingMode = false;

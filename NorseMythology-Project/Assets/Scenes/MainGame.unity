@@ -7418,9 +7418,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 31d15f54104a34f45833dc91cbc72dbd, type: 2}
   - {fileID: 0}
   targetingLine: {fileID: 2135908901}
-  dashLength: 0.5
-  gapLength: 0.5
-  lineWidth: 0.1
+  solidLineMaterial: {fileID: 2100000, guid: bf59ce9ffa7f6834a8719c6fbbbf0ed8, type: 2}
+  lineWidth: 0.25
+  dashLength: 1
+  gapLength: 1
 --- !u!114 &2135908900
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7488,7 +7489,7 @@ LineRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Positions:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 1}
