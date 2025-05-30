@@ -15,7 +15,7 @@ MonoBehaviour:
   abilityName: Dash
   abilityType: 1
   cooldown: 4
-  abilityIcon: {fileID: 1901689266, guid: e20ffde0bbe61624695318427c9d6d54, type: 3}
+  abilityIcon: {fileID: 21300000, guid: 0fcd66ba496458c48b3b2976c5eb9950, type: 3}
   activationMode: 1
   targetingCursor: {fileID: 0}
   showTargetingLine: 1
