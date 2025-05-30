@@ -16,6 +16,7 @@ public abstract class Entity : MonoBehaviour
     
     [Header("Status Effects")]
     public bool isStunned = false;
+    public bool isInvincible = false;
     protected float lastDamageTime = 0f; // Time since last damaged (for setting and checking stun duration)
 
     protected virtual void Start()
@@ -30,9 +31,7 @@ public abstract class Entity : MonoBehaviour
 
     public virtual void TakeDamage(float damageAmount, float stunDuration = 0f)
     {
-        if (isDead) return;
-        // later, check for invincibility frames or damage reduction here
-        // if (isInvincible) return;
+        if (isDead || isInvincible) return;
         
         currentHealth -= damageAmount;
         lastDamageTime = Time.time;

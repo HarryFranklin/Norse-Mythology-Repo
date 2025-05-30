@@ -6,6 +6,7 @@ public class Player : Entity
     [Header("Player References")]
     public PlayerStats baseStats; // ScriptableObject reference
     public GameManager gameManager;
+    public Rigidbody2D rigidBody; // Reference to the player's Rigidbody2D for movement - Using in DashAbility
     
     [Header("Player Runtime Stats")]
     public PlayerStats currentStats; // Runtime copy
@@ -24,10 +25,15 @@ public class Player : Entity
     {
         base.Start(); // Call Entity's Start method
         InitialisePlayer();
-        
+
         if (gameManager == null)
         {
             gameManager = FindFirstObjectByType<GameManager>();
+        }
+
+        if (rigidBody == null)
+        {
+            rigidBody = GetComponent<Rigidbody2D>();
         }
     }
 

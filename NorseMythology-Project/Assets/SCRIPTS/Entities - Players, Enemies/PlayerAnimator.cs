@@ -26,9 +26,14 @@ public class PlayerAnimator : MonoBehaviour
 
     void Update()
     {
-        if (playerMovement.moveDir.x != 0 || playerMovement.moveDir.y != 0)
+        // Check if player is effectively moving (including dashing)
+        bool isMoving = playerMovement.IsEffectivelyMoving();
+        
+        if (isMoving)
         {
             animator.SetBool("isMoving", true);
+            
+            // Handle sprite flipping based on current facing direction
             if (playerMovement.lastHorizontalVector > 0)
             {
                 spriteRenderer.flipX = false;
