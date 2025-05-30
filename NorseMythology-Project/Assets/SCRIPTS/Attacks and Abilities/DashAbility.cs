@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 [CreateAssetMenu(fileName = "DashAbility", menuName = "Abilities/Defend/Dash")]
 public class DashAbility : DefendAbility
@@ -14,6 +15,13 @@ public class DashAbility : DefendAbility
     [SerializeField] private GameObject dashTrailPrefab;
     [SerializeField] private Color dashTrailColor = Color.cyan;
     [SerializeField] private float trailDuration = 0.5f;
+    
+    [Header("Sprite Trail Settings")]
+    [SerializeField] private float trailSpawnInterval = 0.05f; // How often to spawn trail sprites
+    [SerializeField] private float trailFadeDuration = 0.3f; // How long each trail sprite takes to fade
+    [SerializeField] private int maxTrailSprites = 10; // Maximum number of trail sprites at once
+    [SerializeField] private Color trailStartColor = Color.white; // Starting color (usually white for full opacity)
+    [SerializeField] private Color trailEndColor = Color.clear; // Ending color (transparent)
 
     private void Awake()
     {
@@ -63,15 +71,15 @@ public class DashAbility : DefendAbility
         // NEW: Set dash state for animation and facing direction
         playerMovement.SetDashState(true, dashDirection);
         
-        // Make player temporarily invincible (you'll need to add this to your Player class)
-        // For now, we'll just disable collision with enemies or add a flag
-        
         // Calculate dash parameters
         float dashTime = dashDistance / dashSpeed;
         Vector2 dashVelocity = dashDirection.normalized * dashSpeed;
         
         // Create visual effects
         GameObject trailEffect = CreateDashTrail(player.transform);
+        
+        // Start sprite trail coroutine
+        Coroutine spriteTrailCoroutine = player.StartCoroutine(CreateSpriteTrail(player));
         
         // Perform the dash
         float elapsedTime = 0f;
@@ -88,6 +96,12 @@ public class DashAbility : DefendAbility
         
         // Stop dash movement
         player.rigidBody.linearVelocity = Vector2.zero;
+        
+        // Stop creating new trail sprites
+        if (spriteTrailCoroutine != null)
+        {
+            player.StopCoroutine(spriteTrailCoroutine);
+        }
         
         // Clear dash state
         playerMovement.SetDashState(false);
@@ -108,6 +122,94 @@ public class DashAbility : DefendAbility
         }
         
         Debug.Log($"Dash completed! Dashed {dashDistance} units in direction {dashDirection}");
+    }
+
+    private IEnumerator CreateSpriteTrail(Player player)
+    {
+        List<GameObject> activeTrailSprites = new List<GameObject>();
+        
+        while (true) // This will run until the coroutine is stopped
+        {
+            // Create a new trail sprite
+            GameObject trailSprite = CreateTrailSprite(player);
+            if (trailSprite != null)
+            {
+                activeTrailSprites.Add(trailSprite);
+                
+                // Start fading this sprite
+                player.StartCoroutine(FadeTrailSprite(trailSprite, trailFadeDuration));
+                
+                // Remove old sprites to prevent memory leaks
+                if (activeTrailSprites.Count > maxTrailSprites)
+                {
+                    GameObject oldestSprite = activeTrailSprites[0];
+                    activeTrailSprites.RemoveAt(0);
+                    if (oldestSprite != null)
+                    {
+                        Destroy(oldestSprite);
+                    }
+                }
+            }
+            
+            yield return new WaitForSeconds(trailSpawnInterval);
+        }
+    }
+
+    private GameObject CreateTrailSprite(Player player)
+    {
+        // Get the player's sprite renderer
+        SpriteRenderer playerSpriteRenderer = player.GetComponent<SpriteRenderer>();
+        if (playerSpriteRenderer == null)
+        {
+            Debug.LogWarning("Player doesn't have a SpriteRenderer component!");
+            return null;
+        }
+
+        // Create a new GameObject for the trail sprite
+        GameObject trailSpriteObj = new GameObject("DashTrailSprite");
+        trailSpriteObj.transform.position = player.transform.position;
+        trailSpriteObj.transform.rotation = player.transform.rotation;
+        trailSpriteObj.transform.localScale = player.transform.localScale;
+
+        // Add and configure the sprite renderer
+        SpriteRenderer trailSpriteRenderer = trailSpriteObj.AddComponent<SpriteRenderer>();
+        trailSpriteRenderer.sprite = playerSpriteRenderer.sprite;
+        trailSpriteRenderer.color = trailStartColor;
+        trailSpriteRenderer.sortingLayerName = playerSpriteRenderer.sortingLayerName;
+        trailSpriteRenderer.sortingOrder = playerSpriteRenderer.sortingOrder - 1; // Behind the player
+        
+        // Copy the flip state
+        trailSpriteRenderer.flipX = playerSpriteRenderer.flipX;
+        trailSpriteRenderer.flipY = playerSpriteRenderer.flipY;
+
+        return trailSpriteObj;
+    }
+
+    private IEnumerator FadeTrailSprite(GameObject trailSprite, float fadeDuration)
+    {
+        if (trailSprite == null) yield break;
+        
+        SpriteRenderer spriteRenderer = trailSprite.GetComponent<SpriteRenderer>();
+        if (spriteRenderer == null) yield break;
+
+        float elapsedTime = 0f;
+        Color startColor = trailStartColor;
+        Color endColor = trailEndColor;
+
+        while (elapsedTime < fadeDuration && trailSprite != null)
+        {
+            float t = elapsedTime / fadeDuration;
+            spriteRenderer.color = Color.Lerp(startColor, endColor, t);
+            
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Ensure the sprite is destroyed
+        if (trailSprite != null)
+        {
+            Destroy(trailSprite);
+        }
     }
 
     private GameObject CreateDashTrail(Transform playerTransform)

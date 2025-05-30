@@ -20,7 +20,7 @@ MonoBehaviour:
   targetingCursor: {fileID: 0}
   showTargetingLine: 1
   targetingLineColor: {r: 0, g: 1, b: 1, a: 1}
-  maxTargetingRange: 8
+  maxTargetingRange: 6
   description: Dash quickly in a target direction, becoming invincible for a brief
     moment.
   duration: 0.3
@@ -32,3 +32,8 @@ MonoBehaviour:
   dashTrailPrefab: {fileID: 0}
   dashTrailColor: {r: 0, g: 1, b: 1, a: 1}
   trailDuration: 0.5
+  trailSpawnInterval: 0.05
+  trailFadeDuration: 0.25
+  maxTrailSprites: 10
+  trailStartColor: {r: 1, g: 1, b: 1, a: 1}
+  trailEndColor: {r: 0, g: 0, b: 0, a: 0}
