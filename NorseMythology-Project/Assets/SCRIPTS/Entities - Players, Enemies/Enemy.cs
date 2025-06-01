@@ -7,8 +7,11 @@ public class Enemy : Entity
     public EnemyType enemyType = EnemyType.Melee;
 
     [Header("Enemy XP & Level")]
-    public float xpValue = 10f; // XP value for the player when this enemy is defeated
+    public float xpValue = 10f; // XP value for the player when this enemy is defeated and XP is collected
     public int level = 1; // Level of the enemy, can be used for scaling difficulty
+
+    [Header("XP Orb")]
+    public GameObject xpOrbPrefab; // 
 
     [Header("Combat Settings")]
     public float meleeAttackRange = 0.5f;
@@ -153,20 +156,8 @@ public class Enemy : Entity
         // Move any active projectiles to the enemies parent before this enemy is destroyed
         MoveProjectilesToParent();
         
-        // Award XP to the player before destroying the enemy
-        if (target != null)
-        {
-            Player player = target.GetComponent<Player>();
-            if (player != null)
-            {
-                player.GainExperience(xpValue);
-                Debug.Log($"Player gained {xpValue} XP from defeating {gameObject.name}");
-            }
-            else
-            {
-                Debug.LogWarning("Could not award XP: Player not found on target.");
-            }
-        }
+        // Spawn XP orb instead of directly giving XP to player
+        SpawnXPOrb();
 
         // Notify the WaveManager that this enemy was killed
         // Find a better way to reference WaveManager
@@ -179,12 +170,41 @@ public class Enemy : Entity
         // Add drop effects before death, animations, ...
         Destroy(gameObject);
     }
+
+    private void SpawnXPOrb()
+    {
+        if (xpOrbPrefab == null)
+        {
+            Debug.LogWarning($"XP Orb prefab not assigned on enemy {gameObject.name}");
+            return;
+        }
+
+        // Spawn XP orb at enemy's position with slight random offset
+        Vector3 spawnPosition = transform.position + new Vector3(
+            Random.Range(-0.25f, 0.25f), 
+            Random.Range(-0.25f, 0.25f), 
+            0f
+        );
+
+        GameObject xpOrb = Instantiate(xpOrbPrefab, spawnPosition, Quaternion.identity);
+        
+        // Set the XP value on the orb
+        XPOrb xpOrbScript = xpOrb.GetComponent<XPOrb>();
+        if (xpOrbScript != null)
+        {
+            xpOrbScript.value = xpValue;
+        }
+        else
+        {
+            Debug.LogWarning("XP Orb prefab missing XPOrb component!");
+        }
+    }
     
     private void MoveProjectilesToParent()
     {
         // Find the enemies parent object (should be the same parent this enemy is under)
         Transform enemiesParent = transform.parent;
-        
+
         if (enemiesParent == null)
         {
             // If no parent, try to find or create the "Enemies Parent" object
@@ -196,7 +216,7 @@ public class Enemy : Entity
             }
             enemiesParent = enemiesObject.transform;
         }
-        
+
         // Move all active projectiles to the enemies parent
         foreach (GameObject projectile in activeProjectiles)
         {
@@ -205,7 +225,7 @@ public class Enemy : Entity
                 projectile.transform.SetParent(enemiesParent);
             }
         }
-        
+
         // Clear the list since we're about to be destroyed
         activeProjectiles.Clear();
     }

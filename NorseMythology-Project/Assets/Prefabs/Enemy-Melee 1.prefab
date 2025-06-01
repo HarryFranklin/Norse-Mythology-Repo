@@ -102,19 +102,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce215075f3ce86944b0c0db15770bda3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyType: 0
   maxHealth: 12
   currentHealth: 0
+  isDead: 0
+  moveSpeed: 2
   damage: 5
+  isStunned: 0
+  isInvincible: 0
+  enemyType: 0
   xpValue: 10
   level: 1
-  moveSpeed: 2
+  xpOrbPrefab: {fileID: 6224046307236492347, guid: 24c4895bf94c3db42ab8cd46bf2cafea, type: 3}
   meleeAttackRange: 0.5
   projectileMinRange: 2
   projectileMaxRange: 6
   attackCooldown: 1
-  isStunned: 0
-  stunDuration: 2
   target: {fileID: 0}
   projectilePrefab: {fileID: 0}
   firePoint: {fileID: 0}
