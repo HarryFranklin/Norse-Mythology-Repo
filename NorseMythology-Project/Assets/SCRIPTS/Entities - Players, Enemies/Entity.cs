@@ -37,7 +37,7 @@ public abstract class Entity : MonoBehaviour
         lastDamageTime = Time.time;
 
         // Show damage popup
-        PopupManager.Instance?.ShowDamage(damageAmount, transform.position);
+        PopupManager.Instance?.ShowDamageTracking(damageAmount, transform);
 
         if (stunDuration > 0f)
         {
@@ -61,7 +61,7 @@ public abstract class Entity : MonoBehaviour
 
         if (healedAmount > 0)
         {
-            PopupManager.Instance?.ShowHeal(healedAmount, transform.position);
+            PopupManager.Instance?.ShowHealTracking(healedAmount, transform);
         }
 
         OnHealed(amount);

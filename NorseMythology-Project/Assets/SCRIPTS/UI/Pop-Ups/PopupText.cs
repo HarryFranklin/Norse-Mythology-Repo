@@ -21,7 +21,10 @@ public class PopupText : MonoBehaviour
         new Keyframe(1f, 1f, 0f, 0f)
     );
 
-    private Vector3 startPosition;
+    // World position tracking
+    private Vector3 worldStartPosition;
+    private Vector3 worldOffset;
+    private Camera trackingCamera;
     private Color startColor;
     private bool isAnimating = false;
 
@@ -31,7 +34,7 @@ public class PopupText : MonoBehaviour
             textComponent = GetComponent<TextMeshProUGUI>();
     }
 
-    public void Initialise(string text, Color color, int fontSize, float animationDuration = 1.5f, float moveDistance = 50f)
+    public void Initialise(string text, Color color, int fontSize, float animationDuration = 1.5f, float moveDistance = 50f, Vector3 worldPosition = default, Camera camera = null)
     {
         if (textComponent == null)
         {
@@ -46,7 +49,10 @@ public class PopupText : MonoBehaviour
         this.duration = animationDuration;
         this.moveDistance = moveDistance;
 
-        startPosition = transform.position;
+        // Store world position and camera for tracking
+        worldStartPosition = worldPosition;
+        worldOffset = Vector3.zero;
+        trackingCamera = camera;
         startColor = color;
 
         StartCoroutine(AnimatePopup());
@@ -67,10 +73,12 @@ public class PopupText : MonoBehaviour
             currentColor.a = alpha;
             textComponent.color = currentColor;
 
-            // Apply movement curve
+            // Calculate movement offset in world space
             float moveProgress = moveCurve.Evaluate(normalizedTime);
-            Vector3 currentPosition = startPosition + Vector3.up * (moveDistance * moveProgress);
-            transform.position = currentPosition;
+            worldOffset = Vector3.up * (moveDistance * moveProgress * 0.01f); // Scale down for world units
+
+            // Update screen position based on current world position
+            UpdateScreenPosition();
 
             elapsed += Time.deltaTime;
             yield return null;
@@ -80,8 +88,24 @@ public class PopupText : MonoBehaviour
         Destroy(gameObject);
     }
 
+    private void UpdateScreenPosition()
+    {
+        if (trackingCamera != null)
+        {
+            Vector3 currentWorldPos = worldStartPosition + worldOffset;
+            Vector3 screenPosition = trackingCamera.WorldToScreenPoint(currentWorldPos);
+            transform.position = screenPosition;
+        }
+    }
+
     public bool IsAnimating()
     {
         return isAnimating;
+    }
+
+    // Method to update the world position if the tracked object moves
+    public void UpdateWorldPosition(Vector3 newWorldPosition)
+    {
+        worldStartPosition = newWorldPosition;
     }
 }

@@ -9,11 +9,11 @@ public class PopupManager : MonoBehaviour
     public Camera mainCamera;
 
     [Header("Popup Offset")]
-    public Vector3 popupOffset = new Vector3(-2, 5, 0); // Offset to position the popup above the entity
+    public Vector3 popupOffset = new Vector3(0, 2, 0); // Offset in world units above the entity
 
     [Header("Default Settings")]
     public float defaultDuration = 1.5f;
-    public float defaultMoveDistance = 50f;
+    public float defaultMoveDistance = 1f; // World units for movement
     public int defaultFontSize = 28;
 
     [Header("Preset Colors")]
@@ -72,26 +72,67 @@ public class PopupManager : MonoBehaviour
         if (duration <= 0) duration = defaultDuration;
         if (moveDistance <= 0) moveDistance = defaultMoveDistance;
 
-        // Adjust world position with offset
-        worldPosition += popupOffset;
-
-        // Convert world position to screen space
-        Vector3 screenPosition = mainCamera.WorldToScreenPoint(worldPosition);
+        // Apply offset to world position
+        Vector3 offsetWorldPosition = worldPosition + popupOffset;
 
         // Create popup
         GameObject popupObj = Instantiate(popupTextPrefab, uiCanvas.transform);
-        popupObj.transform.position = screenPosition;
 
-        // Initialise the popup
+        // Initialize the popup with world position tracking
         PopupText popup = popupObj.GetComponent<PopupText>();
         if (popup != null)
         {
-            popup.Initialise(text, color, fontSize, duration, moveDistance);
+            popup.Initialise(text, color, fontSize, duration, moveDistance, offsetWorldPosition, mainCamera);
         }
         else
         {
             Debug.LogError("PopupText component not found on popup prefab!");
             Destroy(popupObj);
+        }
+    }
+
+    // Overload for tracking a specific Transform (if you want the popup to follow a moving object)
+    public PopupText ShowPopupTracking(string text, Transform targetTransform, Color color, int fontSize = 0, float duration = 0f, float moveDistance = 0f)
+    {
+        if (popupTextPrefab == null || uiCanvas == null || mainCamera == null)
+        {
+            Debug.LogError("PopupManager: Missing required components (prefab, canvas, or camera)!");
+            return null;
+        }
+
+        // Use default values if not specified
+        if (fontSize <= 0) fontSize = defaultFontSize;
+        if (duration <= 0) duration = defaultDuration;
+        if (moveDistance <= 0) moveDistance = defaultMoveDistance;
+
+        // Create popup
+        GameObject popupObj = Instantiate(popupTextPrefab, uiCanvas.transform);
+
+        // Initialize the popup with world position tracking
+        PopupText popup = popupObj.GetComponent<PopupText>();
+        if (popup != null)
+        {
+            Vector3 offsetWorldPosition = targetTransform.position + popupOffset;
+            popup.Initialise(text, color, fontSize, duration, moveDistance, offsetWorldPosition, mainCamera);
+            
+            // Start tracking the transform
+            StartCoroutine(TrackTransform(popup, targetTransform));
+            return popup;
+        }
+        else
+        {
+            Debug.LogError("PopupText component not found on popup prefab!");
+            Destroy(popupObj);
+            return null;
+        }
+    }
+
+    private System.Collections.IEnumerator TrackTransform(PopupText popup, Transform target)
+    {
+        while (popup != null && popup.IsAnimating() && target != null)
+        {
+            popup.UpdateWorldPosition(target.position + popupOffset);
+            yield return null;
         }
     }
 
@@ -120,18 +161,53 @@ public class PopupManager : MonoBehaviour
     {
         ShowPopup(text, worldPosition, color);
     }
+
+    // Convenience methods for tracking moving objects
+    public void ShowDamageTracking(float damage, Transform target)
+    {
+        ShowPopupTracking($"-{damage:F0}", target, damageColor);
+    }
+
+    public void ShowHealTracking(float healAmount, Transform target)
+    {
+        ShowPopupTracking($"+{healAmount:F0}", target, healColor);
+    }
+
+    public void ShowXPTracking(float xpAmount, Transform target)
+    {
+        ShowPopupTracking($"+{xpAmount:F0} XP", target, xpColor);
+    }
+
+    public void ShowRegenTracking(float regenAmount, Transform target)
+    {
+        ShowPopupTracking($"+{regenAmount:F1}", target, regenColor, 20);
+    }
+
+    // Overloaded methods that accept Vector3 positions and convert them
+    public void ShowDamageTracking(float damage, Vector3 worldPosition)
+    {
+        ShowPopup($"-{damage:F0}", worldPosition, damageColor);
+    }
+
+    public void ShowHealTracking(float healAmount, Vector3 worldPosition)
+    {
+        ShowPopup($"+{healAmount:F0}", worldPosition, healColor);
+    }
+
+    public void ShowXPTracking(float xpAmount, Vector3 worldPosition)
+    {
+        ShowPopup($"+{xpAmount:F0} XP", worldPosition, xpColor);
+    }
+
+    public void ShowRegenTracking(float regenAmount, Vector3 worldPosition)
+    {
+        ShowPopup($"+{regenAmount:F1}", worldPosition, regenColor, 20);
+    }
 }
 
-// Example usage in an entity script
-// Basic usage anywhere in your code:
+// Example usage:
+// For static position (popup stays relative to world position):
 // PopupManager.Instance.ShowDamage(25f, enemy.transform.position);
-// PopupManager.Instance.ShowHeal(15f, player.transform.position);
-// PopupManager.Instance.ShowXP(100f, player.transform.position);
 
-// Custom popup:
-// PopupManager.Instance.ShowPopup("Critical Hit!", 
-//     enemy.transform.position, 
-//     Color.magenta, 
-//     fontSize: 32, 
-//     duration: 2f, 
-//     moveDistance: 80f);
+// For tracking a moving object:
+// PopupManager.Instance.ShowDamageTracking(25f, enemy.transform);

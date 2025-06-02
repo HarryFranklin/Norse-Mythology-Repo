@@ -115,7 +115,7 @@ public class Player : Entity
                 // Show regen popup every 0.5 seconds
                 if (Time.time % 0.5f < 0.1f)
                 {
-                    PopupManager.Instance?.ShowRegen(regenAmount * 5f, transform.position); // show per-second rate
+                    PopupManager.Instance?.ShowRegenTracking(regenAmount * 5f, transform); // show per-second rate
                 }
 
                 healthXPUIManager?.OnHealthChanged();
@@ -151,7 +151,7 @@ public class Player : Entity
         // Show XP popup
         if (PopupManager.Instance != null)
         {
-            PopupManager.Instance.ShowXP(xp, transform.position);
+            PopupManager.Instance.ShowXPTracking(xp, transform);
         }
         
         pendingExperience += xp;
