@@ -1584,8 +1584,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30
-  m_fontSizeBase: 30
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -6937,6 +6937,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4442859364969341797, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
+      propertyPath: m_isRichText
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4442859364969341797, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
       propertyPath: m_fontSizeBase
       value: 30
       objectReference: {fileID: 0}
@@ -6949,7 +6953,27 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4442859364969341797, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 256
+      objectReference: {fileID: 0}
+    - target: {fileID: 4442859364969341797, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
+      propertyPath: checkPaddingRequired
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4442859364969341797, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
+      propertyPath: m_enableExtraPadding
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4442859364969341797, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
       propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4442859364969341797, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
+      propertyPath: m_enableVertexGradient
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4442859364969341797, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
+      propertyPath: m_IsTextObjectScaleStatic
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5081573898791074387, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
@@ -7492,6 +7516,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4442859364969341797, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
+      propertyPath: m_isRichText
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4442859364969341797, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
       propertyPath: m_fontSizeBase
       value: 30
       objectReference: {fileID: 0}
@@ -7504,7 +7532,27 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4442859364969341797, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 256
+      objectReference: {fileID: 0}
+    - target: {fileID: 4442859364969341797, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
+      propertyPath: checkPaddingRequired
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4442859364969341797, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
+      propertyPath: m_enableExtraPadding
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4442859364969341797, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
       propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4442859364969341797, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
+      propertyPath: m_enableVertexGradient
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4442859364969341797, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
+      propertyPath: m_IsTextObjectScaleStatic
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5081573898791074387, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
