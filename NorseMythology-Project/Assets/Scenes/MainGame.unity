@@ -1559,8 +1559,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'LEVEL: 1'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 31dd354e4abb0f04db8972471c53e5dc, type: 2}
+  m_sharedMaterial: {fileID: -5763542882454856610, guid: 31dd354e4abb0f04db8972471c53e5dc, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1584,8 +1584,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 32
-  m_fontSizeBase: 32
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -6924,6 +6924,34 @@ PrefabInstance:
       propertyPath: m_text
       value: 0/100
       objectReference: {fileID: 0}
+    - target: {fileID: 4442859364969341797, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
+      propertyPath: m_fontSize
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 4442859364969341797, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 31dd354e4abb0f04db8972471c53e5dc, type: 2}
+    - target: {fileID: 4442859364969341797, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
+      propertyPath: m_fontStyle
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4442859364969341797, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 4442859364969341797, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -5763542882454856610, guid: 31dd354e4abb0f04db8972471c53e5dc, type: 2}
+    - target: {fileID: 4442859364969341797, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4442859364969341797, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5081573898791074387, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
       propertyPath: m_Name
       value: UI
@@ -7451,6 +7479,34 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 570491798}
     m_Modifications:
+    - target: {fileID: 4442859364969341797, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
+      propertyPath: m_fontSize
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 4442859364969341797, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 31dd354e4abb0f04db8972471c53e5dc, type: 2}
+    - target: {fileID: 4442859364969341797, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
+      propertyPath: m_fontStyle
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4442859364969341797, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 4442859364969341797, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -5763542882454856610, guid: 31dd354e4abb0f04db8972471c53e5dc, type: 2}
+    - target: {fileID: 4442859364969341797, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4442859364969341797, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5081573898791074387, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
       propertyPath: m_Name
       value: Health

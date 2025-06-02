@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 778a802dd0a8f2c46b8a2fcdb8a1c738
+guid: d7309af2230d6314b887461c456dcd1b
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -10,7 +10,8 @@ TrueTypeFontImporter:
   includeFontData: 1
   fontNames:
   - Norse
-  fallbackFontReferences: []
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 783c6a8187ccd2a4eb1f923c50c2b2dd, type: 3}
   customCharacters: 
   fontRenderingMode: 0
   ascentCalculationMode: 1
