@@ -21,6 +21,9 @@ public class Player : Entity
     [Header("Health Regeneration")]
     private float healthRegenDelay = 5f; // Default delay before regen starts
 
+    private Coroutine regenCoroutine;
+
+
     protected override void Start()
     {
         base.Start(); // Call Entity's Start method
@@ -44,14 +47,11 @@ public class Player : Entity
 
     private void InitialisePlayer()
     {
-        // Check if currentStats is null and handle appropriately
         if (currentStats == null)
         {
             if (baseStats != null)
             {
-                // Create runtime copy from base stats if available
                 currentStats = ScriptableObject.CreateInstance<PlayerStats>();
-                // Copy all values from baseStats to currentStats
                 CopyStatsFromBase();
             }
             else
@@ -60,23 +60,25 @@ public class Player : Entity
                 return;
             }
         }
-        
-        // Set Entity values from PlayerStats
+
         maxHealth = currentStats.maxHealth;
         currentHealth = maxHealth;
         moveSpeed = currentStats.moveSpeed;
         damage = currentStats.attackDamage;
         healthRegenDelay = currentStats.healthRegenDelay;
-        
-        StartCoroutine(HealthRegeneration());
-        
-        // Update UI if available (it might not be ready yet due to initialisation order)
+
+        if (regenCoroutine != null)
+            StopCoroutine(regenCoroutine);
+
+        regenCoroutine = StartCoroutine(HealthRegeneration());
+
         if (healthXPUIManager != null)
         {
             healthXPUIManager.OnHealthChanged();
             healthXPUIManager.OnXPChanged();
         }
     }
+
     
     private void CopyStatsFromBase()
     {
@@ -99,25 +101,19 @@ public class Player : Entity
     
     private IEnumerator HealthRegeneration()
     {
+        float tickInterval = 0.5f;
+        WaitForSeconds wait = new WaitForSeconds(tickInterval);
+
         while (!isDead)
         {
-            yield return new WaitForSeconds(0.1f);
+            yield return wait;
 
-            if (currentStats == null) continue;
+            if (currentStats == null || currentHealth >= maxHealth) continue;
 
-            if (currentHealth < maxHealth && 
-                Time.time >= lastDamageTime + healthRegenDelay)
+            if (Time.time >= lastDamageTime + healthRegenDelay)
             {
-                float regenAmount = currentStats.healthRegen * 0.1f;
-                float oldHealth = currentHealth;
-                currentHealth = Mathf.Min(maxHealth, currentHealth + regenAmount);
-
-                // Show regen popup every 0.5 seconds
-                if (Time.time % 0.5f < 0.1f)
-                {
-                    PopupManager.Instance?.ShowRegenTracking(regenAmount * 5f, transform); // show per-second rate
-                }
-
+                currentHealth = Mathf.Min(currentHealth + 1, maxHealth);
+                PopupManager.Instance?.ShowRegen(1, transform.position);
                 healthXPUIManager?.OnHealthChanged();
             }
         }
@@ -151,7 +147,7 @@ public class Player : Entity
         // Show XP popup
         if (PopupManager.Instance != null)
         {
-            PopupManager.Instance.ShowXPTracking(xp, transform);
+            PopupManager.Instance.ShowXP(xp, transform.position);
         }
         
         pendingExperience += xp;

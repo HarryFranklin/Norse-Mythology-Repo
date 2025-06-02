@@ -1,3 +1,4 @@
+
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,16 +6,19 @@ public class PopupManager : MonoBehaviour
 {
     [Header("Popup Settings")]
     public GameObject popupTextPrefab;
-    public Canvas uiCanvas;
-    public Camera mainCamera;
+    public Canvas canvas; // Set this to World Space in inspector
+
+    [Header("Canvas Scale Settings")]
+    [Tooltip("Scale factor for the world space canvas - adjust based on your camera setup")]
+    public float canvasScale = 0.01f; // Start with 0.01 for typical 2D setups
 
     [Header("Popup Offset")]
-    public Vector3 popupOffset = new Vector3(0, 2, 0); // Offset in world units above the entity
+    public Vector3 popupOffset = new Vector3(0, 1, 0); // Offset in world units
 
     [Header("Default Settings")]
     public float defaultDuration = 1.5f;
-    public float defaultMoveDistance = 1f; // World units for movement
-    public int defaultFontSize = 28;
+    public float defaultMoveDistance = 2f; // In world units
+    public float defaultFontSize = 36f; // Will be scaled by canvas
 
     [Header("Preset Colors")]
     public Color damageColor = Color.red;
@@ -32,7 +36,7 @@ public class PopupManager : MonoBehaviour
                 instance = FindFirstObjectByType<PopupManager>();
                 if (instance == null)
                 {
-                    Debug.LogError("PopupManager not found in scene! Make sure there's a PopupManager in your scene.");
+                    Debug.LogError("PopupManager not found in scene!");
                 }
             }
             return instance;
@@ -44,26 +48,44 @@ public class PopupManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            SetupCanvas();
         }
         else if (instance != this)
         {
             Destroy(gameObject);
             return;
         }
-
-        // Auto-find components if not assigned
-        if (uiCanvas == null)
-            uiCanvas = GetComponent<Canvas>();
-
-        if (mainCamera == null)
-            mainCamera = Camera.main;
     }
 
-    public void ShowPopup(string text, Vector3 worldPosition, Color color, int fontSize = 0, float duration = 0f, float moveDistance = 0f)
+    private void SetupCanvas()
     {
-        if (popupTextPrefab == null || uiCanvas == null || mainCamera == null)
+        if (canvas == null)
+            canvas = GetComponent<Canvas>();
+
+        if (canvas != null)
         {
-            Debug.LogError("PopupManager: Missing required components (prefab, canvas, or camera)!");
+            // Ensure canvas is set to World Space
+            canvas.renderMode = RenderMode.WorldSpace;
+            
+            // Set the scale
+            canvas.transform.localScale = Vector3.one * canvasScale;
+            
+            // Position at origin
+            canvas.transform.position = Vector3.zero;
+            
+            // Set sorting layer to ensure it renders above game objects
+            canvas.sortingLayerName = "UI"; // Make sure you have a "UI" sorting layer, or change this
+            canvas.sortingOrder = 100;
+
+            Debug.Log($"World Space Canvas setup complete. Scale: {canvasScale}");
+        }
+    }
+
+    public void ShowPopup(string text, Vector3 worldPosition, Color color, float fontSize = 0f, float duration = 0f, float moveDistance = 0f)
+    {
+        if (popupTextPrefab == null || canvas == null)
+        {
+            Debug.LogError("PopupManager: Missing required components!");
             return;
         }
 
@@ -73,70 +95,26 @@ public class PopupManager : MonoBehaviour
         if (moveDistance <= 0) moveDistance = defaultMoveDistance;
 
         // Apply offset to world position
-        Vector3 offsetWorldPosition = worldPosition + popupOffset;
+        Vector3 finalPosition = worldPosition + popupOffset;
 
-        // Create popup
-        GameObject popupObj = Instantiate(popupTextPrefab, uiCanvas.transform);
+        // Create popup directly at world position
+        GameObject popupObj = Instantiate(popupTextPrefab, canvas.transform);
+        popupObj.transform.position = finalPosition;
 
-        // Initialize the popup with world position tracking
+        // Initialise the popup
         PopupText popup = popupObj.GetComponent<PopupText>();
         if (popup != null)
         {
-            popup.Initialise(text, color, fontSize, duration, moveDistance, offsetWorldPosition, mainCamera);
+            popup.Initialise(text, color, fontSize, duration, moveDistance);
         }
         else
         {
-            Debug.LogError("PopupText component not found on popup prefab!");
+            Debug.LogError("WorldSpacePopupText component not found on popup prefab!");
             Destroy(popupObj);
         }
     }
 
-    // Overload for tracking a specific Transform (if you want the popup to follow a moving object)
-    public PopupText ShowPopupTracking(string text, Transform targetTransform, Color color, int fontSize = 0, float duration = 0f, float moveDistance = 0f)
-    {
-        if (popupTextPrefab == null || uiCanvas == null || mainCamera == null)
-        {
-            Debug.LogError("PopupManager: Missing required components (prefab, canvas, or camera)!");
-            return null;
-        }
-
-        // Use default values if not specified
-        if (fontSize <= 0) fontSize = defaultFontSize;
-        if (duration <= 0) duration = defaultDuration;
-        if (moveDistance <= 0) moveDistance = defaultMoveDistance;
-
-        // Create popup
-        GameObject popupObj = Instantiate(popupTextPrefab, uiCanvas.transform);
-
-        // Initialize the popup with world position tracking
-        PopupText popup = popupObj.GetComponent<PopupText>();
-        if (popup != null)
-        {
-            Vector3 offsetWorldPosition = targetTransform.position + popupOffset;
-            popup.Initialise(text, color, fontSize, duration, moveDistance, offsetWorldPosition, mainCamera);
-            
-            // Start tracking the transform
-            StartCoroutine(TrackTransform(popup, targetTransform));
-            return popup;
-        }
-        else
-        {
-            Debug.LogError("PopupText component not found on popup prefab!");
-            Destroy(popupObj);
-            return null;
-        }
-    }
-
-    private System.Collections.IEnumerator TrackTransform(PopupText popup, Transform target)
-    {
-        while (popup != null && popup.IsAnimating() && target != null)
-        {
-            popup.UpdateWorldPosition(target.position + popupOffset);
-            yield return null;
-        }
-    }
-
-    // Convenience methods for common popup types
+    // Convenience methods
     public void ShowDamage(float damage, Vector3 worldPosition)
     {
         ShowPopup($"-{damage:F0}", worldPosition, damageColor);
@@ -154,60 +132,21 @@ public class PopupManager : MonoBehaviour
 
     public void ShowRegen(float regenAmount, Vector3 worldPosition)
     {
-        ShowPopup($"+{regenAmount:F1}", worldPosition, regenColor, 20); // Slightly smaller for regen
+        ShowPopup($"+{regenAmount:F1}", worldPosition, regenColor, 24f); // Slightly smaller
     }
 
-    public void ShowCustom(string text, Vector3 worldPosition, Color color)
+    public void ShowLevelUp(int level, Vector3 worldPosition)
     {
-        ShowPopup(text, worldPosition, color);
+        ShowPopup($"LEVEL {level}!", worldPosition, Color.magenta, 48f, 2f, 3f);
     }
 
-    // Convenience methods for tracking moving objects
-    public void ShowDamageTracking(float damage, Transform target)
+    // Method to adjust canvas scale at runtime if needed
+    public void SetCanvasScale(float newScale)
     {
-        ShowPopupTracking($"-{damage:F0}", target, damageColor);
-    }
-
-    public void ShowHealTracking(float healAmount, Transform target)
-    {
-        ShowPopupTracking($"+{healAmount:F0}", target, healColor);
-    }
-
-    public void ShowXPTracking(float xpAmount, Transform target)
-    {
-        ShowPopupTracking($"+{xpAmount:F0} XP", target, xpColor);
-    }
-
-    public void ShowRegenTracking(float regenAmount, Transform target)
-    {
-        ShowPopupTracking($"+{regenAmount:F1}", target, regenColor, 20);
-    }
-
-    // Overloaded methods that accept Vector3 positions and convert them
-    public void ShowDamageTracking(float damage, Vector3 worldPosition)
-    {
-        ShowPopup($"-{damage:F0}", worldPosition, damageColor);
-    }
-
-    public void ShowHealTracking(float healAmount, Vector3 worldPosition)
-    {
-        ShowPopup($"+{healAmount:F0}", worldPosition, healColor);
-    }
-
-    public void ShowXPTracking(float xpAmount, Vector3 worldPosition)
-    {
-        ShowPopup($"+{xpAmount:F0} XP", worldPosition, xpColor);
-    }
-
-    public void ShowRegenTracking(float regenAmount, Vector3 worldPosition)
-    {
-        ShowPopup($"+{regenAmount:F1}", worldPosition, regenColor, 20);
+        canvasScale = newScale;
+        if (canvas != null)
+        {
+            canvas.transform.localScale = Vector3.one * canvasScale;
+        }
     }
 }
-
-// Example usage:
-// For static position (popup stays relative to world position):
-// PopupManager.Instance.ShowDamage(25f, enemy.transform.position);
-
-// For tracking a moving object:
-// PopupManager.Instance.ShowDamageTracking(25f, enemy.transform);

@@ -50,7 +50,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5781220962208783492, guid: a56d94a595a3da144b353ec5f49a52ae, type: 3}
       propertyPath: m_Radius
-      value: 2.75
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: 6624097378965127495, guid: a56d94a595a3da144b353ec5f49a52ae, type: 3}
       propertyPath: m_Color.a
@@ -128,10 +128,10 @@ MonoBehaviour:
   pickupType: 0
   value: 10
   canChasePlayer: 1
-  attractionDistance: 1
+  attractionDistance: 1.25
   moveSpeed: 5
-  acceleration: 3
+  acceleration: 4
   deceleration: 4
-  pickupDistance: 0.25
+  pickupDistance: 0.5
   pickupSound: {fileID: 0}
   pickupEffect: {fileID: 0}

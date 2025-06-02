@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 663770830700460523}
   - component: {fileID: 3243018119820071277}
   - component: {fileID: 2595088319982643}
-  - component: {fileID: 3803240079570104831}
+  - component: {fileID: -7983551373845680993}
   m_Layer: 0
-  m_Name: PopupText Prefab
+  m_Name: WorldPopup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -69,7 +69,7 @@ MonoBehaviour:
   m_text: Popup Text
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 20214e886ba5bdd4ab6496f023da241f, type: 2}
-  m_sharedMaterial: {fileID: -796686315809041859, guid: fd1613a901580804fa957aafdd71ed17, type: 2}
+  m_sharedMaterial: {fileID: -5763542882454856610, guid: 20214e886ba5bdd4ab6496f023da241f, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -137,7 +137,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &3803240079570104831
+--- !u!114 &-7983551373845680993
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -150,8 +150,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textComponent: {fileID: 2595088319982643}
-  duration: 1.5
-  moveDistance: 50
   fadeCurve:
     serializedVersion: 2
     m_Curve:
