@@ -70,7 +70,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7697260585850505662, guid: a56d94a595a3da144b353ec5f49a52ae, type: 3}
       propertyPath: m_Name
-      value: XPOrb Variant
+      value: XPOrb
       objectReference: {fileID: 0}
     - target: {fileID: 7998868278895279406, guid: a56d94a595a3da144b353ec5f49a52ae, type: 3}
       propertyPath: moveSpeed
@@ -103,5 +103,35 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7697260585850505662, guid: a56d94a595a3da144b353ec5f49a52ae, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5225510028109071318}
   m_SourcePrefab: {fileID: 100100000, guid: a56d94a595a3da144b353ec5f49a52ae, type: 3}
+--- !u!1 &6224046307236492347 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7697260585850505662, guid: a56d94a595a3da144b353ec5f49a52ae, type: 3}
+  m_PrefabInstance: {fileID: 4373673204323302789}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5225510028109071318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6224046307236492347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64bf14590d72b5e4caeebff1cb758e3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pickupType: 0
+  value: 10
+  canChasePlayer: 1
+  attractionDistance: 1
+  moveSpeed: 5
+  acceleration: 3
+  deceleration: 4
+  pickupDistance: 0.25
+  pickupSound: {fileID: 0}
+  pickupEffect: {fileID: 0}

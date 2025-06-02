@@ -47,9 +47,10 @@ public abstract class Pickup : MonoBehaviour
         
         // Set as trigger
         circleCollider.isTrigger = true;
-        
+
         // Set radius based on attraction distance (or pickup distance if not chasing)
-        circleCollider.radius = canChasePlayer ? attractionDistance : pickupDistance;
+        float baseRadius = canChasePlayer ? attractionDistance : pickupDistance;
+        circleCollider.radius = baseRadius + 0.2f; // Small buffer
         
         Debug.Log($"Pickup collider radius set to: {circleCollider.radius}");
     }
