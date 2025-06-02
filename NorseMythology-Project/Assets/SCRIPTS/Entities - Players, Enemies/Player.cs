@@ -70,7 +70,7 @@ public class Player : Entity
         
         StartCoroutine(HealthRegeneration());
         
-        // Update UI if available (it might not be ready yet due to initialization order)
+        // Update UI if available (it might not be ready yet due to initialisation order)
         if (healthXPUIManager != null)
         {
             healthXPUIManager.OnHealthChanged();
@@ -101,24 +101,28 @@ public class Player : Entity
     {
         while (!isDead)
         {
-            yield return new WaitForSeconds(0.1f); // Check every 0.1 seconds for more responsive regeneration
-            
-            // Add null check for currentStats
+            yield return new WaitForSeconds(0.1f);
+
             if (currentStats == null) continue;
-            
-            // Only regenerate if enough time has passed since last damage and health is not full
+
             if (currentHealth < maxHealth && 
                 Time.time >= lastDamageTime + healthRegenDelay)
             {
-                currentHealth = Mathf.Min(maxHealth, currentHealth + (currentStats.healthRegen * 0.1f));
-                
-                // Update UI when health regenerates
-                if (healthXPUIManager != null)
-                    healthXPUIManager.OnHealthChanged();
+                float regenAmount = currentStats.healthRegen * 0.1f;
+                float oldHealth = currentHealth;
+                currentHealth = Mathf.Min(maxHealth, currentHealth + regenAmount);
+
+                // Show regen popup every 0.5 seconds
+                if (Time.time % 0.5f < 0.1f)
+                {
+                    PopupManager.Instance?.ShowRegen(regenAmount * 5f, transform.position); // show per-second rate
+                }
+
+                healthXPUIManager?.OnHealthChanged();
             }
         }
     }
-    
+        
     public override void Heal(float amount)
     {
         if (isDead || currentStats == null) return;
@@ -144,13 +148,15 @@ public class Player : Entity
     {
         if (isDead || currentStats == null) return;
         
-        // Add XP to pending experience instead of directly to current stats
-        pendingExperience += xp;
+        // Show XP popup
+        if (PopupManager.Instance != null)
+        {
+            PopupManager.Instance.ShowXP(xp, transform.position);
+        }
         
-        // Check if we'll have enough XP for a level up when processed
+        pendingExperience += xp;
         CheckForPendingLevelUp();
         
-        // Update UI when XP changes
         if (healthXPUIManager != null)
             healthXPUIManager.OnXPChanged();
     }
@@ -184,6 +190,16 @@ public class Player : Entity
         
         // Heal to full on level up
         currentHealth = maxHealth;
+
+        // Pop-up
+        PopupManager.Instance?.ShowPopup(
+            $"LEVEL {currentStats.level}!",
+            transform.position + Vector3.up * 1f,
+            Color.magenta,
+            fontSize: 36,
+            duration: 2f,
+            moveDistance: 100f
+        );
         
         Debug.Log($"Level Up! Now level {currentStats.level}");
     }

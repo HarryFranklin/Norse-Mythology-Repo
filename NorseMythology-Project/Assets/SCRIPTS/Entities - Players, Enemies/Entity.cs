@@ -32,9 +32,12 @@ public abstract class Entity : MonoBehaviour
     public virtual void TakeDamage(float damageAmount, float stunDuration = 0f)
     {
         if (isDead || isInvincible) return;
-        
+
         currentHealth -= damageAmount;
         lastDamageTime = Time.time;
+
+        // Show damage popup
+        PopupManager.Instance?.ShowDamage(damageAmount, transform.position);
 
         if (stunDuration > 0f)
         {
@@ -52,8 +55,15 @@ public abstract class Entity : MonoBehaviour
     public virtual void Heal(float amount)
     {
         if (isDead) return;
-        
+
+        float healedAmount = Mathf.Min(maxHealth - currentHealth, amount);
         currentHealth = Mathf.Min(maxHealth, currentHealth + amount);
+
+        if (healedAmount > 0)
+        {
+            PopupManager.Instance?.ShowHeal(healedAmount, transform.position);
+        }
+
         OnHealed(amount);
     }
 
