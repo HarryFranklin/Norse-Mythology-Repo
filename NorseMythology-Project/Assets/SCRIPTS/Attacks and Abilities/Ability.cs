@@ -33,6 +33,10 @@ public abstract class Ability : ScriptableObject
     [TextArea(2, 4)]
     public string description;
 
+    [Header("Level Management")]
+    [SerializeField] protected int currentLevel = 1;
+    [SerializeField] protected int maxLevel = 5; // Max level should always be 5, for now
+
     // For instant abilities - activates immediately
     public abstract void Activate(Player player, PlayerMovement playerMovement);
 
