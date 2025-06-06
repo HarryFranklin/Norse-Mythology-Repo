@@ -50,6 +50,18 @@ public class HammerSlamAbility : DefendAbility
 
     private IEnumerator PerformHammerSlam(Player player)
     {
-        yield return new WaitForSeconds(0.1f); // Small delay before slam
+        yield return new WaitForSeconds(1f); // Small delay before slam
+
+        GameObject knockbackSource = new GameObject("KnockbackSource");
+        knockbackSource.transform.position = player.transform.position;
+        knockbackSource.AddComponent<Knockback>();
+        Knockback knockback = knockbackSource.GetComponent<Knockback>();
+        knockbackSource.AddComponent<CircleCollider2D>();
+
+        knockback.Initialise(knockbackSource.transform.position, 
+            new float[] {innerDamageRadius, outerKnockbackRadius},
+            75f, // Inner zone damage
+            15f, // Outer zone damage
+            Knockback.KnockbackType.Radial);
     }
 }
