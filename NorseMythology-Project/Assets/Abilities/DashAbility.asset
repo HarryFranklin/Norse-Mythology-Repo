@@ -23,6 +23,8 @@ MonoBehaviour:
   maxTargetingRange: 6
   description: Dash quickly in a target direction, becoming invincible for a brief
     moment.
+  currentLevel: 1
+  maxLevel: 5
   duration: 0.3
   effectStrength: 25
   dashDistance: 6
@@ -34,6 +36,6 @@ MonoBehaviour:
   trailDuration: 0.5
   trailSpawnInterval: 0.01
   trailFadeDuration: 0.25
-  maxTrailSprites: 20
+  maxTrailSprites: 15
   trailStartColor: {r: 1, g: 1, b: 1, a: 1}
   trailEndColor: {r: 0, g: 0, b: 0, a: 0}
