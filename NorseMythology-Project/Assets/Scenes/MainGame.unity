@@ -7608,7 +7608,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4de6e68fb534fb946831fb1d24c4bcf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 250
   currentHealth: 0
   isDead: 0
   moveSpeed: 2
@@ -7848,10 +7848,10 @@ SceneRoots:
   - {fileID: 570491798}
   - {fileID: 1755977906}
   - {fileID: 514065319}
-  - {fileID: 292474983}
   - {fileID: 1261929404}
   - {fileID: 1753531478}
   - {fileID: 100481637}
   - {fileID: 1442276654}
   - {fileID: 1161178990}
   - {fileID: 861679037}
+  - {fileID: 292474983}

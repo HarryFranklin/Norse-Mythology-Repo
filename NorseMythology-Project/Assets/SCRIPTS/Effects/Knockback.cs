@@ -24,17 +24,17 @@ public class Knockback : MonoBehaviour
     private List<Enemy> zoneBEnemies = new List<Enemy>();
 
     [Header("Damage Settings")]
-    [SerializeField] private float zoneADamage = 50f; // Inner zone damage
-    [SerializeField] private float zoneBDamage = 25f; // Outer zone damage
+    [SerializeField] private float zoneADamage = 8f; // Inner zone damage
+    [SerializeField] private float zoneBDamage = 4f; // Outer zone damage
     [SerializeField] private float zoneAStunDuration = 1.5f; // Inner zone stun
     [SerializeField] private float zoneBStunDuration = 0.75f; // Outer zone stun
 
     [Header("Knockback Settings")]
     [SerializeField] private KnockbackType knockbackType = KnockbackType.Radial;
     [SerializeField] private Vector2 knockbackDirection = Vector2.right; // For directional knockback
-    [SerializeField] private float zoneAKnockbackForce = 15f;
-    [SerializeField] private float zoneBKnockbackForce = 8f;
-    [SerializeField] private float knockbackDuration = 0.5f;
+    [SerializeField] private float zoneAKnockbackForce = 5f;
+    [SerializeField] private float zoneBKnockbackForce = 2.5f;
+    [SerializeField] private float knockbackDuration = 0.2f;
 
     [Header("Gizmo Settings")]
     [SerializeField] private bool showGizmos = true;

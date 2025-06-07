@@ -60,8 +60,8 @@ public class HammerSlamAbility : DefendAbility
 
         knockback.Initialise(knockbackSource.transform.position, 
             new float[] {innerDamageRadius, outerKnockbackRadius},
-            75f, // Inner zone damage
-            15f, // Outer zone damage
+            5f, // Inner zone damage
+            2.5f, // Outer zone damage
             Knockback.KnockbackType.Radial);
     }
 }
