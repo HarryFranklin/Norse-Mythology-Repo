@@ -44,7 +44,7 @@ public class Enemy : Entity
 
     private void Update()
     {
-        if (isStunned || target == null) return; // Skip update if stunned or no target
+        if (isStunned || isFrozen || target == null) return;
 
         float distanceToTarget = GetDistanceTo(target);
 

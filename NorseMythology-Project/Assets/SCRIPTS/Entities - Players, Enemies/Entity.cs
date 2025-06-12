@@ -16,6 +16,7 @@ public abstract class Entity : MonoBehaviour
     
     [Header("Status Effects")]
     public bool isStunned = false;
+    public bool isFrozen = false;
     public bool isInvincible = false;
     protected float lastDamageTime = 0f; // Time since last damaged (for setting and checking stun duration)
 
@@ -73,6 +74,12 @@ public abstract class Entity : MonoBehaviour
             StartCoroutine(StunRoutine(duration));
     }
 
+    public virtual void Freeze(float duration)
+    {
+        if (!isFrozen)
+            StartCoroutine(FreezeRoutine(duration));
+    }
+
     protected virtual IEnumerator StunRoutine(float duration)
     {
         isStunned = true;
@@ -105,6 +112,35 @@ public abstract class Entity : MonoBehaviour
         OnStunEnded();
     }
 
+    protected virtual IEnumerator FreezeRoutine(float duration)
+    {
+        isFrozen = true;
+
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        Color originalColor = sr != null ? sr.color : Color.white;
+        
+        // Apply a light blue tint to indicate frozen state
+        Color frozenColor = new Color(0.7f, 0.9f, 1f, originalColor.a);
+        if (sr != null)
+            sr.color = frozenColor;
+
+        // Wait for 80% of the duration (enemies can't move during this time)
+        float immobilizeDuration = duration * 0.8f;
+        yield return new WaitForSeconds(immobilizeDuration);
+
+        // At 80% completion, enemies can start moving again (20% opacity threshold)
+        isFrozen = false;
+        OnFreezeEnded();
+
+        // Wait for the remaining 20% of duration while fade completes
+        float remainingDuration = duration * 0.2f;
+        yield return new WaitForSeconds(remainingDuration);
+
+        // Restore original color when effect fully ends
+        if (sr != null)
+            sr.color = originalColor;
+    }
+
     protected virtual void Die()
     {
         isDead = true;
@@ -115,6 +151,7 @@ public abstract class Entity : MonoBehaviour
     protected virtual void OnDamageTaken(float damage) { }
     protected virtual void OnHealed(float amount) { }
     protected virtual void OnStunEnded() { }
+    protected virtual void OnFreezeEnded() { }
     protected abstract void OnDeath();
 
     // Utility methods

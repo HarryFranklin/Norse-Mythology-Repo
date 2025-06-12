@@ -6638,14 +6638,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 0.2471698, g: 0.88924646, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: -384397029, guid: e20ffde0bbe61624695318427c9d6d54, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -7891,7 +7891,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1ba6f0d352a07314cbb97c9eef69b221, type: 2}
   - {fileID: 11400000, guid: d0492b93ff50678429418953ac61394a, type: 2}
   - {fileID: 11400000, guid: 31d15f54104a34f45833dc91cbc72dbd, type: 2}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 2094d4b864938154d9e4bdf9efeecba8, type: 2}
 --- !u!114 &2135908900
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7910,6 +7910,7 @@ MonoBehaviour:
   moveSpeed: 2
   damage: 5
   isStunned: 0
+  isFrozen: 0
   isInvincible: 0
   baseStats: {fileID: 11400000, guid: d502c6bd20489c74992235336485d903, type: 2}
   gameManager: {fileID: 1753531477}
