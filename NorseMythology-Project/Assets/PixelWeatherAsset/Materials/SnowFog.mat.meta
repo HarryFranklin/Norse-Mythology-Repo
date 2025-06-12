@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 0a773a848313b2e40b9e61f5489529d3
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 148577
+  packageName: Pixel Weather Particles
+  packageVersion: 1.0
+  assetPath: Assets/PixelWeatherAsset/Materials/SnowFog.mat
+  uploadId: 316052

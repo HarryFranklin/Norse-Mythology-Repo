@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 3701d9c4e62ffec4dafd15286cf7898d
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 148577
+  packageName: Pixel Weather Particles
+  packageVersion: 1.0
+  assetPath: Assets/PixelWeatherAsset/Scripts/RainController.cs
+  uploadId: 316052

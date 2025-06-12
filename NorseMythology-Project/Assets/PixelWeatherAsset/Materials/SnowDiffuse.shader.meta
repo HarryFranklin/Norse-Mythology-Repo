@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 13702b4de051d6f478dcfe302c8b9ab5
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 148577
+  packageName: Pixel Weather Particles
+  packageVersion: 1.0
+  assetPath: Assets/PixelWeatherAsset/Materials/SnowDiffuse.shader
+  uploadId: 316052

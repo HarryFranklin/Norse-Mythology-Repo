@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 4d484893fae264f4fac554213fbdb074
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 148577
+  packageName: Pixel Weather Particles
+  packageVersion: 1.0
+  assetPath: Assets/PixelWeatherAsset/Prefabs/Weather/Rain.prefab
+  uploadId: 316052

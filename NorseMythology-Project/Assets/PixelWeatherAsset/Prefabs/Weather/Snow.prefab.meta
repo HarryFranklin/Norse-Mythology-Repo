@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: e9af06bc54a72ea4e8548977bd726e6b
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 148577
+  packageName: Pixel Weather Particles
+  packageVersion: 1.0
+  assetPath: Assets/PixelWeatherAsset/Prefabs/Weather/Snow.prefab
+  uploadId: 316052

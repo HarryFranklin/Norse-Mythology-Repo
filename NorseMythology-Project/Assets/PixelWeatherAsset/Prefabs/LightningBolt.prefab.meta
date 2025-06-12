@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 045c8e5bc6551a240a347694d638aee5
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 148577
+  packageName: Pixel Weather Particles
+  packageVersion: 1.0
+  assetPath: Assets/PixelWeatherAsset/Prefabs/LightningBolt.prefab
+  uploadId: 316052

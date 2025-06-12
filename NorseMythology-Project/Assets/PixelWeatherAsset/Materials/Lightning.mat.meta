@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d55ed6d7180f6eb4f854610a9154c607
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 148577
+  packageName: Pixel Weather Particles
+  packageVersion: 1.0
+  assetPath: Assets/PixelWeatherAsset/Materials/Lightning.mat
+  uploadId: 316052

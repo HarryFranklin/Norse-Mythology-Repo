@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: fb43ead0eec811f4da1a110a4c59a1d9
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 148577
+  packageName: Pixel Weather Particles
+  packageVersion: 1.0
+  assetPath: Assets/PixelWeatherAsset/Materials/SnowLit.mat
+  uploadId: 316052

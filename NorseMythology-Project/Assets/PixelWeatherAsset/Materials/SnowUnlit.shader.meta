@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 55873c0a368f97240bf74b30108425be
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 148577
+  packageName: Pixel Weather Particles
+  packageVersion: 1.0
+  assetPath: Assets/PixelWeatherAsset/Materials/SnowUnlit.shader
+  uploadId: 316052

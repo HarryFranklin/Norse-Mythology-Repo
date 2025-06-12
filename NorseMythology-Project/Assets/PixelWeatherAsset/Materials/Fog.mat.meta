@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 92f7e0f12bb8eff418abfeb9d0eaf2d4
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 148577
+  packageName: Pixel Weather Particles
+  packageVersion: 1.0
+  assetPath: Assets/PixelWeatherAsset/Materials/Fog.mat
+  uploadId: 316052
