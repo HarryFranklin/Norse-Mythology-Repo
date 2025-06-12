@@ -1,30 +1,28 @@
 using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 
 [CreateAssetMenu(fileName = "HammerSlamAbility", menuName = "Abilities/Defend/HammerSlam")]
 public class HammerSlamAbility : DefendAbility
 {
-    // Right I need to think what this ability does
-    // On pressing "3", the player does a small jump in the direction they are travelling, or last travelled in.
-        // This locks the player movement until you hit the ground.
-    // When you hit the ground, you slam the hammer down, dealing great damage to enemies in a small radius around you.
-        // Enemies in a small radius are damaged and stunned, and only die after hitting the ground themselves.
-        // Enemies within a larger radius are knocked back, dealt less damage and stunned for a short duration.
-
     [Header("Hammer Slam Settings")]
     [SerializeField] private float innerDamageRadius = 2f;
     [SerializeField] private float outerKnockbackRadius = 4f;
     [SerializeField] private float innerDamage = 15f;
-    [SerializeField] private float landingDamage = 8f;
-    [SerializeField] private float knockbackForce = 5f;
-    [SerializeField] private float stunDuration = 2f;
+    [SerializeField] private float outerDamage = 8f;
+    [SerializeField] private float innerKnockbackDistance = 2f;
+    [SerializeField] private float outerKnockbackDistance = 1.5f;
+    [SerializeField] private float innerStunDuration = 2f;
+    [SerializeField] private float outerStunDuration = 1f;
+    [SerializeField] private float knockbackDuration = 0.3f;
     [SerializeField] private float slamAnimationDuration = 0.5f;
 
     [Header("Visual Effects")]
     [SerializeField] private GameObject hammerPrefab;
     [SerializeField] private GameObject shockwavePrefab;
     [SerializeField] private GameObject dustCloudPrefab;
+
+    [Header("Screen Settings")]
+    [SerializeField] private Vector2 screenBounds = new Vector2(10f, 6f);
 
     private void Awake()
     {
@@ -44,24 +42,61 @@ public class HammerSlamAbility : DefendAbility
     {
         if (player == null) return;
 
-        // Start the hammer slam coroutine
         player.StartCoroutine(PerformHammerSlam(player));
     }
 
     private IEnumerator PerformHammerSlam(Player player)
     {
-        yield return new WaitForSeconds(1f); // Small delay before slam
+        yield return new WaitForSeconds(1f);
 
-        GameObject knockbackSource = new GameObject("KnockbackSource");
-        knockbackSource.transform.position = player.transform.position;
-        knockbackSource.AddComponent<Knockback>();
-        Knockback knockback = knockbackSource.GetComponent<Knockback>();
-        knockbackSource.AddComponent<CircleCollider2D>();
+        Vector3 slamPosition = player.transform.position;
 
-        knockback.Initialise(knockbackSource.transform.position, 
-            new float[] {innerDamageRadius, outerKnockbackRadius},
-            5f, // Inner zone damage
-            2.5f, // Outer zone damage
-            Knockback.KnockbackType.Radial);
+        SpawnVisualEffects(slamPosition);
+
+        var damageZones = Knockback.CreateStandardZones(
+            innerDamageRadius, outerKnockbackRadius,
+            innerDamage, outerDamage,
+            innerKnockbackDistance, outerKnockbackDistance,
+            innerStunDuration, outerStunDuration
+        );
+
+        Knockback.ApplyRadialKnockback(slamPosition, damageZones, "Enemy", knockbackDuration, screenBounds);
+    }
+
+    private void SpawnVisualEffects(Vector3 position)
+    {
+        if (hammerPrefab != null)
+        {
+            GameObject hammer = Instantiate(hammerPrefab, position, Quaternion.identity);
+            Destroy(hammer, 2f);
+        }
+
+        if (shockwavePrefab != null)
+        {
+            GameObject shockwave = Instantiate(shockwavePrefab, position, Quaternion.identity);
+            Destroy(shockwave, 1f);
+        }
+
+        if (dustCloudPrefab != null)
+        {
+            GameObject dust = Instantiate(dustCloudPrefab, position, Quaternion.identity);
+            Destroy(dust, 3f);
+        }
+    }
+
+    [ContextMenu("Test Hammer Slam")]
+    private void TestHammerSlam()
+    {
+        if (Application.isPlaying)
+        {
+            var damageZones = Knockback.CreateStandardZones(
+                innerDamageRadius, outerKnockbackRadius,
+                innerDamage, outerDamage,
+                innerKnockbackDistance, outerKnockbackDistance,
+                innerStunDuration, outerStunDuration
+            );
+
+            Knockback.ApplyRadialKnockback(Vector3.zero, damageZones, "Enemy", knockbackDuration, screenBounds);
+        }
     }
 }

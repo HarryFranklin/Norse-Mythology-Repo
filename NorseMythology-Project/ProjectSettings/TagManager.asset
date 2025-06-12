@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - HideOnDeath
+  - Projectile
   layers:
   - Default
   - TransparentFX
@@ -14,8 +15,8 @@ TagManager:
   - Water
   - UI
   - Terrain
-  - Enemy
   - 
+  - Enemy
   - 
   - 
   - 

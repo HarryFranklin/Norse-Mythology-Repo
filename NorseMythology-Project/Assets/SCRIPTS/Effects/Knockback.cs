@@ -2,331 +2,222 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-[RequireComponent(typeof(CircleCollider2D))]
 public class Knockback : MonoBehaviour
 {
+    [System.Serializable]
+    public class DamageZone
+    {
+        [SerializeField] public float radius;
+        [SerializeField] public float damage;
+        [SerializeField] public float knockbackDistance;
+        [SerializeField] public float stunDuration;
+        [SerializeField] public Color gizmoColor = Color.red;
+
+        public DamageZone(float radius, float damage, float knockbackDistance, float stunDuration)
+        {
+            this.radius = radius;
+            this.damage = damage;
+            this.knockbackDistance = knockbackDistance;
+            this.stunDuration = stunDuration;
+        }
+    }
+
     public enum KnockbackType
     {
-        Directional,
-        Radial
+        Radial,
+        Directional
     }
 
-    public enum ZoneType
-    {
-        OneZone,
-        TwoZone
-    }
-
-    [SerializeField] private CircleCollider2D collider2D;
-    [SerializeField] private List<Enemy> enemiesHit = new List<Enemy>();
-    [SerializeField] public float[] radii;
-    private List<Enemy> zoneAEnemies = new List<Enemy>();
-    private List<Enemy> zoneBEnemies = new List<Enemy>();
-
-    [Header("Damage Settings")]
-    [SerializeField] private float zoneADamage = 8f; // Inner zone damage
-    [SerializeField] private float zoneBDamage = 4f; // Outer zone damage
-    [SerializeField] private float zoneAStunDuration = 1.5f; // Inner zone stun
-    [SerializeField] private float zoneBStunDuration = 0.75f; // Outer zone stun
-
-    [Header("Knockback Settings")]
-    [SerializeField] private KnockbackType knockbackType = KnockbackType.Radial;
-    [SerializeField] private Vector2 knockbackDirection = Vector2.right; // For directional knockback
-    [SerializeField] private float zoneAKnockbackForce = 5f;
-    [SerializeField] private float zoneBKnockbackForce = 2.5f;
+    [Header("Screen Bounds")]
+    [SerializeField] private Vector2 screenBounds = new Vector2(10f, 6f);
+    [SerializeField] private string enemyTag = "Enemy";
+    [SerializeField] private string projectileTag = "Projectile";
     [SerializeField] private float knockbackDuration = 0.2f;
 
-    [Header("Gizmo Settings")]
+    [Header("Knockback Variation")]
+    [SerializeField] private float knockbackVariation = 0.3f;
+    [SerializeField] private float knockbackForceMultiplier = 10f;
+
+    [Header("Visual Settings")]
     [SerializeField] private bool showGizmos = true;
-    [SerializeField] private Color zoneAColor = Color.red;
-    [SerializeField] private Color zoneBColor = Color.yellow;
-    [SerializeField] private Color enemyZoneAColor = Color.magenta;
-    [SerializeField] private Color enemyZoneBColor = Color.cyan;
+    [SerializeField] private float gizmoAlpha = 0.3f;
 
-    private void Start()
+    public static void ApplyRadialKnockback(Vector3 center, DamageZone[] zones, 
+        string enemyTag = "Enemy", float knockbackDuration = 0.2f, Vector2 screenBounds = default)
     {
-        if (collider2D == null)
-        {
-            SetupCollider(5f);
-        }
-
-        DetectEnemies();
-        CategoriseEnemies();
-        ApplyKnockbackEffects();
+        if (screenBounds == default)
+            screenBounds = new Vector2(10f, 6f);
+            
+        ApplyKnockback(center, zones, KnockbackType.Radial, Vector2.zero, enemyTag, knockbackDuration, screenBounds);
     }
 
-    private void SetupCollider(float? radius)
+    public static void ApplyDirectionalKnockback(Vector3 center, DamageZone[] zones, Vector2 direction,
+        string enemyTag = "Enemy", float knockbackDuration = 0.2f, Vector2 screenBounds = default)
     {
-        collider2D = GetComponent<CircleCollider2D>();
-        if (collider2D == null)
-        {
-            collider2D = gameObject.AddComponent<CircleCollider2D>();
-        }
-
-        collider2D.radius = (float)radius;
-        collider2D.isTrigger = true;
+        if (screenBounds == default)
+            screenBounds = new Vector2(10f, 6f);
+            
+        ApplyKnockback(center, zones, KnockbackType.Directional, direction, enemyTag, knockbackDuration, screenBounds);
     }
 
-    private void DetectEnemies()
+    private static void ApplyKnockback(Vector3 center, DamageZone[] zones, KnockbackType type, 
+        Vector2 direction, string enemyTag, float knockbackDuration, Vector2 screenBounds)
     {
-        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, collider2D.radius);
-        foreach (Collider2D hitCollider in hitColliders)
+        if (zones == null || zones.Length == 0) return;
+
+        float maxRadius = 0f;
+        foreach (var zone in zones)
         {
-            Enemy enemy = hitCollider.GetComponent<Enemy>();
-            if (enemy != null && !enemiesHit.Contains(enemy))
+            if (zone.radius > maxRadius)
+                maxRadius = zone.radius;
+        }
+
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(center, maxRadius);
+        List<Enemy> enemies = new List<Enemy>();
+
+        foreach (var collider in hitColliders)
+        {
+            if (collider.CompareTag(enemyTag))
             {
-                enemiesHit.Add(enemy);
+                Enemy enemy = collider.GetComponent<Enemy>();
+                if (enemy != null && !enemy.isDead)
+                {
+                    enemies.Add(enemy);
+                }
             }
         }
-    }
 
-    private void CategoriseEnemies()
-    {
-        foreach(Enemy enemy in enemiesHit)
+        foreach (Enemy enemy in enemies)
         {
-            float distance = Vector2.Distance(transform.position, enemy.transform.position);
-            if (distance <= radii[0])
+            float distance = Vector2.Distance(center, enemy.transform.position);
+            
+            DamageZone applicableZone = null;
+            foreach (var zone in zones)
             {
-                zoneAEnemies.Add(enemy);
+                if (distance <= zone.radius)
+                {
+                    if (applicableZone == null || zone.radius < applicableZone.radius)
+                    {
+                        applicableZone = zone;
+                    }
+                }
             }
-            else if ((distance <= radii[1]) && (distance > radii[0]))
-            {
-                zoneBEnemies.Add(enemy);
-            }
-        }
-    }
 
-    private void ApplyKnockbackEffects()
-    {
-        // Apply Zone A effects (inner zone - higher damage)
-        foreach (Enemy enemy in zoneAEnemies)
-        {
-            if (enemy != null && !enemy.isDead)
+            if (applicableZone != null)
             {
-                // Apply damage and stun
-                enemy.TakeDamage(zoneADamage, zoneAStunDuration);
+                DestroyEnemyProjectiles(enemy);
                 
-                // Apply knockback
-                ApplyKnockbackToEnemy(enemy, zoneAKnockbackForce);
+                enemy.TakeDamage(applicableZone.damage, applicableZone.stunDuration);
+
+                if (!enemy.isDead)
+                {
+                    Vector2 knockbackDir = CalculateKnockbackDirection(center, enemy.transform.position, type, direction);
+                    ApplyRigidbodyKnockback(enemy, center, knockbackDir, applicableZone, distance, knockbackDuration, screenBounds);
+                }
             }
         }
-
-        // Apply Zone B effects (outer zone - lower damage)
-        foreach (Enemy enemy in zoneBEnemies)
-        {
-            if (enemy != null && !enemy.isDead)
-            {
-                // Apply damage and stun
-                enemy.TakeDamage(zoneBDamage, zoneBStunDuration);
-                
-                // Apply knockback
-                ApplyKnockbackToEnemy(enemy, zoneBKnockbackForce);
-            }
-        }
-
-        // Destroy the knockback object after a short delay to allow for visual effects
-        StartCoroutine(DestroyAfterDelay(0.1f));
     }
 
-    private void ApplyKnockbackToEnemy(Enemy enemy, float force)
+    private static Vector2 CalculateKnockbackDirection(Vector3 center, Vector3 enemyPosition, 
+        KnockbackType type, Vector2 direction)
     {
-        Vector2 knockbackDir;
-        
-        switch (knockbackType)
+        switch (type)
         {
             case KnockbackType.Radial:
-                // Knockback away from the center of the explosion
-                knockbackDir = (enemy.transform.position - transform.position).normalized;
-                break;
+                return (enemyPosition - center).normalized;
             case KnockbackType.Directional:
-                // Knockback in a specified direction
-                knockbackDir = knockbackDirection.normalized;
-                break;
+                return direction.normalized;
             default:
-                knockbackDir = Vector2.zero;
-                break;
+                return Vector2.zero;
         }
-
-        // Apply the knockback force using Rigidbody2D
-        ApplyKnockbackForce(enemy, knockbackDir, force);
     }
 
-    private void ApplyKnockbackForce(Enemy enemy, Vector2 direction, float force)
+    private static void DestroyEnemyProjectiles(Enemy enemy)
+    {
+        if (enemy == null) return;
+
+        Transform[] childTransforms = enemy.GetComponentsInChildren<Transform>();
+        foreach (Transform child in childTransforms)
+        {
+            if (child != enemy.transform && child.CompareTag("Projectile"))
+            {
+                GameObject.Destroy(child.gameObject);
+            }
+        }
+
+        GameObject[] projectilesOnEnemy = GameObject.FindGameObjectsWithTag("Projectile");
+        foreach (GameObject projectile in projectilesOnEnemy)
+        {
+            if (projectile.transform.IsChildOf(enemy.transform) || projectile.transform == enemy.transform)
+            {
+                GameObject.Destroy(projectile);
+            }
+        }
+    }
+
+    private static void ApplyRigidbodyKnockback(Enemy enemy, Vector3 center, Vector2 direction, 
+        DamageZone zone, float currentDistance, float duration, Vector2 screenBounds)
     {
         if (enemy == null || enemy.isDead) return;
 
-        // Get or add Rigidbody2D component
-        Rigidbody2D enemyRb = enemy.GetComponent<Rigidbody2D>();
+        Rigidbody2D rb = enemy.GetComponent<Rigidbody2D>();
+        if (rb == null) return;
 
-        // Apply impulse force for instant knockback
-        Vector2 knockbackForce = direction * force;
-        enemyRb.AddForce(knockbackForce, ForceMode2D.Impulse);
-
-        // Start coroutine to temporarily disable enemy movement
-        StartCoroutine(DisableEnemyMovementDuringKnockback(enemy));
+        float normalizedDistance = Mathf.Clamp01(currentDistance / zone.radius);
+        float knockbackMultiplier = Mathf.Lerp(1f, 0.3f, normalizedDistance);
+        
+        float variation = Random.Range(-0.3f, 0.3f);
+        float finalKnockbackDistance = zone.knockbackDistance * knockbackMultiplier * (1f + variation);
+        
+        float knockbackForce = finalKnockbackDistance * 10f;
+        
+        Vector2 knockbackVelocity = direction * knockbackForce;
+        
+        float originalMoveSpeed = enemy.moveSpeed;
+        enemy.moveSpeed = 0f;
+        
+        rb.linearVelocity = Vector2.zero;
+        rb.AddForce(knockbackVelocity, ForceMode2D.Impulse);
+        
+        MonoBehaviour monoBehaviour = enemy.GetComponent<MonoBehaviour>();
+        if (monoBehaviour != null)
+        {
+            monoBehaviour.StartCoroutine(RestoreMovementAfterKnockback(enemy, originalMoveSpeed, duration));
+        }
     }
 
-    private IEnumerator DisableEnemyMovementDuringKnockback(Enemy enemy)
+    private static IEnumerator RestoreMovementAfterKnockback(Enemy enemy, float originalMoveSpeed, float delay)
     {
-        if (enemy == null || enemy.isDead) yield break;
-
-        // Store original move speed to restore later
-        float originalMoveSpeed = enemy.moveSpeed;
-        enemy.moveSpeed = 0f; // Prevent enemy from moving during knockback
-
-        // Wait for knockback duration
-        yield return new WaitForSeconds(knockbackDuration);
-
-        // Restore original move speed
+        yield return new WaitForSeconds(delay);
+        
         if (enemy != null && !enemy.isDead)
         {
             enemy.moveSpeed = originalMoveSpeed;
-        }
-    }
-
-    private IEnumerator DestroyAfterDelay(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        Destroy(gameObject);
-    }
-
-    // Public method to set up the knockback from external scripts
-    public void Initialise(Vector3 position, float[] zones, float innerDamage = 50f, float outerDamage = 25f, 
-                          KnockbackType kbType = KnockbackType.Radial, Vector2 direction = default)
-    {
-        transform.position = position;
-        radii = zones;
-        zoneADamage = innerDamage;
-        zoneBDamage = outerDamage;
-        knockbackType = kbType;
-        
-        if (direction != default)
-            knockbackDirection = direction;
-
-        // Set collider radius to outer zone
-        if (zones.Length > 1)
-            SetupCollider(zones[1]);
-        else if (zones.Length > 0)
-            SetupCollider(zones[0]);
-    }
-
-    private void OnDrawGizmos()
-    {
-        if (!showGizmos) return;
-
-        // Draw the detection zones
-        DrawDetectionZones();
-        
-        // Draw enemy indicators
-        DrawEnemyIndicators();
-    }
-
-    private void DrawDetectionZones()
-    {
-        Vector3 position = transform.position;
-
-        // Draw Zone A (inner radius) - solid circle
-        if (radii != null && radii.Length > 0)
-        {
-            Gizmos.color = new Color(zoneAColor.r, zoneAColor.g, zoneAColor.b, 0.3f);
-            Gizmos.DrawSphere(position, radii[0]);
             
-            Gizmos.color = zoneAColor;
-            Gizmos.DrawWireSphere(position, radii[0]);
-        }
-
-        // Draw Zone B (outer radius) - wire circle only
-        if (radii != null && radii.Length > 1)
-        {
-            Gizmos.color = new Color(zoneBColor.r, zoneBColor.g, zoneBColor.b, 0.15f);
-            Gizmos.DrawSphere(position, radii[1]);
-            
-            Gizmos.color = zoneBColor;
-            Gizmos.DrawWireSphere(position, radii[1]);
-        }
-
-        // Draw collider radius for reference
-        if (collider2D != null)
-        {
-            Gizmos.color = Color.white;
-            Gizmos.DrawWireSphere(position, collider2D.radius);
-        }
-
-        // Draw knockback direction indicator for directional knockback
-        if (knockbackType == KnockbackType.Directional)
-        {
-            Gizmos.color = Color.blue;
-            Vector3 directionEnd = position + (Vector3)(knockbackDirection.normalized * 2f);
-            Gizmos.DrawLine(position, directionEnd);
-            Gizmos.DrawWireSphere(directionEnd, 0.2f);
-        }
-    }
-
-    private void DrawEnemyIndicators()
-    {
-        // Draw Zone A enemies
-        Gizmos.color = enemyZoneAColor;
-        foreach (Enemy enemy in zoneAEnemies)
-        {
-            if (enemy != null)
+            Rigidbody2D rb = enemy.GetComponent<Rigidbody2D>();
+            if (rb != null)
             {
-                Vector3 enemyPos = enemy.transform.position;
-                Gizmos.DrawWireCube(enemyPos, Vector3.one * 0.5f);
-                Gizmos.DrawLine(transform.position, enemyPos);
-                
-                // Draw a small sphere to make it more visible
-                Gizmos.DrawSphere(enemyPos + Vector3.up * 0.3f, 0.1f);
-            }
-        }
-
-        // Draw Zone B enemies
-        Gizmos.color = enemyZoneBColor;
-        foreach (Enemy enemy in zoneBEnemies)
-        {
-            if (enemy != null)
-            {
-                Vector3 enemyPos = enemy.transform.position;
-                Gizmos.DrawWireCube(enemyPos, Vector3.one * 0.5f);
-                Gizmos.DrawLine(transform.position, enemyPos);
-                
-                // Draw a small sphere to make it more visible
-                Gizmos.DrawSphere(enemyPos + Vector3.up * 0.3f, 0.1f);
-            }
-        }
-
-        // Draw all detected enemies (for debugging)
-        Gizmos.color = Color.gray;
-        foreach (Enemy enemy in enemiesHit)
-        {
-            if (enemy != null && !zoneAEnemies.Contains(enemy) && !zoneBEnemies.Contains(enemy))
-            {
-                Vector3 enemyPos = enemy.transform.position;
-                Gizmos.DrawWireCube(enemyPos, Vector3.one * 0.3f);
+                rb.linearVelocity = Vector2.Lerp(rb.linearVelocity, Vector2.zero, 0.5f);
             }
         }
     }
 
-    private void OnDrawGizmosSelected()
+    public static DamageZone[] CreateStandardZones(float innerRadius, float outerRadius, 
+        float innerDamage, float outerDamage, float innerKnockbackDistance, float outerKnockbackDistance,
+        float innerStun, float outerStun)
     {
-        if (!showGizmos) return;
-
-        // Draw more detailed info when selected
-        Vector3 position = transform.position;
-        
-        // Draw distance measurements
-        Gizmos.color = Color.white;
-        if (radii != null && radii.Length > 0)
+        return new DamageZone[]
         {
-            // Draw radius lines
-            Gizmos.DrawLine(position, position + Vector3.right * radii[0]);
-            if (radii.Length > 1)
-            {
-                Gizmos.DrawLine(position, position + Vector3.up * radii[1]);
-            }
-        }
+            new DamageZone(innerRadius, innerDamage, innerKnockbackDistance, innerStun) { gizmoColor = Color.red },
+            new DamageZone(outerRadius, outerDamage, outerKnockbackDistance, outerStun) { gizmoColor = Color.yellow }
+        };
+    }
 
-        // Draw enemy count info
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireCube(position + Vector3.up * 2f, Vector3.one * 0.2f);
+    public static DamageZone[] CreateSingleZone(float radius, float damage, float knockbackDistance, float stun)
+    {
+        return new DamageZone[]
+        {
+            new DamageZone(radius, damage, knockbackDistance, stun) { gizmoColor = Color.red }
+        };
     }
 }
