@@ -22,6 +22,9 @@ public class RainController : MonoBehaviour
 
     void Awake()
     {
+        if (player == null)
+            player = FindFirstObjectByType<Player>();
+
         rainEmission = rainPart.emission;
         rainForce = rainPart.forceOverLifetime;
         UpdateAll();
