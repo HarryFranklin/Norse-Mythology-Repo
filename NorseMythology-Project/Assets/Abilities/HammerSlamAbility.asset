@@ -16,17 +16,102 @@ MonoBehaviour:
   abilityType: 1
   cooldown: 8
   abilityIcon: {fileID: 21300000, guid: 6a5c4a0883aa42740a38434823b51536, type: 3}
-  description: Slam a massive hammer into the ground, dealing damage to nearby enemies
-    and knocking back distant ones with a stunning shockwave.
+  activationMode: 0
+  targetingCursor: {fileID: 0}
+  showTargetingLine: 0
+  targetingLineColor: {r: 1, g: 1, b: 1, a: 1}
+  maxTargetingRange: 10
+  description: Slam a massive hammer into the ground, dealing heavy damage to nearby
+    enemies and knocking them back with devastating force.
+  currentLevel: 1
+  maxLevel: 5
   duration: 0.5
   effectStrength: 15
-  innerDamageRadius: 2
-  outerKnockbackRadius: 4
-  innerDamage: 5
-  landingDamage: 2
-  knockbackForce: 5
-  stunDuration: 2
-  slamAnimationDuration: 0.5
+  maxRadius: 4
+  maxDamage: 8
+  minDamage: 2
+  maxKnockbackDistance: 3
+  minKnockbackDistance: 1
+  knockbackSpeed: 18
+  knockbackDuration: 0.4
+  maxStunDuration: 2.5
+  minStunDuration: 0.8
+  damageVariation: 0.15
+  knockbackVariation: 0.2
   hammerPrefab: {fileID: 5131123301474718387, guid: 3ea159a53e8b45447bdf1c752017d88e, type: 3}
   shockwavePrefab: {fileID: 0}
   dustCloudPrefab: {fileID: 0}
+  slamSound: {fileID: 0}
+  shockwaveSound: {fileID: 0}
+  damageFalloff:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0.3
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  knockbackFalloff:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0.4
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  stunFalloff:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0.2
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

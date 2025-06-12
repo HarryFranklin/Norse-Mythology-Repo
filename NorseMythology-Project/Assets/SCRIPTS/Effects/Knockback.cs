@@ -5,75 +5,89 @@ using System.Collections.Generic;
 public class Knockback : MonoBehaviour
 {
     [System.Serializable]
-    public class DamageZone
+    public class KnockbackSettings
     {
-        [SerializeField] public float radius;
-        [SerializeField] public float damage;
-        [SerializeField] public float knockbackDistance;
-        [SerializeField] public float stunDuration;
-        [SerializeField] public Color gizmoColor = Color.red;
-
-        public DamageZone(float radius, float damage, float knockbackDistance, float stunDuration)
-        {
-            this.radius = radius;
-            this.damage = damage;
-            this.knockbackDistance = knockbackDistance;
-            this.stunDuration = stunDuration;
-        }
+        [Header("Range & Damage")]
+        public float maxRadius = 5f;
+        public float maxDamage = 100f;
+        public float minDamage = 20f;
+        
+        [Header("Knockback")]
+        public float maxKnockbackDistance = 8f;
+        public float minKnockbackDistance = 2f;
+        public float knockbackSpeed = 15f;
+        public float knockbackDuration = 0.5f;
+        
+        [Header("Stun")]
+        public float maxStunDuration = 2f;
+        public float minStunDuration = 0.5f;
+        
+        [Header("Variation")]
+        [Range(0f, 0.5f)]
+        public float damageVariation = 0.1f;
+        [Range(0f, 0.5f)]
+        public float knockbackVariation = 0.2f;
+        
+        [Header("Falloff")]
+        public AnimationCurve damageFalloff = AnimationCurve.Linear(0f, 1f, 1f, 0f);
+        public AnimationCurve knockbackFalloff = AnimationCurve.Linear(0f, 1f, 1f, 0f);
+        public AnimationCurve stunFalloff = AnimationCurve.Linear(0f, 1f, 1f, 0f);
     }
 
-    public enum KnockbackType
-    {
-        Radial,
-        Directional
-    }
-
-    [Header("Screen Bounds")]
-    [SerializeField] private Vector2 screenBounds = new Vector2(10f, 6f);
+    [Header("Target Settings")]
+    [SerializeField] private LayerMask enemyLayerMask = -1;
     [SerializeField] private string enemyTag = "Enemy";
-    [SerializeField] private string projectileTag = "Projectile";
-    [SerializeField] private float knockbackDuration = 0.2f;
-
-    [Header("Knockback Variation")]
-    [SerializeField] private float knockbackVariation = 0.3f;
-    [SerializeField] private float knockbackForceMultiplier = 1.5f;
-
-    [Header("Visual Settings")]
-    [SerializeField] private bool showGizmos = true;
+    
+    [Header("Visual Debug")]
+    [SerializeField] private bool showDebugGizmos = true;
+    [SerializeField] private Color gizmoColor = Color.red;
     [SerializeField] private float gizmoAlpha = 0.3f;
 
-    public static void ApplyRadialKnockback(Vector3 center, DamageZone[] zones, 
-        string enemyTag = "Enemy", float knockbackDuration = 0.2f, Vector2 screenBounds = default)
+    public static void ApplyRadialKnockback(Vector3 center, KnockbackSettings settings, 
+        LayerMask enemyLayer = default, string enemyTag = "Enemy")
     {
-        if (screenBounds == default)
-            screenBounds = new Vector2(10f, 6f);
-            
-        ApplyKnockback(center, zones, KnockbackType.Radial, Vector2.zero, enemyTag, knockbackDuration, screenBounds);
-    }
+        if (settings == null) return;
+        
+        // Use all layers if no specific layer mask is provided
+        if (enemyLayer == default)
+            enemyLayer = ~0; // All layers
 
-    public static void ApplyDirectionalKnockback(Vector3 center, DamageZone[] zones, Vector2 direction,
-        string enemyTag = "Enemy", float knockbackDuration = 0.2f, Vector2 screenBounds = default)
-    {
-        if (screenBounds == default)
-            screenBounds = new Vector2(10f, 6f);
-            
-        ApplyKnockback(center, zones, KnockbackType.Directional, direction, enemyTag, knockbackDuration, screenBounds);
-    }
+        // Find all potential targets in radius
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(center, settings.maxRadius, enemyLayer);
+        List<Enemy> validEnemies = new List<Enemy>();
 
-    private static void ApplyKnockback(Vector3 center, DamageZone[] zones, KnockbackType type, 
-        Vector2 direction, string enemyTag, float knockbackDuration, Vector2 screenBounds)
-    {
-        if (zones == null || zones.Length == 0) return;
-
-        float maxRadius = 0f;
-        foreach (var zone in zones)
+        // Filter for valid enemies
+        foreach (var collider in hitColliders)
         {
-            if (zone.radius > maxRadius)
-                maxRadius = zone.radius;
+            if (collider.CompareTag(enemyTag))
+            {
+                Enemy enemy = collider.GetComponent<Enemy>();
+                if (enemy != null && !enemy.isDead)
+                {
+                    validEnemies.Add(enemy);
+                }
+            }
         }
 
-        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(center, maxRadius);
-        List<Enemy> enemies = new List<Enemy>();
+        // Apply knockback to each valid enemy
+        foreach (Enemy enemy in validEnemies)
+        {
+            ApplyKnockbackToEnemy(enemy, center, settings);
+        }
+    }
+
+    public static void ApplyDirectionalKnockback(Vector3 center, Vector2 direction, 
+        KnockbackSettings settings, LayerMask enemyLayer = default, string enemyTag = "Enemy")
+    {
+        if (settings == null) return;
+        
+        // Use all layers if no specific layer mask is provided
+        if (enemyLayer == default)
+            enemyLayer = ~0; // All layers
+
+        direction = direction.normalized;
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(center, settings.maxRadius, enemyLayer);
+        List<Enemy> validEnemies = new List<Enemy>();
 
         foreach (var collider in hitColliders)
         {
@@ -82,53 +96,136 @@ public class Knockback : MonoBehaviour
                 Enemy enemy = collider.GetComponent<Enemy>();
                 if (enemy != null && !enemy.isDead)
                 {
-                    enemies.Add(enemy);
+                    validEnemies.Add(enemy);
                 }
             }
         }
 
-        foreach (Enemy enemy in enemies)
+        foreach (Enemy enemy in validEnemies)
         {
-            float distance = Vector2.Distance(center, enemy.transform.position);
-            
-            DamageZone applicableZone = null;
-            foreach (var zone in zones)
-            {
-                if (distance <= zone.radius)
-                {
-                    if (applicableZone == null || zone.radius < applicableZone.radius)
-                    {
-                        applicableZone = zone;
-                    }
-                }
-            }
-
-            if (applicableZone != null)
-            {
-                DestroyEnemyProjectiles(enemy);
-                
-                enemy.TakeDamage(applicableZone.damage, applicableZone.stunDuration);
-
-                if (!enemy.isDead)
-                {
-                    Vector2 knockbackDir = CalculateKnockbackDirection(center, enemy.transform.position, type, direction);
-                    ApplyRigidbodyKnockback(enemy, center, knockbackDir, applicableZone, distance, knockbackDuration, screenBounds);
-                }
-            }
+            ApplyKnockbackToEnemy(enemy, center, settings, direction);
         }
     }
 
-    private static Vector2 CalculateKnockbackDirection(Vector3 center, Vector3 enemyPosition, 
-        KnockbackType type, Vector2 direction)
+    private static void ApplyKnockbackToEnemy(Enemy enemy, Vector3 center, KnockbackSettings settings, 
+        Vector2? forceDirection = null)
     {
-        switch (type)
+        if (enemy == null || enemy.isDead || settings == null) return;
+
+        Vector3 enemyPos = enemy.transform.position;
+        float distance = Vector2.Distance(center, enemyPos);
+        
+        // Skip if outside radius
+        if (distance > settings.maxRadius) return;
+
+        // Calculate normalized distance (0 = center, 1 = edge)
+        float normalizedDistance = distance / settings.maxRadius;
+
+        // Calculate damage with falloff and variation
+        float baseDamage = Mathf.Lerp(settings.maxDamage, settings.minDamage, 
+            settings.damageFalloff.Evaluate(normalizedDistance));
+        float damageVariation = Random.Range(-settings.damageVariation, settings.damageVariation);
+        float finalDamage = baseDamage * (1f + damageVariation);
+
+        // Calculate knockback distance with falloff and variation
+        float baseKnockbackDistance = Mathf.Lerp(settings.maxKnockbackDistance, settings.minKnockbackDistance,
+            settings.knockbackFalloff.Evaluate(normalizedDistance));
+        float knockbackVariation = Random.Range(-settings.knockbackVariation, settings.knockbackVariation);
+        float finalKnockbackDistance = baseKnockbackDistance * (1f + knockbackVariation);
+
+        // Calculate stun duration with falloff
+        float finalStunDuration = Mathf.Lerp(settings.maxStunDuration, settings.minStunDuration,
+            settings.stunFalloff.Evaluate(normalizedDistance));
+
+        // Determine knockback direction
+        Vector2 knockbackDirection;
+        if (forceDirection.HasValue)
         {
-            case KnockbackType.Radial:
-                return (enemyPosition - center).normalized;
-            case KnockbackType.Directional:
-                return direction.normalized;
-            default:
-                return Vector2.zero;
+            knockbackDirection = forceDirection.Value;
+        }
+        else
+        {
+            // Radial direction from center
+            if (distance < 0.1f)
+            {
+                // If too close to center, use random direction
+                knockbackDirection = Random.insideUnitCircle.normalized;
+            }
+            else
+            {
+                knockbackDirection = (enemyPos - center).normalized;
+            }
+        }
+
+        // Destroy enemy projectiles
+        DestroyEnemyProjectiles(enemy);
+
+        // Apply damage and stun
+        enemy.TakeDamage(finalDamage, finalStunDuration);
+
+        // Apply knockback if enemy is still alive
+        if (!enemy.isDead)
+        {
+            ApplyPhysicsKnockback(enemy, knockbackDirection, finalKnockbackDistance, settings);
+        }
+    }
+
+    private static void ApplyPhysicsKnockback(Enemy enemy, Vector2 direction, float distance, 
+        KnockbackSettings settings)
+    {
+        Rigidbody2D rb = enemy.GetComponent<Rigidbody2D>();
+        if (rb == null) return;
+
+        // Store original movement state
+        float originalMoveSpeed = enemy.moveSpeed;
+        
+        // Disable enemy movement during knockback
+        enemy.moveSpeed = 0f;
+        
+        // Clear existing velocity
+        rb.linearVelocity = Vector2.zero;
+        
+        // Calculate knockback force
+        Vector2 knockbackForce = direction * settings.knockbackSpeed;
+        rb.AddForce(knockbackForce, ForceMode2D.Impulse);
+
+        // Start coroutine to handle knockback duration and recovery
+        MonoBehaviour monoBehaviour = enemy.GetComponent<MonoBehaviour>();
+        if (monoBehaviour != null)
+        {
+            monoBehaviour.StartCoroutine(HandleKnockbackMotion(enemy, rb, originalMoveSpeed, 
+                distance, settings.knockbackSpeed, settings.knockbackDuration));
+        }
+    }
+
+    private static IEnumerator HandleKnockbackMotion(Enemy enemy, Rigidbody2D rb, 
+        float originalMoveSpeed, float targetDistance, float knockbackSpeed, float duration)
+    {
+        if (enemy == null || rb == null) yield break;
+
+        Vector2 startPosition = rb.position;
+        float elapsedTime = 0f;
+        
+        // Monitor knockback progress
+        while (elapsedTime < duration && enemy != null && !enemy.isDead)
+        {
+            elapsedTime += Time.fixedDeltaTime;
+            
+            // Apply gradual deceleration
+            float decelerationFactor = 1f - (elapsedTime / duration);
+            rb.linearVelocity = Vector2.Lerp(rb.linearVelocity, Vector2.zero, Time.fixedDeltaTime * 5f);
+            
+            yield return new WaitForFixedUpdate();
+        }
+
+        // Restore enemy state
+        if (enemy != null && !enemy.isDead)
+        {
+            enemy.moveSpeed = originalMoveSpeed;
+            if (rb != null)
+            {
+                rb.linearVelocity = Vector2.zero;
+            }
         }
     }
 
@@ -136,6 +233,7 @@ public class Knockback : MonoBehaviour
     {
         if (enemy == null) return;
 
+        // Destroy child projectiles
         Transform[] childTransforms = enemy.GetComponentsInChildren<Transform>();
         foreach (Transform child in childTransforms)
         {
@@ -144,80 +242,54 @@ public class Knockback : MonoBehaviour
                 GameObject.Destroy(child.gameObject);
             }
         }
-
-        GameObject[] projectilesOnEnemy = GameObject.FindGameObjectsWithTag("Projectile");
-        foreach (GameObject projectile in projectilesOnEnemy)
-        {
-            if (projectile.transform.IsChildOf(enemy.transform) || projectile.transform == enemy.transform)
-            {
-                GameObject.Destroy(projectile);
-            }
-        }
     }
 
-    private static void ApplyRigidbodyKnockback(Enemy enemy, Vector3 center, Vector2 direction, 
-        DamageZone zone, float currentDistance, float duration, Vector2 screenBounds)
+    // Convenience methods for quick setup
+    public static KnockbackSettings CreateExplosionSettings(float radius = 5f, float maxDamage = 100f)
     {
-        if (enemy == null || enemy.isDead) return;
-
-        Rigidbody2D rb = enemy.GetComponent<Rigidbody2D>();
-        if (rb == null) return;
-
-        float normalisedDistance = Mathf.Clamp01(currentDistance / zone.radius);
-        float knockbackMultiplier = Mathf.Lerp(1f, 0.3f, normalisedDistance);
+        var settings = new KnockbackSettings();
+        settings.maxRadius = radius;
+        settings.maxDamage = maxDamage;
+        settings.minDamage = maxDamage * 0.3f;
+        settings.maxKnockbackDistance = radius * 1.5f;
+        settings.minKnockbackDistance = radius * 0.5f;
+        settings.knockbackSpeed = 20f;
+        settings.knockbackDuration = 0.4f;
         
-        float variation = Random.Range(-0.3f, 0.3f);
-        float finalKnockbackDistance = zone.knockbackDistance * knockbackMultiplier * (1f + variation);
+        // Set up falloff curves for explosion-like behavior
+        settings.damageFalloff = AnimationCurve.EaseInOut(0f, 1f, 1f, 0.2f);
+        settings.knockbackFalloff = AnimationCurve.EaseInOut(0f, 1f, 1f, 0.3f);
+        settings.stunFalloff = AnimationCurve.EaseInOut(0f, 1f, 1f, 0.1f);
         
-        float knockbackForce = finalKnockbackDistance * knockbackMultiplier;
-        
-        Vector2 knockbackVelocity = direction * knockbackForce * 1.5f;
-        
-        float originalMoveSpeed = enemy.moveSpeed;
-        enemy.moveSpeed = 0f;
-        
-        rb.linearVelocity = Vector2.zero;
-        rb.AddForce(knockbackVelocity, ForceMode2D.Impulse);
-        
-        MonoBehaviour monoBehaviour = enemy.GetComponent<MonoBehaviour>();
-        if (monoBehaviour != null)
-        {
-            monoBehaviour.StartCoroutine(RestoreMovementAfterKnockback(enemy, originalMoveSpeed, duration));
-        }
+        return settings;
     }
 
-    private static IEnumerator RestoreMovementAfterKnockback(Enemy enemy, float originalMoveSpeed, float delay)
+    public static KnockbackSettings CreatePushSettings(float radius = 3f, float force = 50f)
     {
-        yield return new WaitForSeconds(delay);
+        var settings = new KnockbackSettings();
+        settings.maxRadius = radius;
+        settings.maxDamage = force;
+        settings.minDamage = force * 0.5f;
+        settings.maxKnockbackDistance = radius * 2f;
+        settings.minKnockbackDistance = radius * 0.8f;
+        settings.knockbackSpeed = 15f;
+        settings.knockbackDuration = 0.6f;
         
-        if (enemy != null && !enemy.isDead)
-        {
-            enemy.moveSpeed = originalMoveSpeed;
-            
-            Rigidbody2D rb = enemy.GetComponent<Rigidbody2D>();
-            if (rb != null)
-            {
-                rb.linearVelocity = Vector2.Lerp(rb.linearVelocity, Vector2.zero, 0.5f);
-            }
-        }
+        // Linear falloff for consistent push
+        settings.damageFalloff = AnimationCurve.Linear(0f, 1f, 1f, 0.5f);
+        settings.knockbackFalloff = AnimationCurve.Linear(0f, 1f, 1f, 0.6f);
+        settings.stunFalloff = AnimationCurve.Linear(0f, 1f, 1f, 0.3f);
+        
+        return settings;
     }
 
-    public static DamageZone[] CreateStandardZones(float innerRadius, float outerRadius, 
-        float innerDamage, float outerDamage, float innerKnockbackDistance, float outerKnockbackDistance,
-        float innerStun, float outerStun)
+    // Debug visualisation
+    private void OnDrawGizmosSelected()
     {
-        return new DamageZone[]
-        {
-            new DamageZone(innerRadius, innerDamage, innerKnockbackDistance, innerStun) { gizmoColor = Color.red },
-            new DamageZone(outerRadius, outerDamage, outerKnockbackDistance, outerStun) { gizmoColor = Color.yellow }
-        };
-    }
+        if (!showDebugGizmos) return;
 
-    public static DamageZone[] CreateSingleZone(float radius, float damage, float knockbackDistance, float stun)
-    {
-        return new DamageZone[]
-        {
-            new DamageZone(radius, damage, knockbackDistance, stun) { gizmoColor = Color.red }
-        };
+        // This would show the radius if this component was attached to a GameObject
+        Gizmos.color = new Color(gizmoColor.r, gizmoColor.g, gizmoColor.b, gizmoAlpha);
+        Gizmos.DrawSphere(transform.position, 5f); // Default radius for visualisation
     }
 }
