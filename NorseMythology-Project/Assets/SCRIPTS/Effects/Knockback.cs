@@ -36,7 +36,7 @@ public class Knockback : MonoBehaviour
 
     [Header("Knockback Variation")]
     [SerializeField] private float knockbackVariation = 0.3f;
-    [SerializeField] private float knockbackForceMultiplier = 10f;
+    [SerializeField] private float knockbackForceMultiplier = 1.5f;
 
     [Header("Visual Settings")]
     [SerializeField] private bool showGizmos = true;
@@ -163,15 +163,15 @@ public class Knockback : MonoBehaviour
         Rigidbody2D rb = enemy.GetComponent<Rigidbody2D>();
         if (rb == null) return;
 
-        float normalizedDistance = Mathf.Clamp01(currentDistance / zone.radius);
-        float knockbackMultiplier = Mathf.Lerp(1f, 0.3f, normalizedDistance);
+        float normalisedDistance = Mathf.Clamp01(currentDistance / zone.radius);
+        float knockbackMultiplier = Mathf.Lerp(1f, 0.3f, normalisedDistance);
         
         float variation = Random.Range(-0.3f, 0.3f);
         float finalKnockbackDistance = zone.knockbackDistance * knockbackMultiplier * (1f + variation);
         
-        float knockbackForce = finalKnockbackDistance * 10f;
+        float knockbackForce = finalKnockbackDistance * knockbackMultiplier;
         
-        Vector2 knockbackVelocity = direction * knockbackForce;
+        Vector2 knockbackVelocity = direction * knockbackForce * 1.5f;
         
         float originalMoveSpeed = enemy.moveSpeed;
         enemy.moveSpeed = 0f;

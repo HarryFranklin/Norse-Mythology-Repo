@@ -7,8 +7,8 @@ public class HammerSlamAbility : DefendAbility
     [Header("Hammer Slam Settings")]
     [SerializeField] private float innerDamageRadius = 2f;
     [SerializeField] private float outerKnockbackRadius = 4f;
-    [SerializeField] private float innerDamage = 15f;
-    [SerializeField] private float outerDamage = 8f;
+    [SerializeField] private float innerDamage = 12f;
+    [SerializeField] private float outerDamage = 5f;
     [SerializeField] private float innerKnockbackDistance = 2f;
     [SerializeField] private float outerKnockbackDistance = 1.5f;
     [SerializeField] private float innerStunDuration = 2f;
