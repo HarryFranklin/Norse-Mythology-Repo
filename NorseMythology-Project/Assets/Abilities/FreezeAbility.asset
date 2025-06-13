@@ -64,9 +64,9 @@ MonoBehaviour:
     specialValue3: 0
   currentLevel: 1
   activationMode: 1
-  targetingCursor: {fileID: 0}
+  targetingCursor: {fileID: -392684488, guid: 766cb97207789f04aa2e7cfb164d1f50, type: 3}
   showTargetingLine: 1
   targetingLineColor: {r: 0, g: 1, b: 1, a: 1}
-  maxTargetingRange: 10
+  maxTargetingRange: 8
   description: Freeze nearby enemies in place for a short duration.
   freezeEffectPrefab: {fileID: 6625746139066430653, guid: 64baf16bbfa525f41831c1ed70e92e18, type: 3}

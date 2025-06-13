@@ -20,7 +20,7 @@ MonoBehaviour:
   - cooldown: 5
     damage: 4
     duration: 0
-    radius: 0
+    radius: 3
     speed: 0
     distance: 0
     specialValue1: 2

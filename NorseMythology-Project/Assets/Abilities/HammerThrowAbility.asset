@@ -21,7 +21,7 @@ MonoBehaviour:
     damage: 5
     duration: 0
     radius: 0
-    speed: 5
+    speed: 10
     distance: 7
     specialValue1: 0
     specialValue2: 0
@@ -67,7 +67,7 @@ MonoBehaviour:
   targetingCursor: {fileID: 21300000, guid: 32f704875c59dd04cb9a5177502454a7, type: 3}
   showTargetingLine: 1
   targetingLineColor: {r: 1, g: 0, b: 0, a: 1}
-  maxTargetingRange: 10
+  maxTargetingRange: 7
   description: Throw a spinning hammer that deals damage and returns to you.
   hammerPrefab: {fileID: 5131123301474718387, guid: 4d50b6241863ed942a56c3845040826f, type: 3}
   returnsToPlayer: 1
