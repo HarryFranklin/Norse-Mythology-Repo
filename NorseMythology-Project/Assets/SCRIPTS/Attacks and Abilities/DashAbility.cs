@@ -24,15 +24,44 @@ public class DashAbility : Ability
         activationMode = ActivationMode.ClickToTarget;
         showTargetingLine = true;
         targetingLineColor = Color.cyan;
-        maxStacks = 3; // Dash can be stacked up to 3 times
         
         // Set up targeting range based on level 1 distance
         maxTargetingRange = GetLevelData(1).distance;
     }
 
+    protected override void InitialiseFromCodeMatrix()
+    {
+        // Define dash ability values via code matrix
+        // Level, cooldown, damage, duration, radius, speed, distance, specialValue1(invincibility), specialValue2, specialValue3, maxStacks, stackRegenTime
+        
+        // Level 1:
+        SetLevelData(1, cooldown: 4f, speed: 15f, distance: 3f, specialValue1: 0.1f, maxStacks: 1, stackRegenTime: 2f);
+        
+        // Level 2: 
+        SetLevelData(2, cooldown: 3.25f, speed: 16f, distance: 4.5f, specialValue1: 0.15f, maxStacks: 2, stackRegenTime: 1.5f);
+        
+        // Level 3:
+        SetLevelData(3, cooldown: 2.5f, speed: 17f, distance: 5.25f, specialValue1: 0.2f, maxStacks: 2, stackRegenTime: 1.2f);
+        
+        // Level 4: 
+        SetLevelData(4, cooldown: 1.75f, speed: 18f, distance: 6.5f, specialValue1: 0.25f, maxStacks: 3, stackRegenTime: 1f);
+        
+        // Level 5:
+        SetLevelData(5, cooldown: 1.5f, speed: 20f, distance: 7.5f, specialValue1: 0.3f, maxStacks: 4, stackRegenTime: 0.8f);
+        
+        Debug.Log($"DashAbility initialised from code matrix. Level 1: {MaxStacksAtCurrentLevel} stacks, {CurrentStackRegenTime}s regen");
+    }
+
     public override bool CanActivate(Player player)
     {
-        return player != null && !player.isDead && !player.isInvincible && CurrentStacks > 0;
+        bool canActivate = player != null && !player.isDead && !player.isInvincible && CurrentStacks > 0;
+        
+        if (!canActivate)
+        {
+            Debug.Log($"Dash cannot activate - Player null: {player == null}, Dead: {player?.isDead}, Invincible: {player?.isInvincible}, Stacks: {CurrentStacks}/{MaxStacksAtCurrentLevel}");
+        }
+        
+        return canActivate;
     }
 
     public override void Activate(Player player, PlayerMovement playerMovement = null)
@@ -65,9 +94,9 @@ public class DashAbility : Ability
         playerMovement.isMovementLocked = true;
         playerMovement.SetDashState(true, dashDirection);
         
-        // Calculate dash parameters using current level values
-        float dashTime = CurrentDistance / CurrentSpeed;
-        Vector2 dashVelocity = dashDirection.normalized * CurrentSpeed;
+        // Calculate dash parameters using current level values with stacking
+        float dashTime = StackedDistance / StackedSpeed;
+        Vector2 dashVelocity = dashDirection.normalized * StackedSpeed;
         
         // Create visual effects
         GameObject trailEffect = CreateDashTrail(player.transform);
@@ -96,10 +125,10 @@ public class DashAbility : Ability
         playerMovement.SetDashState(false);
         playerMovement.isMovementLocked = originalMovementLocked;
         
-        // Wait for any additional invincibility time (using specialValue1)
-        if (CurrentSpecialValue1 > 0f)
+        // Wait for any additional invincibility time (using specialValue1 with stacking)
+        if (StackedSpecialValue1 > 0f)
         {
-            yield return new WaitForSeconds(CurrentSpecialValue1);
+            yield return new WaitForSeconds(StackedSpecialValue1);
         }
         
         // Clean up trail effect
@@ -108,7 +137,7 @@ public class DashAbility : Ability
             StartTrailFadeOut(trailEffect);
         }
         
-        Debug.Log($"Dash completed! Level {CurrentLevel} dash: {CurrentDistance}u at {CurrentSpeed} speed");
+        Debug.Log($"Dash completed! Level {CurrentLevel} (Stack {AbilityStacks}): {StackedDistance}u at {StackedSpeed} speed, {CurrentStacks}/{MaxStacksAtCurrentLevel} charges remaining");
     }
 
     private IEnumerator CreateSpriteTrail(Player player)
@@ -208,8 +237,8 @@ public class DashAbility : Ability
 
     public override void EnterTargetingMode(Player player)
     {
-        Debug.Log($"Enter dash targeting mode - {CurrentStacks} dashes available!");
-        maxTargetingRange = CurrentDistance; // Update targeting range based on current level
+        Debug.Log($"Enter dash targeting mode - {CurrentStacks}/{MaxStacksAtCurrentLevel} charges available! (Regen: {CurrentStackRegenTime}s) [Ability Stack: {AbilityStacks}]");
+        maxTargetingRange = StackedDistance; // Update targeting range based on stacked distance
     }
 
     public override void ExitTargetingMode(Player player)

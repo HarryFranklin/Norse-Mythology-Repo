@@ -109,14 +109,14 @@ public class AbilityManager : MonoBehaviour
 
         Ability ability = equippedAbilities[index];
 
-        // Check cooldown
+        // Check cooldown using stacked cooldown
         float cooldownReduction = 1f - (player.currentStats.abilityCooldownReduction / 100f);
-        float adjustedCooldown = ability.CurrentCooldown * cooldownReduction;
+        float adjustedCooldown = ability.StackedCooldown * cooldownReduction;
 
         if (Time.time - lastAbilityUse[index] < adjustedCooldown)
         {
             float timeLeft = adjustedCooldown - (Time.time - lastAbilityUse[index]);
-            Debug.Log($"{ability.abilityName} on cooldown: {timeLeft:F1}s remaining");
+            Debug.Log($"{ability.abilityName} on cooldown: {timeLeft:F1}s remaining (Stacked cooldown: {ability.StackedCooldown:F1}s)");
             return;
         }
 
@@ -131,7 +131,7 @@ public class AbilityManager : MonoBehaviour
         {
             ability.Activate(player, playerMovement);
             lastAbilityUse[index] = Time.time;
-            Debug.Log($"{ability.abilityName} activated instantly!");
+            Debug.Log($"{ability.abilityName} activated instantly! (Stack {ability.AbilityStacks})");
         }
         else if (ability.activationMode == ActivationMode.ClickToTarget)
         {
@@ -155,7 +155,7 @@ public class AbilityManager : MonoBehaviour
         
         ability.EnterTargetingMode(player);
         
-        Debug.Log($"Entered targeting mode for {ability.abilityName}. Click to target or press {abilityIndex + 1} again to cancel!");
+        Debug.Log($"Entered targeting mode for {ability.abilityName} (Stack {ability.AbilityStacks}). Click to target or press {abilityIndex + 1} again to cancel!");
     }
 
     private void ExecuteTargetedAbility()
@@ -180,7 +180,7 @@ public class AbilityManager : MonoBehaviour
         currentTargetingAbility.ActivateWithTarget(player, playerMovement, targetDirection, clampedWorldPos);
         lastAbilityUse[targetingAbilityIndex] = Time.time;
         
-        Debug.Log($"{currentTargetingAbility.abilityName} executed with target direction: {targetDirection}");
+        Debug.Log($"{currentTargetingAbility.abilityName} (Stack {currentTargetingAbility.AbilityStacks}) executed with target direction: {targetDirection}");
         
         ExitTargetingMode();
     }
@@ -220,7 +220,7 @@ public class AbilityManager : MonoBehaviour
         if (slotIndex >= 0 && slotIndex < equippedAbilities.Length)
         {
             equippedAbilities[slotIndex] = ability;
-            Debug.Log($"{ability.abilityName} equipped to slot {slotIndex + 1}");
+            Debug.Log($"{ability.abilityName} (Stack {ability.AbilityStacks}) equipped to slot {slotIndex + 1}");
         }
     }
 
@@ -233,7 +233,7 @@ public class AbilityManager : MonoBehaviour
             return 0f;
 
         float cooldownReduction = 1f - (player.currentStats.abilityCooldownReduction / 100f);
-        float adjustedCooldown = equippedAbilities[slotIndex].CurrentCooldown * cooldownReduction;
+        float adjustedCooldown = equippedAbilities[slotIndex].StackedCooldown * cooldownReduction;
 
         return Mathf.Max(0f, adjustedCooldown - (Time.time - lastAbilityUse[slotIndex]));
     }
@@ -241,5 +241,26 @@ public class AbilityManager : MonoBehaviour
     public bool IsInTargetingMode()
     {
         return isInTargetingMode;
+    }
+
+    // Method to add ability stack to equipped ability
+    public void AddAbilityStack(int slotIndex)
+    {
+        if (slotIndex >= 0 && slotIndex < equippedAbilities.Length && equippedAbilities[slotIndex] != null)
+        {
+            equippedAbilities[slotIndex].AddAbilityStack();
+        }
+    }
+
+    // Method to get ability info including stacking
+    public string GetAbilityInfo(int slotIndex)
+    {
+        if (slotIndex < 0 || slotIndex >= equippedAbilities.Length || equippedAbilities[slotIndex] == null)
+            return "Empty Slot";
+
+        Ability ability = equippedAbilities[slotIndex];
+        return $"{ability.abilityName} L{ability.CurrentLevel} (x{ability.AbilityStacks})\n" +
+               $"Cooldown: {ability.StackedCooldown:F1}s\n" +
+               $"Charges: {ability.CurrentStacks}/{ability.MaxStacksAtCurrentLevel}";
     }
 }

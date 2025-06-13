@@ -14,24 +14,75 @@ public class FreezeAbility : Ability
         activationMode = ActivationMode.ClickToTarget;
         showTargetingLine = true;
         targetingLineColor = Color.cyan;
-        maxStacks = 1;
+        
+        // Set up targeting range based on level 1 radius
+        maxTargetingRange = GetLevelData(1).radius * 2f;
+    }
+
+    protected override void InitialiseFromCodeMatrix()
+    {
+        // Define freeze ability values via code matrix
+        // Level, cooldown, damage, duration(freeze time), radius, speed, distance, specialValue1(effect scale), specialValue2, specialValue3, maxStacks, stackRegenTime
+        
+        // Level 1: Basic freeze
+        SetLevelData(1, cooldown: 12f, damage: 0f, duration: 2f, radius: 2.5f, speed: 0f, distance: 0f, specialValue1: 1f, specialValue2: 0f, specialValue3: 0f, maxStacks: 1, stackRegenTime: 12f);
+        
+        // Level 2: Longer duration and bigger area
+        SetLevelData(2, cooldown: 11f, damage: 0f, duration: 2.5f, radius: 3f, speed: 0f, distance: 0f, specialValue1: 1.2f, specialValue2: 0f, specialValue3: 0f, maxStacks: 1, stackRegenTime: 11f);
+        
+        // Level 3: Even better freeze
+        SetLevelData(3, cooldown: 10f, damage: 0f, duration: 3f, radius: 3.5f, speed: 0f, distance: 0f, specialValue1: 1.4f, specialValue2: 0f, specialValue3: 0f, maxStacks: 1, stackRegenTime: 10f);
+        
+        // Level 4: Major improvements
+        SetLevelData(4, cooldown: 8f, damage: 0f, duration: 3.5f, radius: 4f, speed: 0f, distance: 0f, specialValue1: 1.6f, specialValue2: 0f, specialValue3: 0f, maxStacks: 2, stackRegenTime: 8f);
+        
+        // Level 5: Maximum freeze power with 2 charges
+        SetLevelData(5, cooldown: 6f, damage: 0f, duration: 4f, radius: 4.5f, speed: 0f, distance: 0f, specialValue1: 1.8f, specialValue2: 0f, specialValue3: 0f, maxStacks: 2, stackRegenTime: 6f);
+        
+        Debug.Log($"FreezeAbility initialised from code matrix. Level 1: {StackedDuration}s freeze, {StackedRadius}u radius");
+    }
+
+    public override bool CanActivate(Player player)
+    {
+        bool canActivate = player != null && !player.isDead && CurrentStacks > 0;
+        
+        if (!canActivate)
+        {
+            Debug.Log($"Freeze cannot activate - Player null: {player == null}, Dead: {player?.isDead}, Stacks: {CurrentStacks}/{MaxStacksAtCurrentLevel}");
+        }
+        
+        return canActivate;
     }
 
     public override void Activate(Player player, PlayerMovement playerMovement)
     {
+        if (player == null) return;
+        
+        // Use a stack
+        RemoveStack();
+        
         // For instant activation mode
         FreezeEnemies(player.transform.position);
+        
+        Debug.Log($"Freeze activated instantly! Level {CurrentLevel} (Stack {AbilityStacks}): {StackedDuration}s freeze, {StackedRadius}u radius, {CurrentStacks}/{MaxStacksAtCurrentLevel} charges remaining");
     }
 
     public override void ActivateWithTarget(Player player, PlayerMovement playerMovement, Vector2 targetDirection, Vector2 worldPosition)
     {
+        if (player == null) return;
+        
+        // Use a stack
+        RemoveStack();
+        
         // For click-to-target activation mode
         FreezeEnemies(worldPosition);
+        
+        Debug.Log($"Freeze activated at target! Level {CurrentLevel} (Stack {AbilityStacks}): {StackedDuration}s freeze, {StackedRadius}u radius, {CurrentStacks}/{MaxStacksAtCurrentLevel} charges remaining");
     }
 
     private void FreezeEnemies(Vector3 center)
     {
-        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(center, CurrentRadius);
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(center, StackedRadius);
         int enemiesFrozen = 0;
         
         foreach (var collider in hitColliders)
@@ -41,8 +92,8 @@ public class FreezeAbility : Ability
                 Enemy enemy = collider.GetComponent<Enemy>();
                 if (enemy != null)
                 {
-                    // Apply freeze effect using current duration
-                    enemy.Freeze(CurrentDuration);
+                    // Apply freeze effect using stacked duration
+                    enemy.Freeze(StackedDuration);
                     enemiesFrozen++;
                     
                     // Instantiate freeze effect and start fade coroutine
@@ -50,19 +101,19 @@ public class FreezeAbility : Ability
                     {
                         GameObject freezeEffect = Instantiate(freezeEffectPrefab, collider.transform.position, Quaternion.identity);
                         
-                        // Scale effect based on current level (using specialValue1 as scale multiplier)
-                        if (CurrentSpecialValue1 > 0)
+                        // Scale effect based on stacked specialValue1
+                        if (StackedSpecialValue1 > 0)
                         {
-                            freezeEffect.transform.localScale = Vector3.one * CurrentSpecialValue1;
+                            freezeEffect.transform.localScale = Vector3.one * StackedSpecialValue1;
                         }
                         
-                        enemy.StartCoroutine(FadeAndDestroyEffect(freezeEffect, CurrentDuration));
+                        enemy.StartCoroutine(FadeAndDestroyEffect(freezeEffect, StackedDuration));
                     }
                 }
             }
         }
         
-        Debug.Log($"Freeze Level {CurrentLevel}: Froze {enemiesFrozen} enemies for {CurrentDuration}s in {CurrentRadius}u radius");
+        Debug.Log($"Freeze Level {CurrentLevel}: Froze {enemiesFrozen} enemies for {StackedDuration}s in {StackedRadius}u radius");
     }
 
     private IEnumerator FadeAndDestroyEffect(GameObject effectObject, float duration)
@@ -117,8 +168,8 @@ public class FreezeAbility : Ability
 
     public override void EnterTargetingMode(Player player)
     {
-        Debug.Log($"Freeze targeting: Level {CurrentLevel} - {CurrentRadius}u radius, {CurrentDuration}s duration");
-        maxTargetingRange = CurrentRadius * 2f; // Allow targeting a bit beyond the freeze radius
+        Debug.Log($"Freeze targeting: Level {CurrentLevel} (Stack {AbilityStacks}) - {StackedRadius}u radius, {StackedDuration}s duration, {CurrentStacks}/{MaxStacksAtCurrentLevel} charges");
+        maxTargetingRange = StackedRadius * 2f; // Allow targeting a bit beyond the freeze radius
     }
 
     public override void ExitTargetingMode(Player player)
