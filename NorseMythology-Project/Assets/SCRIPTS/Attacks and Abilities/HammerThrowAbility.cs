@@ -1,21 +1,26 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "HammerThrowAbility", menuName = "Abilities/Attack/Hammer Throw")]
-public class HammerThrowAbility : AttackAbility
+[CreateAssetMenu(fileName = "HammerThrowAbility", menuName = "Abilities/HammerThrow")]
+public class HammerThrowAbility : Ability
 {
     [Header("Hammer Throw Settings")]
-    public GameObject hammerPrefab;
-    public float hammerSpeed = 12f;
-    public float hammerRange = 8f;
-    public bool returnsToPlayer = true;
-    
-    [Header("Rotation Settings")]
-    public float rotationSpeed = 720f;
+    [SerializeField] private GameObject hammerPrefab;
+    [SerializeField] private bool returnsToPlayer = true;
+    [SerializeField] private float rotationSpeed = 720f;
+
+    private void Awake()
+    {
+        abilityName = "Hammer Throw";
+        description = "Throw a spinning hammer that deals damage and returns to you.";
+        activationMode = ActivationMode.ClickToTarget;
+        showTargetingLine = true;
+        targetingLineColor = Color.red;
+        maxStacks = 1;
+    }
     
     public override void Activate(Player player, PlayerMovement playerMovement)
     {
-        // This is called for instant activation mode
-        // Get direction based on player movement or facing direction
+        // For instant activation mode - use movement direction
         Vector2 throwDirection = GetMovementDirection(playerMovement);
         
         if (throwDirection == Vector2.zero)
@@ -29,7 +34,7 @@ public class HammerThrowAbility : AttackAbility
     
     public override void ActivateWithTarget(Player player, PlayerMovement playerMovement, Vector2 targetDirection, Vector2 worldPosition)
     {
-        // This is called for click-to-target activation mode
+        // For click-to-target activation mode
         ThrowHammer(player, playerMovement, targetDirection);
     }
     
@@ -37,13 +42,9 @@ public class HammerThrowAbility : AttackAbility
     {
         // Update player facing direction
         if (throwDirection.x < 0)
-        {
             playerMovement.facingDirection = Vector2.left;
-        }
         else if (throwDirection.x > 0)
-        {
             playerMovement.facingDirection = Vector2.right;
-        }
         
         // Create the hammer projectile
         GameObject hammer = Instantiate(hammerPrefab, player.transform.position, Quaternion.identity);
@@ -53,9 +54,7 @@ public class HammerThrowAbility : AttackAbility
         {
             SpriteRenderer hammerSprite = hammer.GetComponent<SpriteRenderer>();
             if (hammerSprite != null)
-            {
                 hammerSprite.flipX = true;
-            }
         }
         
         // Set up the projectile component
@@ -68,14 +67,21 @@ public class HammerThrowAbility : AttackAbility
         if (rotatorScript == null)
             rotatorScript = hammer.AddComponent<SpriteRotation>();
         
-        rotatorScript.rotationSpeed = rotationSpeed;
+        // Use specialValue1 for rotation speed multiplier if set, otherwise use default
+        float finalRotationSpeed = CurrentSpecialValue1 > 0 ? rotationSpeed * CurrentSpecialValue1 : rotationSpeed;
+        rotatorScript.rotationSpeed = finalRotationSpeed;
         
-        // Calculate damage
-        float totalDamage = 10; // Using your override value
+        // Initialize projectile with current level values
+        hammerProjectile.Initialise(
+            throwDirection, 
+            CurrentSpeed,           // Speed
+            CurrentDistance,        // Range  
+            CurrentDamage,          // Damage
+            returnsToPlayer, 
+            player.transform
+        );
         
-        hammerProjectile.Initialise(throwDirection, hammerSpeed, hammerRange, totalDamage, returnsToPlayer, player.transform);
-        
-        Debug.Log($"Hammer thrown in direction: {throwDirection}");
+        Debug.Log($"Hammer Throw Level {CurrentLevel}: {CurrentDamage} damage, {CurrentSpeed} speed, {CurrentDistance} range");
     }
     
     private Vector2 GetMovementDirection(PlayerMovement playerMovement)
@@ -83,21 +89,19 @@ public class HammerThrowAbility : AttackAbility
         Vector2 lastMovement = playerMovement.lastMovementDirection;
         
         if (lastMovement != Vector2.zero)
-        {
             return lastMovement.normalized;
-        }
         
         return playerMovement.facingDirection;
     }
     
     public override void EnterTargetingMode(Player player)
     {
-        // Optional: Add any special behavior when entering targeting mode
-        // For example, you could play a sound effect or show a UI indicator
+        Debug.Log($"Hammer Throw targeting: Level {CurrentLevel} - {CurrentDistance}u range");
+        maxTargetingRange = CurrentDistance;
     }
     
     public override void ExitTargetingMode(Player player)
     {
-        // Optional: Add any cleanup when exiting targeting mode
+        Debug.Log("Exit hammer throw targeting mode");
     }
 }

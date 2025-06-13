@@ -111,7 +111,7 @@ public class AbilityManager : MonoBehaviour
 
         // Check cooldown
         float cooldownReduction = 1f - (player.currentStats.abilityCooldownReduction / 100f);
-        float adjustedCooldown = ability.cooldown * cooldownReduction;
+        float adjustedCooldown = ability.CurrentCooldown * cooldownReduction;
 
         if (Time.time - lastAbilityUse[index] < adjustedCooldown)
         {
@@ -233,7 +233,7 @@ public class AbilityManager : MonoBehaviour
             return 0f;
 
         float cooldownReduction = 1f - (player.currentStats.abilityCooldownReduction / 100f);
-        float adjustedCooldown = equippedAbilities[slotIndex].cooldown * cooldownReduction;
+        float adjustedCooldown = equippedAbilities[slotIndex].CurrentCooldown * cooldownReduction;
 
         return Mathf.Max(0f, adjustedCooldown - (Time.time - lastAbilityUse[slotIndex]));
     }

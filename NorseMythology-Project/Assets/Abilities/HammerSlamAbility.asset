@@ -13,9 +13,56 @@ MonoBehaviour:
   m_Name: HammerSlamAbility
   m_EditorClassIdentifier: 
   abilityName: Hammer Slam
-  abilityType: 1
-  cooldown: 8
   abilityIcon: {fileID: 21300000, guid: 6a5c4a0883aa42740a38434823b51536, type: 3}
+  maxStacks: 1
+  currentStacks: 1
+  levelData:
+  - cooldown: 5
+    damage: 4
+    duration: 0
+    radius: 0
+    speed: 0
+    distance: 0
+    specialValue1: 2
+    specialValue2: 3
+    specialValue3: 3
+  - cooldown: 5
+    damage: 0
+    duration: 0
+    radius: 0
+    speed: 0
+    distance: 0
+    specialValue1: 0
+    specialValue2: 0
+    specialValue3: 0
+  - cooldown: 5
+    damage: 0
+    duration: 0
+    radius: 0
+    speed: 0
+    distance: 0
+    specialValue1: 0
+    specialValue2: 0
+    specialValue3: 0
+  - cooldown: 5
+    damage: 0
+    duration: 0
+    radius: 0
+    speed: 0
+    distance: 0
+    specialValue1: 0
+    specialValue2: 0
+    specialValue3: 0
+  - cooldown: 5
+    damage: 0
+    duration: 0
+    radius: 0
+    speed: 0
+    distance: 0
+    specialValue1: 0
+    specialValue2: 0
+    specialValue3: 0
+  currentLevel: 1
   activationMode: 0
   targetingCursor: {fileID: 0}
   showTargetingLine: 0
@@ -23,22 +70,7 @@ MonoBehaviour:
   maxTargetingRange: 10
   description: Slam a massive hammer into the ground, dealing heavy damage to nearby
     enemies and knocking them back with devastating force.
-  currentLevel: 1
-  maxLevel: 5
-  duration: 0.5
-  effectStrength: 15
-  maxRadius: 4
-  maxDamage: 8
-  minDamage: 2
-  maxKnockbackDistance: 3
-  minKnockbackDistance: 1
-  knockbackSpeed: 18
-  knockbackDuration: 0.4
-  maxStunDuration: 2.5
-  minStunDuration: 0.8
-  damageVariation: 0.15
-  knockbackVariation: 0.2
-  hammerPrefab: {fileID: 5131123301474718387, guid: 3ea159a53e8b45447bdf1c752017d88e, type: 3}
+  hammerPrefab: {fileID: 7752504696187829020, guid: c71af927813254c4c868d018b50b63e6, type: 3}
   shockwavePrefab: {fileID: 0}
   dustCloudPrefab: {fileID: 0}
   slamSound: {fileID: 0}

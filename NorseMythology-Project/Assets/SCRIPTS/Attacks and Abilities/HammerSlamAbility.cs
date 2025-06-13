@@ -1,27 +1,8 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "HammerSlamAbility", menuName = "Abilities/Defend/HammerSlam")]
-public class HammerSlamAbilitySimple : DefendAbility
+[CreateAssetMenu(fileName = "HammerSlamAbility", menuName = "Abilities/HammerSlam")]
+public class HammerSlamAbility : Ability
 {
-    [Header("Hammer Slam Damage")]
-    [SerializeField] private float maxRadius = 4f;
-    [SerializeField] private float maxDamage = 8f;
-    [SerializeField] private float minDamage = 2f;
-    [SerializeField] private float maxKnockbackDistance = 3f;
-    [SerializeField] private float minKnockbackDistance = 1f;
-    [SerializeField] private float knockbackSpeed = 18f;
-    [SerializeField] private float knockbackDuration = 0.4f;
-    
-    [Header("Stun Effects")]
-    [SerializeField] private float maxStunDuration = 2.5f;
-    [SerializeField] private float minStunDuration = 0.8f;
-    
-    [Header("Knockback Variation")]
-    [Range(0f, 0.3f)]
-    [SerializeField] private float damageVariation = 0.15f;
-    [Range(0f, 0.3f)]
-    [SerializeField] private float knockbackVariation = 0.2f;
-    
     [Header("Visual Effects")]
     [SerializeField] private GameObject hammerPrefab;
     [SerializeField] private GameObject shockwavePrefab;
@@ -36,36 +17,12 @@ public class HammerSlamAbilitySimple : DefendAbility
     [SerializeField] private AnimationCurve knockbackFalloff = AnimationCurve.EaseInOut(0f, 1f, 1f, 0.4f);
     [SerializeField] private AnimationCurve stunFalloff = AnimationCurve.EaseInOut(0f, 1f, 1f, 0.2f);
 
-    private Knockback.KnockbackSettings knockbackSettings;
-
     private void Awake()
     {
         abilityName = "Hammer Slam";
         description = "Slam a massive hammer into the ground, dealing heavy damage to nearby enemies and knocking them back with devastating force.";
-        cooldown = 8f;
-        duration = 0.5f; // Instant effect
-        effectStrength = maxDamage;
-        
-        InitialiseKnockbackSettings();
-    }
-
-    private void InitialiseKnockbackSettings()
-    {
-        knockbackSettings = new Knockback.KnockbackSettings();
-        knockbackSettings.maxRadius = maxRadius;
-        knockbackSettings.maxDamage = maxDamage;
-        knockbackSettings.minDamage = minDamage;
-        knockbackSettings.maxKnockbackDistance = maxKnockbackDistance;
-        knockbackSettings.minKnockbackDistance = minKnockbackDistance;
-        knockbackSettings.knockbackSpeed = knockbackSpeed;
-        knockbackSettings.knockbackDuration = knockbackDuration;
-        knockbackSettings.maxStunDuration = maxStunDuration;
-        knockbackSettings.minStunDuration = minStunDuration;
-        knockbackSettings.damageVariation = damageVariation;
-        knockbackSettings.knockbackVariation = knockbackVariation;
-        knockbackSettings.damageFalloff = damageFalloff;
-        knockbackSettings.knockbackFalloff = knockbackFalloff;
-        knockbackSettings.stunFalloff = stunFalloff;
+        activationMode = ActivationMode.Instant;
+        maxStacks = 1; // Single use ability
     }
 
     public override bool CanActivate(Player player)
@@ -81,55 +38,98 @@ public class HammerSlamAbilitySimple : DefendAbility
         
         // Play sound effects
         if (slamSound != null)
-        {
             AudioSource.PlayClipAtPoint(slamSound, slamPosition);
-        }
         
         // Spawn visual effects
         SpawnImpactEffects(slamPosition);
         
-        // Apply knockback damage
-        LayerMask enemyLayerMask = 1 << 8; // Enemy layer
-        InitialiseKnockbackSettings();
-        Knockback.ApplyRadialKnockback(slamPosition, knockbackSettings, enemyLayerMask, "Enemy");
+        // Apply knockback damage using the new knockback system
+        ApplyHammerSlamDamage(slamPosition);
         
         // Play delayed shockwave sound
+        if (shockwaveSound != null && player != null)
+        {
+            player.StartCoroutine(PlayDelayedShockwaveSound(0.2f));
+        }
+    }
+
+    private void ApplyHammerSlamDamage(Vector3 center)
+    {
+        LayerMask enemyLayerMask = 1 << 8; // Enemy layer
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(center, CurrentRadius, enemyLayerMask);
+        
+        foreach (var collider in hitColliders)
+        {
+            if (collider.CompareTag("Enemy"))
+            {
+                Entity enemy = collider.GetComponent<Entity>();
+                if (enemy == null || enemy.isDead) continue;
+
+                // Calculate distance-based damage and effects
+                float distance = Vector2.Distance(center, collider.transform.position);
+                float normalizedDistance = distance / CurrentRadius;
+                
+                // Apply damage with falloff
+                float damageMultiplier = damageFalloff.Evaluate(1f - normalizedDistance);
+                float finalDamage = Mathf.Lerp(CurrentSpecialValue2, CurrentDamage, damageMultiplier); // specialValue2 = minDamage
+                
+                // Add damage variation
+                float variation = finalDamage * CurrentSpecialValue3; // specialValue3 = damageVariation
+                finalDamage += Random.Range(-variation, variation);
+                
+                // Apply stun
+                float stunMultiplier = stunFalloff.Evaluate(1f - normalizedDistance);
+                float stunDuration = Mathf.Lerp(0.8f, CurrentDuration, stunMultiplier); // Using duration for max stun
+                
+                // Apply damage and stun using Entity's built-in methods
+                enemy.TakeDamage(finalDamage, stunDuration);
+                
+                // Apply knockback using the new system
+                if (!enemy.isDead)
+                {
+                    float knockbackMultiplier = knockbackFalloff.Evaluate(1f - normalizedDistance);
+                    float knockbackDistance = Mathf.Lerp(CurrentSpecialValue1, CurrentDistance, knockbackMultiplier); // specialValue1 = minKnockback, distance = maxKnockback
+                    
+                    Vector2 knockbackDirection = (collider.transform.position - center).normalized;
+                    
+                    // Use the simple knockback method from the new system
+                    KnockbackSystem.ApplySimpleKnockback(enemy, knockbackDirection, knockbackDistance, CurrentSpeed);
+                }
+                
+                Debug.Log($"Hammer Slam hit {enemy.name}: {finalDamage} damage, stun: {stunDuration}s");
+            }
+        }
+    }
+
+    private System.Collections.IEnumerator PlayDelayedShockwaveSound(float delay)
+    {
+        yield return new WaitForSeconds(delay);
         if (shockwaveSound != null)
         {
-            // Use Invoke to delay the sound
-            player.GetComponent<MonoBehaviour>()?.Invoke(nameof(PlayShockwaveSound), 0.2f);
+            AudioSource.PlayClipAtPoint(shockwaveSound, Vector3.zero);
         }
     }
 
     private void SpawnImpactEffects(Vector3 position)
     {
-        // Hammer effect
         if (hammerPrefab != null)
         {
             GameObject hammer = Instantiate(hammerPrefab, position, Quaternion.identity);
             Destroy(hammer, 2f);
         }
 
-        // Shockwave effect
         if (shockwavePrefab != null)
         {
             GameObject shockwave = Instantiate(shockwavePrefab, position, Quaternion.identity);
+            // Scale shockwave based on current radius
+            shockwave.transform.localScale = Vector3.one * (CurrentRadius / 4f); // Assuming base radius of 4
             Destroy(shockwave, 1f);
         }
 
-        // Dust cloud effect
         if (dustCloudPrefab != null)
         {
             GameObject dust = Instantiate(dustCloudPrefab, position, Quaternion.identity);
             Destroy(dust, 3f);
-        }
-    }
-
-    private void PlayShockwaveSound()
-    {
-        if (shockwaveSound != null)
-        {
-            AudioSource.PlayClipAtPoint(shockwaveSound, Vector3.zero);
         }
     }
 
@@ -138,21 +138,7 @@ public class HammerSlamAbilitySimple : DefendAbility
     {
         if (Application.isPlaying)
         {
-            InitialiseKnockbackSettings();
-            LayerMask enemyLayerMask = 1 << 8; // Enemy layer
-            Knockback.ApplyRadialKnockback(Vector3.zero, knockbackSettings, enemyLayerMask, "Enemy");
-        }
-    }
-
-    private void OnValidate()
-    {
-        minDamage = Mathf.Min(minDamage, maxDamage);
-        minKnockbackDistance = Mathf.Min(minKnockbackDistance, maxKnockbackDistance);
-        minStunDuration = Mathf.Min(minStunDuration, maxStunDuration);
-        
-        if (Application.isPlaying)
-        {
-            InitialiseKnockbackSettings();
+            ApplyHammerSlamDamage(Vector3.zero);
         }
     }
 }

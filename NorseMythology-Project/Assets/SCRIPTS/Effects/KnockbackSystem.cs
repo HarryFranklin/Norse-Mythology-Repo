@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class Knockback : MonoBehaviour
+public static class KnockbackSystem
 {
     [System.Serializable]
     public class KnockbackSettings
@@ -34,45 +34,32 @@ public class Knockback : MonoBehaviour
         public AnimationCurve stunFalloff = AnimationCurve.Linear(0f, 1f, 1f, 0f);
     }
 
-    [Header("Target Settings")]
-    [SerializeField] private LayerMask enemyLayerMask = -1;
-    [SerializeField] private string enemyTag = "Enemy";
-    
-    [Header("Visual Debug")]
-    [SerializeField] private bool showDebugGizmos = true;
-    [SerializeField] private Color gizmoColor = Color.red;
-    [SerializeField] private float gizmoAlpha = 0.3f;
-
     public static void ApplyRadialKnockback(Vector3 center, KnockbackSettings settings, 
         LayerMask enemyLayer = default, string enemyTag = "Enemy")
     {
         if (settings == null) return;
         
-        // Use all layers if no specific layer mask is provided
         if (enemyLayer == default)
-            enemyLayer = ~0; // All layers
+            enemyLayer = ~0;
 
-        // Find all potential targets in radius
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(center, settings.maxRadius, enemyLayer);
-        List<Enemy> validEnemies = new List<Enemy>();
+        List<Entity> validEntities = new List<Entity>();
 
-        // Filter for valid enemies
         foreach (var collider in hitColliders)
         {
             if (collider.CompareTag(enemyTag))
             {
-                Enemy enemy = collider.GetComponent<Enemy>();
-                if (enemy != null && !enemy.isDead)
+                Entity entity = collider.GetComponent<Entity>();
+                if (entity != null && !entity.isDead)
                 {
-                    validEnemies.Add(enemy);
+                    validEntities.Add(entity);
                 }
             }
         }
 
-        // Apply knockback to each valid enemy
-        foreach (Enemy enemy in validEnemies)
+        foreach (Entity entity in validEntities)
         {
-            ApplyKnockbackToEnemy(enemy, center, settings);
+            ApplyKnockbackToEntity(entity, center, settings);
         }
     }
 
@@ -81,44 +68,53 @@ public class Knockback : MonoBehaviour
     {
         if (settings == null) return;
         
-        // Use all layers if no specific layer mask is provided
         if (enemyLayer == default)
-            enemyLayer = ~0; // All layers
+            enemyLayer = ~0;
 
         direction = direction.normalized;
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(center, settings.maxRadius, enemyLayer);
-        List<Enemy> validEnemies = new List<Enemy>();
+        List<Entity> validEntities = new List<Entity>();
 
         foreach (var collider in hitColliders)
         {
             if (collider.CompareTag(enemyTag))
             {
-                Enemy enemy = collider.GetComponent<Enemy>();
-                if (enemy != null && !enemy.isDead)
+                Entity entity = collider.GetComponent<Entity>();
+                if (entity != null && !entity.isDead)
                 {
-                    validEnemies.Add(enemy);
+                    validEntities.Add(entity);
                 }
             }
         }
 
-        foreach (Enemy enemy in validEnemies)
+        foreach (Entity entity in validEntities)
         {
-            ApplyKnockbackToEnemy(enemy, center, settings, direction);
+            ApplyKnockbackToEntity(entity, center, settings, direction);
         }
     }
 
-    private static void ApplyKnockbackToEnemy(Enemy enemy, Vector3 center, KnockbackSettings settings, 
+    // Simple method that works with your existing Entity system
+    public static void ApplySimpleKnockback(Entity entity, Vector2 direction, float distance, float speed)
+    {
+        if (entity == null || entity.isDead) return;
+
+        MonoBehaviour monoBehaviour = entity.GetComponent<MonoBehaviour>();
+        if (monoBehaviour != null)
+        {
+            monoBehaviour.StartCoroutine(SimpleKnockbackCoroutine(entity, direction, distance, speed));
+        }
+    }
+
+    private static void ApplyKnockbackToEntity(Entity entity, Vector3 center, KnockbackSettings settings, 
         Vector2? forceDirection = null)
     {
-        if (enemy == null || enemy.isDead || settings == null) return;
+        if (entity == null || entity.isDead || settings == null) return;
 
-        Vector3 enemyPos = enemy.transform.position;
-        float distance = Vector2.Distance(center, enemyPos);
+        Vector3 entityPos = entity.transform.position;
+        float distance = Vector2.Distance(center, entityPos);
         
-        // Skip if outside radius
         if (distance > settings.maxRadius) return;
 
-        // Calculate normalized distance (0 = center, 1 = edge)
         float normalizedDistance = distance / settings.maxRadius;
 
         // Calculate damage with falloff and variation
@@ -145,42 +141,37 @@ public class Knockback : MonoBehaviour
         }
         else
         {
-            // Radial direction from center
             if (distance < 0.1f)
             {
-                // If too close to center, use random direction
                 knockbackDirection = Random.insideUnitCircle.normalized;
             }
             else
             {
-                knockbackDirection = (enemyPos - center).normalized;
+                knockbackDirection = (entityPos - center).normalized;
             }
         }
 
-        // Destroy enemy projectiles
-        DestroyEnemyProjectiles(enemy);
+        // Apply damage and stun using Entity's built-in methods
+        entity.TakeDamage(finalDamage, finalStunDuration);
 
-        // Apply damage and stun
-        enemy.TakeDamage(finalDamage, finalStunDuration);
-
-        // Apply knockback if enemy is still alive
-        if (!enemy.isDead)
+        // Apply knockback if entity is still alive
+        if (!entity.isDead)
         {
-            ApplyPhysicsKnockback(enemy, knockbackDirection, finalKnockbackDistance, settings);
+            ApplyPhysicsKnockback(entity, knockbackDirection, finalKnockbackDistance, settings);
         }
     }
 
-    private static void ApplyPhysicsKnockback(Enemy enemy, Vector2 direction, float distance, 
+    private static void ApplyPhysicsKnockback(Entity entity, Vector2 direction, float distance, 
         KnockbackSettings settings)
     {
-        Rigidbody2D rb = enemy.GetComponent<Rigidbody2D>();
+        Rigidbody2D rb = entity.GetComponent<Rigidbody2D>();
         if (rb == null) return;
 
         // Store original movement state
-        float originalMoveSpeed = enemy.moveSpeed;
+        float originalMoveSpeed = entity.moveSpeed;
         
-        // Disable enemy movement during knockback
-        enemy.moveSpeed = 0f;
+        // Disable entity movement during knockback
+        entity.moveSpeed = 0f;
         
         // Clear existing velocity
         rb.linearVelocity = Vector2.zero;
@@ -190,24 +181,23 @@ public class Knockback : MonoBehaviour
         rb.AddForce(knockbackForce, ForceMode2D.Impulse);
 
         // Start coroutine to handle knockback duration and recovery
-        MonoBehaviour monoBehaviour = enemy.GetComponent<MonoBehaviour>();
+        MonoBehaviour monoBehaviour = entity.GetComponent<MonoBehaviour>();
         if (monoBehaviour != null)
         {
-            monoBehaviour.StartCoroutine(HandleKnockbackMotion(enemy, rb, originalMoveSpeed, 
+            monoBehaviour.StartCoroutine(HandleKnockbackMotion(entity, rb, originalMoveSpeed, 
                 distance, settings.knockbackSpeed, settings.knockbackDuration));
         }
     }
 
-    private static IEnumerator HandleKnockbackMotion(Enemy enemy, Rigidbody2D rb, 
+    private static IEnumerator HandleKnockbackMotion(Entity entity, Rigidbody2D rb, 
         float originalMoveSpeed, float targetDistance, float knockbackSpeed, float duration)
     {
-        if (enemy == null || rb == null) yield break;
+        if (entity == null || rb == null) yield break;
 
         Vector2 startPosition = rb.position;
         float elapsedTime = 0f;
         
-        // Monitor knockback progress
-        while (elapsedTime < duration && enemy != null && !enemy.isDead)
+        while (elapsedTime < duration && entity != null && !entity.isDead)
         {
             elapsedTime += Time.fixedDeltaTime;
             
@@ -218,10 +208,10 @@ public class Knockback : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
 
-        // Restore enemy state
-        if (enemy != null && !enemy.isDead)
+        // Restore entity state
+        if (entity != null && !entity.isDead)
         {
-            enemy.moveSpeed = originalMoveSpeed;
+            entity.moveSpeed = originalMoveSpeed;
             if (rb != null)
             {
                 rb.linearVelocity = Vector2.zero;
@@ -229,18 +219,36 @@ public class Knockback : MonoBehaviour
         }
     }
 
-    private static void DestroyEnemyProjectiles(Enemy enemy)
+    private static IEnumerator SimpleKnockbackCoroutine(Entity entity, Vector2 direction, float distance, float speed)
     {
-        if (enemy == null) return;
+        if (entity == null || entity.isDead) yield break;
 
-        // Destroy child projectiles
-        Transform[] childTransforms = enemy.GetComponentsInChildren<Transform>();
-        foreach (Transform child in childTransforms)
+        float originalMoveSpeed = entity.moveSpeed;
+        entity.moveSpeed = 0f; // Disable normal movement during knockback
+
+        Vector3 startPos = entity.transform.position;
+        Vector3 targetPos = startPos + (Vector3)(direction.normalized * distance);
+        
+        float elapsedTime = 0f;
+        float knockbackDuration = distance / speed;
+
+        while (elapsedTime < knockbackDuration && entity != null && !entity.isDead)
         {
-            if (child != enemy.transform && child.CompareTag("Projectile"))
-            {
-                GameObject.Destroy(child.gameObject);
-            }
+            elapsedTime += Time.deltaTime;
+            float progress = elapsedTime / knockbackDuration;
+            
+            // Use an easing curve for more natural knockback
+            float easedProgress = 1f - Mathf.Pow(1f - progress, 3f); // Ease-out cubic
+            
+            entity.transform.position = Vector3.Lerp(startPos, targetPos, easedProgress);
+            
+            yield return null;
+        }
+
+        // Restore original move speed
+        if (entity != null && !entity.isDead)
+        {
+            entity.moveSpeed = originalMoveSpeed;
         }
     }
 
@@ -256,7 +264,6 @@ public class Knockback : MonoBehaviour
         settings.knockbackSpeed = 20f;
         settings.knockbackDuration = 0.4f;
         
-        // Set up falloff curves for explosion-like behavior
         settings.damageFalloff = AnimationCurve.EaseInOut(0f, 1f, 1f, 0.2f);
         settings.knockbackFalloff = AnimationCurve.EaseInOut(0f, 1f, 1f, 0.3f);
         settings.stunFalloff = AnimationCurve.EaseInOut(0f, 1f, 1f, 0.1f);
@@ -275,21 +282,10 @@ public class Knockback : MonoBehaviour
         settings.knockbackSpeed = 15f;
         settings.knockbackDuration = 0.6f;
         
-        // Linear falloff for consistent push
         settings.damageFalloff = AnimationCurve.Linear(0f, 1f, 1f, 0.5f);
         settings.knockbackFalloff = AnimationCurve.Linear(0f, 1f, 1f, 0.6f);
         settings.stunFalloff = AnimationCurve.Linear(0f, 1f, 1f, 0.3f);
         
         return settings;
-    }
-
-    // Debug visualisation
-    private void OnDrawGizmosSelected()
-    {
-        if (!showDebugGizmos) return;
-
-        // This would show the radius if this component was attached to a GameObject
-        Gizmos.color = new Color(gizmoColor.r, gizmoColor.g, gizmoColor.b, gizmoAlpha);
-        Gizmos.DrawSphere(transform.position, 5f); // Default radius for visualisation
     }
 }

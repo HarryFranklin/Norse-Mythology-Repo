@@ -1,68 +1,75 @@
 using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 
-[CreateAssetMenu(fileName = "FreezeAbility", menuName = "Abilities/Defend/Freeze")]
-public class FreezeAbility : DefendAbility
+[CreateAssetMenu(fileName = "FreezeAbility", menuName = "Abilities/Freeze")]
+public class FreezeAbility : Ability
 {
-    [Header("Freeze Settings")]
-    public float freezeDuration = 3f;
-    public float freezeRadius = 5f;
-    public GameObject freezeEffectPrefab;
+    [Header("Freeze Effects")]
+    [SerializeField] private GameObject freezeEffectPrefab;
 
     private void Awake()
     {
         abilityName = "Freeze";
         description = "Freeze nearby enemies in place for a short duration.";
-        cooldown = 5f;
+        activationMode = ActivationMode.ClickToTarget;
+        showTargetingLine = true;
+        targetingLineColor = Color.cyan;
+        maxStacks = 1;
     }
 
     public override void Activate(Player player, PlayerMovement playerMovement)
     {
-        // This is called for instant activation mode
+        // For instant activation mode
         FreezeEnemies(player.transform.position);
     }
 
     public override void ActivateWithTarget(Player player, PlayerMovement playerMovement, Vector2 targetDirection, Vector2 worldPosition)
     {
-        // This is called for click-to-target activation mode
+        // For click-to-target activation mode
         FreezeEnemies(worldPosition);
     }
 
     private void FreezeEnemies(Vector3 center)
     {
-        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(center, freezeRadius);
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(center, CurrentRadius);
+        int enemiesFrozen = 0;
+        
         foreach (var collider in hitColliders)
         {
             if (collider.CompareTag("Enemy"))
             {
-                // Apply freeze effect to the enemy
                 Enemy enemy = collider.GetComponent<Enemy>();
                 if (enemy != null)
                 {
-                    enemy.Freeze(freezeDuration);
-                }
-                
-                // Instantiate freeze effect and start fade coroutine
-                if (freezeEffectPrefab != null)
-                {
-                    GameObject freezeEffect = Instantiate(freezeEffectPrefab, collider.transform.position, Quaternion.identity);
+                    // Apply freeze effect using current duration
+                    enemy.Freeze(CurrentDuration);
+                    enemiesFrozen++;
                     
-                    // Start the fade coroutine on a MonoBehaviour (use the enemy as host)
-                    if (enemy != null)
+                    // Instantiate freeze effect and start fade coroutine
+                    if (freezeEffectPrefab != null)
                     {
-                        enemy.StartCoroutine(FadeAndDestroyEffect(freezeEffect, freezeDuration));
+                        GameObject freezeEffect = Instantiate(freezeEffectPrefab, collider.transform.position, Quaternion.identity);
+                        
+                        // Scale effect based on current level (using specialValue1 as scale multiplier)
+                        if (CurrentSpecialValue1 > 0)
+                        {
+                            freezeEffect.transform.localScale = Vector3.one * CurrentSpecialValue1;
+                        }
+                        
+                        enemy.StartCoroutine(FadeAndDestroyEffect(freezeEffect, CurrentDuration));
                     }
                 }
             }
         }
+        
+        Debug.Log($"Freeze Level {CurrentLevel}: Froze {enemiesFrozen} enemies for {CurrentDuration}s in {CurrentRadius}u radius");
     }
 
     private IEnumerator FadeAndDestroyEffect(GameObject effectObject, float duration)
     {
         if (effectObject == null) yield break;
 
-        // Get all renderers (SpriteRenderer, ParticleSystem, etc.)
+        // Get renderers
         SpriteRenderer spriteRenderer = effectObject.GetComponent<SpriteRenderer>();
         ParticleSystem particleSystem = effectObject.GetComponent<ParticleSystem>();
         
@@ -104,10 +111,18 @@ public class FreezeAbility : DefendAbility
             yield return null;
         }
         
-        // Destroy the effect when fade is complete
         if (effectObject != null)
-        {
             Destroy(effectObject);
-        }
+    }
+
+    public override void EnterTargetingMode(Player player)
+    {
+        Debug.Log($"Freeze targeting: Level {CurrentLevel} - {CurrentRadius}u radius, {CurrentDuration}s duration");
+        maxTargetingRange = CurrentRadius * 2f; // Allow targeting a bit beyond the freeze radius
+    }
+
+    public override void ExitTargetingMode(Player player)
+    {
+        Debug.Log("Exit freeze targeting mode");
     }
 }
