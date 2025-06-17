@@ -2171,9 +2171,17 @@ MonoBehaviour:
   projectilePrefab: {fileID: 6549350566530616831, guid: 94d987001f64ddb43a4b3c2f2186edfe, type: 3}
   meleeRatio: 0.6
   spawnRate: 0.5
-  minSpawnRadius: 12
+  targetEnemyLevel: 1
+  levelDistribution:
+    belowLevelRatio: 0.2
+    targetLevelRatio: 0.6
+    aboveLevelRatio: 0.2
+    autoNormalise: 1
+  minSpawnRadius: 10
   maxSpawnRadius: 15
-  maxEnemies: 20
+  baseMaxEnemies: 15
+  maxEnemiesIncrement: 3
+  absoluteMaxEnemies: 50
   player: {fileID: 2135908895}
   gridLayerMask:
     serializedVersion: 2
@@ -8187,7 +8195,6 @@ GameObject:
   - component: {fileID: 2135908896}
   - component: {fileID: 2135908897}
   - component: {fileID: 2135908893}
-  - component: {fileID: 2135908892}
   - component: {fileID: 2135908891}
   - component: {fileID: 2135908900}
   - component: {fileID: 2135908899}
@@ -8221,52 +8228,6 @@ MonoBehaviour:
   facingDirection: {x: 1, y: 0}
   dashDirection: {x: 0, y: 0}
   lastMovementDirection: {x: 1, y: 0}
---- !u!61 &2135908892
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2135908890}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.56, y: 1.16}
-    newSize: {x: 0.56, y: 1.16}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 0.5, y: 1}
-  m_EdgeRadius: 0
 --- !u!50 &2135908893
 Rigidbody2D:
   serializedVersion: 5
@@ -8456,7 +8417,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4de6e68fb534fb946831fb1d24c4bcf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 250
+  maxHealth: 100
   currentHealth: 0
   isDead: 0
   moveSpeed: 2
@@ -8464,12 +8425,15 @@ MonoBehaviour:
   isStunned: 0
   isFrozen: 0
   isInvincible: 0
+  useInspectorLevels: 0
+  currentLevel: 1
   baseStats: {fileID: 11400000, guid: d502c6bd20489c74992235336485d903, type: 2}
   gameManager: {fileID: 1753531477}
   rigidBody: {fileID: 2135908893}
   currentStats: {fileID: 0}
   isLevelUpPending: 0
   healthXPUIManager: {fileID: 570491799}
+  levelData: []
 --- !u!58 &2135908901
 CircleCollider2D:
   m_ObjectHideFlags: 0

@@ -11,14 +11,15 @@ public class WaveManager : MonoBehaviour
     public enum WaveType
     {
         TimeBased,
-        KillCountBased
+        KillCountBased,
+        FixedEnemyCount // New wave type
     }
 
     [System.Serializable]
     public class WaveItem
     {
         public WaveType waveType;
-        public float criteria;
+        public float criteria; // Duration for TimeBased, kill count for KillCountBased, total enemies for FixedEnemyCount
     }
 
     [Header("Wave Configuration")]
@@ -104,13 +105,38 @@ public class WaveManager : MonoBehaviour
         if (enemySpawner != null)
         {
             enemySpawner.SetWaveModifiers(healthMultiplier, xpMultiplier);
-            enemySpawner.StartSpawning();
+            enemySpawner.SetWaveNumber(currentWave); // Set the wave number for max enemy scaling
+            
+            // Start appropriate spawning type based on wave type
+            if (currentWaveType == WaveType.FixedEnemyCount)
+            {
+                enemySpawner.StartFixedSpawning((int)waveConfig.criteria);
+            }
+            else
+            {
+                enemySpawner.StartSpawning();
+            }
         }
 
         OnWaveStart?.Invoke(currentWave);
 
-        string waveTypeStr = currentWaveType == WaveType.TimeBased ? "Time-based" : "Kill-count-based";
+        string waveTypeStr = GetWaveTypeDescription(currentWaveType);
         Debug.Log($"Wave {currentWave} started! ({waveTypeStr}) Health multiplier: {healthMultiplier:F2}, XP multiplier: {xpMultiplier:F2}");
+    }
+    
+    private string GetWaveTypeDescription(WaveType waveType)
+    {
+        switch (waveType)
+        {
+            case WaveType.TimeBased:
+                return "Time-based";
+            case WaveType.KillCountBased:
+                return "Kill-count-based";
+            case WaveType.FixedEnemyCount:
+                return "Fixed enemy count";
+            default:
+                return "Unknown";
+        }
     }
     
     private void Update()
@@ -134,6 +160,14 @@ public class WaveManager : MonoBehaviour
 
             case WaveType.KillCountBased:
                 if (enemiesKilledThisWave >= waveConfig.criteria)
+                {
+                    CompleteWave();
+                }
+                break;
+                
+            case WaveType.FixedEnemyCount:
+                // Check if all enemies have been spawned and defeated
+                if (enemySpawner != null && enemySpawner.AreAllEnemiesDefeated())
                 {
                     CompleteWave();
                 }
@@ -200,9 +234,65 @@ public class WaveManager : MonoBehaviour
 
             case WaveType.KillCountBased:
                 return enemiesKilledThisWave / waveConfig.criteria;
+                
+            case WaveType.FixedEnemyCount:
+                // For fixed enemy count, progress is based on enemies killed vs total spawned
+                if (enemySpawner != null && enemySpawner.AreAllEnemiesSpawned())
+                {
+                    // All enemies have been spawned, progress is based on how many are left alive
+                    int totalEnemies = (int)waveConfig.criteria;
+                    int enemiesRemaining = enemySpawner.GetCurrentEnemyCount();
+                    int enemiesKilled = totalEnemies - enemiesRemaining;
+                    return (float)enemiesKilled / totalEnemies;
+                }
+                else
+                {
+                    // Still spawning enemies, show spawn progress
+                    return enemiesKilledThisWave / waveConfig.criteria;
+                }
 
             default:
                 return 0f;
+        }
+    }
+    
+    public string GetWaveProgressText()
+    {
+        if (!waveActive || waveItems == null || waveItems.Length < currentWave)
+            return "Wave Inactive";
+
+        WaveItem waveConfig = waveItems[currentWave - 1];
+
+        switch (waveConfig.waveType)
+        {
+            case WaveType.TimeBased:
+                float timeRemaining = waveConfig.criteria - waveTimer;
+                return $"Time: {timeRemaining:F1}s";
+
+            case WaveType.KillCountBased:
+                int killsRemaining = (int)waveConfig.criteria - enemiesKilledThisWave;
+                return $"Kills: {killsRemaining}";
+                
+            case WaveType.FixedEnemyCount:
+                if (enemySpawner != null)
+                {
+                    int totalEnemies = (int)waveConfig.criteria;
+                    int currentEnemies = enemySpawner.GetCurrentEnemyCount();
+                    int enemiesKilled = totalEnemies - currentEnemies;
+                    
+                    if (enemySpawner.AreAllEnemiesSpawned())
+                    {
+                        return $"Enemies: {currentEnemies} remaining";
+                    }
+                    else
+                    {
+                        return $"Enemies: {enemiesKilled}/{totalEnemies} defeated";
+                    }
+                }
+                return $"Enemies: 0/{(int)waveConfig.criteria}";
+
+            default:
+                return "Unknown Wave Type";
         }
     }
 

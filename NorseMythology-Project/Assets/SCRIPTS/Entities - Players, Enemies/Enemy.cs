@@ -1,23 +1,81 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
+
+[System.Serializable]
+public class EnemyLevelData
+{
+    [Header("Level Info")]
+    public int level = 1;
+
+    [Header("Health")]
+    public float maxHealth = 50f;
+
+    [Header("Movement")]
+    public float moveSpeed = 2f;
+
+    [Header("Combat")]
+    public float attackDamage = 5f;
+    public float attackCooldown = 1f;
+    public float meleeAttackRange = 0.5f;
+    public float projectileMinRange = 2f;
+    public float projectileMaxRange = 6f;
+
+    [Header("Rewards")]
+    public float xpValue = 10f;
+}
+
+[System.Serializable]
+public class EnemyTypeModifiers
+{
+    [Tooltip("Multiplier applied to health")]
+    public float healthMultiplier = 1f;
+    [Tooltip("Multiplier applied to movement speed")]
+    public float moveSpeedMultiplier = 1f;
+    [Tooltip("Multiplier applied to attack damage")]
+    public float damageMultiplier = 1f;
+    [Tooltip("Multiplier applied to attack cooldown")]
+    public float attackCooldownMultiplier = 1f;
+    [Tooltip("Multiplier applied to attack range")]
+    public float attackRangeMultiplier = 1f;
+}
 
 public class Enemy : Entity
 {
     public enum EnemyType { Melee, Projectile }
+    
+    [Header("Enemy Type")]
     public EnemyType enemyType = EnemyType.Melee;
+    public EnemyTypeModifiers meleeModifiers = new EnemyTypeModifiers
+    {
+        healthMultiplier = 1.5f,
+        moveSpeedMultiplier = 0.7f,
+        damageMultiplier = 1.5f,
+        attackCooldownMultiplier = 1.2f
+    };
+    public EnemyTypeModifiers projectileModifiers = new EnemyTypeModifiers
+    {
+        healthMultiplier = 1f,
+        moveSpeedMultiplier = 1f,
+        damageMultiplier = 1f,
+        attackCooldownMultiplier = 1f
+    };
 
     [Header("Enemy XP & Level")]
-    public float xpValue = 10f; // XP value for the player when this enemy is defeated and XP is collected
-    public int level = 1; // Level of the enemy, can be used for scaling difficulty
+    public GameObject xpOrbPrefab;
 
-    [Header("XP Orb")]
-    public GameObject xpOrbPrefab; // 
+    [Header("Level Configuration")]
+    public List<EnemyLevelData> levelData = new List<EnemyLevelData>();
+    
+    // Code-based level data
+    protected Dictionary<int, EnemyLevelData> codeLevelData = new Dictionary<int, EnemyLevelData>();
 
     [Header("Combat Settings")]
-    public float meleeAttackRange = 0.5f;
-    public float projectileMinRange = 2f;
-    public float projectileMaxRange = 6f;
-    public float attackCooldown = 1f;
+    private float attackCooldown = 1f;
+    private float meleeAttackRange = 0.5f;
+    private float projectileMinRange = 2f;
+    private float projectileMaxRange = 6f;
+    [HideInInspector] public float xpValue = 10f;
     private float lastAttackTime;
 
     [Header("Targeting")]
@@ -25,14 +83,129 @@ public class Enemy : Entity
 
     [Header("Projectile")]
     public GameObject projectilePrefab;
-    public Transform firePoint; // A child object indicating where to shoot from
+    public Transform firePoint;
     
-    // Track active projectiles spawned by this enemy
     private List<GameObject> activeProjectiles = new List<GameObject>();
+
+    protected override void InitialiseFromCodeMatrix()
+    {
+        // Base values for level 1 enemies (projectile type)
+        float baseHealth = 5f;
+        float baseSpeed = 2f;
+        float baseDamage = 4f;
+        float baseCooldown = 1f;
+        float baseMeleeRange = 0.5f;
+        float baseProjMinRange = 2f;
+        float baseProjMaxRange = 6f;
+        float baseXP = 8f;
+
+        // Define enemy progression via code with linear scaling
+        for (int level = 1; level <= 10; level++)
+        {
+            float levelScale = 1 + (level - 1) * 0.2f; // 20% increase per level
+
+            SetEnemyLevelData(
+                level,
+                maxHealth: baseHealth * levelScale,
+                moveSpeed: baseSpeed * levelScale,
+                attackDamage: baseDamage * levelScale,
+                attackCooldown: Mathf.Max(0.5f, baseCooldown * (1 / levelScale)), // Cooldown decreases
+                meleeAttackRange: baseMeleeRange * levelScale,
+                projectileMinRange: baseProjMinRange * levelScale,
+                projectileMaxRange: baseProjMaxRange * levelScale,
+                xpValue: baseXP * levelScale
+            );
+        }
+        
+        Debug.Log($"Enemy level matrix initialised from code. {codeLevelData.Count} levels defined.");
+    }
+    
+    protected void SetEnemyLevelData(int level, float maxHealth, float moveSpeed, float attackDamage, 
+        float attackCooldown, float meleeAttackRange, float projectileMinRange, float projectileMaxRange, float xpValue)
+    {
+        EnemyLevelData data = new EnemyLevelData
+        {
+            level = level,
+            maxHealth = maxHealth,
+            moveSpeed = moveSpeed,
+            attackDamage = attackDamage,
+            attackCooldown = attackCooldown,
+            meleeAttackRange = meleeAttackRange,
+            projectileMinRange = projectileMinRange,
+            projectileMaxRange = projectileMaxRange,
+            xpValue = xpValue
+        };
+        
+        codeLevelData[level] = data;
+    }
+    
+    protected override void ApplyLevelStats(int level)
+    {
+        EnemyLevelData data = GetEnemyLevelData(level);
+        if (data == null)
+        {
+            Debug.LogWarning($"No enemy level data found for level {level}");
+            return;
+        }
+        
+        // Get type-specific modifiers
+        EnemyTypeModifiers modifiers = enemyType == EnemyType.Melee ? meleeModifiers : projectileModifiers;
+
+        // Apply base stats
+        maxHealth = data.maxHealth * modifiers.healthMultiplier;
+        moveSpeed = data.moveSpeed * modifiers.moveSpeedMultiplier;
+        damage = data.attackDamage * modifiers.damageMultiplier;
+        attackCooldown = data.attackCooldown * modifiers.attackCooldownMultiplier;
+        meleeAttackRange = data.meleeAttackRange * modifiers.attackRangeMultiplier;
+        projectileMinRange = data.projectileMinRange * modifiers.attackRangeMultiplier;
+        projectileMaxRange = data.projectileMaxRange * modifiers.attackRangeMultiplier;
+        xpValue = data.xpValue;
+
+        Debug.Log($"Applied level {level} stats with {enemyType} modifiers. " +
+                 $"Health: {maxHealth}, Speed: {moveSpeed}, Damage: {damage}, " +
+                 $"Cooldown: {attackCooldown}s");
+    }
+
+    protected EnemyLevelData GetEnemyLevelData(int level)
+    {
+        if (useInspectorLevels && levelData.Count > 0)
+        {
+            // Find level data in inspector list
+            foreach (var data in levelData)
+            {
+                if (data.level == level)
+                    return data;
+            }
+            
+            // If exact level not found, use the highest available level
+            EnemyLevelData fallback = null;
+            foreach (var data in levelData)
+            {
+                if (data.level <= level && (fallback == null || data.level > fallback.level))
+                    fallback = data;
+            }
+            return fallback ?? levelData[levelData.Count - 1];
+        }
+        else
+        {
+            // Use code-based data
+            if (codeLevelData.ContainsKey(level))
+                return codeLevelData[level];
+                
+            // If exact level not found, use the highest available level
+            EnemyLevelData fallback = null;
+            foreach (var kvp in codeLevelData)
+            {
+                if (kvp.Key <= level && (fallback == null || kvp.Key > fallback.level))
+                    fallback = kvp.Value;
+            }
+            return fallback;
+        }
+    }
 
     protected override void Start()
     {
-        base.Start(); // Call Entity's Start method
+        base.Start();
         
         if (target == null)
         {
@@ -59,7 +232,6 @@ public class Enemy : Entity
                 break;
         }
         
-        // Clean up destroyed projectiles from our tracking list
         CleanupDestroyedProjectiles();
     }
 
@@ -98,7 +270,7 @@ public class Enemy : Entity
         Player player = target.GetComponent<Player>();
         if (player != null)
         {
-            player.TakeDamage(damage); // Call Entity's TakeDamage method
+            player.TakeDamage(damage);
         }
         else
         {
@@ -150,12 +322,29 @@ public class Enemy : Entity
             lastAttackTime = Time.time;
         }
     }
+    
+    public void SetLevel(int level)
+    {
+        // Clamp level to valid range
+        level = Mathf.Max(1, level);
+        
+        // Set the current level
+        currentLevel = level;
+        
+        // Apply the level stats
+        ApplyLevelStats(level);
+        
+        // Set current health to max health after level application
+        currentHealth = maxHealth;
+        
+        Debug.Log($"Enemy level set to {level}. Stats - Health: {maxHealth}, Speed: {moveSpeed}, Damage: {damage}");
+    }
 
     protected override void OnDeath()
     {
         // Move any active projectiles to the enemies parent before this enemy is destroyed
         MoveProjectilesToParent();
-        
+
         // Spawn XP orb instead of directly giving XP to player
         SpawnXPOrb();
 
@@ -229,6 +418,8 @@ public class Enemy : Entity
         // Clear the list since we're about to be destroyed
         activeProjectiles.Clear();
     }
+
+    
 
     private void OnDrawGizmosSelected()
     {

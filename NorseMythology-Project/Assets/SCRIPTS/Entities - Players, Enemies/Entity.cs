@@ -1,24 +1,29 @@
 using UnityEngine;
+using System.Collections.Generic;
 using System.Collections;
 
 public abstract class Entity : MonoBehaviour
 {
     [Header("Health")]
-    public float maxHealth = 100f; // Default to 100 - the player's base health
+    public float maxHealth = 100f;
     public float currentHealth;
     public bool isDead = false;
-    
+
     [Header("Movement")]
     public float moveSpeed = 2f;
-    
+
     [Header("Combat")]
-    public float damage = 5f; // Might need to separate into melee and ranged later
-    
+    public float damage = 5f;
+
     [Header("Status Effects")]
     public bool isStunned = false;
     public bool isFrozen = false;
     public bool isInvincible = false;
-    protected float lastDamageTime = 0f; // Time since last damaged (for setting and checking stun duration)
+    protected float lastDamageTime = 0f;
+
+    [Header("Level System")]
+    public bool useInspectorLevels = true;
+    [SerializeField] protected int currentLevel = 1;
 
     protected virtual void Start()
     {
@@ -27,8 +32,28 @@ public abstract class Entity : MonoBehaviour
 
     protected virtual void InitialiseEntity()
     {
+        if (!useInspectorLevels)
+        {
+            InitialiseFromCodeMatrix();
+        }
+
+        ApplyLevelStats(currentLevel);
         currentHealth = maxHealth;
     }
+
+    // Override this in subclasses to define level progression via code
+    protected virtual void InitialiseFromCodeMatrix()
+    {
+        // Base implementation - subclasses should override
+    }
+
+    public virtual void SetLevel(int newLevel)
+    {
+        currentLevel = Mathf.Max(1, newLevel);
+        ApplyLevelStats(currentLevel);
+    }
+
+    protected abstract void ApplyLevelStats(int level);
 
     public virtual void TakeDamage(float damageAmount, float stunDuration = 0f)
     {
@@ -37,7 +62,6 @@ public abstract class Entity : MonoBehaviour
         currentHealth -= damageAmount;
         lastDamageTime = Time.time;
 
-        // Show damage popup
         PopupManager.Instance?.ShowDamage(damageAmount, transform.position);
 
         if (stunDuration > 0f)
@@ -118,25 +142,20 @@ public abstract class Entity : MonoBehaviour
 
         SpriteRenderer sr = GetComponent<SpriteRenderer>();
         Color originalColor = sr != null ? sr.color : Color.white;
-        
-        // Apply a light blue tint to indicate frozen state
+
         Color frozenColor = new Color(0.7f, 0.9f, 1f, originalColor.a);
         if (sr != null)
             sr.color = frozenColor;
 
-        // Wait for 80% of the duration (enemies can't move during this time)
         float immobilizeDuration = duration * 0.8f;
         yield return new WaitForSeconds(immobilizeDuration);
 
-        // At 80% completion, enemies can start moving again (20% opacity threshold)
         isFrozen = false;
         OnFreezeEnded();
 
-        // Wait for the remaining 20% of duration while fade completes
         float remainingDuration = duration * 0.2f;
         yield return new WaitForSeconds(remainingDuration);
 
-        // Restore original color when effect fully ends
         if (sr != null)
             sr.color = originalColor;
     }
@@ -171,4 +190,7 @@ public abstract class Entity : MonoBehaviour
     {
         return Vector2.Distance(transform.position, target.position);
     }
+
+    // Getter methods
+    public int GetCurrentLevel() => currentLevel;
 }

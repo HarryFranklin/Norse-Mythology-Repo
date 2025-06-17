@@ -2,6 +2,45 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+[System.Serializable]
+public class LevelDistribution
+{
+    [Header("Level Distribution Ratios")]
+    [Range(0f, 1f)]
+    [Tooltip("Proportion of enemies that are 1 level below target level")]
+    public float belowLevelRatio = 0.2f;
+    
+    [Range(0f, 1f)]
+    [Tooltip("Proportion of enemies that are at target level")]
+    public float targetLevelRatio = 0.6f;
+    
+    [Range(0f, 1f)]
+    [Tooltip("Proportion of enemies that are 1 level above target level")]
+    public float aboveLevelRatio = 0.2f;
+    
+    [Header("Auto-Normalise")]
+    [Tooltip("Automatically normalize ratios to sum to 1.0")]
+    public bool autoNormalise = true;
+    
+    public void NormaliseRatios()
+    {
+        float total = belowLevelRatio + targetLevelRatio + aboveLevelRatio;
+        if (total > 0f)
+        {
+            belowLevelRatio /= total;
+            targetLevelRatio /= total;
+            aboveLevelRatio /= total;
+        }
+        else
+        {
+            // Default values if all are zero
+            belowLevelRatio = 0.2f;
+            targetLevelRatio = 0.6f;
+            aboveLevelRatio = 0.2f;
+        }
+    }
+}
+
 public class EnemySpawner : MonoBehaviour
 {
     [Header("Spawning and Prefabs")]
@@ -18,23 +57,37 @@ public class EnemySpawner : MonoBehaviour
     public float meleeRatio = 0.6f;
     public float spawnRate = 2f; // Per second
     
+    [Header("Enemy Level Settings")]
+    [SerializeField] private int targetEnemyLevel = 1;
+    [SerializeField] private LevelDistribution levelDistribution = new LevelDistribution();
+    
     [Header("Spawn Distance")]
     public float minSpawnRadius = 12f; // Just to add some variation
     public float maxSpawnRadius = 18f;
     
-    public int maxEnemies = 20; // Add functionality to increase this later with wave count
+    [Header("Enemy Count Scaling")]
+    public int baseMaxEnemies = 15; // Base max enemies for wave 1
+    public int maxEnemiesIncrement = 3; // How many more enemies per wave
+    public int absoluteMaxEnemies = 50; // Hard cap to prevent performance issues
+    
     public Transform player;
 
     [Header("Grid Detection")]
     public LayerMask gridLayerMask = -1; // Which layers to consider as grid objects
     
     private int currentEnemyCount = 0;
+    private int currentMaxEnemies = 15;
     private bool spawningActive = false;
     private Coroutine spawnCoroutine;
     
     // Wave modifiers
     private float currentHealthMultiplier = 1f;
     private float currentXPMultiplier = 1f;
+    
+    // Fixed spawn wave tracking
+    private int totalEnemiesSpawned = 0;
+    private int maxEnemiesToSpawn = 0;
+    private bool isFixedSpawnWave = false;
     
     // Camera bounds for off-screen detection
     private Camera mainCamera;
@@ -51,6 +104,15 @@ public class EnemySpawner : MonoBehaviour
             
         // Ensure we have an enemies parent object
         SetupEnemiesParent();
+        
+        // Normalise level distribution ratios if auto-normalize is enabled
+        if (levelDistribution.autoNormalise)
+        {
+            levelDistribution.NormaliseRatios();
+        }
+        
+        // Set initial max enemies
+        currentMaxEnemies = baseMaxEnemies;
     }
     
     private void SetupEnemiesParent()
@@ -77,9 +139,26 @@ public class EnemySpawner : MonoBehaviour
         spawnCoroutine = StartCoroutine(SpawnEnemies());
     }
     
+    public void StartFixedSpawning(int totalEnemies)
+    {
+        isFixedSpawnWave = true;
+        maxEnemiesToSpawn = totalEnemies;
+        totalEnemiesSpawned = 0;
+        
+        spawningActive = true;
+        if (spawnCoroutine != null)
+        {
+            StopCoroutine(spawnCoroutine);
+        }
+        spawnCoroutine = StartCoroutine(SpawnEnemies());
+        
+        Debug.Log($"Starting fixed spawn wave: {totalEnemies} total enemies to spawn");
+    }
+    
     public void StopSpawning()
     {
         spawningActive = false;
+        isFixedSpawnWave = false;
         if (spawnCoroutine != null)
         {
             StopCoroutine(spawnCoroutine);
@@ -92,6 +171,47 @@ public class EnemySpawner : MonoBehaviour
         currentHealthMultiplier = healthMultiplier;
         currentXPMultiplier = xpMultiplier;
     }
+    
+    public void SetWaveNumber(int waveNumber)
+    {
+        // Calculate max enemies based on wave number
+        currentMaxEnemies = Mathf.Min(
+            baseMaxEnemies + ((waveNumber - 1) * maxEnemiesIncrement),
+            absoluteMaxEnemies
+        );
+        
+        Debug.Log($"Wave {waveNumber}: Max simultaneous enemies set to {currentMaxEnemies}");
+    }
+    
+    public void SetTargetEnemyLevel(int level)
+    {
+        targetEnemyLevel = Mathf.Max(1, level);
+    }
+    
+    public int GetTargetEnemyLevel()
+    {
+        return targetEnemyLevel;
+    }
+    
+    public int GetCurrentEnemyCount()
+    {
+        return currentEnemyCount;
+    }
+    
+    public int GetCurrentMaxEnemies()
+    {
+        return currentMaxEnemies;
+    }
+    
+    public bool AreAllEnemiesSpawned()
+    {
+        return isFixedSpawnWave && totalEnemiesSpawned >= maxEnemiesToSpawn;
+    }
+    
+    public bool AreAllEnemiesDefeated()
+    {
+        return isFixedSpawnWave && totalEnemiesSpawned >= maxEnemiesToSpawn && currentEnemyCount == 0;
+    }
 
     private IEnumerator SpawnEnemies()
     {
@@ -99,9 +219,30 @@ public class EnemySpawner : MonoBehaviour
         {
             yield return new WaitForSeconds(1f / spawnRate);
 
-            if (currentEnemyCount < maxEnemies)
+            // Check if we should spawn more enemies
+            bool shouldSpawn = false;
+            
+            if (isFixedSpawnWave)
+            {
+                // For fixed spawn waves, check if we haven't spawned all enemies yet
+                // and we haven't reached the simultaneous enemy limit
+                shouldSpawn = totalEnemiesSpawned < maxEnemiesToSpawn && 
+                             currentEnemyCount < currentMaxEnemies;
+            }
+            else
+            {
+                // For continuous waves, just check the simultaneous enemy limit
+                shouldSpawn = currentEnemyCount < currentMaxEnemies;
+            }
+            
+            if (shouldSpawn)
             {
                 SpawnEnemy();
+            }
+            else if (isFixedSpawnWave && totalEnemiesSpawned >= maxEnemiesToSpawn)
+            {
+                // Stop spawning if we've spawned all enemies for a fixed wave
+                break;
             }
         }
     }
@@ -129,13 +270,22 @@ public class EnemySpawner : MonoBehaviour
         {
             enemyScript.target = player;
             
-            // Apply wave scaling
+            // Determine the level for this enemy
+            int enemyLevel = DetermineEnemyLevel();
+            
+            // Set the enemy's level before applying wave scaling
+            enemyScript.SetLevel(enemyLevel);
+            
+            // Apply wave scaling to the enemy's current stats
             float newMaxHealth = Mathf.Round(enemyScript.maxHealth * currentHealthMultiplier);
             float newXPValue = Mathf.Round(enemyScript.xpValue * currentXPMultiplier);
             
             enemyScript.maxHealth = newMaxHealth;
             enemyScript.currentHealth = newMaxHealth;
             enemyScript.xpValue = newXPValue;
+            
+            Debug.Log($"Spawned {enemyScript.enemyType} enemy at level {enemyLevel} " +
+                     $"(Target: {targetEnemyLevel}) with {newMaxHealth} HP and {newXPValue} XP");
         }
         else
         {
@@ -143,7 +293,52 @@ public class EnemySpawner : MonoBehaviour
         }
 
         currentEnemyCount++;
+        if (isFixedSpawnWave)
+        {
+            totalEnemiesSpawned++;
+        }
+        
         StartCoroutine(WaitForEnemyDestroy(enemy));
+    }
+    
+    private int DetermineEnemyLevel()
+    {
+        // Normalise ratios if auto-normalize is enabled
+        if (levelDistribution.autoNormalise)
+        {
+            levelDistribution.NormaliseRatios();
+        }
+        
+        float randomValue = Random.value;
+        float cumulativeRatio = 0f;
+        
+        // Check for below level (only if target level > 1)
+        if (targetEnemyLevel > 1)
+        {
+            cumulativeRatio += levelDistribution.belowLevelRatio;
+            if (randomValue <= cumulativeRatio)
+            {
+                return targetEnemyLevel - 1;
+            }
+        }
+        
+        // Check for target level
+        // If target level is 1, we need to redistribute the below level ratio
+        float targetRatio = levelDistribution.targetLevelRatio;
+        if (targetEnemyLevel == 1)
+        {
+            // Add the below level ratio to target level ratio since we can't spawn level 0
+            targetRatio += levelDistribution.belowLevelRatio;
+        }
+        
+        cumulativeRatio += targetRatio;
+        if (randomValue <= cumulativeRatio)
+        {
+            return targetEnemyLevel;
+        }
+        
+        // Otherwise, spawn above level
+        return targetEnemyLevel + 1;
     }
     
     private GameObject GetRandomEnemyPrefab()
@@ -190,7 +385,7 @@ public class EnemySpawner : MonoBehaviour
         currentEnemyCount--;
         
         // Notify wave manager that an enemy was killed
-        WaveManager waveManager = FindFirstObjectByType<WaveManager>();
+        WaveManager waveManager = WaveManager.Instance;
         if (waveManager != null)
         {
             waveManager.OnEnemyKilled();
@@ -321,6 +516,24 @@ public class EnemySpawner : MonoBehaviour
             Vector3 newPoint = center + new Vector3(Mathf.Cos(angle) * radius, Mathf.Sin(angle) * radius, 0);
             Gizmos.DrawLine(prevPoint, newPoint);
             prevPoint = newPoint;
+        }
+    }
+    
+    // Inspector validation
+    private void OnValidate()
+    {
+        // Ensure target level is at least 1
+        targetEnemyLevel = Mathf.Max(1, targetEnemyLevel);
+        
+        // Ensure base values are reasonable
+        baseMaxEnemies = Mathf.Max(1, baseMaxEnemies);
+        maxEnemiesIncrement = Mathf.Max(0, maxEnemiesIncrement);
+        absoluteMaxEnemies = Mathf.Max(baseMaxEnemies, absoluteMaxEnemies);
+        
+        // Auto-normalize ratios if enabled
+        if (levelDistribution != null && levelDistribution.autoNormalise)
+        {
+            levelDistribution.NormaliseRatios();
         }
     }
 }

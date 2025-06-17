@@ -108,15 +108,14 @@ MonoBehaviour:
   moveSpeed: 2
   damage: 5
   isStunned: 0
+  isFrozen: 0
   isInvincible: 0
+  useInspectorLevels: 0
+  currentLevel: 1
   enemyType: 0
-  xpValue: 10
-  level: 1
   xpOrbPrefab: {fileID: 6224046307236492347, guid: 24c4895bf94c3db42ab8cd46bf2cafea, type: 3}
-  meleeAttackRange: 0.5
-  projectileMinRange: 2
-  projectileMaxRange: 6
-  attackCooldown: 1
+  levelData: []
+  xpValue: 10
   target: {fileID: 0}
   projectilePrefab: {fileID: 0}
   firePoint: {fileID: 0}
