@@ -19,7 +19,7 @@ public class LevelDistribution
     public float aboveLevelRatio = 0.2f;
     
     [Header("Auto-Normalise")]
-    [Tooltip("Automatically normalize ratios to sum to 1.0")]
+    [Tooltip("Automatically normalise ratios to sum to 1.0")]
     public bool autoNormalise = true;
     
     public void NormaliseRatios()
@@ -55,7 +55,15 @@ public class EnemySpawner : MonoBehaviour
 
     [Range(0f, 1f)]
     public float meleeRatio = 0.6f;
-    public float spawnRate = 2f; // Per second
+    
+    [Header("Spawn Rate Settings")]
+    public float baseSpawnRate = 1f; // Base spawn rate (enemies per second) at level 1
+    [Range(0f, 0.2f)]
+    [Tooltip("Spawn rate reduction per player level (e.g., 0.05 = 5% faster per level)")]
+    public float playerLevelSpawnReduction = 0.05f; // 5% faster per player level
+    [Range(0f, 0.2f)]
+    [Tooltip("Spawn rate reduction per game level (e.g., 0.10 = 10% faster per level)")]
+    public float gameLevelSpawnReduction = 0.10f; // 10% faster per game level
     
     [Header("Enemy Level Settings")]
     [SerializeField] private int targetEnemyLevel = 1;
@@ -92,6 +100,9 @@ public class EnemySpawner : MonoBehaviour
     // Camera bounds for off-screen detection
     private Camera mainCamera;
     private Bounds currentGridBounds;
+    
+    // Current calculated spawn rate
+    private float currentSpawnRate = 1f;
 
     private void Start()
     {
@@ -105,14 +116,15 @@ public class EnemySpawner : MonoBehaviour
         // Ensure we have an enemies parent object
         SetupEnemiesParent();
         
-        // Normalise level distribution ratios if auto-normalize is enabled
+        // Normalise level distribution ratios if auto-normalise is enabled
         if (levelDistribution.autoNormalise)
         {
             levelDistribution.NormaliseRatios();
         }
         
-        // Set initial max enemies
+        // Set initial max enemies and spawn rate
         currentMaxEnemies = baseMaxEnemies;
+        UpdateSpawnRate();
     }
     
     private void SetupEnemiesParent()
@@ -128,9 +140,44 @@ public class EnemySpawner : MonoBehaviour
             enemiesParent = enemiesObject.transform;
         }
     }
+    
+    private void UpdateSpawnRate()
+    {
+        // Get player level from GameManager
+        int playerLevel = 1;
+        int gameLevel = 1;
+        
+        if (GameManager.Instance != null)
+        {
+            PlayerStats playerStats = GameManager.Instance.GetCurrentPlayerStats();
+            if (playerStats != null)
+            {
+                playerLevel = playerStats.level;
+            }
+            
+            // Get game level from WaveManager
+            if (WaveManager.Instance != null)
+            {
+                gameLevel = WaveManager.Instance.GetCurrentWave();
+            }
+        }
+        
+        // Calculate spawn rate multiplier
+        // Each player level reduces spawn time by playerLevelSpawnReduction (default 5%)
+        // Each game level reduces spawn time by gameLevelSpawnReduction (default 10%)
+        float playerLevelMultiplier = 1f + ((playerLevel - 1) * playerLevelSpawnReduction);
+        float gameLevelMultiplier = 1f + ((gameLevel - 1) * gameLevelSpawnReduction);
+        
+        // Apply both multipliers to the base spawn rate
+        currentSpawnRate = baseSpawnRate * playerLevelMultiplier * gameLevelMultiplier;
+        
+        Debug.Log($"Spawn rate updated: Player Level {playerLevel}, Game Level {gameLevel}, " +
+                 $"Rate: {currentSpawnRate:F2} enemies/sec (interval: {1f/currentSpawnRate:F2}s)");
+    }
 
     public void StartSpawning()
     {
+        UpdateSpawnRate(); // Update spawn rate when starting
         spawningActive = true;
         if (spawnCoroutine != null)
         {
@@ -141,6 +188,7 @@ public class EnemySpawner : MonoBehaviour
     
     public void StartFixedSpawning(int totalEnemies)
     {
+        UpdateSpawnRate(); // Update spawn rate when starting
         isFixedSpawnWave = true;
         maxEnemiesToSpawn = totalEnemies;
         totalEnemiesSpawned = 0;
@@ -180,6 +228,9 @@ public class EnemySpawner : MonoBehaviour
             absoluteMaxEnemies
         );
         
+        // Update spawn rate when wave number changes
+        UpdateSpawnRate();
+        
         Debug.Log($"Wave {waveNumber}: Max simultaneous enemies set to {currentMaxEnemies}");
     }
     
@@ -203,6 +254,11 @@ public class EnemySpawner : MonoBehaviour
         return currentMaxEnemies;
     }
     
+    public float GetCurrentSpawnRate()
+    {
+        return currentSpawnRate;
+    }
+    
     public bool AreAllEnemiesSpawned()
     {
         return isFixedSpawnWave && totalEnemiesSpawned >= maxEnemiesToSpawn;
@@ -217,7 +273,8 @@ public class EnemySpawner : MonoBehaviour
     {
         while (spawningActive)
         {
-            yield return new WaitForSeconds(1f / spawnRate);
+            // Use the dynamically calculated spawn rate
+            yield return new WaitForSeconds(1f / currentSpawnRate);
 
             // Check if we should spawn more enemies
             bool shouldSpawn = false;
@@ -303,7 +360,7 @@ public class EnemySpawner : MonoBehaviour
     
     private int DetermineEnemyLevel()
     {
-        // Normalise ratios if auto-normalize is enabled
+        // Normalise ratios if auto-normalise is enabled
         if (levelDistribution.autoNormalise)
         {
             levelDistribution.NormaliseRatios();
@@ -530,7 +587,12 @@ public class EnemySpawner : MonoBehaviour
         maxEnemiesIncrement = Mathf.Max(0, maxEnemiesIncrement);
         absoluteMaxEnemies = Mathf.Max(baseMaxEnemies, absoluteMaxEnemies);
         
-        // Auto-normalize ratios if enabled
+        // Ensure spawn rate values are reasonable
+        baseSpawnRate = Mathf.Max(0.1f, baseSpawnRate);
+        playerLevelSpawnReduction = Mathf.Clamp(playerLevelSpawnReduction, 0f, 0.2f);
+        gameLevelSpawnReduction = Mathf.Clamp(gameLevelSpawnReduction, 0f, 0.2f);
+        
+        // Auto-normalise ratios if enabled
         if (levelDistribution != null && levelDistribution.autoNormalise)
         {
             levelDistribution.NormaliseRatios();
