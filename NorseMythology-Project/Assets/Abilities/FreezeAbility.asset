@@ -14,59 +14,71 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: Freeze
   abilityIcon: {fileID: -384397029, guid: e20ffde0bbe61624695318427c9d6d54, type: 3}
-  maxStacks: 1
-  currentStacks: 1
+  useCodeDefinedMatrix: 1
+  abilityStacks: 1
+  canStackAbility: 1
   levelData:
-  - cooldown: 5
+  - cooldown: 12
+    damage: 0
+    duration: 2
+    radius: 2.5
+    speed: 0
+    distance: 0
+    specialValue1: 1
+    specialValue2: 0
+    specialValue3: 0
+    maxStacksAtLevel: 1
+    stackRegenTime: 12
+  - cooldown: 11
+    damage: 0
+    duration: 2.5
+    radius: 3
+    speed: 0
+    distance: 0
+    specialValue1: 1.2
+    specialValue2: 0
+    specialValue3: 0
+    maxStacksAtLevel: 1
+    stackRegenTime: 11
+  - cooldown: 10
     damage: 0
     duration: 3
+    radius: 3.5
+    speed: 0
+    distance: 0
+    specialValue1: 1.4
+    specialValue2: 0
+    specialValue3: 0
+    maxStacksAtLevel: 1
+    stackRegenTime: 10
+  - cooldown: 8
+    damage: 0
+    duration: 3.5
     radius: 4
     speed: 0
     distance: 0
-    specialValue1: 0
+    specialValue1: 1.6
     specialValue2: 0
     specialValue3: 0
-  - cooldown: 5
+    maxStacksAtLevel: 2
+    stackRegenTime: 8
+  - cooldown: 6
     damage: 0
-    duration: 0
-    radius: 0
+    duration: 4
+    radius: 4.5
     speed: 0
     distance: 0
-    specialValue1: 0
+    specialValue1: 1.8
     specialValue2: 0
     specialValue3: 0
-  - cooldown: 5
-    damage: 0
-    duration: 0
-    radius: 0
-    speed: 0
-    distance: 0
-    specialValue1: 0
-    specialValue2: 0
-    specialValue3: 0
-  - cooldown: 5
-    damage: 0
-    duration: 0
-    radius: 0
-    speed: 0
-    distance: 0
-    specialValue1: 0
-    specialValue2: 0
-    specialValue3: 0
-  - cooldown: 5
-    damage: 0
-    duration: 0
-    radius: 0
-    speed: 0
-    distance: 0
-    specialValue1: 0
-    specialValue2: 0
-    specialValue3: 0
+    maxStacksAtLevel: 2
+    stackRegenTime: 6
   currentLevel: 1
+  currentStacks: 0
   activationMode: 1
   targetingCursor: {fileID: -392684488, guid: 766cb97207789f04aa2e7cfb164d1f50, type: 3}
   showTargetingLine: 1
   targetingLineColor: {r: 0, g: 1, b: 1, a: 1}
-  maxTargetingRange: 8
+  maxTargetingRange: 5
   description: Freeze nearby enemies in place for a short duration.
   freezeEffectPrefab: {fileID: 6625746139066430653, guid: 64baf16bbfa525f41831c1ed70e92e18, type: 3}

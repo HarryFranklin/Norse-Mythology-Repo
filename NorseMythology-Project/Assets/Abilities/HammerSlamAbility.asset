@@ -14,55 +14,67 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: Hammer Slam
   abilityIcon: {fileID: 21300000, guid: 6a5c4a0883aa42740a38434823b51536, type: 3}
-  maxStacks: 1
-  currentStacks: 1
+  useCodeDefinedMatrix: 1
+  abilityStacks: 1
+  canStackAbility: 1
   levelData:
-  - cooldown: 5
-    damage: 4
-    duration: 0
+  - cooldown: 8
+    damage: 5
+    duration: 1.2
     radius: 3
-    speed: 0
-    distance: 0
+    speed: 12
+    distance: 4
+    specialValue1: 1.5
+    specialValue2: 20
+    specialValue3: 0.15
+    maxStacksAtLevel: 1
+    stackRegenTime: 8
+  - cooldown: 7
+    damage: 9
+    duration: 1.4
+    radius: 3.5
+    speed: 14
+    distance: 4.5
     specialValue1: 2
-    specialValue2: 3
-    specialValue3: 3
+    specialValue2: 30
+    specialValue3: 0.18
+    maxStacksAtLevel: 1
+    stackRegenTime: 7
+  - cooldown: 6
+    damage: 12
+    duration: 1.6
+    radius: 4
+    speed: 16
+    distance: 5
+    specialValue1: 2.5
+    specialValue2: 40
+    specialValue3: 0.2
+    maxStacksAtLevel: 1
+    stackRegenTime: 6
   - cooldown: 5
-    damage: 0
-    duration: 0
-    radius: 0
-    speed: 0
-    distance: 0
-    specialValue1: 0
-    specialValue2: 0
-    specialValue3: 0
-  - cooldown: 5
-    damage: 0
-    duration: 0
-    radius: 0
-    speed: 0
-    distance: 0
-    specialValue1: 0
-    specialValue2: 0
-    specialValue3: 0
-  - cooldown: 5
-    damage: 0
-    duration: 0
-    radius: 0
-    speed: 0
-    distance: 0
-    specialValue1: 0
-    specialValue2: 0
-    specialValue3: 0
-  - cooldown: 5
-    damage: 0
-    duration: 0
-    radius: 0
-    speed: 0
-    distance: 0
-    specialValue1: 0
-    specialValue2: 0
-    specialValue3: 0
+    damage: 14
+    duration: 1.8
+    radius: 4.5
+    speed: 18
+    distance: 5.5
+    specialValue1: 3
+    specialValue2: 50
+    specialValue3: 0.22
+    maxStacksAtLevel: 1
+    stackRegenTime: 5
+  - cooldown: 4
+    damage: 16
+    duration: 2
+    radius: 5
+    speed: 20
+    distance: 6
+    specialValue1: 3.5
+    specialValue2: 65
+    specialValue3: 0.25
+    maxStacksAtLevel: 1
+    stackRegenTime: 4
   currentLevel: 1
+  currentStacks: 1
   activationMode: 0
   targetingCursor: {fileID: 0}
   showTargetingLine: 0

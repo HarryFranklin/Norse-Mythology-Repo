@@ -14,60 +14,72 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: Hammer Throw
   abilityIcon: {fileID: 21300000, guid: 32f704875c59dd04cb9a5177502454a7, type: 3}
-  maxStacks: 1
-  currentStacks: 1
+  useCodeDefinedMatrix: 1
+  abilityStacks: 1
+  canStackAbility: 1
   levelData:
   - cooldown: 5
-    damage: 5
+    damage: 4
+    duration: 0
+    radius: 0
+    speed: 8
+    distance: 6
+    specialValue1: 1
+    specialValue2: 0
+    specialValue3: 0
+    maxStacksAtLevel: 1
+    stackRegenTime: 4
+  - cooldown: 4.25
+    damage: 7.5
+    duration: 0
+    radius: 0
+    speed: 9
+    distance: 7
+    specialValue1: 1.2
+    specialValue2: 0
+    specialValue3: 0
+    maxStacksAtLevel: 1
+    stackRegenTime: 3.5
+  - cooldown: 3.5
+    damage: 10
     duration: 0
     radius: 0
     speed: 10
-    distance: 7
-    specialValue1: 0
+    distance: 8
+    specialValue1: 1.4
     specialValue2: 0
     specialValue3: 0
-  - cooldown: 5
-    damage: 0
+    maxStacksAtLevel: 2
+    stackRegenTime: 3
+  - cooldown: 2.75
+    damage: 12.5
     duration: 0
     radius: 0
-    speed: 0
-    distance: 0
-    specialValue1: 0
+    speed: 11
+    distance: 9
+    specialValue1: 1.6
     specialValue2: 0
     specialValue3: 0
-  - cooldown: 5
-    damage: 0
+    maxStacksAtLevel: 2
+    stackRegenTime: 2.5
+  - cooldown: 2
+    damage: 14
     duration: 0
     radius: 0
-    speed: 0
-    distance: 0
-    specialValue1: 0
+    speed: 12
+    distance: 10
+    specialValue1: 1.8
     specialValue2: 0
     specialValue3: 0
-  - cooldown: 5
-    damage: 0
-    duration: 0
-    radius: 0
-    speed: 0
-    distance: 0
-    specialValue1: 0
-    specialValue2: 0
-    specialValue3: 0
-  - cooldown: 5
-    damage: 0
-    duration: 0
-    radius: 0
-    speed: 0
-    distance: 0
-    specialValue1: 0
-    specialValue2: 0
-    specialValue3: 0
+    maxStacksAtLevel: 3
+    stackRegenTime: 2
   currentLevel: 1
+  currentStacks: 1
   activationMode: 1
   targetingCursor: {fileID: 21300000, guid: 32f704875c59dd04cb9a5177502454a7, type: 3}
   showTargetingLine: 1
   targetingLineColor: {r: 1, g: 0, b: 0, a: 1}
-  maxTargetingRange: 7
+  maxTargetingRange: 10
   description: Throw a spinning hammer that deals damage and returns to you.
   hammerPrefab: {fileID: 5131123301474718387, guid: 4d50b6241863ed942a56c3845040826f, type: 3}
   returnsToPlayer: 1
