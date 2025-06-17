@@ -29,6 +29,9 @@ public class AbilityManager : MonoBehaviour
 
     private void Update()
     {
+        // UPDATE STACK REGENERATION FOR ALL ABILITIES - THIS WAS MISSING!
+        UpdateAllAbilityStacks();
+        
         if (player != null && !player.isDead)
         {
             if (isInTargetingMode)
@@ -38,6 +41,18 @@ public class AbilityManager : MonoBehaviour
             else
             {
                 HandleAbilityInput();
+            }
+        }
+    }
+
+    // NEW METHOD: Update stack regeneration for all equipped abilities
+    private void UpdateAllAbilityStacks()
+    {
+        for (int i = 0; i < equippedAbilities.Length; i++)
+        {
+            if (equippedAbilities[i] != null)
+            {
+                equippedAbilities[i].UpdateStackRegeneration();
             }
         }
     }
@@ -109,6 +124,13 @@ public class AbilityManager : MonoBehaviour
 
         Ability ability = equippedAbilities[index];
 
+        // Check if ability can activate FIRST (this includes stack checking)
+        if (!ability.CanActivate(player))
+        {
+            Debug.Log($"Cannot activate {ability.abilityName} - Stacks: {ability.CurrentStacks}/{ability.MaxStacksAtCurrentLevel}");
+            return;
+        }
+
         // Check cooldown using stacked cooldown
         float cooldownReduction = 1f - (player.currentStats.abilityCooldownReduction / 100f);
         float adjustedCooldown = ability.StackedCooldown * cooldownReduction;
@@ -120,18 +142,12 @@ public class AbilityManager : MonoBehaviour
             return;
         }
 
-        if (!ability.CanActivate(player))
-        {
-            Debug.Log($"Cannot activate {ability.abilityName}");
-            return;
-        }
-
         // Handle different activation modes
         if (ability.activationMode == ActivationMode.Instant)
         {
             ability.Activate(player, playerMovement);
             lastAbilityUse[index] = Time.time;
-            Debug.Log($"{ability.abilityName} activated instantly! (Stack {ability.AbilityStacks})");
+            Debug.Log($"{ability.abilityName} activated instantly! (Stack {ability.AbilityStacks}) - Remaining charges: {ability.CurrentStacks}/{ability.MaxStacksAtCurrentLevel}");
         }
         else if (ability.activationMode == ActivationMode.ClickToTarget)
         {

@@ -311,9 +311,7 @@ public abstract class Ability : ScriptableObject
     
     public virtual bool CanActivate(Player player)
     {
-        // Update stack regeneration before checking if we can activate
-        UpdateStackRegeneration();
-        
+        // AbilityManager handles UpdateStackRegeneration()
         bool canActivate = player != null && !player.isDead && CurrentStacks > 0;
         
         if (!canActivate)
