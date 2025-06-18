@@ -2170,7 +2170,9 @@ MonoBehaviour:
   meleePrefab: {fileID: 6549350566530616831, guid: a8e644fb05298434c981a996cf930ac1, type: 3}
   projectilePrefab: {fileID: 6549350566530616831, guid: 94d987001f64ddb43a4b3c2f2186edfe, type: 3}
   meleeRatio: 0.6
-  spawnRate: 0.5
+  baseSpawnRate: 1
+  playerLevelSpawnReduction: 0.05
+  gameLevelSpawnReduction: 0.1
   targetEnemyLevel: 1
   levelDistribution:
     belowLevelRatio: 0.2

@@ -79,7 +79,7 @@ MonoBehaviour:
   targetingCursor: {fileID: 21300000, guid: 0fcd66ba496458c48b3b2976c5eb9950, type: 3}
   showTargetingLine: 1
   targetingLineColor: {r: 0, g: 1, b: 1, a: 1}
-  maxTargetingRange: 7.5
+  maxTargetingRange: 5.25
   description: Dash quickly in a target direction, becoming invincible for a brief
     moment.
   dashTrailPrefab: {fileID: 2172294401191862685, guid: 727a9e45aa386b04a876a51cf2be82ee, type: 3}
