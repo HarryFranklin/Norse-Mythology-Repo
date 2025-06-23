@@ -673,13 +673,14 @@ GameObject:
   - component: {fileID: 204952695}
   - component: {fileID: 204952697}
   - component: {fileID: 204952696}
+  - component: {fileID: 204952698}
   m_Layer: 5
   m_Name: AbilityPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &204952695
 RectTransform:
   m_ObjectHideFlags: 0
@@ -716,7 +717,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.47843137}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -741,6 +742,44 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 204952694}
   m_CullTransparentMesh: 1
+--- !u!114 &204952698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 204952694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14eb4d3c786737b40ae696609bbad6eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abilities:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  abilityChoices:
+  - panel: {fileID: 0}
+    abilityIconImage: {fileID: 0}
+    abilityNameText: {fileID: 0}
+    abilityLevelText: {fileID: 0}
+    abilityName: 
+    abilityLevel: 0
+    abilityIconSprite: {fileID: 0}
+  - panel: {fileID: 0}
+    abilityIconImage: {fileID: 0}
+    abilityNameText: {fileID: 0}
+    abilityLevelText: {fileID: 0}
+    abilityName: 
+    abilityLevel: 0
+    abilityIconSprite: {fileID: 0}
+  - panel: {fileID: 0}
+    abilityIconImage: {fileID: 0}
+    abilityNameText: {fileID: 0}
+    abilityLevelText: {fileID: 0}
+    abilityName: 
+    abilityLevel: 0
+    abilityIconSprite: {fileID: 0}
 --- !u!1 &262956651
 GameObject:
   m_ObjectHideFlags: 0
@@ -1769,7 +1808,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &520920991
 RectTransform:
   m_ObjectHideFlags: 0
