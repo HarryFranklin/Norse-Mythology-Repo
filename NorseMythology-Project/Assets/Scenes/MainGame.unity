@@ -7893,6 +7893,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 570491798}
     m_Modifications:
+    - target: {fileID: 258390853579051121, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -30.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3437400400115722499, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 49.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3683545477688439805, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 49.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3874398474490805142, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 34.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4262631110523832061, guid: b07c0677832e38a428d095a336d8a7f2, type: 3}
       propertyPath: m_Name
       value: Frontfill - XP
