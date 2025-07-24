@@ -49,6 +49,7 @@ public class Player : Entity
 
     [Header("Abilities")]
     public AbilityManager abilityManager;
+    [SerializeField] private List<Ability> playerAbilities = new List<Ability>();
     
     [Header("Player Level Data")]
     public List<PlayerLevelData> levelData = new List<PlayerLevelData>();
@@ -413,10 +414,34 @@ public class Player : Entity
         }
     }
     
+    public int GetPlayerLevel()
+    {
+        return currentStats != null ? currentStats.level : 1;
+    }
+
+    public List<Ability> GetAbilities()
+    {
+        return new List<Ability>(playerAbilities); // Return a copy to prevent external modification
+    }
+
+    public void SetPlayerLevel(int level)
+    {
+        if (currentStats != null)
+        {
+            currentStats.level = level;
+        }
+    }
+
+public void SetAbilities(List<Ability> abilities)
+{
+    playerAbilities = new List<Ability>(abilities); // Create a copy
+    Debug.Log($"Player abilities set: {playerAbilities.Count} abilities");
+}
+    
     public void SaveStatsToBase()
     {
         if (baseStats == null || currentStats == null) return;
-        
+
         baseStats.level = currentStats.level;
         baseStats.experience = currentStats.experience;
         baseStats.experienceToNextLevel = experienceToNextLevel;
@@ -452,48 +477,6 @@ public class Player : Entity
     public float GetExperienceToNextLevel()
     {
         return experienceToNextLevel;
-    }
-
-    public int GetPlayerLevel()
-    {
-        return currentStats != null ? currentStats.level : 1;
-    }
-
-    public void SetPlayerLevel(int level)
-    {
-        if (currentStats != null)
-        {
-            currentStats.level = level;
-            currentLevel = level;
-            ApplyLevelStats(level);
-        }
-    }
-
-    private List<Ability> activeAbilities = new List<Ability>();
-
-    public List<Ability> GetAbilities()
-    {
-        if (abilityManager == null)
-        {
-            Debug.LogWarning("Player: AbilityManager is null in GetAbilities");
-            return new List<Ability>();
-        }
-
-        return new List<Ability>(abilityManager.equippedAbilities);
-    }
-
-    public void SetAbilities(List<Ability> abilities)
-    {
-        if (abilityManager == null)
-        {
-            Debug.LogWarning("Player: AbilityManager is null in SetAbilities");
-            return;
-        }
-
-        for (int i = 0; i < abilityManager.equippedAbilities.Length; i++)
-        {
-            abilityManager.equippedAbilities[i] = (i < abilities.Count) ? abilities[i] : null;
-        }
     }
     
     // Additional getter methods for player-specific stats

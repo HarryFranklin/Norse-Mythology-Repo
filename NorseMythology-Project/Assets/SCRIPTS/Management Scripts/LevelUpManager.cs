@@ -11,6 +11,7 @@ public class LevelUpManager : MonoBehaviour
     public TextMeshProUGUI nextWaveText;
     public TextMeshProUGUI playerStatsText;
     public TextMeshProUGUI upgradePointsText;
+    public GameObject levelUpPanel;
     
     [Header("Upgrade Buttons")]
     public Button upgradeHealthButton;
@@ -25,6 +26,9 @@ public class LevelUpManager : MonoBehaviour
     [Header("Upgrade Display Settings")]
     [Tooltip("If true, upgrade amounts show only on hover. If false, they show all the time.")]
     public bool showUpgradeAmountsOnHoverOnly = true;
+    
+    [Header("Ability Selector Reference")]
+    public AbilitySelectorManager abilitySelectorManager;
     
     private PlayerStats currentPlayerStats;
     private int availableUpgradePoints;
@@ -378,19 +382,22 @@ public class LevelUpManager : MonoBehaviour
     
     private void OnContinueClicked()
     {
-        Debug.Log("Continue button clicked");
+        Debug.Log("Continue button clicked - showing ability selector");
         
-        // This will transition back to the main game with the next wave
-        if (GameManager.Instance != null)
+        // Show the ability selector instead of directly continuing to next wave
+        if (abilitySelectorManager != null)
         {
-            Debug.Log("GameManager found, calling ContinueToNextWave");
-            GameManager.Instance.ContinueToNextWave();
+            levelUpPanel.SetActive(false);
+            abilitySelectorManager.ShowAbilitySelector();
         }
         else
         {
-            Debug.LogError("GameManager.Instance is null! Attempting fallback...");
-            // Fallback if GameManager instance is not available
-            UnityEngine.SceneManagement.SceneManager.LoadScene("MainGame");
+            Debug.LogError("AbilitySelectorManager reference is null! Please assign it in the inspector.");
+            // Fallback - go directly to next wave if ability selector is missing
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.ContinueToNextWave();
+            }
         }
     }
 }
