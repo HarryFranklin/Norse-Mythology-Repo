@@ -1386,6 +1386,7 @@ MonoBehaviour:
   abilityIcon: {fileID: 703923808}
   cooldownOverlay: {fileID: 1805936848}
   stackCount: {fileID: 161263777}
+  abilityManager: {fileID: 2135908899}
 --- !u!1 &664404180
 GameObject:
   m_ObjectHideFlags: 0
@@ -1838,6 +1839,7 @@ MonoBehaviour:
   abilityIcon: {fileID: 1705909253}
   cooldownOverlay: {fileID: 551527259}
   stackCount: {fileID: 1928760421}
+  abilityManager: {fileID: 2135908899}
 --- !u!1 &977955346
 GameObject:
   m_ObjectHideFlags: 0
@@ -1933,6 +1935,7 @@ MonoBehaviour:
   abilityIcon: {fileID: 1775011075}
   cooldownOverlay: {fileID: 1507644188}
   stackCount: {fileID: 274995316}
+  abilityManager: {fileID: 2135908899}
 --- !u!1 &1054639541
 GameObject:
   m_ObjectHideFlags: 0
@@ -7186,6 +7189,11 @@ MonoBehaviour:
   basePlayerStats: {fileID: 11400000, guid: d502c6bd20489c74992235336485d903, type: 2}
   currentPlayerStats: {fileID: 0}
   upgradePoints: 0
+  gameLevel: 1
+  currentPlayerData:
+    playerLevel: 1
+    abilities: []
+    playerPosition: {x: 0, y: 0, z: 0}
 --- !u!4 &1753531478
 Transform:
   m_ObjectHideFlags: 0
@@ -8232,6 +8240,7 @@ MonoBehaviour:
   abilityIcon: {fileID: 128635585}
   cooldownOverlay: {fileID: 2001679898}
   stackCount: {fileID: 220898510}
+  abilityManager: {fileID: 2135908899}
 --- !u!1 &2135908890
 GameObject:
   m_ObjectHideFlags: 0
@@ -8483,6 +8492,7 @@ MonoBehaviour:
   currentStats: {fileID: 0}
   isLevelUpPending: 0
   healthXPUIManager: {fileID: 570491799}
+  abilityManager: {fileID: 2135908899}
   levelData: []
 --- !u!58 &2135908901
 CircleCollider2D:

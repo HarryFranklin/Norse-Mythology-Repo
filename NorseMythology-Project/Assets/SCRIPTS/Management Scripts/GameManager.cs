@@ -11,24 +11,43 @@ public class GameManager : MonoBehaviour
     [Header("Scene Names")]
     [SerializeField] private string mainGameSceneName = "MainGame";
     [SerializeField] private string gameOverSceneName = "GameOver";
-    [SerializeField] private string winSceneName = "Win"; // Not sure if needed
-    [SerializeField] private string levelUpSceneName = "LevelUp"; // New scene for between waves
+    [SerializeField] private string winSceneName = "Win";
+    [SerializeField] private string levelUpSceneName = "LevelUp";
     
     // References that get found dynamically in each scene
     private GameObject playerObject;
+    private Player player;
     private List<GameObject> UI_to_Hide_When_Dead;
     private AbilityUIManager abilityUIManager;
     private HealthXPUIManager healthXPUIManager;
     private EnemySpawner enemySpawner;
+    private AbilityPooler abilityPooler;
 
     [Header("Player Stats")]
     [SerializeField] private PlayerStats basePlayerStats;
     [SerializeField] private PlayerStats currentPlayerStats; // This will persist between scenes
     [SerializeField] private int upgradePoints = 0; // Points available for upgrades
     
-    // Game state
+    [Header("Game State")]
+    public int gameLevel = 1; // Overall game progression level
     private bool gameActive = true;
     private bool returningFromLevelUp = false;
+
+    // Persistent player data that survives scene changes (for ability system)
+    [System.Serializable]
+    public class PlayerData
+    {
+        public int playerLevel = 1;
+        public List<Ability> abilities = new List<Ability>();
+        public Vector3 playerPosition;
+
+        public PlayerData()
+        {
+            abilities = new List<Ability>();
+        }
+    }
+
+    public PlayerData currentPlayerData = new PlayerData();
 
     private void Awake()
     {
@@ -57,6 +76,12 @@ public class GameManager : MonoBehaviour
             currentPlayerStats = basePlayerStats.CreateRuntimeCopy();
             Debug.Log("Initialised persistent player stats");
         }
+        
+        // Initialize player data if needed
+        if (currentPlayerData == null)
+        {
+            currentPlayerData = new PlayerData();
+        }
     }
     
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -70,6 +95,7 @@ public class GameManager : MonoBehaviour
         yield return null;
 
         string currentSceneName = SceneManager.GetActiveScene().name;
+        Debug.Log($"Scene loaded: {currentSceneName}");
 
         if (WaveManager.Instance != null)
         {
@@ -99,12 +125,38 @@ public class GameManager : MonoBehaviour
                     WaveManager.Instance.StartWave();
             }
         }
+        else if (currentSceneName == levelUpSceneName)
+        {
+            // Find ability pooler in level up scene
+            abilityPooler = FindFirstObjectByType<AbilityPooler>();
+            
+            // Ensure we have valid player data for ability selection
+            if (currentPlayerData == null)
+            {
+                currentPlayerData = new PlayerData();
+                Debug.LogWarning("No player data found, creating new PlayerData");
+            }
+        }
     }
     
+    public void EndCurrentWave()
+    {
+        SavePlayerData();
+        SavePlayerProgress();
+        SceneManager.LoadScene(levelUpSceneName);
+    }
+
+    public void ReturnFromLevelUp()
+    {
+        gameLevel++;
+        returningFromLevelUp = true;
+        SceneManager.LoadScene(mainGameSceneName);
+    }
+
     private void FindMainGameReferences()
     {
         // Find player
-        Player player = FindFirstObjectByType<Player>();
+        player = FindFirstObjectByType<Player>();
         if (player != null)
         {
             playerObject = player.gameObject;
@@ -135,6 +187,14 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        if (returningFromLevelUp)
+        {
+            LoadPlayerData();
+        }
+
+        // Find ability pooler
+        abilityPooler = FindFirstObjectByType<AbilityPooler>();
+
         // Find UI managers
         healthXPUIManager = FindFirstObjectByType<HealthXPUIManager>();
         abilityUIManager = FindFirstObjectByType<AbilityUIManager>();
@@ -158,21 +218,18 @@ public class GameManager : MonoBehaviour
         GameObject[] uiElements = GameObject.FindGameObjectsWithTag("HideOnDeath");
         UI_to_Hide_When_Dead.AddRange(uiElements);
     }
-
-    void Start()
-    {
-    
-    }
-
-    void Update()
-    {
-
-    }
     
     public void OnWaveCompleted()
     {
-        int currentWave = WaveManager.Instance.GetCurrentWave();
-        Debug.Log($"Wave {currentWave} completed! Handling transition...");
+        if (WaveManager.Instance != null)
+        {
+            int currentWave = WaveManager.Instance.GetCurrentWave();
+            Debug.Log($"Wave {currentWave} completed! Handling transition...");
+        }
+        else
+        {
+            Debug.LogWarning("WaveManager is null in OnWaveCompleted!");
+        }
 
         // Check if all waves completed
         if (WaveManager.Instance.AreAllWavesCompleted())
@@ -183,7 +240,6 @@ public class GameManager : MonoBehaviour
         }
 
         // Normal wave complete flow:
-        Player player = FindFirstObjectByType<Player>();
         if (player != null)
         {
             upgradePoints += player.ProcessPendingExperienceAndReturnLevelUps();
@@ -191,6 +247,7 @@ public class GameManager : MonoBehaviour
         }
 
         SavePlayerProgress();
+        SavePlayerData(); // Save ability data as well
 
         SceneManager.LoadScene(levelUpSceneName);
     }
@@ -214,12 +271,14 @@ public class GameManager : MonoBehaviour
         {
             currentPlayerStats = basePlayerStats.CreateRuntimeCopy();
             upgradePoints = 0; // Reset upgrade points on death
+            gameLevel = 1; // Reset game level on death
+            currentPlayerData = new PlayerData(); // Reset ability data on death
         }
         
         // Load game over scene
         SceneManager.LoadScene(gameOverSceneName);
     }
-    
+
     public void ContinueToNextWave()
     {
         // This is called from the level up scene
@@ -259,7 +318,7 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetFloat("PlayerAbilityCDR", currentPlayerStats.abilityCooldownReduction);
             PlayerPrefs.SetInt("UpgradePoints", upgradePoints);
             PlayerPrefs.Save();
-            
+
             Debug.Log($"Saved player progress - Level: {currentPlayerStats.level}, XP: {currentPlayerStats.experience}, Upgrade Points: {upgradePoints}");
         }
     }
@@ -289,6 +348,34 @@ public class GameManager : MonoBehaviour
             upgradePoints = PlayerPrefs.GetInt("UpgradePoints", 0);
             
             Debug.Log($"Loaded player progress - Level: {currentPlayerStats.level}, XP: {currentPlayerStats.experience}, Upgrade Points: {upgradePoints}");
+        }
+    }
+
+    // Save current player state (for ability system)
+    void SavePlayerData()
+    {
+        if (player != null)
+        {
+            currentPlayerData.playerLevel = player.GetPlayerLevel();
+            currentPlayerData.abilities = player.GetAbilities(); // Assuming you have a method like this
+            currentPlayerData.playerPosition = player.transform.position;
+            Debug.Log("Saved player data: Level " + currentPlayerData.playerLevel + ", Abilities: " + currentPlayerData.abilities.Count);
+        }
+    }
+
+    // Load player data back into the player on scene reload
+    void LoadPlayerData()
+    {
+        if (player != null && currentPlayerData != null)
+        {
+            player.SetPlayerLevel(currentPlayerData.playerLevel); // Assuming you have a setter
+            player.SetAbilities(currentPlayerData.abilities);     // Assuming you have a setter
+            player.transform.position = currentPlayerData.playerPosition;
+            Debug.Log("Loaded player data: Level " + currentPlayerData.playerLevel + ", Abilities: " + currentPlayerData.abilities.Count);
+        }
+        else
+        {
+            Debug.LogWarning("LoadPlayerData failed: Missing player or data.");
         }
     }
     

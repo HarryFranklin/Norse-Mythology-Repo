@@ -102,8 +102,8 @@ public abstract class Ability : ScriptableObject
             InitialiseFromCodeMatrix();
         }
         
-        // Initialize stack regeneration timer
-        InitializeStackRegeneration();
+        // Initialise stack regeneration timer
+        InitialiseStackRegeneration();
     }
 
     protected virtual void InitialiseFromCodeMatrix()
@@ -144,7 +144,7 @@ public abstract class Ability : ScriptableObject
             Debug.Log($"{abilityName} leveled up to {currentLevel}! Max stacks: {newMaxStacks}");
             
             // Reset stack regeneration timing
-            InitializeStackRegeneration();
+            InitialiseStackRegeneration();
         }
     }
 
@@ -243,7 +243,7 @@ public abstract class Ability : ScriptableObject
             // Reset regeneration timer if we're now below max stacks
             if (currentStacks < MaxStacksAtCurrentLevel)
             {
-                InitializeStackRegeneration();
+                InitialiseStackRegeneration();
             }
         }
     }
@@ -263,7 +263,7 @@ public abstract class Ability : ScriptableObject
         }
     }
 
-    private void InitializeStackRegeneration()
+    private void InitialiseStackRegeneration()
     {
         // Only set regeneration timer if we need to regenerate stacks
         if (currentStacks < MaxStacksAtCurrentLevel)

@@ -29,7 +29,7 @@ public class AbilityManager : MonoBehaviour
 
     private void Update()
     {
-        // UPDATE STACK REGENERATION FOR ALL ABILITIES - THIS WAS MISSING!
+        // UPDATE STACK REGENERATION FOR ALL ABILITIES
         UpdateAllAbilityStacks();
         
         if (player != null && !player.isDead)
@@ -45,7 +45,7 @@ public class AbilityManager : MonoBehaviour
         }
     }
 
-    // NEW METHOD: Update stack regeneration for all equipped abilities
+    // Update stack regeneration for all equipped abilities
     private void UpdateAllAbilityStacks()
     {
         for (int i = 0; i < equippedAbilities.Length; i++)

@@ -7,15 +7,19 @@ public class AbilitySlotUI : MonoBehaviour
     [Header("UI References")]
     public Image abilityIcon;
     public Image cooldownOverlay;
-    public TextMeshProUGUI stackCount; // Add this reference
+    public TextMeshProUGUI stackCount;
 
-    private AbilityManager abilityManager;
+    [SerializeField] private AbilityManager abilityManager;
     private int abilityIndex;
+
+    private bool isInitialised = false;
 
     public void Initialise(AbilityManager manager, int index)
     {
         abilityManager = manager;
         abilityIndex = index;
+
+        isInitialised = true;
 
         Ability ability = manager.equippedAbilities[index];
         if (ability != null)
@@ -27,8 +31,7 @@ public class AbilitySlotUI : MonoBehaviour
         {
             abilityIcon.enabled = false;
         }
-        
-        // Update stack count immediately
+
         UpdateStackCount();
     }
 
@@ -43,25 +46,30 @@ public class AbilitySlotUI : MonoBehaviour
 
     void Update()
     {
-        if (abilityManager == null) return;
+        if (!isInitialised ||
+            abilityManager == null ||
+            abilityManager.player == null ||
+            abilityManager.player.currentStats == null ||
+            abilityManager.equippedAbilities == null ||
+            abilityIndex < 0 ||
+            abilityIndex >= abilityManager.equippedAbilities.Length)
+            return;
 
         Ability ability = abilityManager.equippedAbilities[abilityIndex];
-        if (ability == null) 
+        if (ability == null)
         {
-            // Hide stack count if no ability equipped
+            cooldownOverlay.fillAmount = 0f;
             if (stackCount != null)
                 stackCount.gameObject.SetActive(false);
             return;
         }
 
-        // Update cooldown overlay
         float remaining = abilityManager.GetAbilityCooldownRemaining(abilityIndex);
-        float max = ability.CurrentCooldown * (1f - (abilityManager.player.currentStats.abilityCooldownReduction / 100f));
-        if (max <= 0f) max = 0.01f; // prevent divide by zero
-        
+        float reduction = abilityManager.player.currentStats.abilityCooldownReduction;
+        float max = ability.CurrentCooldown * (1f - (reduction / 100f));
+        if (max <= 0f) max = 0.01f;
+
         cooldownOverlay.fillAmount = Mathf.Clamp01(remaining / max);
-        
-        // Update stack count every frame
         UpdateStackCount();
     }
     

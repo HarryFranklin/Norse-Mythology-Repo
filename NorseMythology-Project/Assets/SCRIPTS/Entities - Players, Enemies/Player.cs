@@ -46,6 +46,9 @@ public class Player : Entity
     
     [Header("UI References")]
     public HealthXPUIManager healthXPUIManager;
+
+    [Header("Abilities")]
+    public AbilityManager abilityManager;
     
     [Header("Player Level Data")]
     public List<PlayerLevelData> levelData = new List<PlayerLevelData>();
@@ -65,29 +68,37 @@ public class Player : Entity
     
     private Coroutine regenCoroutine;
 
+    void Start()
+    {
+        if (abilityManager == null)
+        {
+            abilityManager = GetComponent<AbilityManager>();
+        }
+    }
+
     protected override void InitialiseFromCodeMatrix()
     {
         // Define player progression via code
-        SetPlayerLevelData(1, maxHealth: 100f, healthRegen: 1f, healthRegenDelay: 5f, moveSpeed: 5f, 
-            attackDamage: 8f, attackSpeed: 1f, meleeRange: 1.25f, projectileSpeed: 8f, projectileRange: 10f, 
+        SetPlayerLevelData(1, maxHealth: 100f, healthRegen: 1f, healthRegenDelay: 5f, moveSpeed: 5f,
+            attackDamage: 8f, attackSpeed: 1f, meleeRange: 1.25f, projectileSpeed: 8f, projectileRange: 10f,
             experienceToNextLevel: 100f, abilityCooldownReduction: 0f);
-        
-        SetPlayerLevelData(2, maxHealth: 110f, healthRegen: 1.1f, healthRegenDelay: 4.5f, moveSpeed: 5.2f, 
-            attackDamage: 10f, attackSpeed: 1.1f, meleeRange: 1.5f, projectileSpeed: 8.5f, projectileRange: 10.5f, 
+
+        SetPlayerLevelData(2, maxHealth: 110f, healthRegen: 1.1f, healthRegenDelay: 4.5f, moveSpeed: 5.2f,
+            attackDamage: 10f, attackSpeed: 1.1f, meleeRange: 1.5f, projectileSpeed: 8.5f, projectileRange: 10.5f,
             experienceToNextLevel: 125f, abilityCooldownReduction: 0.5f);
-        
-        SetPlayerLevelData(3, maxHealth: 120f, healthRegen: 1.2f, healthRegenDelay: 4f, moveSpeed: 5.4f, 
-            attackDamage: 12f, attackSpeed: 1.2f, meleeRange: 1.75f, projectileSpeed: 9f, projectileRange: 11f, 
+
+        SetPlayerLevelData(3, maxHealth: 120f, healthRegen: 1.2f, healthRegenDelay: 4f, moveSpeed: 5.4f,
+            attackDamage: 12f, attackSpeed: 1.2f, meleeRange: 1.75f, projectileSpeed: 9f, projectileRange: 11f,
             experienceToNextLevel: 150f, abilityCooldownReduction: 0.75f);
-        
-        SetPlayerLevelData(4, maxHealth: 130f, healthRegen: 1.3f, healthRegenDelay: 3.5f, moveSpeed: 5.6f, 
-            attackDamage: 14f, attackSpeed: 1.3f, meleeRange: 2f, projectileSpeed: 9.5f, projectileRange: 11.5f, 
+
+        SetPlayerLevelData(4, maxHealth: 130f, healthRegen: 1.3f, healthRegenDelay: 3.5f, moveSpeed: 5.6f,
+            attackDamage: 14f, attackSpeed: 1.3f, meleeRange: 2f, projectileSpeed: 9.5f, projectileRange: 11.5f,
             experienceToNextLevel: 175f, abilityCooldownReduction: 0.9f);
-        
-        SetPlayerLevelData(5, maxHealth: 150f, healthRegen: 1.4f, healthRegenDelay: 3f, moveSpeed: 6f, 
-            attackDamage: 16f, attackSpeed: 1.5f, meleeRange: 2.25f, projectileSpeed: 10f, projectileRange: 12f, 
+
+        SetPlayerLevelData(5, maxHealth: 150f, healthRegen: 1.4f, healthRegenDelay: 3f, moveSpeed: 6f,
+            attackDamage: 16f, attackSpeed: 1.5f, meleeRange: 2.25f, projectileSpeed: 10f, projectileRange: 12f,
             experienceToNextLevel: 200f, abilityCooldownReduction: 1f);
-        
+
         Debug.Log($"Player initialised from code matrix. Level 1: {maxHealth} health, {damage} damage");
     }
     
@@ -441,6 +452,48 @@ public class Player : Entity
     public float GetExperienceToNextLevel()
     {
         return experienceToNextLevel;
+    }
+
+    public int GetPlayerLevel()
+    {
+        return currentStats != null ? currentStats.level : 1;
+    }
+
+    public void SetPlayerLevel(int level)
+    {
+        if (currentStats != null)
+        {
+            currentStats.level = level;
+            currentLevel = level;
+            ApplyLevelStats(level);
+        }
+    }
+
+    private List<Ability> activeAbilities = new List<Ability>();
+
+    public List<Ability> GetAbilities()
+    {
+        if (abilityManager == null)
+        {
+            Debug.LogWarning("Player: AbilityManager is null in GetAbilities");
+            return new List<Ability>();
+        }
+
+        return new List<Ability>(abilityManager.equippedAbilities);
+    }
+
+    public void SetAbilities(List<Ability> abilities)
+    {
+        if (abilityManager == null)
+        {
+            Debug.LogWarning("Player: AbilityManager is null in SetAbilities");
+            return;
+        }
+
+        for (int i = 0; i < abilityManager.equippedAbilities.Length; i++)
+        {
+            abilityManager.equippedAbilities[i] = (i < abilities.Count) ? abilities[i] : null;
+        }
     }
     
     // Additional getter methods for player-specific stats

@@ -8,12 +8,10 @@ public class AbilityPooler : MonoBehaviour
     public string abilityFolderPath = "Abilities"; // Folder path in Resources
 
     private List<Ability> allAbilities = new List<Ability>();
-    private Dictionary<string, List<Ability>> abilitiesByName = new Dictionary<string, List<Ability>>();
 
     void Awake()
     {
         LoadAbilitiesFromFolder();
-        InitialiseAbilityPool();
     }
 
     void LoadAbilitiesFromFolder()
@@ -29,25 +27,10 @@ public class AbilityPooler : MonoBehaviour
         }
     }
 
-    void InitialiseAbilityPool()
-    {
-        // Group abilities by name and sort by level
-        abilitiesByName = allAbilities
-            .GroupBy(a => a.abilityName)
-            .ToDictionary(
-                g => g.Key,
-                g => g.OrderBy(a => a.abilityLevel).ToList()
-            );
-    }
-
     public List<Ability> GetRandomAbilities(int count, int playerLevel, int gameLevel, List<Ability> currentAbilities)
     {
         List<Ability> selectedAbilities = new List<Ability>();
 
-        // Make a copy of all ability names
-        List<string> allNames = abilitiesByName.Keys.ToList();
-
-        // 1. Try to add upgrades first (20% chance per slot if any are upgradable)
         for (int i = 0; i < count; i++)
         {
             bool added = false;
@@ -57,10 +40,11 @@ public class AbilityPooler : MonoBehaviour
             if (tryUpgrade)
             {
                 var upgradeable = currentAbilities
-                    .Where(a => a.CanUpgrade() && abilitiesByName.ContainsKey(a.abilityName))
+                    .Where(a => a.CanLevelUp())
                     .Select(a =>
-                        abilitiesByName[a.abilityName]
-                            .FirstOrDefault(up => up.abilityLevel == a.abilityLevel + 1)
+                        allAbilities.FirstOrDefault(up =>
+                            up.abilityName == a.abilityName &&
+                            up.CurrentLevel == a.CurrentLevel + 1)
                     )
                     .Where(upgraded => upgraded != null)
                     .ToList();
@@ -70,17 +54,15 @@ public class AbilityPooler : MonoBehaviour
                     Ability upgrade = upgradeable[Random.Range(0, upgradeable.Count)];
                     selectedAbilities.Add(upgrade);
                     added = true;
-                    Debug.Log($"Added upgrade: {upgrade.abilityName} (Level {upgrade.abilityLevel})");
+                    Debug.Log($"Added upgrade: {upgrade.abilityName} (Level {upgrade.CurrentLevel})");
                 }
             }
 
             if (!added)
             {
-                // Try to add a new ability not already owned
-                var availableNew = abilitiesByName
-                    .Where(kvp => !currentAbilities.Any(ca => ca.abilityName == kvp.Key))
-                    .Select(kvp => kvp.Value.FirstOrDefault(a => a.abilityLevel == 1))
-                    .Where(a => a != null)
+                var ownedNames = currentAbilities.Select(ca => ca.abilityName).ToHashSet();
+                var availableNew = allAbilities
+                    .Where(a => a.CurrentLevel == 1 && !ownedNames.Contains(a.abilityName))
                     .ToList();
 
                 if (availableNew.Count > 0)
@@ -88,22 +70,21 @@ public class AbilityPooler : MonoBehaviour
                     Ability newAbility = availableNew[Random.Range(0, availableNew.Count)];
                     selectedAbilities.Add(newAbility);
                     added = true;
-                    Debug.Log($"Added new ability: {newAbility.abilityName} (Level {newAbility.abilityLevel})");
+                    Debug.Log($"Added new ability: {newAbility.abilityName} (Level {newAbility.CurrentLevel})");
                 }
             }
 
-            // SAFETY FALLBACK: Offer random non-duplicate if nothing else works
             if (!added)
             {
                 var fallback = allAbilities
-                    .Where(a => !selectedAbilities.Any(sa => sa.abilityName == a.abilityName && sa.abilityLevel == a.abilityLevel))
+                    .Where(a => !selectedAbilities.Any(sa => sa.abilityName == a.abilityName && sa.CurrentLevel == a.CurrentLevel))
                     .ToList();
 
                 if (fallback.Count > 0)
                 {
                     Ability fallbackAbility = fallback[Random.Range(0, fallback.Count)];
                     selectedAbilities.Add(fallbackAbility);
-                    Debug.LogWarning($"Fallback added: {fallbackAbility.abilityName} (Level {fallbackAbility.abilityLevel})");
+                    Debug.LogWarning($"Fallback added: {fallbackAbility.abilityName} (Level {fallbackAbility.CurrentLevel})");
                 }
                 else
                 {
