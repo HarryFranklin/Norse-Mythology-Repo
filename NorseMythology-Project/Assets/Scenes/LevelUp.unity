@@ -4679,10 +4679,10 @@ MonoBehaviour:
   - {fileID: 1061675786}
   - {fileID: 1131557641}
   replaceButtonLabels:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 1763443840}
+  - {fileID: 931153233}
+  - {fileID: 1455112810}
+  - {fileID: 1677555283}
   continuePanel: {fileID: 1769140460}
   abilityNames:
   - {fileID: 1810833713}

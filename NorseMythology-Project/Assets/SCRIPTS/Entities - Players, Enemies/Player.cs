@@ -307,6 +307,15 @@ public class Player : Entity
         }
     }
 
+    public void RestartHealthRegeneration()
+    {
+        if (regenCoroutine != null)
+            StopCoroutine(regenCoroutine);
+        
+        if (!isDead)
+            regenCoroutine = StartCoroutine(HealthRegeneration());
+    }
+
     protected override void OnHealed(float amount)
     {
         if (healthXPUIManager != null)

@@ -35,7 +35,7 @@ public class AbilityUIManager : MonoBehaviour
         }
     }
     
-    // Optional: Method to manually refresh all slots
+    // Method to manually refresh all slots
     public void RefreshAllSlots()
     {
         for (int i = 0; i < abilitySlots.Length; i++)

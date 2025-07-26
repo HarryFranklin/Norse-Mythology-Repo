@@ -1,0 +1,83 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d0643c63664d114abf1cd29a634f876, type: 3}
+  m_Name: FreezeTimeAbility
+  m_EditorClassIdentifier: 
+  abilityName: Freeze Time
+  abilityIcon: {fileID: 1026722573, guid: 766cb97207789f04aa2e7cfb164d1f50, type: 3}
+  useCodeDefinedMatrix: 1
+  abilityStacks: 1
+  canStackAbility: 1
+  levelData:
+  - cooldown: 5
+    damage: 0
+    duration: 0
+    radius: 0
+    speed: 0
+    distance: 0
+    specialValue1: 0
+    specialValue2: 0
+    specialValue3: 0
+    maxStacksAtLevel: 1
+    stackRegenTime: 1
+  - cooldown: 5
+    damage: 0
+    duration: 0
+    radius: 0
+    speed: 0
+    distance: 0
+    specialValue1: 0
+    specialValue2: 0
+    specialValue3: 0
+    maxStacksAtLevel: 1
+    stackRegenTime: 1
+  - cooldown: 5
+    damage: 0
+    duration: 0
+    radius: 0
+    speed: 0
+    distance: 0
+    specialValue1: 0
+    specialValue2: 0
+    specialValue3: 0
+    maxStacksAtLevel: 1
+    stackRegenTime: 1
+  - cooldown: 5
+    damage: 0
+    duration: 0
+    radius: 0
+    speed: 0
+    distance: 0
+    specialValue1: 0
+    specialValue2: 0
+    specialValue3: 0
+    maxStacksAtLevel: 1
+    stackRegenTime: 1
+  - cooldown: 5
+    damage: 0
+    duration: 0
+    radius: 0
+    speed: 0
+    distance: 0
+    specialValue1: 0
+    specialValue2: 0
+    specialValue3: 0
+    maxStacksAtLevel: 1
+    stackRegenTime: 1
+  currentLevel: 1
+  currentStacks: 1
+  activationMode: 0
+  targetingCursor: {fileID: 0}
+  showTargetingLine: 0
+  targetingLineColor: {r: 1, g: 1, b: 1, a: 1}
+  maxTargetingRange: 10
+  description: 
