@@ -168,7 +168,7 @@ MonoBehaviour:
   enemiesPerWave: 30
   healthScalingMultiplier: 1.05
   xpScalingMultiplier: 1.05
-  gameManager: {fileID: 1753531477}
+  gameManager: {fileID: 0}
   enemySpawner: {fileID: 1261929403}
 --- !u!4 &100481637
 Transform:
@@ -6787,70 +6787,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 736087436}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1753531476
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1753531478}
-  - component: {fileID: 1753531477}
-  m_Layer: 0
-  m_Name: GameManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1753531477
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1753531476}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ba3bc2da5334004fa2ce75d91dbc633, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mainGameSceneName: MainGame
-  gameOverSceneName: GameOver
-  winSceneName: Win
-  levelUpSceneName: LevelUp
-  basePlayerStats: {fileID: 11400000, guid: d502c6bd20489c74992235336485d903, type: 2}
-  currentPlayerStats: {fileID: 0}
-  gameLevel: 1
-  upgradePoints: 0
-  currentPlayerData:
-    playerLevel: 1
-    abilities:
-    - ability: {fileID: 11400000, guid: 1ba6f0d352a07314cbb97c9eef69b221, type: 2}
-      level: 1
-    - ability: {fileID: 11400000, guid: d0492b93ff50678429418953ac61394a, type: 2}
-      level: 1
-    - ability: {fileID: 11400000, guid: 31d15f54104a34f45833dc91cbc72dbd, type: 2}
-      level: 1
-    - ability: {fileID: 11400000, guid: 2094d4b864938154d9e4bdf9efeecba8, type: 2}
-      level: 1
-    playerPosition: {x: 0, y: 0, z: 0}
---- !u!4 &1753531478
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1753531476}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1755977901
 GameObject:
   m_ObjectHideFlags: 0
@@ -8054,7 +7990,7 @@ MonoBehaviour:
   useInspectorLevels: 0
   currentLevel: 1
   baseStats: {fileID: 11400000, guid: d502c6bd20489c74992235336485d903, type: 2}
-  gameManager: {fileID: 1753531477}
+  gameManager: {fileID: 0}
   rigidBody: {fileID: 2135908893}
   abilityManager: {fileID: 2135908899}
   healthXPUIManager: {fileID: 570491799}
@@ -8405,6 +8341,5 @@ SceneRoots:
   - {fileID: 861679037}
   - {fileID: 292474983}
   - {fileID: 1261929404}
-  - {fileID: 1753531478}
   - {fileID: 100481637}
   - {fileID: 1546175630}

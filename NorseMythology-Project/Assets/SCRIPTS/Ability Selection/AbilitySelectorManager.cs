@@ -30,7 +30,6 @@ public class AbilitySelectorManager : MonoBehaviour
     public Image[] abilityIcons = new Image[3];
     
     private List<Ability> offeredAbilities;
-    private AbilityPooler abilityPooler;
     private GameManager.PlayerData playerData;
     
     void Start()
@@ -38,12 +37,10 @@ public class AbilitySelectorManager : MonoBehaviour
         if (GameManager.Instance != null)
         {
             playerData = GameManager.Instance.currentPlayerData;
-            abilityPooler = GameManager.Instance.GetAbilityPooler();
         }
         else
         {
             playerData = new GameManager.PlayerData();
-            abilityPooler = FindFirstObjectByType<AbilityPooler>();
         }
         
         SetupUI();
@@ -88,8 +85,9 @@ public class AbilitySelectorManager : MonoBehaviour
     
     void GenerateAbilityOptions()
     {
-        if (abilityPooler == null) return;
-        offeredAbilities = abilityPooler.GetAbilityChoices(playerData.abilities);
+        if (AbilityPooler.Instance == null) return;
+        offeredAbilities = AbilityPooler.Instance.GetAbilityChoices(playerData.abilities);
+        
         for (int i = 0; i < offeredAbilities.Count; i++)
         {
             UpdateAbilityDisplay(i, offeredAbilities[i]);

@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     [Header("Scene Names")]
+    [SerializeField] private string characterSelectorSceneName = "CharacterSelector";
     [SerializeField] private string mainGameSceneName = "MainGame";
     [SerializeField] private string gameOverSceneName = "GameOver";
     [SerializeField] private string winSceneName = "Win";
@@ -29,7 +30,7 @@ public class GameManager : MonoBehaviour
 
     private Player player;
     private AbilityUIManager abilityUIManager;
-    private AbilityPooler abilityPooler;
+    private EnemySpawner enemySpawner;
 
     [Header("Player Stats")]
     [SerializeField] private PlayerStats basePlayerStats;
@@ -66,23 +67,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void InitialisePersistentPlayerStats()
-    {
-        if (currentPlayerStats == null && basePlayerStats != null)
-        {
-            currentPlayerStats = basePlayerStats.CreateRuntimeCopy();
-        }
-    }
-
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (scene.name == mainGameSceneName)
         {
             StartCoroutine(SetupMainGameScene());
-        }
-        else if (scene.name == levelUpSceneName)
-        {
-            abilityPooler = FindFirstObjectByType<AbilityPooler>();
         }
     }
 
@@ -96,16 +85,13 @@ public class GameManager : MonoBehaviour
         {
             player.currentStats = currentPlayerStats;
             
-            // --- FIX: This is the core logic change ---
-            // If we have saved abilities, load them.
             if (currentPlayerData.abilities != null && currentPlayerData.abilities.Count > 0)
             {
                 LoadPlayerData();
             }
-            else // Otherwise, this must be a new game.
+            else
             {
-                // Save the default abilities from the AbilityManager into our persistent data.
-                Debug.Log("No abilities found in PlayerData, saving defaults from AbilityManager.");
+                Debug.Log("New Game: Saving default abilities from AbilityManager into persistent data.");
                 SavePlayerData();
             }
         }
@@ -119,22 +105,30 @@ public class GameManager : MonoBehaviour
         WaveManager.Instance?.StartWave();
     }
 
-
     private void FindMainGameReferences()
     {
         player = FindFirstObjectByType<Player>();
-        abilityPooler = FindFirstObjectByType<AbilityPooler>();
         abilityUIManager = FindFirstObjectByType<AbilityUIManager>();
+        enemySpawner = FindFirstObjectByType<EnemySpawner>();
         
         if (WaveManager.Instance != null)
         {
             WaveManager.Instance.gameManager = this;
-            WaveManager.Instance.enemySpawner = FindFirstObjectByType<EnemySpawner>();
+            WaveManager.Instance.enemySpawner = enemySpawner;
+        }
+    }
+    
+    private void InitialisePersistentPlayerStats()
+    {
+        if (currentPlayerStats == null && basePlayerStats != null)
+        {
+            currentPlayerStats = basePlayerStats.CreateRuntimeCopy();
         }
     }
 
     public void OnWaveCompleted()
     {
+        gameActive = false; // Pause player input etc.
         if (WaveManager.Instance.AreAllWavesCompleted())
         {
             SceneManager.LoadScene(winSceneName);
@@ -152,16 +146,7 @@ public class GameManager : MonoBehaviour
 
     public void OnPlayerDied()
     {
-        if (!gameActive) return;
         gameActive = false;
-
-        if (basePlayerStats != null)
-        {
-            currentPlayerStats = basePlayerStats.CreateRuntimeCopy();
-            upgradePoints = 0;
-            gameLevel = 1;
-            currentPlayerData = new PlayerData();
-        }
         SceneManager.LoadScene(gameOverSceneName);
     }
     
@@ -180,7 +165,6 @@ public class GameManager : MonoBehaviour
             currentPlayerData.playerLevel = player.GetPlayerLevel();
             currentPlayerData.abilities = player.GetAbilities();
             currentPlayerData.playerPosition = player.transform.position;
-            Debug.Log($"Player data saved. Abilities count: {currentPlayerData.abilities.Count}");
         }
     }
 
@@ -193,10 +177,8 @@ public class GameManager : MonoBehaviour
         player.SetAbilities(currentPlayerData.abilities);
         
         abilityUIManager?.RefreshAllSlots();
-        Debug.Log($"Player data loaded. Abilities count: {currentPlayerData.abilities.Count}");
     }
-
-
+    
     public void StartNewGame()
     {
         if (basePlayerStats != null)
@@ -211,7 +193,12 @@ public class GameManager : MonoBehaviour
         {
             WaveManager.Instance.currentWave = 1;
         }
-
+        
+        SceneManager.LoadScene(characterSelectorSceneName);
+    }
+    
+    public void StartGameFromSelector()
+    {
         SceneManager.LoadScene(mainGameSceneName);
     }
 
@@ -220,10 +207,13 @@ public class GameManager : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
+    // --- Getters for other scripts ---
     public PlayerStats GetCurrentPlayerStats() => currentPlayerStats;
     public int GetUpgradePoints() => upgradePoints;
+    public AbilityPooler GetAbilityPooler() => AbilityPooler.Instance;
+
     public bool IsGameActive() => gameActive;
-    public AbilityPooler GetAbilityPooler() => abilityPooler;
+
     public bool SpendUpgradePoint()
     {
         if (upgradePoints > 0)
