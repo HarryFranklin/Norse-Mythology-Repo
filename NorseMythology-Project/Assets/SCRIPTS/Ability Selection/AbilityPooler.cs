@@ -11,89 +11,62 @@ public class AbilityPooler : MonoBehaviour
 
     void Awake()
     {
-        LoadAbilitiesFromFolder();
+        LoadAbilities();
     }
 
-    void LoadAbilitiesFromFolder()
+    void LoadAbilities()
     {
-        Ability[] loadedAbilities = Resources.LoadAll<Ability>(abilityFolderPath);
-        allAbilities = new List<Ability>(loadedAbilities);
+        allAbilities = Resources.LoadAll<Ability>(abilityFolderPath).ToList();
+        Debug.Log($"Loaded {allAbilities.Count} abilities from Resources.");
+    }
 
-        Debug.Log($"Loaded {allAbilities.Count} abilities from {abilityFolderPath} folder");
+    public List<Ability> GetAbilityChoices(List<GameManager.PlayerAbilityState> currentAbilities, int count = 3)
+    {
+        var choices = new List<Ability>();
+        var ownedAbilityNames = currentAbilities.Select(state => state.ability.abilityName).ToHashSet();
 
-        if (allAbilities.Count == 0)
+        // 1. Find upgradeable abilities
+        var upgradeable = currentAbilities
+            .Where(state => state.ability != null && state.level < state.ability.MaxLevel)
+            .Select(state => state.ability)
+            .ToList();
+        
+        // 2. Find new abilities
+        var newAbilities = allAbilities
+            .Where(a => !ownedAbilityNames.Contains(a.abilityName))
+            .ToList();
+
+        // 3. Prioritize upgrades, then new abilities
+        var potentialChoices = upgradeable.Concat(newAbilities).Distinct().ToList();
+
+        // 4. Shuffle and take the required number of choices
+        while (choices.Count < count && potentialChoices.Count > 0)
         {
-            Debug.LogWarning($"No abilities found in Resources/{abilityFolderPath}/ folder.");
+            int randIndex = Random.Range(0, potentialChoices.Count);
+            choices.Add(potentialChoices[randIndex]);
+            potentialChoices.RemoveAt(randIndex);
         }
-    }
-
-    public List<Ability> GetRandomAbilities(int count, int playerLevel, int gameLevel, List<Ability> currentAbilities)
-    {
-        List<Ability> selectedAbilities = new List<Ability>();
-
-        for (int i = 0; i < count; i++)
+        
+        // 5. Fallback: If not enough choices, add random owned abilities that can be upgraded
+        if (choices.Count < count)
         {
-            bool added = false;
-
-            bool tryUpgrade = currentAbilities.Count > 0 && Random.value < 0.2f;
-
-            if (tryUpgrade)
+            var fallbackPool = allAbilities
+                .Where(a => !choices.Any(c => c.abilityName == a.abilityName))
+                .ToList();
+            
+            while (choices.Count < count && fallbackPool.Count > 0)
             {
-                var upgradeable = currentAbilities
-                    .Where(a => a.CanLevelUp())
-                    .Select(a =>
-                        allAbilities.FirstOrDefault(up =>
-                            up.abilityName == a.abilityName &&
-                            up.CurrentLevel == a.CurrentLevel + 1)
-                    )
-                    .Where(upgraded => upgraded != null)
-                    .ToList();
-
-                if (upgradeable.Count > 0)
-                {
-                    Ability upgrade = upgradeable[Random.Range(0, upgradeable.Count)];
-                    selectedAbilities.Add(upgrade);
-                    added = true;
-                    Debug.Log($"Added upgrade: {upgrade.abilityName} (Level {upgrade.CurrentLevel})");
-                }
-            }
-
-            if (!added)
-            {
-                var ownedNames = currentAbilities.Select(ca => ca.abilityName).ToHashSet();
-                var availableNew = allAbilities
-                    .Where(a => a.CurrentLevel == 1 && !ownedNames.Contains(a.abilityName))
-                    .ToList();
-
-                if (availableNew.Count > 0)
-                {
-                    Ability newAbility = availableNew[Random.Range(0, availableNew.Count)];
-                    selectedAbilities.Add(newAbility);
-                    added = true;
-                    Debug.Log($"Added new ability: {newAbility.abilityName} (Level {newAbility.CurrentLevel})");
-                }
-            }
-
-            if (!added)
-            {
-                var fallback = allAbilities
-                    .Where(a => !selectedAbilities.Any(sa => sa.abilityName == a.abilityName && sa.CurrentLevel == a.CurrentLevel))
-                    .ToList();
-
-                if (fallback.Count > 0)
-                {
-                    Ability fallbackAbility = fallback[Random.Range(0, fallback.Count)];
-                    selectedAbilities.Add(fallbackAbility);
-                    Debug.LogWarning($"Fallback added: {fallbackAbility.abilityName} (Level {fallbackAbility.CurrentLevel})");
-                }
-                else
-                {
-                    Debug.LogWarning("No abilities left to offer, returned fewer than requested.");
-                    break;
-                }
+                int randIndex = Random.Range(0, fallbackPool.Count);
+                choices.Add(fallbackPool[randIndex]);
+                fallbackPool.RemoveAt(randIndex);
             }
         }
 
-        return selectedAbilities;
+        return choices;
+    }
+    
+    public Ability GetAbilityByName(string name)
+    {
+        return allAbilities.FirstOrDefault(a => a.abilityName == name);
     }
 }

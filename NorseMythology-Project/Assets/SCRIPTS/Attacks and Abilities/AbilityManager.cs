@@ -20,6 +20,19 @@ public class AbilityManager : MonoBehaviour
     private Texture2D originalCursor;
     private Vector2 originalHotspot;
 
+    private void Awake()
+    {
+        // Replace the ScriptableObject assets with runtime clones. This ensures that any changes to an ability, i.e. the level,
+        // are unique to this game session and don't get saved back to the project files.
+        for (int i = 0; i < equippedAbilities.Length; i++)
+        {
+            if (equippedAbilities[i] != null)
+            {
+                equippedAbilities[i] = Instantiate(equippedAbilities[i]);
+            }
+        }
+    }
+
     private void Start()
     {
         // Store original cursor
@@ -29,7 +42,6 @@ public class AbilityManager : MonoBehaviour
 
     private void Update()
     {
-        // UPDATE STACK REGENERATION FOR ALL ABILITIES
         UpdateAllAbilityStacks();
         
         if (player != null && !player.isDead)

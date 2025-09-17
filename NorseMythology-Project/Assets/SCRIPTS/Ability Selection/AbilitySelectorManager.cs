@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using TMPro;
+using System.Linq;
+using System.Text;
 
 public class AbilitySelectorManager : MonoBehaviour
 {
@@ -22,52 +24,37 @@ public class AbilitySelectorManager : MonoBehaviour
     [Header("Continue UI")]
     public GameObject continuePanel;
 
-    
     [Header("Ability Display")]
     public TextMeshProUGUI[] abilityNames = new TextMeshProUGUI[3];
     public TextMeshProUGUI[] abilityDescriptions = new TextMeshProUGUI[3];
     public Image[] abilityIcons = new Image[3];
     
     private List<Ability> offeredAbilities;
-    private int selectedAbilityIndex = -1;
-    [SerializeField] private AbilityPooler abilityPooler;
+    private AbilityPooler abilityPooler;
     private GameManager.PlayerData playerData;
     
     void Start()
     {
-        if (abilityPooler == null)
-        {
-            abilityPooler = FindFirstObjectByType<AbilityPooler>();
-        }
-        
-        // Get player data from GameManager
         if (GameManager.Instance != null)
         {
             playerData = GameManager.Instance.currentPlayerData;
+            abilityPooler = GameManager.Instance.GetAbilityPooler();
         }
         else
         {
-            // Fallback if no GameManager
             playerData = new GameManager.PlayerData();
+            abilityPooler = FindFirstObjectByType<AbilityPooler>();
         }
         
         SetupUI();
-        
-        // Hide all panels initially - they will be shown when called by LevelUpManager
-        if (selectorPanel != null)
-            selectorPanel.SetActive(false);
-        if (replacementPanel != null)
-            replacementPanel.SetActive(false);
-        if (continuePanel != null)
-            continuePanel.SetActive(false);
+        ShowAbilitySelector(); 
     }
     
     void SetupUI()
     {
-        // Setup button listeners
         for (int i = 0; i < abilityButtons.Length; i++)
         {
-            int buttonIndex = i; // Capture for closure
+            int buttonIndex = i; 
             abilityButtons[i].onClick.AddListener(() => SelectAbility(buttonIndex));
         }
         
@@ -75,144 +62,150 @@ public class AbilitySelectorManager : MonoBehaviour
         continueButton.onClick.AddListener(ContinueToNextLevel);
         continueButton.interactable = false;
         
-        // Update level display
         if (levelText != null && GameManager.Instance != null)
             levelText.text = $"Level {GameManager.Instance.gameLevel} -> {GameManager.Instance.gameLevel + 1}";
     }
     
-    // Public method to show the ability selector
     public void ShowAbilitySelector()
     {
-        Debug.Log("Showing ability selector");
-        
-        // Make sure we have fresh player data
         if (GameManager.Instance != null)
         {
             playerData = GameManager.Instance.currentPlayerData;
         }
         
-        // Generate new ability options
         GenerateAbilityOptions();
         
-        // Show the selector panel
         if (selectorPanel != null)
             selectorPanel.SetActive(true);
         
-        // Hide other panels
         if (replacementPanel != null)
             replacementPanel.SetActive(false);
         if (continuePanel != null)
             continuePanel.SetActive(false);
         
-        // Reset continue button state
         continueButton.interactable = false;
-        selectedAbilityIndex = -1;
-        
-        // Update level display
-        if (levelText != null && GameManager.Instance != null)
-            levelText.text = $"Level {GameManager.Instance.gameLevel} -> {GameManager.Instance.gameLevel + 1}";
     }
     
     void GenerateAbilityOptions()
     {
-        if (abilityPooler == null)
-        {
-            Debug.LogError("AbilityPooler not found!");
-            return;
-        }
-        
-        offeredAbilities = abilityPooler.GetRandomAbilities(3, playerData.playerLevel, GameManager.Instance.gameLevel, playerData.abilities);
-        
-        for (int i = 0; i < offeredAbilities.Count && i < abilityButtons.Length; i++)
+        if (abilityPooler == null) return;
+        offeredAbilities = abilityPooler.GetAbilityChoices(playerData.abilities);
+        for (int i = 0; i < offeredAbilities.Count; i++)
         {
             UpdateAbilityDisplay(i, offeredAbilities[i]);
         }
     }
-    
+
     void UpdateAbilityDisplay(int index, Ability ability)
     {
-        if (abilityNames[index] != null)
-            abilityNames[index].text = $"{ability.abilityName} {(ability.CurrentLevel > 1 ? $"(Level {ability.CurrentLevel})" : "")}";
-        
-        if (abilityDescriptions[index] != null)
+        var existingState = playerData.abilities.FirstOrDefault(state => state.ability != null && state.ability.abilityName == ability.abilityName);
+
+        if (existingState != null)
+        {
+            int nextLevel = existingState.level + 1;
+            abilityNames[index].text = $"{ability.abilityName} (Lvl {existingState.level} -> {nextLevel})";
+            abilityDescriptions[index].text = GetStatUpgradeDescription(
+                ability.GetStatsForLevel(existingState.level),
+                ability.GetStatsForLevel(nextLevel)
+            );
+        }
+        else
+        {
+            abilityNames[index].text = $"{ability.abilityName} (New!)";
             abilityDescriptions[index].text = ability.description;
+        }
+
+        ColorBlock colors = abilityButtons[index].colors;
+        colors.normalColor = GetRarityColor(ability.rarity);
+        colors.highlightedColor = GetRarityColor(ability.rarity) * 1.2f; 
+        abilityButtons[index].colors = colors;
         
-        if (abilityIcons[index] != null && ability.abilityIcon != null)
-            abilityIcons[index].sprite = ability.abilityIcon;
+        if (abilityIcons[index] != null) abilityIcons[index].sprite = ability.abilityIcon;
+        abilityButtons[index].interactable = true;
+    }
 
-        // Check if the ability is a duplicate and not an upgrade
-        bool isDuplicate = playerData.abilities.Exists(a =>
-            a.abilityName == ability.abilityName &&
-            a.CurrentLevel >= ability.CurrentLevel);
+    private string GetStatUpgradeDescription(AbilityLevelData oldStats, AbilityLevelData newStats)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.AppendLine("<b>Upgrades:</b>"); 
+        if (newStats.cooldown < oldStats.cooldown)
+            sb.AppendLine($"Cooldown: {oldStats.cooldown:F1}s -> <color=green>{newStats.cooldown:F1}s</color>");
+        if (newStats.damage > oldStats.damage)
+            sb.AppendLine($"Damage: {oldStats.damage:F1} -> <color=green>{newStats.damage:F1}</color>");
+        if (newStats.duration > oldStats.duration)
+            sb.AppendLine($"Duration: {oldStats.duration:F1}s -> <color=green>{newStats.duration:F1}s</color>");
+        if (newStats.radius > oldStats.radius)
+            sb.AppendLine($"Radius: {oldStats.radius:F1}m -> <color=green>{newStats.radius:F1}m</color>");
+        if (newStats.distance > oldStats.distance)
+            sb.AppendLine($"Distance: {oldStats.distance:F1}m -> <color=green>{newStats.distance:F1}m</color>");
+        if (newStats.maxStacksAtLevel > oldStats.maxStacksAtLevel)
+            sb.AppendLine($"Max Charges: {oldStats.maxStacksAtLevel} -> <color=green>{newStats.maxStacksAtLevel}</color>");
+        if (newStats.stackRegenTime < oldStats.stackRegenTime && newStats.maxStacksAtLevel > 1)
+            sb.AppendLine($"Charge Regen: {oldStats.stackRegenTime:F1}s -> <color=green>{newStats.stackRegenTime:F1}s</color>");
+        if (sb.Length <= "<b>Upgrades:</b>\n".Length)
+            sb.AppendLine("General improvements to effectiveness.");
+        return sb.ToString();
+    }
 
-        abilityButtons[index].interactable = !isDuplicate;
+    Color GetRarityColor(AbilityRarity rarity)
+    {
+        switch (rarity)
+        {
+            case AbilityRarity.Common: return Color.white;
+            case AbilityRarity.Uncommon: return new Color(0.1f, 1f, 0.1f);
+            case AbilityRarity.Rare: return new Color(0.2f, 0.6f, 1f); 
+            case AbilityRarity.Epic: return new Color(0.7f, 0.2f, 1f); 
+            case AbilityRarity.Legendary: return new Color(1f, 0.8f, 0f); 
+            default: return Color.white;
+        }
     }
     
     public void SelectAbility(int index)
     {
-        selectedAbilityIndex = index;
         Ability selected = offeredAbilities[index];
+        var existingState = playerData.abilities.FirstOrDefault(state => state.ability != null && state.ability.abilityName == selected.abilityName);
 
-        // Check for upgrade
-        for (int i = 0; i < playerData.abilities.Count; i++)
+        if (existingState != null)
         {
-            if (playerData.abilities[i].abilityName == selected.abilityName)
-            {
-                if (selected.CurrentLevel > playerData.abilities[i].CurrentLevel)
-                {
-                    playerData.abilities[i] = selected;
-                    // Hide selector panel and show continue panel for upgrades
-                    if (selectorPanel != null)
-                        selectorPanel.SetActive(false);
-                    ShowContinuePanel();
-                    return;
-                }
-                else
-                {
-                    // Same level or lower — do nothing
-                    Debug.Log("Same or lower level ability already owned.");
-                    return;
-                }
-            }
-        }
-
-        // It's a new ability — need to replace
-        if (playerData.abilities.Count < 4)
-        {
-            playerData.abilities.Add(selected);
-            // Hide selector panel and show continue panel for new abilities
-            if (selectorPanel != null)
-                selectorPanel.SetActive(false);
+            // This is an upgrade.
+            existingState.level++;
             ShowContinuePanel();
         }
         else
         {
-            // Hide selector panel and show replacement options
-            ShowReplacementOptions(selected);
+            // --- FIX: Correctly check if the list is full before showing replacement options ---
+            if (playerData.abilities.Count < 4)
+            {
+                 // The list isn't full yet, add the new ability.
+                 playerData.abilities.Add(new GameManager.PlayerAbilityState(selected, 1));
+                 ShowContinuePanel();
+            }
+            else
+            {
+                // All slots are full, show the replacement panel.
+                ShowReplacementOptions(selected);
+            }
         }
     }
 
+
     void ShowReplacementOptions(Ability newAbility)
     {
-        // Hide selector panel first
-        if (selectorPanel != null)
-            selectorPanel.SetActive(false);
-            
-        // Then show replacement panel
-        if (replacementPanel != null)
-            replacementPanel.SetActive(true);
+        selectorPanel.SetActive(false);
+        replacementPanel.SetActive(true);
 
         for (int i = 0; i < replaceButtons.Length; i++)
         {
             int replaceIndex = i;
-            replaceButtonLabels[i].text = playerData.abilities[i].abilityName;
+            var existingAbilityState = playerData.abilities[i];
+            
+            replaceButtonLabels[i].text = existingAbilityState.ability.abilityName;
+
             replaceButtons[i].onClick.RemoveAllListeners();
             replaceButtons[i].onClick.AddListener(() =>
             {
-                playerData.abilities[replaceIndex] = newAbility;
-                // Hide replacement panel and show continue panel
-                if (replacementPanel != null)
-                    replacementPanel.SetActive(false);
+                playerData.abilities[replaceIndex] = new GameManager.PlayerAbilityState(newAbility, 1);
+                replacementPanel.SetActive(false);
                 ShowContinuePanel();
             });
         }
@@ -220,8 +213,6 @@ public class AbilitySelectorManager : MonoBehaviour
     
     public void SkipSelection()
     {
-        selectedAbilityIndex = -1;
-        // Hide selector panel and show continue panel when skipping
         if (selectorPanel != null)
             selectorPanel.SetActive(false);
         ShowContinuePanel();
@@ -229,49 +220,21 @@ public class AbilitySelectorManager : MonoBehaviour
     
     void ShowContinuePanel()
     {
-        // Show the continue panel so player can proceed to next level
         if (continuePanel != null)
             continuePanel.SetActive(true);
-            
-        // Finalise the selection
         FinaliseSelection();
     }
     
     void FinaliseSelection()
     {
-        // Ensure selector and replacement panels are hidden
-        if (selectorPanel != null)
-            selectorPanel.SetActive(false);
-        if (replacementPanel != null)
-            replacementPanel.SetActive(false);
-            
-        // Enable continue button (continue panel should be visible at this point)
+        selectorPanel.SetActive(false);
+        replacementPanel.SetActive(false);
         continueButton.interactable = true;
-
-        playerData.playerLevel++;
-        
-        // Update the GameManager's player data directly
         GameManager.Instance.currentPlayerData = playerData;
-        
-        Debug.Log($"Ability selection finalised. Player level: {playerData.playerLevel}, Abilities: {playerData.abilities.Count}");
     }
     
     public void ContinueToNextLevel()
     {
-        Debug.Log("Ability selector continue button clicked - proceeding to next wave");
-        
-        // Hide the continue panel
-        if (continuePanel != null)
-            continuePanel.SetActive(false);
-        
-        // Use GameManager's existing method to continue to next wave
-        if (GameManager.Instance != null)
-        {
-            GameManager.Instance.ContinueToNextWave();
-        }
-        else
-        {
-            Debug.LogError("GameManager Instance is null!");
-        }
+        GameManager.Instance.ContinueToNextWave();
     }
 }

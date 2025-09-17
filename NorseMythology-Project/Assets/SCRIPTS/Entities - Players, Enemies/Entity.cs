@@ -22,12 +22,21 @@ public abstract class Entity : MonoBehaviour
     protected float lastDamageTime = 0f;
 
     [Header("Level System")]
-    public bool useInspectorLevels = true;
+    public bool useInspectorLevels = false; 
     [SerializeField] protected int currentLevel = 1;
+
+    // --- FIX: Move initialization to Awake() ---
+    protected virtual void Awake()
+    {
+        // Awake() is called immediately when an object is instantiated,
+        // ensuring data is ready before other scripts can access it.
+        InitialiseEntity();
+    }
 
     protected virtual void Start()
     {
-        InitialiseEntity();
+        // Start can be used for logic that depends on other objects being ready.
+        // The core initialization is now handled in Awake().
     }
 
     protected virtual void InitialiseEntity()
@@ -41,7 +50,6 @@ public abstract class Entity : MonoBehaviour
         currentHealth = maxHealth;
     }
 
-    // Override this in subclasses to define level progression via code
     protected virtual void InitialiseFromCodeMatrix()
     {
         // Base implementation - subclasses should override

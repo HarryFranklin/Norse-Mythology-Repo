@@ -6822,11 +6822,19 @@ MonoBehaviour:
   levelUpSceneName: LevelUp
   basePlayerStats: {fileID: 11400000, guid: d502c6bd20489c74992235336485d903, type: 2}
   currentPlayerStats: {fileID: 0}
-  upgradePoints: 0
   gameLevel: 1
+  upgradePoints: 0
   currentPlayerData:
     playerLevel: 1
-    abilities: []
+    abilities:
+    - ability: {fileID: 11400000, guid: 1ba6f0d352a07314cbb97c9eef69b221, type: 2}
+      level: 1
+    - ability: {fileID: 11400000, guid: d0492b93ff50678429418953ac61394a, type: 2}
+      level: 1
+    - ability: {fileID: 11400000, guid: 31d15f54104a34f45833dc91cbc72dbd, type: 2}
+      level: 1
+    - ability: {fileID: 11400000, guid: 2094d4b864938154d9e4bdf9efeecba8, type: 2}
+      level: 1
     playerPosition: {x: 0, y: 0, z: 0}
 --- !u!4 &1753531478
 Transform:
@@ -8048,12 +8056,18 @@ MonoBehaviour:
   baseStats: {fileID: 11400000, guid: d502c6bd20489c74992235336485d903, type: 2}
   gameManager: {fileID: 1753531477}
   rigidBody: {fileID: 2135908893}
-  currentStats: {fileID: 0}
-  isLevelUpPending: 0
-  healthXPUIManager: {fileID: 570491799}
   abilityManager: {fileID: 2135908899}
-  playerAbilities: []
+  healthXPUIManager: {fileID: 570491799}
+  isLevelUpPending: 0
   levelData: []
+  healthRegen: 0
+  healthRegenDelay: 0
+  attackSpeed: 0
+  meleeRange: 0
+  projectileSpeed: 0
+  projectileRange: 0
+  experienceToNextLevel: 0
+  abilityCooldownReduction: 0
 --- !u!58 &2135908901
 CircleCollider2D:
   m_ObjectHideFlags: 0

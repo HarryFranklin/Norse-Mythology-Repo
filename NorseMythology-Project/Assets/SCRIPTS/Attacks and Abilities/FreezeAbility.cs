@@ -16,7 +16,7 @@ public class FreezeAbility : Ability
         targetingLineColor = Color.cyan;
         
         // Set up targeting range based on level 1 radius
-        maxTargetingRange = GetLevelData(1).radius * 2f;
+        maxTargetingRange = GetStatsForLevel(1).radius * 2f;
     }
 
     protected override void InitialiseFromCodeMatrix()

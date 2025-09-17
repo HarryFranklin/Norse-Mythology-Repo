@@ -67,8 +67,7 @@ public class Enemy : Entity
     [Header("Level Configuration")]
     public List<EnemyLevelData> levelData = new List<EnemyLevelData>();
     
-    // Code-based level data
-    protected Dictionary<int, EnemyLevelData> codeLevelData = new Dictionary<int, EnemyLevelData>();
+    protected Dictionary<int, EnemyLevelData> codeLevelData;
 
     [Header("Combat Settings")]
     private float attackCooldown = 1f;
@@ -86,10 +85,18 @@ public class Enemy : Entity
     public Transform firePoint;
     
     private List<GameObject> activeProjectiles = new List<GameObject>();
+    
+    // --- FIX: Ensure dictionary is ready before base.Awake() is called ---
+    protected override void Awake()
+    {
+        // Initialize the dictionary first.
+        codeLevelData = new Dictionary<int, EnemyLevelData>();
+        // Now call the base Awake(), which will run InitialiseEntity() and use the dictionary.
+        base.Awake();
+    }
 
     protected override void InitialiseFromCodeMatrix()
     {
-        // Base values for level 1 enemies (projectile type)
         float baseHealth = 5f;
         float baseSpeed = 2f;
         float baseDamage = 4f;
@@ -99,25 +106,22 @@ public class Enemy : Entity
         float baseProjMaxRange = 6f;
         float baseXP = 8f;
 
-        // Define enemy progression via code with linear scaling
         for (int level = 1; level <= 10; level++)
         {
-            float levelScale = 1 + (level - 1) * 0.2f; // 20% increase per level
+            float levelScale = 1 + (level - 1) * 0.2f;
 
             SetEnemyLevelData(
                 level,
                 maxHealth: baseHealth * levelScale,
                 moveSpeed: baseSpeed * levelScale,
                 attackDamage: baseDamage * levelScale,
-                attackCooldown: Mathf.Max(0.5f, baseCooldown * (1 / levelScale)), // Cooldown decreases
+                attackCooldown: Mathf.Max(0.5f, baseCooldown * (1 / levelScale)),
                 meleeAttackRange: baseMeleeRange * levelScale,
                 projectileMinRange: baseProjMinRange * levelScale,
                 projectileMaxRange: baseProjMaxRange * levelScale,
                 xpValue: baseXP * levelScale
             );
         }
-        
-        Debug.Log($"Enemy level matrix initialised from code. {codeLevelData.Count} levels defined.");
     }
     
     protected void SetEnemyLevelData(int level, float maxHealth, float moveSpeed, float attackDamage, 
@@ -148,10 +152,8 @@ public class Enemy : Entity
             return;
         }
         
-        // Get type-specific modifiers
         EnemyTypeModifiers modifiers = enemyType == EnemyType.Melee ? meleeModifiers : projectileModifiers;
 
-        // Apply base stats
         maxHealth = data.maxHealth * modifiers.healthMultiplier;
         moveSpeed = data.moveSpeed * modifiers.moveSpeedMultiplier;
         damage = data.attackDamage * modifiers.damageMultiplier;
@@ -160,27 +162,16 @@ public class Enemy : Entity
         projectileMinRange = data.projectileMinRange * modifiers.attackRangeMultiplier;
         projectileMaxRange = data.projectileMaxRange * modifiers.attackRangeMultiplier;
         xpValue = data.xpValue;
-
-        Debug.Log($"Applied level {level} stats with {enemyType} modifiers. " +
-                 $"Health: {maxHealth}, Speed: {moveSpeed}, Damage: {damage}, " +
-                 $"Cooldown: {attackCooldown}s");
     }
 
     protected EnemyLevelData GetEnemyLevelData(int level)
     {
         if (useInspectorLevels && levelData.Count > 0)
         {
-            // Find level data in inspector list
-            foreach (var data in levelData)
-            {
-                if (data.level == level)
-                    return data;
-            }
-            
-            // If exact level not found, use the highest available level
             EnemyLevelData fallback = null;
             foreach (var data in levelData)
             {
+                if (data.level == level) return data;
                 if (data.level <= level && (fallback == null || data.level > fallback.level))
                     fallback = data;
             }
@@ -188,16 +179,17 @@ public class Enemy : Entity
         }
         else
         {
-            // Use code-based data
-            if (codeLevelData.ContainsKey(level))
+            if (codeLevelData != null && codeLevelData.ContainsKey(level))
                 return codeLevelData[level];
                 
-            // If exact level not found, use the highest available level
             EnemyLevelData fallback = null;
-            foreach (var kvp in codeLevelData)
+            if(codeLevelData != null)
             {
-                if (kvp.Key <= level && (fallback == null || kvp.Key > fallback.level))
-                    fallback = kvp.Value;
+                foreach (var kvp in codeLevelData)
+                {
+                    if (kvp.Key <= level && (fallback == null || kvp.Key > fallback.level))
+                        fallback = kvp.Value;
+                }
             }
             return fallback;
         }
@@ -205,8 +197,8 @@ public class Enemy : Entity
 
     protected override void Start()
     {
-        base.Start();
-        
+        // base.Start() is called from the Entity class.
+        // We only need to handle logic specific to the enemy here.
         if (target == null)
         {
             GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
@@ -272,26 +264,14 @@ public class Enemy : Entity
         {
             player.TakeDamage(damage);
         }
-        else
-        {
-            Debug.LogWarning("Enemy attack failed: Player not found on target.");
-        }
     }
 
     private void ShootProjectile()
     {
-        if (projectilePrefab == null || firePoint == null)
-        {
-            Debug.LogWarning("Missing projectilePrefab or firePoint on enemy.");
-            return;
-        }
+        if (projectilePrefab == null || firePoint == null) return;
 
         Vector2 direction = (target.position - firePoint.position).normalized;
-
-        // Spawn projectile as child of this enemy initially
         GameObject projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity, transform);
-        
-        // Track this projectile
         activeProjectiles.Add(projectile);
 
         EnemyProjectile enemyProjectile = projectile.GetComponent<EnemyProjectile>();
@@ -299,15 +279,10 @@ public class Enemy : Entity
         {
             enemyProjectile.Initialise(direction, damage);
         }
-        else
-        {
-            Debug.LogWarning("Projectile prefab missing EnemyProjectile component.");
-        }
     }
     
     private void CleanupDestroyedProjectiles()
     {
-        // Remove null references (destroyed projectiles) from our tracking list
         activeProjectiles.RemoveAll(projectile => projectile == null);
     }
 
@@ -323,90 +298,54 @@ public class Enemy : Entity
         }
     }
     
-    public void SetLevel(int level)
+    public new void SetLevel(int level)
     {
-        // Clamp level to valid range
         level = Mathf.Max(1, level);
-        
-        // Set the current level
         currentLevel = level;
-        
-        // Apply the level stats
         ApplyLevelStats(level);
-        
-        // Set current health to max health after level application
         currentHealth = maxHealth;
-        
-        Debug.Log($"Enemy level set to {level}. Stats - Health: {maxHealth}, Speed: {moveSpeed}, Damage: {damage}");
     }
 
     protected override void OnDeath()
     {
-        // Move any active projectiles to the enemies parent before this enemy is destroyed
         MoveProjectilesToParent();
-
-        // Spawn XP orb instead of directly giving XP to player
         SpawnXPOrb();
 
-        // Notify the WaveManager that this enemy was killed
-        // Find a better way to reference WaveManager
         WaveManager waveManager = FindFirstObjectByType<WaveManager>();
         if (waveManager != null)
         {
             waveManager.OnEnemyKilled();
         }
-
-        // Add drop effects before death, animations, ...
         Destroy(gameObject);
     }
 
     private void SpawnXPOrb()
     {
-        if (xpOrbPrefab == null)
-        {
-            Debug.LogWarning($"XP Orb prefab not assigned on enemy {gameObject.name}");
-            return;
-        }
+        if (xpOrbPrefab == null) return;
 
-        // Spawn XP orb at enemy's position with slight random offset
-        Vector3 spawnPosition = transform.position + new Vector3(
-            Random.Range(-0.25f, 0.25f), 
-            Random.Range(-0.25f, 0.25f), 
-            0f
-        );
-
+        Vector3 spawnPosition = transform.position + new Vector3(Random.Range(-0.25f, 0.25f), Random.Range(-0.25f, 0.25f), 0f);
         GameObject xpOrb = Instantiate(xpOrbPrefab, spawnPosition, Quaternion.identity);
         
-        // Set the XP value on the orb
         XPOrb xpOrbScript = xpOrb.GetComponent<XPOrb>();
         if (xpOrbScript != null)
         {
             xpOrbScript.value = xpValue;
         }
-        else
-        {
-            Debug.LogWarning("XP Orb prefab missing XPOrb component!");
-        }
     }
     
     private void MoveProjectilesToParent()
     {
-        // Find the enemies parent object (should be the same parent this enemy is under)
         Transform enemiesParent = transform.parent;
-
         if (enemiesParent == null)
         {
-            // If no parent, try to find or create the "Enemies Parent" object
             GameObject enemiesObject = GameObject.Find("Enemies Parent");
             if (enemiesObject == null)
             {
                 enemiesObject = new GameObject("Enemies Parent");
-                enemiesObject.transform.position = Vector3.zero;
             }
             enemiesParent = enemiesObject.transform;
         }
 
-        // Move all active projectiles to the enemies parent
         foreach (GameObject projectile in activeProjectiles)
         {
             if (projectile != null)
@@ -414,12 +353,8 @@ public class Enemy : Entity
                 projectile.transform.SetParent(enemiesParent);
             }
         }
-
-        // Clear the list since we're about to be destroyed
         activeProjectiles.Clear();
     }
-
-    
 
     private void OnDrawGizmosSelected()
     {

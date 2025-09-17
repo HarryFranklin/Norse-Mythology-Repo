@@ -17,7 +17,7 @@ public class HammerThrowAbility : Ability
         targetingLineColor = Color.red;
         
         // Set up targeting range based on level 1 distance
-        maxTargetingRange = GetLevelData(1).distance;
+        maxTargetingRange = GetStatsForLevel(1).distance;
     }
 
     protected override void InitialiseFromCodeMatrix()

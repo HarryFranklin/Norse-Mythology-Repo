@@ -26,7 +26,7 @@ public class DashAbility : Ability
         targetingLineColor = Color.cyan;
         
         // Set up targeting range based on level 1 distance
-        maxTargetingRange = GetLevelData(1).distance;
+        maxTargetingRange = GetStatsForLevel(1).distance;
     }
 
     protected override void InitialiseFromCodeMatrix()
