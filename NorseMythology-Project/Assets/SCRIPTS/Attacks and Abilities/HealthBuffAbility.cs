@@ -16,7 +16,7 @@ public class HealthBuffAbility : Ability
 
     protected override void InitialiseFromCodeMatrix()
     {
-        // Initialize ability name and description
+        // Initialise ability name and description
         abilityName = "Vitality Boost";
         description = "Instantly grants temporary health that decays back to original max health when lost.";
         

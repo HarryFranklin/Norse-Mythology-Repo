@@ -37,7 +37,7 @@ public class HealthXPUIManager : MonoBehaviour
             player.healthXPUIManager = this;
         }
 
-        // Wait a frame before updating UI to ensure Player is fully initialized
+        // Wait a frame before updating UI to ensure Player is fully initialised
         StartCoroutine(DelayedInitialization());
     }
     

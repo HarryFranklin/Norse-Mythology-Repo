@@ -2,17 +2,22 @@ using UnityEngine;
 
 public class CharacterSelector : MonoBehaviour
 {
+    // We will drag our UI controller GameObject here in the Inspector
+    [SerializeField] private ClassSelectorUI classSelectorUI;
+
     public void OnContinueButton()
     {
-        // Tell the GameManager to proceed into the main game
-        if (GameManager.Instance != null)
+        if (GameManager.Instance != null && classSelectorUI != null && classSelectorUI.selectedClass != null)
         {
-            // When you implement classes, you'll apply the chosen class's stats here first.
+            // 1. Pass the final selected class to the GameManager
+            GameManager.Instance.SetSelectedClass(classSelectorUI.selectedClass);
+            
+            // 2. Proceed to the main game scene
             GameManager.Instance.StartGameFromSelector();
         }
         else
         {
-            Debug.LogError("GameManager not found! Make sure the Boot scene runs first.");
+            Debug.LogError("GameManager or ClassSelectorUI not found, or no class was selected!");
         }
     }
 }

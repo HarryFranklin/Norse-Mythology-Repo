@@ -104,13 +104,31 @@ public class GameManager : MonoBehaviour
         gameActive = true;
         WaveManager.Instance?.StartWave();
     }
-
+    
+    public void SetSelectedClass(CharacterClass selectedClass)
+    {
+        if (selectedClass != null && selectedClass.startingStats != null)
+        {
+            basePlayerStats = selectedClass.startingStats;
+            currentPlayerStats = basePlayerStats.CreateRuntimeCopy();
+            Debug.Log($"Selected class '{selectedClass.className}' and applied starting stats.");
+        }
+        else
+        {
+            Debug.LogWarning("Selected class or its stats were null. Using default stats.");
+            if (basePlayerStats != null)
+            {
+                currentPlayerStats = basePlayerStats.CreateRuntimeCopy();
+            }
+        }
+    }
+    
     private void FindMainGameReferences()
     {
         player = FindFirstObjectByType<Player>();
         abilityUIManager = FindFirstObjectByType<AbilityUIManager>();
         enemySpawner = FindFirstObjectByType<EnemySpawner>();
-        
+
         if (WaveManager.Instance != null)
         {
             WaveManager.Instance.gameManager = this;

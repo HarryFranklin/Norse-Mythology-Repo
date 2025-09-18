@@ -122,7 +122,7 @@ public class HammerThrowAbility : Ability
         float finalRotationSpeed = StackedSpecialValue1 > 0 ? rotationSpeed * StackedSpecialValue1 : rotationSpeed;
         rotatorScript.rotationSpeed = finalRotationSpeed;
         
-        // Initialize projectile with stacked level values
+        // Initialise projectile with stacked level values
         hammerProjectile.Initialise(
             throwDirection, 
             StackedSpeed,           // Speed

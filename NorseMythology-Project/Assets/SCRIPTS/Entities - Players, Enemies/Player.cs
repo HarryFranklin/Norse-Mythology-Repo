@@ -34,7 +34,7 @@ public class PlayerLevelData
 public class Player : Entity
 {
     [Header("Player References")]
-    public PlayerStats baseStats;
+    public PlayerStats baseStats; // This is the fallback/default stats
     public GameManager gameManager;
     public Rigidbody2D rigidBody;
     public AbilityManager abilityManager;
@@ -65,23 +65,32 @@ public class Player : Entity
     public PlayerStats currentStats
     {
         get { return _currentStats; }
-        set
-        {
-            _currentStats = value;
-            if (_currentStats != null && Application.isPlaying)
-            {
-                ApplyLevelStats(_currentStats.level);
-                // When returning from level up or starting a new game, restore health to full.
-                currentHealth = maxHealth; 
-            }
-        }
+        set { _currentStats = value; }
     }
 
     void Awake()
     {
-        gameManager = GameManager.Instance;
+        // Initialise the dictionary for level-up data
         codeLevelData = new Dictionary<int, PlayerLevelData>();
+        
+        gameManager = GameManager.Instance;
+
+        // Prioritise loading stats from the GameManager (which holds the class selection)
+        if (gameManager != null && gameManager.GetCurrentPlayerStats() != null)
+        {
+            currentStats = gameManager.GetCurrentPlayerStats();
+            Debug.Log($"Player stats successfully loaded from GameManager for class: {currentStats.name}");
+        }
+        else if (baseStats != null)
+        {
+            // Fallback if the scene is run directly, using the default stats assigned in the Inspector
+            currentStats = baseStats.CreateRuntimeCopy();
+            Debug.LogWarning("GameManager stats not found. Initializing player with local baseStats.");
+        }
+        
         InitialisePlayer();
+        
+        currentHealth = maxHealth;
     }
 
     private void OnEnable()
@@ -97,6 +106,38 @@ public class Player : Entity
         }
     }
 
+    private void ApplyStatsFromScriptableObject()
+    {
+        if (currentStats == null)
+        {
+            Debug.LogError("currentStats is null! Cannot apply initial stats.");
+            return;
+        }
+
+        maxHealth = currentStats.maxHealth;
+        moveSpeed = currentStats.moveSpeed;
+        damage = currentStats.attackDamage;
+        healthRegen = currentStats.healthRegen;
+        healthRegenDelay = currentStats.healthRegenDelay;
+        attackSpeed = currentStats.attackSpeed;
+        meleeRange = currentStats.meleeRange;
+        projectileSpeed = currentStats.projectileSpeed;
+        projectileRange = currentStats.projectileRange;
+        experienceToNextLevel = currentStats.experienceToNextLevel;
+        abilityCooldownReduction = currentStats.abilityCooldownReduction;
+        currentLevel = currentStats.level;
+    }
+
+    private void InitialisePlayer()
+    {
+        ApplyStatsFromScriptableObject();
+
+        if (!useInspectorLevels)
+        {
+            InitialiseFromCodeMatrix();
+        }
+    }
+        
     void Update()
     {
         if (gameManager != null && !gameManager.IsGameActive())
@@ -221,7 +262,6 @@ public class Player : Entity
             return;
         }
         
-        // Apply stats to Entity base class and player-specific variables
         maxHealth = data.maxHealth;
         moveSpeed = data.moveSpeed;
         damage = data.attackDamage;
@@ -286,42 +326,6 @@ public class Player : Entity
 
     protected override void InitialiseEntity()
     {
-        // Now handled by Awake()
-    }
-
-    private void InitialisePlayer()
-    {
-        if (currentStats == null && baseStats != null)
-        {
-            currentStats = ScriptableObject.CreateInstance<PlayerStats>();
-            CopyStatsFromBase();
-        }
-
-        if (!useInspectorLevels)
-        {
-            InitialiseFromCodeMatrix();
-        }
-        ApplyLevelStats(currentLevel);
-
-        currentHealth = maxHealth;
-    }
-    
-    private void CopyStatsFromBase()
-    {
-        if (baseStats == null || currentStats == null) return;
-        currentStats.level = baseStats.level;
-        currentStats.experience = baseStats.experience;
-        currentStats.experienceToNextLevel = baseStats.experienceToNextLevel;
-        currentStats.moveSpeed = baseStats.moveSpeed;
-        currentStats.maxHealth = baseStats.maxHealth;
-        currentStats.healthRegen = baseStats.healthRegen;
-        currentStats.healthRegenDelay = baseStats.healthRegenDelay;
-        currentStats.meleeRange = baseStats.meleeRange;
-        currentStats.attackDamage = baseStats.attackDamage;
-        currentStats.attackSpeed = baseStats.attackSpeed;
-        currentStats.projectileSpeed = baseStats.projectileSpeed;
-        currentStats.projectileRange = baseStats.projectileRange;
-        currentStats.abilityCooldownReduction = baseStats.abilityCooldownReduction;
     }
     
     private IEnumerator HealthRegeneration()

@@ -156,6 +156,8 @@ public class AbilitySelectorManager : MonoBehaviour
     
     public void SelectAbility(int index)
     {
+        SetAbilityButtonsInteractable(false);
+
         Ability selected = offeredAbilities[index];
         var existingState = playerData.abilities.FirstOrDefault(state => state.ability != null && state.ability.abilityName == selected.abilityName);
 
@@ -168,14 +170,29 @@ public class AbilitySelectorManager : MonoBehaviour
         {
             if (playerData.abilities.Count < 4)
             {
-                 playerData.abilities.Add(new GameManager.PlayerAbilityState(selected, 1));
-                 // CHANGED: Finalise the selection and return to the LevelUpManager
-                 FinaliseAndReturn();
+                playerData.abilities.Add(new GameManager.PlayerAbilityState(selected, 1));
+                FinaliseAndReturn();
             }
             else
             {
                 ShowReplacementOptions(selected);
             }
+        }
+    }
+
+    private void SetAbilityButtonsInteractable(bool isInteractable)
+    {
+        foreach (var button in abilityButtons)
+        {
+            if (button != null)
+            {
+                button.interactable = isInteractable;
+            }
+        }
+        // Also disable the skip button
+        if (skipButton != null)
+        {
+            skipButton.interactable = isInteractable;
         }
     }
 
