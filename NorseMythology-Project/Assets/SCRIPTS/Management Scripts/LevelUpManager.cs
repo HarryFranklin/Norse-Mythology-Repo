@@ -39,25 +39,20 @@ public class LevelUpManager : MonoBehaviour
     
     private void Start()
     {
-        // Ensure the ability selector is hidden at the start
-        if (abilitySelectorScreen != null)
+        if (levelUpPanel != null)
         {
-            abilitySelectorScreen.SetActive(false);
+            levelUpPanel.SetActive(false);
         }
 
-        // Setup the continue button for its initial state
-        if (continueButton != null)
+        if (abilitySelectorScreen != null)
         {
-            continueButton.GetComponentInChildren<TextMeshProUGUI>().text = "Choose Ability";
-            continueButton.onClick.RemoveAllListeners(); // Clear previous listeners
-            continueButton.onClick.AddListener(ShowAbilitySelectorScreen);
+            abilitySelectorScreen.SetActive(true);
         }
-        
+
+        // The rest of the setup runs in the background, preparing the data
         InitialiseButtonData();
         SetupUpgradeButtons();
-        
         GetPlayerStatsFromGameManager();
-        
         UpdateUI();
     }
     
