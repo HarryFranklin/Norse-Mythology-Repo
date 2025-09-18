@@ -10,17 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bdf56dd738e8626489522b37895e544e, type: 3}
-  m_Name: PlayerStats
+  m_Name: BerserkirStats
   m_EditorClassIdentifier: 
   level: 1
   experience: 0
   experienceToNextLevel: 100
-  moveSpeed: 5
-  maxHealth: 100
-  healthRegen: 1
-  meleeRange: 2
-  attackDamage: 10
-  attackSpeed: 1
+  moveSpeed: 4
+  maxHealth: 110
+  healthRegen: 1.25
+  healthRegenDelay: 2.5
+  meleeRange: 2.5
+  attackDamage: 8
+  attackSpeed: 1.25
   projectileSpeed: 8
   projectileRange: 10
   abilityCooldownReduction: 0
