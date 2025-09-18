@@ -303,7 +303,6 @@ public class Player : Entity
         }
         ApplyLevelStats(currentLevel);
 
-        // --- FIX: Initialize health after stats are applied ---
         currentHealth = maxHealth;
     }
     

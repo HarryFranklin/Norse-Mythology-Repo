@@ -25,7 +25,6 @@ public abstract class Entity : MonoBehaviour
     public bool useInspectorLevels = false; 
     [SerializeField] protected int currentLevel = 1;
 
-    // --- FIX: Move initialization to Awake() ---
     protected virtual void Awake()
     {
         // Awake() is called immediately when an object is instantiated,

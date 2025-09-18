@@ -28,7 +28,7 @@ public class LevelUpManager : MonoBehaviour
     public bool showUpgradeAmountsOnHoverOnly = true;
     
     [Header("Ability Selector Reference")]
-    public AbilitySelectorManager abilitySelectorManager;
+    public GameObject abilitySelectorScreen;
     
     private PlayerStats currentPlayerStats;
     private int availableUpgradePoints;
@@ -39,9 +39,18 @@ public class LevelUpManager : MonoBehaviour
     
     private void Start()
     {
+        // Ensure the ability selector is hidden at the start
+        if (abilitySelectorScreen != null)
+        {
+            abilitySelectorScreen.SetActive(false);
+        }
+
+        // Setup the continue button for its initial state
         if (continueButton != null)
         {
-            continueButton.onClick.AddListener(OnContinueClicked);
+            continueButton.GetComponentInChildren<TextMeshProUGUI>().text = "Choose Ability";
+            continueButton.onClick.RemoveAllListeners(); // Clear previous listeners
+            continueButton.onClick.AddListener(ShowAbilitySelectorScreen);
         }
         
         InitialiseButtonData();
@@ -319,24 +328,41 @@ public class LevelUpManager : MonoBehaviour
         }
     }
     
-    private void OnContinueClicked()
+    private void ShowAbilitySelectorScreen()
     {
-        if (abilitySelectorManager != null)
+        if (abilitySelectorScreen != null)
         {
-            // --- FIX: Deactivate the level up panel before showing the ability selector ---
-            if (levelUpPanel != null)
-            {
-                levelUpPanel.SetActive(false);
-            }
-            abilitySelectorManager.ShowAbilitySelector();
+            // Hide this panel and show the ability selector
+            levelUpPanel.SetActive(false);
+            abilitySelectorScreen.SetActive(true);
         }
         else
         {
             Debug.LogError("AbilitySelectorManager reference is null! Please assign it in the inspector.");
-            if (GameManager.Instance != null)
-            {
-                GameManager.Instance.ContinueToNextWave();
-            }
+        }
+    }
+
+    public void OnAbilitySelectionCompleted()
+    {
+        // Re-enable the main level-up panel
+        levelUpPanel.SetActive(true);
+
+        // Update the continue button to its final state
+        if (continueButton != null)
+        {
+            continueButton.GetComponentInChildren<TextMeshProUGUI>().text = "Continue";
+            continueButton.onClick.RemoveAllListeners();
+            continueButton.onClick.AddListener(ContinueToNextWave);
+        }
+
+        UpdateUI();
+    }
+
+    private void ContinueToNextWave()
+    {
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.ContinueToNextWave();
         }
     }
 }

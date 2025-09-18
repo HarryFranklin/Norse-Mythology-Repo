@@ -86,7 +86,6 @@ public class Enemy : Entity
     
     private List<GameObject> activeProjectiles = new List<GameObject>();
     
-    // --- FIX: Ensure dictionary is ready before base.Awake() is called ---
     protected override void Awake()
     {
         // Initialize the dictionary first.

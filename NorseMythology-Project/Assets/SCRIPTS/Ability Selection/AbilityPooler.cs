@@ -48,7 +48,7 @@ public class AbilityPooler : MonoBehaviour
             .Where(a => !ownedAbilityNames.Contains(a.abilityName))
             .ToList();
 
-        // Prioritize upgrades, then new abilities
+        // Prioritise upgrades, then new abilities
         var potentialChoices = upgradeable.Concat(newAbilities).Distinct().ToList();
         
         while (choices.Count < count && potentialChoices.Count > 0)

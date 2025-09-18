@@ -824,7 +824,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &204952695
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3763,7 +3763,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &698868453
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4550,7 +4550,7 @@ GameObject:
   - component: {fileID: 931153234}
   - component: {fileID: 931153233}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Ability2ReplaceButtonText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4805,6 +4805,28 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1585023917688891226, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
   m_PrefabInstance: {fileID: 972395828}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &972395830 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1639331208545000680, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+  m_PrefabInstance: {fileID: 972395828}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &972395831 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5085090165641844536, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+  m_PrefabInstance: {fileID: 972395828}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1042447020
 GameObject:
   m_ObjectHideFlags: 0
@@ -4839,7 +4861,6 @@ MonoBehaviour:
   - {fileID: 1684983843}
   - {fileID: 885797606}
   skipButton: {fileID: 265292755}
-  continueButton: {fileID: 1199881809}
   levelText: {fileID: 656055436}
   selectorPanel: {fileID: 204952694}
   replacementPanel: {fileID: 698868452}
@@ -4853,7 +4874,16 @@ MonoBehaviour:
   - {fileID: 931153233}
   - {fileID: 1455112810}
   - {fileID: 1677555283}
-  continuePanel: {fileID: 1769140460}
+  replaceButtonIcons:
+  - {fileID: 1618553325}
+  - {fileID: 1185281547}
+  - {fileID: 972395830}
+  - {fileID: 1222450769}
+  replaceButtonLevels:
+  - {fileID: 1618553326}
+  - {fileID: 1185281548}
+  - {fileID: 972395831}
+  - {fileID: 1222450770}
   abilityNames:
   - {fileID: 1810833713}
   - {fileID: 571144070}
@@ -5768,6 +5798,28 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1585023917688891226, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
   m_PrefabInstance: {fileID: 1185281545}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1185281547 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1639331208545000680, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+  m_PrefabInstance: {fileID: 1185281545}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1185281548 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5085090165641844536, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+  m_PrefabInstance: {fileID: 1185281545}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1199881807
 GameObject:
   m_ObjectHideFlags: 0
@@ -6020,6 +6072,28 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1585023917688891226, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
   m_PrefabInstance: {fileID: 1222450767}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1222450769 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1639331208545000680, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+  m_PrefabInstance: {fileID: 1222450767}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1222450770 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5085090165641844536, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+  m_PrefabInstance: {fileID: 1222450767}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1307353944
 GameObject:
   m_ObjectHideFlags: 0
@@ -6758,7 +6832,7 @@ GameObject:
   - component: {fileID: 1455112811}
   - component: {fileID: 1455112810}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Ability3ReplaceButtonText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7326,6 +7400,28 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1585023917688891226, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
   m_PrefabInstance: {fileID: 1618553323}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1618553325 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1639331208545000680, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+  m_PrefabInstance: {fileID: 1618553323}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1618553326 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5085090165641844536, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+  m_PrefabInstance: {fileID: 1618553323}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1677555281
 GameObject:
   m_ObjectHideFlags: 0
@@ -7338,7 +7434,7 @@ GameObject:
   - component: {fileID: 1677555284}
   - component: {fileID: 1677555283}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Ability4ReplaceButtonText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7852,7 +7948,7 @@ GameObject:
   - component: {fileID: 1763443841}
   - component: {fileID: 1763443840}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Ability1ReplaceButtonText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8607,7 +8703,7 @@ MonoBehaviour:
   upgradeProjectileSpeedButton: {fileID: 346235646}
   upgradeProjectileRangeButton: {fileID: 922009196}
   showUpgradeAmountsOnHoverOnly: 1
-  abilitySelectorManager: {fileID: 1042447021}
+  abilitySelectorScreen: {fileID: 1042447020}
 --- !u!4 &1862888600
 Transform:
   m_ObjectHideFlags: 0

@@ -157,7 +157,6 @@ public abstract class Ability : ScriptableObject
     public float StackedDistance => GetCurrentLevelData().distance * abilityStacks;
     public float StackedSpeed => GetCurrentLevelData().speed * abilityStacks;
     public float StackedSpecialValue1 => GetCurrentLevelData().specialValue1 * abilityStacks;
-    // FIX: Added missing properties for special values 2 and 3
     public float StackedSpecialValue2 => GetCurrentLevelData().specialValue2 * abilityStacks;
     public float StackedSpecialValue3 => GetCurrentLevelData().specialValue3 * abilityStacks;
 
