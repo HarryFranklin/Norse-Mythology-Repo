@@ -111,6 +111,12 @@ public class GameManager : MonoBehaviour
         {
             basePlayerStats = selectedClass.startingStats;
             currentPlayerStats = basePlayerStats.CreateRuntimeCopy();
+
+            // Explicitly copy the attack type and prefabs from the CharacterClass
+            currentPlayerStats.attackType = selectedClass.attackType;
+            currentPlayerStats.meleeWeaponPrefab = selectedClass.meleeWeaponPrefab;
+            currentPlayerStats.projectilePrefab = selectedClass.projectilePrefab;
+
             Debug.Log($"Selected class '{selectedClass.className}' and applied starting stats.");
         }
         else

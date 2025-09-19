@@ -8222,11 +8222,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 2135908895}
   playerComponent: {fileID: 2135908900}
-  meleeWeaponPrefab: {fileID: 5131123301474718387, guid: 3ea159a53e8b45447bdf1c752017d88e, type: 3}
-  projectilePrefab: {fileID: 5131123301474718387, guid: 4d50b6241863ed942a56c3845040826f, type: 3}
   weaponHolder: {fileID: 1194572341}
   hasBasicAttack: 1
-  basicAttackType: 0
   doesMeleeWeaponStun: 1
   meleeStunDuration: 0.2
   enemyScanInterval: 0.1

@@ -10,13 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: db020a37ab6c2f14eba1a6e5a5f3c337, type: 3}
-  m_Name: Einherjar
+  m_Name: TestProjectile
   m_EditorClassIdentifier: 
-  className: Einherjar
+  className: TestProjectile
   classSprite: {fileID: -978791688, guid: e20ffde0bbe61624695318427c9d6d54, type: 3}
-  description: '"Those who fight alone" \n The einherjar are those who have died
-    in battle, and have been brought to Valhalla.'
-  startingStats: {fileID: 11400000, guid: 693f296f9727e95409184cda040034a7, type: 2}
-  attackType: 0
-  meleeWeaponPrefab: {fileID: 1025216438378162117, guid: 219a9579616a70743bd3c0319a590a5d, type: 3}
-  projectilePrefab: {fileID: 0}
+  description: Test Description
+  startingStats: {fileID: 11400000, guid: 43272052d3ba10044a4795fedac1b2fa, type: 2}
+  attackType: 1
+  meleeWeaponPrefab: {fileID: 0}
+  projectilePrefab: {fileID: 2236113398867180543, guid: 910b288ce0449324780f44ebd1a82b4a, type: 3}

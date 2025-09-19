@@ -10,21 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bdf56dd738e8626489522b37895e544e, type: 3}
-  m_Name: EinherjarStats
+  m_Name: TestProjectileStats
   m_EditorClassIdentifier: 
   level: 1
   experience: 0
   experienceToNextLevel: 100
-  moveSpeed: 5
-  maxHealth: 100
-  healthRegen: 1
-  healthRegenDelay: 2
+  moveSpeed: 6
+  maxHealth: 65
+  healthRegen: 1.5
+  healthRegenDelay: 1
   meleeRange: 2
-  attackDamage: 10
-  attackSpeed: 1
-  projectileSpeed: 8
-  projectileRange: 10
+  attackDamage: 5
+  attackSpeed: 1.25
+  projectileSpeed: 6
+  projectileRange: 5
   abilityCooldownReduction: 0
-  attackType: 0
+  attackType: 1
   meleeWeaponPrefab: {fileID: 0}
-  projectilePrefab: {fileID: 0}
+  projectilePrefab: {fileID: 2236113398867180543, guid: 910b288ce0449324780f44ebd1a82b4a, type: 3}

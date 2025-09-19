@@ -26,6 +26,11 @@ public class PlayerStats : ScriptableObject
     
     [Header("Abilities")]
     public float abilityCooldownReduction = 0f; // percentage
+
+    [Header("Attack Type")]
+    public AttackType attackType = AttackType.Melee;
+    public GameObject meleeWeaponPrefab;
+    public GameObject projectilePrefab;
     
     // Method to create a runtime copy of stats
     public PlayerStats CreateRuntimeCopy()
@@ -43,6 +48,9 @@ public class PlayerStats : ScriptableObject
         copy.projectileSpeed = this.projectileSpeed;
         copy.projectileRange = this.projectileRange;
         copy.abilityCooldownReduction = this.abilityCooldownReduction;
+        copy.attackType = this.attackType;
+        copy.meleeWeaponPrefab = this.meleeWeaponPrefab;
+        copy.projectilePrefab = this.projectilePrefab;
         return copy;
     }
 }

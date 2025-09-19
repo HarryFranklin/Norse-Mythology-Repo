@@ -7,13 +7,10 @@ public class AttackManager : MonoBehaviour
     [Header("References")]
     public Transform player;
     public Player playerComponent;
-    public GameObject meleeWeaponPrefab;
-    public GameObject projectilePrefab;
     public Transform weaponHolder;
 
     [Header("Basic Attack Settings")]
     public bool hasBasicAttack = true;
-    public AttackType basicAttackType = AttackType.Melee;
     public bool doesMeleeWeaponStun = true;
     public float meleeStunDuration = 0.2f;
 
@@ -23,13 +20,6 @@ public class AttackManager : MonoBehaviour
     private float lastAttackTime;
     private float lastEnemyScan;
     private Enemy closestEnemy;
-
-    public enum AttackType
-    {
-        Melee,
-        Projectile,
-        ReturningProjectile
-    }
 
     private void Start()
     {
@@ -53,10 +43,6 @@ public class AttackManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Finds the closest active enemy and checks if it's within melee range.
-    /// This method is now more robust and efficient.
-    /// </summary>
     private void UpdateClosestEnemy()
     {
         if (playerComponent == null || playerComponent.currentStats == null)
@@ -66,16 +52,13 @@ public class AttackManager : MonoBehaviour
         float closestDistSqr = float.MaxValue;
         Vector3 playerPosition = player.position;
 
-        // Iterate through the static list of active enemies from the spawner
         foreach (Enemy enemy in EnemySpawner.activeEnemies)
         {
-            // Skip any enemies that might be null or inactive in the list
             if (enemy == null || !enemy.gameObject.activeInHierarchy)
             {
                 continue;
             }
 
-            // Using sqrMagnitude is faster than Vector3.Distance as it avoids a square root calculation
             float distSqr = (enemy.transform.position - playerPosition).sqrMagnitude;
 
             if (distSqr < closestDistSqr)
@@ -85,16 +68,17 @@ public class AttackManager : MonoBehaviour
             }
         }
 
-        // After finding the closest enemy, check if it's within attack range.
-        float meleeRangeSqr = playerComponent.currentStats.meleeRange * playerComponent.currentStats.meleeRange;
-        if (potentialTarget != null && closestDistSqr <= meleeRangeSqr)
+        float attackRange = (playerComponent.currentStats.attackType == AttackType.Melee)
+            ? playerComponent.currentStats.meleeRange
+            : playerComponent.currentStats.projectileRange;
+            
+        float attackRangeSqr = attackRange * attackRange;
+        if (potentialTarget != null && closestDistSqr <= attackRangeSqr)
         {
-            // We have a valid target in range
             closestEnemy = potentialTarget;
         }
         else
         {
-            // No enemies in range, so clear the target
             closestEnemy = null;
         }
     }
@@ -104,11 +88,9 @@ public class AttackManager : MonoBehaviour
         if (playerComponent == null || playerComponent.currentStats == null)
             return;
             
-        // Check attack cooldown
         if (Time.time - lastAttackTime < (1f / playerComponent.currentStats.attackSpeed))
             return;
 
-        // Only attack if we have a valid target
         if (closestEnemy != null)
         {
             PerformBasicAttack(closestEnemy);
@@ -118,7 +100,9 @@ public class AttackManager : MonoBehaviour
 
     private void PerformBasicAttack(Enemy target)
     {
-        switch (basicAttackType)
+        if (playerComponent.currentStats == null) return;
+        
+        switch (playerComponent.currentStats.attackType)
         {
             case AttackType.Melee:
                 StartCoroutine(MeleeAttack(target));
@@ -134,22 +118,20 @@ public class AttackManager : MonoBehaviour
 
     private IEnumerator MeleeAttack(Enemy target)
     {
-        if (meleeWeaponPrefab == null || weaponHolder == null || target == null)
+        if (playerComponent.currentStats.meleeWeaponPrefab == null || weaponHolder == null || target == null)
             yield break;
         
-        GameObject weapon = Instantiate(meleeWeaponPrefab, weaponHolder.position, Quaternion.identity, weaponHolder);
+        GameObject weapon = Instantiate(playerComponent.currentStats.meleeWeaponPrefab, weaponHolder.position, Quaternion.identity, weaponHolder);
 
         Vector2 direction = (target.transform.position - weaponHolder.position).normalized;
         Vector2 startPos = weaponHolder.localPosition;
         Vector2 attackPos = startPos + (direction * 0.5f);
         
-        // Flip weapon sprite based on direction
         weapon.transform.localScale = new Vector3(Mathf.Sign(direction.x) * Mathf.Abs(weapon.transform.localScale.x), weapon.transform.localScale.y, weapon.transform.localScale.z);
         
-        float duration = 0.1f; // Faster swing
+        float duration = 0.1f;
         float elapsed = 0f;
 
-        // Swing out
         while (elapsed < duration)
         {
             weapon.transform.localPosition = Vector2.Lerp(startPos, attackPos, elapsed / duration);
@@ -157,7 +139,6 @@ public class AttackManager : MonoBehaviour
             yield return null;
         }
 
-        // Deal damage (check if target is still valid)
         if (target != null && playerComponent != null && playerComponent.currentStats != null)
         {
             float damage = playerComponent.currentStats.attackDamage;
@@ -165,7 +146,6 @@ public class AttackManager : MonoBehaviour
             target.TakeDamage(damage, stun);
         }
 
-        // Swing back
         elapsed = 0f;
         while (elapsed < duration)
         {
@@ -179,10 +159,10 @@ public class AttackManager : MonoBehaviour
 
     private void LaunchProjectile(Enemy target, bool returning)
     {
-        if (projectilePrefab == null || playerComponent == null || playerComponent.currentStats == null)
+        if (playerComponent.currentStats.projectilePrefab == null || playerComponent == null || playerComponent.currentStats == null)
             return;
         
-        GameObject projectileGO = Instantiate(projectilePrefab, player.position, Quaternion.identity);
+        GameObject projectileGO = Instantiate(playerComponent.currentStats.projectilePrefab, player.position, Quaternion.identity);
         Projectile projectileScript = projectileGO.GetComponent<Projectile>();
         
         if (projectileScript == null)
