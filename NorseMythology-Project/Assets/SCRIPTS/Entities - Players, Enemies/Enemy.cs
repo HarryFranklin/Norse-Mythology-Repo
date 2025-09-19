@@ -43,6 +43,8 @@ public class EnemyTypeModifiers
 public class Enemy : Entity
 {
     public enum EnemyType { Melee, Projectile }
+
+    public EnemySpawner spawner;
     
     [Header("Enemy Type")]
     public EnemyType enemyType = EnemyType.Melee;
@@ -88,10 +90,23 @@ public class Enemy : Entity
     
     protected override void Awake()
     {
-        // Initialize the dictionary first.
+        // Initialise the dictionary first.
         codeLevelData = new Dictionary<int, EnemyLevelData>();
         // Now call the base Awake(), which will run InitialiseEntity() and use the dictionary.
         base.Awake();
+    }
+
+    public void OnObjectSpawn()
+    {
+        // This is called when the object is pulled from the pool.
+        // Reset its state here.
+        isDead = false;
+        currentHealth = maxHealth;
+        // Find the spawner if it's not set
+        if (spawner == null)
+        {
+            spawner = FindFirstObjectByType<EnemySpawner>();
+        }
     }
 
     protected override void InitialiseFromCodeMatrix()
@@ -307,15 +322,13 @@ public class Enemy : Entity
 
     protected override void OnDeath()
     {
-        MoveProjectilesToParent();
+        // Notify the spawner that this enemy has died
+        spawner?.EnemyDied(this);
+        
         SpawnXPOrb();
 
-        WaveManager waveManager = FindFirstObjectByType<WaveManager>();
-        if (waveManager != null)
-        {
-            waveManager.OnEnemyKilled();
-        }
-        Destroy(gameObject);
+        // Instead of destroying, set inactive to return to the pool
+        gameObject.SetActive(false);
     }
 
     private void SpawnXPOrb()

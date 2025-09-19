@@ -1873,14 +1873,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemiesParent: {fileID: 1442276654}
-  meleeEnemyPrefabs:
-  - {fileID: 6549350566530616831, guid: a8e644fb05298434c981a996cf930ac1, type: 3}
-  - {fileID: 6549350566530616831, guid: 67ce8c5c1688ba74e9703c686603212e, type: 3}
-  projectileEnemyPrefabs:
-  - {fileID: 6549350566530616831, guid: 94d987001f64ddb43a4b3c2f2186edfe, type: 3}
-  - {fileID: 6549350566530616831, guid: 088a376ce9adb8a48a576de1d445c5bf, type: 3}
-  meleePrefab: {fileID: 6549350566530616831, guid: a8e644fb05298434c981a996cf930ac1, type: 3}
-  projectilePrefab: {fileID: 6549350566530616831, guid: 94d987001f64ddb43a4b3c2f2186edfe, type: 3}
+  meleeEnemyTags:
+  - MeleeEnemy_A
+  - MeleeEnemy_B
+  projectileEnemyTags:
+  - ProjectileEnemy_A
+  - ProjectileEnemy_B
   meleeRatio: 0.6
   baseSpawnRate: 1
   playerLevelSpawnReduction: 0.05
@@ -6101,6 +6099,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1454827956
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1454827958}
+  - component: {fileID: 1454827957}
+  m_Layer: 0
+  m_Name: ObjectPooler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1454827957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1454827956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 222e425d2ba06a14c97ad24d4caf5276, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pools:
+  - tag: MeleeEnemy_A
+    prefab: {fileID: 6549350566530616831, guid: a8e644fb05298434c981a996cf930ac1, type: 3}
+    size: 20
+  - tag: MeleeEnemy_B
+    prefab: {fileID: 6549350566530616831, guid: 67ce8c5c1688ba74e9703c686603212e, type: 3}
+    size: 20
+  - tag: ProjectileEnemy_A
+    prefab: {fileID: 6549350566530616831, guid: 94d987001f64ddb43a4b3c2f2186edfe, type: 3}
+    size: 20
+  - tag: ProjectileEnemy_B
+    prefab: {fileID: 6549350566530616831, guid: 088a376ce9adb8a48a576de1d445c5bf, type: 3}
+    size: 20
+--- !u!4 &1454827958
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1454827956}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1481384864
 GameObject:
   m_ObjectHideFlags: 0
@@ -8343,3 +8398,4 @@ SceneRoots:
   - {fileID: 1261929404}
   - {fileID: 100481637}
   - {fileID: 1546175630}
+  - {fileID: 1454827958}
