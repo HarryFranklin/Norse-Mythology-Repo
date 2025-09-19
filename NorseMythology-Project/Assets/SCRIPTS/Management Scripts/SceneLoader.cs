@@ -1,4 +1,4 @@
-using System.Threading;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,7 +9,12 @@ public class SceneLoader : MonoBehaviour
 
     void Start()
     {
-        Thread.Sleep(2000);
+        StartCoroutine(LoadSceneAfterDelay());
+    }
+
+    IEnumerator LoadSceneAfterDelay()
+    {
+        yield return new WaitForSeconds(2f);
         SceneManager.LoadScene(sceneToLoad);
     }
 }
