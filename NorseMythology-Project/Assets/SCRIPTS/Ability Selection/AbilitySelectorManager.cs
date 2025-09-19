@@ -13,7 +13,7 @@ public class AbilitySelectorManager : MonoBehaviour
     public TextMeshProUGUI levelText;
 
     [Header("Selector UI")]
-    public GameObject selectorPanel; // The main panel with 3 choices
+    public GameObject selectorPanel; // The main panel with 3 ability choices
 
     [Header("Replacement UI")]
     public GameObject replacementPanel; // The panel with 4 replacement slots
@@ -75,14 +75,14 @@ public class AbilitySelectorManager : MonoBehaviour
         if (existingState != null)
         {
             existingState.level++;
-            FinalizeAndReturn();
+            FinaliseAndReturn();
         }
         else
         {
             if (playerData.abilities.Count < 4)
             {
                  playerData.abilities.Add(new GameManager.PlayerAbilityState(selectedAbility, 1));
-                 FinalizeAndReturn();
+                 FinaliseAndReturn();
             }
             else
             {
@@ -126,12 +126,12 @@ public class AbilitySelectorManager : MonoBehaviour
             {
                 playerData.abilities[replaceIndex] = new GameManager.PlayerAbilityState(newAbility, 1);
                 if (replacementPanel != null) replacementPanel.SetActive(false);
-                FinalizeAndReturn();
+                FinaliseAndReturn();
             });
         }
     }
 
-    void FinalizeAndReturn()
+    void FinaliseAndReturn()
     {
         GameManager.Instance.currentPlayerData = playerData;
 
@@ -201,7 +201,7 @@ public class AbilitySelectorManager : MonoBehaviour
     public void SkipSelection()
     {
         SetAbilityButtonsInteractable(false);
-        FinalizeAndReturn();
+        FinaliseAndReturn();
     }
     
     // ... (GetStatUpgradeDescription and GetRarityColor methods remain the same) ...
