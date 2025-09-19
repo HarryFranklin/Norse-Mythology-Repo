@@ -15,7 +15,7 @@ MonoBehaviour:
   className: Berserkir
   classSprite: {fileID: -978791688, guid: e20ffde0bbe61624695318427c9d6d54, type: 3}
   description: Berserkir are said to have fought in a trance-like fury.
-  startingStats: {fileID: 11400000, guid: 43272052d3ba10044a4795fedac1b2fa, type: 2}
+  startingStats: {fileID: 11400000, guid: d3368ee2aaa980c42b65a47a1104ef80, type: 2}
   attackType: 0
   meleeWeaponPrefab: {fileID: 8028338059532453128, guid: 1ad44eeb31774fe46be8e8c030403434, type: 3}
   projectilePrefab: {fileID: 0}

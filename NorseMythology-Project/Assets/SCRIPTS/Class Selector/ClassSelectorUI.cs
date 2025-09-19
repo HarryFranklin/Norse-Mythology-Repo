@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using TMPro;
 using System.Text;
-using System.Linq; // Needed for OrderBy
+using System.Linq;
 
 public class ClassSelectorUI : MonoBehaviour
 {
@@ -26,6 +26,9 @@ public class ClassSelectorUI : MonoBehaviour
     
     [HideInInspector]
     public CharacterClass selectedClass { get; private set; }
+    
+    // To store the class being hovered over
+    private CharacterClass hoveredClass;
 
     void Start()
     {
@@ -44,13 +47,9 @@ public class ClassSelectorUI : MonoBehaviour
 
     private void LoadClasses()
     {
-        // Dynamically load all CharacterClass assets from the folder
         availableClasses = Resources.LoadAll<CharacterClass>("Classes").ToList();
-        
-        // Find the default class from the loaded assets
         defaultClass = availableClasses.FirstOrDefault(c => c.className == defaultClassName);
 
-        // Ensure the default class appears first in the grid
         if (defaultClass != null)
         {
             availableClasses = availableClasses.OrderBy(c => c.className != defaultClassName).ToList();
@@ -88,38 +87,53 @@ public class ClassSelectorUI : MonoBehaviour
         if (classToSelect == null) return;
 
         selectedClass = classToSelect;
-        DisplayClassInfo(selectedClass);
+        
+        // When a class is selected, update the display for the hovered class (if any)
+        DisplayClassInfo(hoveredClass ?? selectedClass);
 
-        // This loop is the key: it tells EVERY grid item to update its appearance
         foreach (var item in gridItems)
         {
             item.UpdateHighlight(item.CharacterClass == selectedClass);
         }
     }
     
+    // Called from ClassGridItem when the mouse enters
+    public void OnHoverStart(CharacterClass classToHover)
+    {
+        hoveredClass = classToHover;
+        DisplayClassInfo(hoveredClass);
+    }
+
+    // Called from ClassGridItem when the mouse exits
+    public void OnHoverEnd()
+    {
+        hoveredClass = null;
+        DisplayClassInfo(selectedClass);
+    }
+    
     private string GenerateStatsComparisonText(CharacterClass classToCompare)
     {
-        if (defaultClass == null || classToCompare == null) return "Stats not available.";
+        if (selectedClass == null || classToCompare == null) return "Stats not available.";
 
-        PlayerStats baseStats = defaultClass.startingStats;
+        PlayerStats baseStats = selectedClass.startingStats; 
         PlayerStats compareStats = classToCompare.startingStats;
-        bool isDefault = (classToCompare == defaultClass);
+        bool isComparingSelf = (classToCompare == selectedClass);
 
         StringBuilder sb = new StringBuilder();
         sb.AppendLine("<b>Base Stats</b>");
-        sb.AppendLine(CompareStat("Max Health", baseStats.maxHealth, compareStats.maxHealth, isDefault, "F0"));
-        sb.AppendLine(CompareStat("Health Regen", baseStats.healthRegen, compareStats.healthRegen, isDefault, "F1"));
-        sb.AppendLine(CompareStat("Move Speed", baseStats.moveSpeed, compareStats.moveSpeed, isDefault, "F1"));
-        sb.AppendLine(CompareStat("Attack Damage", baseStats.attackDamage, compareStats.attackDamage, isDefault, "F1"));
-        sb.AppendLine(CompareStat("Attack Speed", baseStats.attackSpeed, compareStats.attackSpeed, isDefault, "F1"));
+        sb.AppendLine(CompareStat("Max Health", baseStats.maxHealth, compareStats.maxHealth, isComparingSelf, "F0"));
+        sb.AppendLine(CompareStat("Health Regen", baseStats.healthRegen, compareStats.healthRegen, isComparingSelf, "F1"));
+        sb.AppendLine(CompareStat("Move Speed", baseStats.moveSpeed, compareStats.moveSpeed, isComparingSelf, "F1"));
+        sb.AppendLine(CompareStat("Attack Damage", baseStats.attackDamage, compareStats.attackDamage, isComparingSelf, "F1"));
+        sb.AppendLine(CompareStat("Attack Speed", baseStats.attackSpeed, compareStats.attackSpeed, isComparingSelf, "F1"));
 
         return sb.ToString();
     }
 
-    private string CompareStat(string label, float baseValue, float compareValue, bool isDefault, string format)
+    private string CompareStat(string label, float baseValue, float compareValue, bool isComparingSelf, string format)
     {
         string formattedValue = compareValue.ToString(format);
-        if (isDefault)
+        if (isComparingSelf)
         {
             return $"{label}: {formattedValue}";
         }
