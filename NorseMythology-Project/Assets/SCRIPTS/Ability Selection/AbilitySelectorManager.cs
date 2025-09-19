@@ -13,20 +13,22 @@ public class AbilitySelectorManager : MonoBehaviour
     public TextMeshProUGUI levelText;
 
     [Header("Selector UI")]
-    public GameObject selectorPanel; // The main panel with 3 ability choices
+    public GameObject selectorPanel;
 
     [Header("Replacement UI")]
-    public GameObject replacementPanel; // The panel with 4 replacement slots
+    public GameObject replacementPanel;
     public Button[] replaceButtons = new Button[4];
     public TextMeshProUGUI[] replaceButtonLabels = new TextMeshProUGUI[4];
-    public Image[] replaceButtonIcons = new Image[4]; // For the icons
-    public TextMeshProUGUI[] replaceButtonLevels = new TextMeshProUGUI[4]; // For the level text
+    public Image[] replaceButtonIcons = new Image[4];
+    public TextMeshProUGUI[] replaceButtonLevels = new TextMeshProUGUI[4];
+    public Image[] replaceRarityPanels = new Image[4]; // <-- ADDED FOR REPLACEMENT PANEL
 
     [Header("Ability Display")]
     public TextMeshProUGUI[] abilityNames = new TextMeshProUGUI[3];
     public TextMeshProUGUI[] abilityDescriptions = new TextMeshProUGUI[3];
     public Image[] abilityIcons = new Image[3];
-    
+    public Image[] abilityRarityPanels = new Image[3]; // <-- ADDED FOR MAIN SELECTOR
+
     private List<Ability> offeredAbilities;
     private GameManager.PlayerData playerData;
     private LevelUpManager levelUpManager;
@@ -41,7 +43,6 @@ public class AbilitySelectorManager : MonoBehaviour
         }
         else
         {
-            // Create dummy data if running scene directly
             playerData = new GameManager.PlayerData();
             Debug.LogWarning("GameManager not found, using empty player data.");
         }
@@ -67,7 +68,7 @@ public class AbilitySelectorManager : MonoBehaviour
 
     public void SelectAbility(int index)
     {
-        SetAbilityButtonsInteractable(false); // Prevent multiple clicks
+        SetAbilityButtonsInteractable(false);
 
         Ability selectedAbility = offeredAbilities[index];
         var existingState = playerData.abilities.FirstOrDefault(state => state.ability != null && state.ability.abilityName == selectedAbility.abilityName);
@@ -86,7 +87,6 @@ public class AbilitySelectorManager : MonoBehaviour
             }
             else
             {
-                // This is the path that was likely failing
                 ShowReplacementOptions(selectedAbility);
             }
         }
@@ -98,14 +98,13 @@ public class AbilitySelectorManager : MonoBehaviour
         if (replacementPanel == null)
         {
             Debug.LogError("Replacement Panel is not assigned in the Inspector! Halting.");
-            return; // Stop execution if the panel is missing
+            return;
         }
         replacementPanel.SetActive(true);
 
-        // Loop through the 4 equipped abilities and display them
         for (int i = 0; i < replaceButtons.Length; i++)
         {
-            int replaceIndex = i; // Important for the listener
+            int replaceIndex = i;
             GameManager.PlayerAbilityState equippedAbilityState = playerData.abilities[i];
             Ability equippedAbility = equippedAbilityState.ability;
 
@@ -119,6 +118,11 @@ public class AbilitySelectorManager : MonoBehaviour
             {
                 int maxStacks = equippedAbility.GetStatsForLevel(equippedAbilityState.level).maxStacksAtLevel;
                 replaceButtonLevels[i].text = $"Lvl {equippedAbilityState.level} ({maxStacks} max)";
+            }
+            
+            if (replaceRarityPanels[i] != null)
+            {
+                replaceRarityPanels[i].color = RarityColourMapper.GetColour(equippedAbility.rarity);
             }
 
             replaceButtons[i].onClick.RemoveAllListeners();
@@ -140,11 +144,9 @@ public class AbilitySelectorManager : MonoBehaviour
             levelUpManager.OnAbilitySelectionCompleted();
         }
 
-        // Deactivate the parent GameObject that holds all the ability selection UI
         gameObject.SetActive(false);
     }
     
-    // --- Helper methods and the rest of the script ---
     private void SetAbilityButtonsInteractable(bool isInteractable)
     {
         foreach (var button in abilityButtons)
@@ -187,12 +189,9 @@ public class AbilitySelectorManager : MonoBehaviour
             abilityDescriptions[index].text = ability.description;
         }
 
-        if (abilityButtons[index] != null)
+        if (abilityRarityPanels[index] != null)
         {
-            ColorBlock colors = abilityButtons[index].colors;
-            colors.normalColor = GetRarityColor(ability.rarity);
-            colors.highlightedColor = GetRarityColor(ability.rarity) * 1.2f; 
-            abilityButtons[index].colors = colors;
+            abilityRarityPanels[index].color = RarityColourMapper.GetColour(ability.rarity);
         }
         
         if (abilityIcons[index] != null) abilityIcons[index].sprite = ability.abilityIcon;
@@ -204,7 +203,6 @@ public class AbilitySelectorManager : MonoBehaviour
         FinaliseAndReturn();
     }
     
-    // ... (GetStatUpgradeDescription and GetRarityColor methods remain the same) ...
     private string GetStatUpgradeDescription(AbilityLevelData oldStats, AbilityLevelData newStats)
     {
         StringBuilder sb = new StringBuilder();
@@ -226,18 +224,5 @@ public class AbilitySelectorManager : MonoBehaviour
         if (sb.Length <= "<b>Upgrades:</b>\n".Length)
             sb.AppendLine("General improvements to effectiveness.");
         return sb.ToString();
-    }
-
-    Color GetRarityColor(AbilityRarity rarity)
-    {
-        switch (rarity)
-        {
-            case AbilityRarity.Common: return Color.white;
-            case AbilityRarity.Uncommon: return new Color(0.1f, 1f, 0.1f);
-            case AbilityRarity.Rare: return new Color(0.2f, 0.6f, 1f); 
-            case AbilityRarity.Epic: return new Color(0.7f, 0.2f, 1f); 
-            case AbilityRarity.Legendary: return new Color(1f, 0.8f, 0f); 
-            default: return Color.white;
-        }
     }
 }
