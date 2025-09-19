@@ -7,10 +7,6 @@ using System.Linq;
 public enum ActivationMode { Instant, ClickToTarget }
 public enum AbilityRarity { Common, Uncommon, Rare, Epic, Legendary }
 
-/// <summary>
-/// Holds all the gameplay stats for a single level of an ability.
-/// This allows you to define the entire level progression in one place.
-/// </summary>
 [Serializable]
 public class AbilityLevelData
 {
@@ -32,18 +28,13 @@ public class AbilityLevelData
     public float stackRegenTime = 1f; // Time to regenerate one stack
 }
 
-/// <summary>
-/// The base class for all Ability ScriptableObjects. An instance of this class
-/// represents the DEFINITION of an ability (e.g., "Dash"), while a runtime
-/// clone of it represents the player's actual equipped ability.
-/// </summary>
 [CreateAssetMenu(fileName = "New Ability", menuName = "Abilities/Ability Definition")]
 public abstract class Ability : ScriptableObject
 {
     [Header("Identity")]
     public string abilityName;
     public Sprite abilityIcon;
-    public AbilityRarity rarity = AbilityRarity.Common;
+    // The 'rarity' field has been removed. Rarity is now derived from the ability's level.
 
     [Header("Description")]
     [TextArea(2, 4)]
@@ -64,12 +55,10 @@ public abstract class Ability : ScriptableObject
     [SerializeField] private AbilityLevelData[] levelData = new AbilityLevelData[5];
 
     // --- RUNTIME DATA ---
-    // These values are only set when the game is running.
-    // They are NOT saved to the ScriptableObject asset file.
     [NonSerialized] private int currentLevel = 1;
     [NonSerialized] private int currentStacks = 1;
     [NonSerialized] private float nextStackRegenTime = 0f;
-    [NonSerialized] private int abilityStacks = 1; // Stacking for owning multiple copies
+    [NonSerialized] private int abilityStacks = 1;
 
     // --- PUBLIC PROPERTIES ---
     public int CurrentLevel { get => currentLevel; set => currentLevel = value; }
@@ -81,18 +70,12 @@ public abstract class Ability : ScriptableObject
     public int MaxStacksAtCurrentLevel => GetCurrentLevelData().maxStacksAtLevel;
 
     // --- HELPER METHODS ---
-    /// <summary>
-    /// Gets the stat block for the ability's CURRENT runtime level.
-    /// </summary>
     public AbilityLevelData GetCurrentLevelData()
     {
         int index = Mathf.Clamp(currentLevel - 1, 0, levelData.Length - 1);
         return levelData[index];
     }
     
-    /// <summary>
-    /// Gets the stat block for ANY specified level. Used by the UI.
-    /// </summary>
     public AbilityLevelData GetStatsForLevel(int level)
     {
         int index = Mathf.Clamp(level - 1, 0, levelData.Length - 1);
@@ -104,15 +87,11 @@ public abstract class Ability : ScriptableObject
         return currentLevel < MaxLevel;
     }
 
-    /// <summary>
-    /// A helper method to easily define level data from code.
-    /// </summary>
     protected void SetLevelData(int level, float cooldown = -1, float damage = -1, float duration = -1, float radius = -1, float speed = -1, float distance = -1, float specialValue1 = -1, float specialValue2 = -1, float specialValue3 = -1, int maxStacks = -1, float stackRegenTime = -1)
     {
         if (level < 1 || level > levelData.Length) return;
         int index = level - 1;
         
-        // If it's not the first level, copy from the previous level to fill in unchanged values.
         if (index > 0)
         {
             levelData[index] = new AbilityLevelData
@@ -135,7 +114,6 @@ public abstract class Ability : ScriptableObject
             levelData[index] = new AbilityLevelData();
         }
 
-        // Apply new values
         if (cooldown >= 0) levelData[index].cooldown = cooldown;
         if (damage >= 0) levelData[index].damage = damage;
         if (duration >= 0) levelData[index].duration = duration;
@@ -150,7 +128,6 @@ public abstract class Ability : ScriptableObject
     }
 
     // --- STACKED VALUE PROPERTIES ---
-    // These properties should be used by your ability logic (e.g., in DashAbility.cs) to get the final, calculated stat values.
     public float StackedDamage => GetCurrentLevelData().damage * (1f + (abilityStacks - 1) * 0.5f);
     public float StackedDuration => GetCurrentLevelData().duration * abilityStacks;
     public float StackedRadius => GetCurrentLevelData().radius * abilityStacks;

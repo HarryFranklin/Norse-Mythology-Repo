@@ -9,6 +9,7 @@ public class AbilitySelectorManager : MonoBehaviour
 {
     [Header("UI Elements")]
     public Button[] abilityButtons = new Button[3];
+    public Image[] abilityRarityPanels = new Image[3];
     public Button skipButton;
     public TextMeshProUGUI levelText;
 
@@ -18,17 +19,16 @@ public class AbilitySelectorManager : MonoBehaviour
     [Header("Replacement UI")]
     public GameObject replacementPanel;
     public Button[] replaceButtons = new Button[4];
+    public Image[] replaceRarityPanels = new Image[4];
     public TextMeshProUGUI[] replaceButtonLabels = new TextMeshProUGUI[4];
     public Image[] replaceButtonIcons = new Image[4];
     public TextMeshProUGUI[] replaceButtonLevels = new TextMeshProUGUI[4];
-    public Image[] replaceRarityPanels = new Image[4]; // <-- ADDED FOR REPLACEMENT PANEL
 
     [Header("Ability Display")]
     public TextMeshProUGUI[] abilityNames = new TextMeshProUGUI[3];
     public TextMeshProUGUI[] abilityDescriptions = new TextMeshProUGUI[3];
     public Image[] abilityIcons = new Image[3];
-    public Image[] abilityRarityPanels = new Image[3]; // <-- ADDED FOR MAIN SELECTOR
-
+    
     private List<Ability> offeredAbilities;
     private GameManager.PlayerData playerData;
     private LevelUpManager levelUpManager;
@@ -97,7 +97,7 @@ public class AbilitySelectorManager : MonoBehaviour
         if (selectorPanel != null) selectorPanel.SetActive(false);
         if (replacementPanel == null)
         {
-            Debug.LogError("Replacement Panel is not assigned in the Inspector! Halting.");
+            Debug.LogError("Replacement Panel is not assigned in the Inspector!");
             return;
         }
         replacementPanel.SetActive(true);
@@ -116,13 +116,13 @@ public class AbilitySelectorManager : MonoBehaviour
             
             if (replaceButtonLevels[i] != null)
             {
-                int maxStacks = equippedAbility.GetStatsForLevel(equippedAbilityState.level).maxStacksAtLevel;
-                replaceButtonLevels[i].text = $"Lvl {equippedAbilityState.level} ({maxStacks} max)";
+                replaceButtonLevels[i].text = $"Lvl {equippedAbilityState.level}";
             }
-            
-            if (replaceRarityPanels[i] != null)
+
+            if(replaceRarityPanels[i] != null)
             {
-                replaceRarityPanels[i].color = RarityColourMapper.GetColour(equippedAbility.rarity);
+                AbilityRarity currentRarity = RarityColourMapper.GetRarityFromLevel(equippedAbilityState.level);
+                replaceRarityPanels[i].color = RarityColourMapper.GetColour(currentRarity);
             }
 
             replaceButtons[i].onClick.RemoveAllListeners();
@@ -143,7 +143,7 @@ public class AbilitySelectorManager : MonoBehaviour
         {
             levelUpManager.OnAbilitySelectionCompleted();
         }
-
+        
         gameObject.SetActive(false);
     }
     
@@ -173,10 +173,12 @@ public class AbilitySelectorManager : MonoBehaviour
     void UpdateAbilityDisplay(int index, Ability ability)
     {
         var existingState = playerData.abilities.FirstOrDefault(state => state.ability != null && state.ability.abilityName == ability.abilityName);
+        AbilityRarity displayRarity;
 
         if (existingState != null)
         {
             int nextLevel = existingState.level + 1;
+            displayRarity = RarityColourMapper.GetRarityFromLevel(nextLevel);
             abilityNames[index].text = $"{ability.abilityName} (Lvl {existingState.level} -> {nextLevel})";
             abilityDescriptions[index].text = GetStatUpgradeDescription(
                 ability.GetStatsForLevel(existingState.level),
@@ -185,13 +187,14 @@ public class AbilitySelectorManager : MonoBehaviour
         }
         else
         {
+            displayRarity = RarityColourMapper.GetRarityFromLevel(1); // New abilities are level 1
             abilityNames[index].text = $"{ability.abilityName} (New!)";
             abilityDescriptions[index].text = ability.description;
         }
-
+        
         if (abilityRarityPanels[index] != null)
         {
-            abilityRarityPanels[index].color = RarityColourMapper.GetColour(ability.rarity);
+            abilityRarityPanels[index].color = RarityColourMapper.GetColour(displayRarity);
         }
         
         if (abilityIcons[index] != null) abilityIcons[index].sprite = ability.abilityIcon;

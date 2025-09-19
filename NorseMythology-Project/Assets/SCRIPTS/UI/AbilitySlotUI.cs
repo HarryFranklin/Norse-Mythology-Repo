@@ -8,17 +8,16 @@ public class AbilitySlotUI : MonoBehaviour
     public Image abilityIcon;
     public Image cooldownOverlay;
     public TextMeshProUGUI stackCount;
+    public Image rarityPanel;
 
-    [SerializeField] private AbilityManager abilityManager;
+    private AbilityManager abilityManager;
     private int abilityIndex;
-
     private bool isInitialised = false;
 
     public void Initialise(AbilityManager manager, int index)
     {
         abilityManager = manager;
         abilityIndex = index;
-
         isInitialised = true;
 
         Ability ability = manager.equippedAbilities[index];
@@ -26,10 +25,22 @@ public class AbilitySlotUI : MonoBehaviour
         {
             abilityIcon.sprite = ability.abilityIcon;
             abilityIcon.enabled = true;
+
+            if (rarityPanel != null)
+            {
+                // Get rarity based on the ability's current level
+                AbilityRarity currentRarity = RarityColourMapper.GetRarityFromLevel(ability.CurrentLevel);
+                rarityPanel.color = RarityColourMapper.GetColour(currentRarity);
+                rarityPanel.enabled = true;
+            }
         }
         else
         {
             abilityIcon.enabled = false;
+            if (rarityPanel != null)
+            {
+                rarityPanel.enabled = false;
+            }
         }
 
         UpdateStackCount();
@@ -39,20 +50,13 @@ public class AbilitySlotUI : MonoBehaviour
     {
         if (stackCount == null)
         {
-            Debug.Log("Stack count text is null, finding through code.");
-            stackCount = transform.GetComponentInChildren<TextMeshProUGUI>();
+            stackCount = GetComponentInChildren<TextMeshProUGUI>();
         }
     }
 
     void Update()
     {
-        if (!isInitialised ||
-            abilityManager == null ||
-            abilityManager.player == null ||
-            abilityManager.player.currentStats == null ||
-            abilityManager.equippedAbilities == null ||
-            abilityIndex < 0 ||
-            abilityIndex >= abilityManager.equippedAbilities.Length)
+        if (!isInitialised || abilityManager == null || abilityManager.player == null || abilityManager.player.currentStats == null)
             return;
 
         Ability ability = abilityManager.equippedAbilities[abilityIndex];
@@ -61,7 +65,18 @@ public class AbilitySlotUI : MonoBehaviour
             cooldownOverlay.fillAmount = 0f;
             if (stackCount != null)
                 stackCount.gameObject.SetActive(false);
+            
+            if (abilityIcon.enabled)
+            {
+                abilityIcon.enabled = false;
+                if (rarityPanel != null) rarityPanel.enabled = false;
+            }
             return;
+        }
+        
+        if (!abilityIcon.enabled)
+        {
+            Initialise(abilityManager, abilityIndex);
         }
 
         float remaining = abilityManager.GetAbilityCooldownRemaining(abilityIndex);
@@ -84,24 +99,20 @@ public class AbilitySlotUI : MonoBehaviour
             return;
         }
         
-        // Show the stack count
         stackCount.gameObject.SetActive(true);
-        
-        // Display current stacks / max stacks
         stackCount.text = $"{ability.CurrentStacks}/{ability.MaxStacksAtCurrentLevel}";
         
-        // Optional: Change color based on availability
         if (ability.CurrentStacks <= 0)
         {
-            stackCount.color = Color.red; // No charges available
+            stackCount.color = Color.red;
         }
         else if (ability.CurrentStacks < ability.MaxStacksAtCurrentLevel)
         {
-            stackCount.color = Color.yellow; // Partially charged
+            stackCount.color = Color.yellow;
         }
         else
         {
-            stackCount.color = Color.white; // Fully charged
+            stackCount.color = Color.white;
         }
     }
 }
