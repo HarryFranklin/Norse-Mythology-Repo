@@ -348,7 +348,7 @@ MonoBehaviour:
       height: 866.34766
     m_MinimalGUI: 1
   m_defaultScale: 0.49518228
-  m_LastWindowPixelSize: {x: 950.75, y: 562.5}
+  m_LastWindowPixelSize: {x: 760.6, y: 450}
   m_ClearInEditMode: 1
   m_NoCameraWarning: 1
   m_LowResolutionForAspectRatios: 01000000000000000000
@@ -377,7 +377,7 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 79.200005
+    y: 24
     width: 760.6
     height: 450
   m_SerializedDataModeController:
@@ -942,7 +942,7 @@ MonoBehaviour:
   m_Rotation:
     m_Target: {x: -0.027006205, y: -0.0063001933, z: 0.0001768375, w: -0.99964094}
     speed: 2
-    m_Value: {x: -0.027005516, y: -0.0063000326, z: 0.00017683298, w: -0.99961543}
+    m_Value: {x: -0.027006205, y: -0.0063001933, z: 0.00017683748, w: -0.9996409}
   m_Size:
     m_Target: 70.71068
     speed: 2
@@ -1002,7 +1002,7 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 555.2
+    y: 500
     width: 760.6
     height: 214.79999
   m_SerializedDataModeController:
@@ -1046,7 +1046,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 269.2}
     m_SelectedIDs: 2ab90000
     m_LastClickedID: 47402
-    m_ExpandedIDs: 00000000aab80000acb80000aeb80000b0b80000b2b80000b4b8000002b9000004b9000006b9000008b9000000ca9a3b
+    m_ExpandedIDs: 00000000bab80000bcb80000beb80000c0b80000c2b80000c4b80000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1075,7 +1075,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000aab80000acb80000aeb80000b0b80000b2b80000b4b80000
+    m_ExpandedIDs: 00000000bab80000bcb80000beb80000c0b80000c2b80000c4b80000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1190,8 +1190,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Hierarchy\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 761.60004
-    y: 79.200005
+    x: 762.6
+    y: 24
     width: 359.59998
     height: 690.8
   m_SerializedDataModeController:
@@ -1213,18 +1213,18 @@ MonoBehaviour:
       m_ExpandedIDs: 1c9efeffac9ffeff3acdfeff0ce8feff7c00ffff2c31ffff6034ffff1e46ffff9446ffffe276ffffd681ffffe29cffff4a9dffff5a9effffb8bbffff02d4ffffa0d6ffffb6d8ffff6ae1fffffee2ffffd8fafffff4ffffffdee40000fee4000006e5000096e500003ce70000f4050100e431010014320100be320100
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: GameManager
-        m_OriginalName: GameManager
+        m_Name: 
+        m_OriginalName: 
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: 78580
+        m_UserData: 0
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 0
+        m_OriginalEventType: 11
         m_IsRenamingFilename: 0
         m_TrimLeadingAndTrailingWhitespace: 0
         m_ClientGUIView: {fileID: 9}
@@ -1256,8 +1256,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Inspector\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 1123.2001
-    y: 79.200005
+    x: 1124.2
+    y: 24
     width: 411.80005
     height: 690.8
   m_SerializedDataModeController:
