@@ -2031,7 +2031,7 @@ MonoBehaviour:
   projectileEnemyTags:
   - ProjectileEnemy_A
   - ProjectileEnemy_B
-  meleeRatio: 0.6
+  meleeRatio: 0.8
   baseSpawnRate: 1
   playerLevelSpawnReduction: 0.05
   gameLevelSpawnReduction: 0.1
