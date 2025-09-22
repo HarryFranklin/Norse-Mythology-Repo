@@ -19,9 +19,12 @@ MonoBehaviour:
   maxHealth: 110
   healthRegen: 1.25
   healthRegenDelay: 2.5
-  meleeRange: 2.5
-  attackDamage: 8
+  meleeRange: 1
+  attackDamage: 6
   attackSpeed: 1.25
   projectileSpeed: 8
   projectileRange: 10
   abilityCooldownReduction: 0
+  attackType: 0
+  meleeWeaponPrefab: {fileID: 0}
+  projectilePrefab: {fileID: 0}

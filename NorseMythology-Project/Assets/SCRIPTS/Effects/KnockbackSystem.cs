@@ -92,8 +92,7 @@ public static class KnockbackSystem
             ApplyKnockbackToEntity(entity, center, settings, direction);
         }
     }
-
-    // Simple method that works with your existing Entity system
+    
     public static void ApplySimpleKnockback(Entity entity, Vector2 direction, float distance, float speed)
     {
         if (entity == null || entity.isDead) return;
@@ -150,11 +149,9 @@ public static class KnockbackSystem
                 knockbackDirection = (entityPos - center).normalized;
             }
         }
-
-        // Apply damage and stun using Entity's built-in methods
+        
         entity.TakeDamage(finalDamage, finalStunDuration);
-
-        // Apply knockback if entity is still alive
+        
         if (!entity.isDead)
         {
             ApplyPhysicsKnockback(entity, knockbackDirection, finalKnockbackDistance, settings);
@@ -166,21 +163,16 @@ public static class KnockbackSystem
     {
         Rigidbody2D rb = entity.GetComponent<Rigidbody2D>();
         if (rb == null) return;
-
-        // Store original movement state
+        
         float originalMoveSpeed = entity.moveSpeed;
         
-        // Disable entity movement during knockback
         entity.moveSpeed = 0f;
         
-        // Clear existing velocity
         rb.linearVelocity = Vector2.zero;
         
-        // Calculate knockback force
         Vector2 knockbackForce = direction * settings.knockbackSpeed;
         rb.AddForce(knockbackForce, ForceMode2D.Impulse);
-
-        // Start coroutine to handle knockback duration and recovery
+        
         MonoBehaviour monoBehaviour = entity.GetComponent<MonoBehaviour>();
         if (monoBehaviour != null)
         {
@@ -201,14 +193,12 @@ public static class KnockbackSystem
         {
             elapsedTime += Time.fixedDeltaTime;
             
-            // Apply gradual deceleration
             float decelerationFactor = 1f - (elapsedTime / duration);
             rb.linearVelocity = Vector2.Lerp(rb.linearVelocity, Vector2.zero, Time.fixedDeltaTime * 5f);
             
             yield return new WaitForFixedUpdate();
         }
-
-        // Restore entity state
+        
         if (entity != null && !entity.isDead)
         {
             entity.moveSpeed = originalMoveSpeed;
@@ -237,12 +227,18 @@ public static class KnockbackSystem
             elapsedTime += Time.deltaTime;
             float progress = elapsedTime / knockbackDuration;
             
-            // Use an easing curve for more natural knockback
             float easedProgress = 1f - Mathf.Pow(1f - progress, 3f); // Ease-out cubic
             
             entity.transform.position = Vector3.Lerp(startPos, targetPos, easedProgress);
             
             yield return null;
+        }
+        
+        if (entity != null && !entity.isDead && entity.pendingLethalDamage > 0)
+        {
+            entity.ApplyPendingLethalDamage();
+            // Don't restore move speed if the entity is now dead
+            yield break;
         }
 
         // Restore original move speed
@@ -251,8 +247,7 @@ public static class KnockbackSystem
             entity.moveSpeed = originalMoveSpeed;
         }
     }
-
-    // Convenience methods for quick setup
+    
     public static KnockbackSettings CreateExplosionSettings(float radius = 5f, float maxDamage = 100f)
     {
         var settings = new KnockbackSettings();

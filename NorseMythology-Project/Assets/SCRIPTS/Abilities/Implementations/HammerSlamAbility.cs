@@ -27,24 +27,24 @@ public class HammerSlamAbility : Ability
     protected override void InitialiseFromCodeMatrix()
     {
         // Define hammer slam ability values via code matrix
-        // Level, cooldown, damage, duration(stun), radius, speed(knockback speed), distance(max knockback), specialValue1(min knockback), specialValue2(min damage), specialValue3(damage variation), maxStacks, stackRegenTime
+        // Level, cooldown, damage (max), duration(stun), radius, speed(knockback speed), distance(max knockback), specialValue1(min knockback), specialValue2(min damage), specialValue3(damage variation), maxStacks, stackRegenTime
         
-        // Level 1: Basic slam
-        SetLevelData(1, cooldown: 8f, damage: 5f, duration: 1.2f, radius: 3f, speed: 12f, distance: 4f, specialValue1: 1.5f, specialValue2: 20f, specialValue3: 0.15f, maxStacks: 1, stackRegenTime: 8f);
+        // Level 1: Basic slam, single use.
+        SetLevelData(1, cooldown: 10f, damage: 4f, duration: 1.0f, radius: 3.5f, speed: 11f, distance: 3f, specialValue1: 1.25f, specialValue2: 2f, specialValue3: 0.5f, maxStacks: 1, stackRegenTime: 10f);
         
-        // Level 2: Improved damage and area
-        SetLevelData(2, cooldown: 7f, damage: 9f, duration: 1.4f, radius: 3.5f, speed: 14f, distance: 4.5f, specialValue1: 2f, specialValue2: 30f, specialValue3: 0.18f, maxStacks: 1, stackRegenTime: 7f);
+        // Level 2: Increased damage and area.
+        SetLevelData(2, cooldown: 9f, damage: 6f, duration: 1.2f, radius: 4.0f, speed: 13f, distance: 4f, specialValue1: 1.75f, specialValue2: 4f, specialValue3: 0.5f, maxStacks: 1, stackRegenTime: 9f);
         
-        // Level 3: Better knockback and stun
-        SetLevelData(3, cooldown: 6f, damage: 12f, duration: 1.6f, radius: 4f, speed: 16f, distance: 5f, specialValue1: 2.5f, specialValue2: 40f, specialValue3: 0.2f, maxStacks: 1, stackRegenTime: 6f);
+        // Level 3: Gains a second charge.
+        SetLevelData(3, cooldown: 8f, damage: 9f, duration: 1.5f, radius: 4.5f, speed: 15f, distance: 5f, specialValue1: 2.25f, specialValue2: 6f, specialValue3: 0.7f, maxStacks: 2, stackRegenTime: 8f);
         
-        // Level 4: Major improvements
-        SetLevelData(4, cooldown: 5f, damage: 14f, duration: 1.8f, radius: 4.5f, speed: 18f, distance: 5.5f, specialValue1: 3f, specialValue2: 50f, specialValue3: 0.22f, maxStacks: 1, stackRegenTime: 5f);
+        // Level 4: More damage and faster charge regeneration.
+        SetLevelData(4, cooldown: 7f, damage: 12f, duration: 1.8f, radius: 5.0f, speed: 18f, distance: 5.5f, specialValue1: 2.75f, specialValue2: 9f, specialValue3: 0.8f, maxStacks: 2, stackRegenTime: 7f);
         
-        // Level 5: Maximum power
-        SetLevelData(5, cooldown: 4f, damage: 16f, duration: 2f, radius: 5f, speed: 20f, distance: 6f, specialValue1: 3.5f, specialValue2: 65f, specialValue3: 0.25f, maxStacks: 1, stackRegenTime: 4f);
+        // Level 5: Third charge and massive power.
+        SetLevelData(5, cooldown: 6f, damage: 15f, duration: 2.0f, radius: 5.5f, speed: 20f, distance: 6f, specialValue1: 3.25f, specialValue2: 12f, specialValue3: 1.0f, maxStacks: 3, stackRegenTime: 6f);
         
-        Debug.Log($"HammerSlamAbility Initialised from code matrix. Level 1: {StackedDamage} damage, {StackedRadius}u radius");
+        Debug.Log($"HammerSlamAbility Initialised from code matrix. Level 1: {GetStatsForLevel(1).damage} damage, {GetStatsForLevel(1).radius}u radius");
     }
 
     public override bool CanActivate(Player player)
@@ -115,8 +115,21 @@ public class HammerSlamAbility : Ability
                 float stunMultiplier = stunFalloff.Evaluate(1f - normalizedDistance);
                 float stunDuration = Mathf.Lerp(0.8f, StackedDuration, stunMultiplier); // Using duration for max stun
                 
-                // Apply damage and stun using Entity's built-in methods
-                enemy.TakeDamage(finalDamage, stunDuration);
+                // NEW: Check if damage is lethal
+                bool isLethal = finalDamage >= enemy.currentHealth;
+
+                if (isLethal)
+                {
+                    // Register the lethal damage but don't apply it yet
+                    enemy.RegisterLethalDamage(finalDamage);
+                    // Optionally, you might still want to apply a stun effect during the knockback
+                    enemy.Stun(stunDuration);
+                }
+                else
+                {
+                    // Apply damage and stun using Entity's built-in methods
+                    enemy.TakeDamage(finalDamage, stunDuration);
+                }
                 
                 // Apply knockback using the new system
                 if (!enemy.isDead)
@@ -130,7 +143,7 @@ public class HammerSlamAbility : Ability
                     KnockbackSystem.ApplySimpleKnockback(enemy, knockbackDirection, knockbackDistance, StackedSpeed);
                 }
                 
-                Debug.Log($"Hammer Slam hit {enemy.name}: {finalDamage} damage, stun: {stunDuration}s");
+                Debug.Log($"Hammer Slam hit {enemy.name}: {finalDamage} damage, stun: {stunDuration}s, lethal: {isLethal}");
             }
         }
     }
@@ -160,6 +173,7 @@ public class HammerSlamAbility : Ability
             Destroy(shockwave, 1f);
         }
 
+        // To do: Add dust cloud effect here when you have the asset
         if (dustCloudPrefab != null)
         {
             GameObject dust = Instantiate(dustCloudPrefab, position, Quaternion.identity);

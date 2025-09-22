@@ -14,9 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: Hammer Slam
   abilityIcon: {fileID: 21300000, guid: 6a5c4a0883aa42740a38434823b51536, type: 3}
+  description: Slam a massive hammer into the ground, dealing heavy damage to nearby
+    enemies and knocking them back with devastating force.
+  activationMode: 0
   useCodeDefinedMatrix: 1
-  abilityStacks: 1
-  canStackAbility: 1
+  showTargetingLine: 0
+  targetingLineColor: {r: 1, g: 1, b: 1, a: 1}
+  maxTargetingRange: 10
+  targetingCursor: {fileID: 0}
   levelData:
   - cooldown: 8
     damage: 5
@@ -73,15 +78,6 @@ MonoBehaviour:
     specialValue3: 0.25
     maxStacksAtLevel: 1
     stackRegenTime: 4
-  currentLevel: 1
-  currentStacks: 1
-  activationMode: 0
-  targetingCursor: {fileID: 0}
-  showTargetingLine: 0
-  targetingLineColor: {r: 1, g: 1, b: 1, a: 1}
-  maxTargetingRange: 10
-  description: Slam a massive hammer into the ground, dealing heavy damage to nearby
-    enemies and knocking them back with devastating force.
   hammerPrefab: {fileID: 7752504696187829020, guid: c71af927813254c4c868d018b50b63e6, type: 3}
   shockwavePrefab: {fileID: 0}
   dustCloudPrefab: {fileID: 0}

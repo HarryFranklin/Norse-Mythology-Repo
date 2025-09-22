@@ -142,23 +142,11 @@ public class AbilityManager : MonoBehaviour
             Debug.Log($"Cannot activate {ability.abilityName} - Stacks: {ability.CurrentStacks}/{ability.MaxStacksAtCurrentLevel}");
             return;
         }
-
-        // Check cooldown using stacked cooldown
-        float cooldownReduction = 1f - (player.currentStats.abilityCooldownReduction / 100f);
-        float adjustedCooldown = ability.StackedCooldown * cooldownReduction;
-
-        if (Time.time - lastAbilityUse[index] < adjustedCooldown)
-        {
-            float timeLeft = adjustedCooldown - (Time.time - lastAbilityUse[index]);
-            Debug.Log($"{ability.abilityName} on cooldown: {timeLeft:F1}s remaining (Stacked cooldown: {ability.StackedCooldown:F1}s)");
-            return;
-        }
-
+        
         // Handle different activation modes
         if (ability.activationMode == ActivationMode.Instant)
         {
             ability.Activate(player, playerMovement);
-            lastAbilityUse[index] = Time.time;
             Debug.Log($"{ability.abilityName} activated instantly! (Stack {ability.AbilityStacks}) - Remaining charges: {ability.CurrentStacks}/{ability.MaxStacksAtCurrentLevel}");
         }
         else if (ability.activationMode == ActivationMode.ClickToTarget)
@@ -206,7 +194,6 @@ public class AbilityManager : MonoBehaviour
         }
         
         currentTargetingAbility.ActivateWithTarget(player, playerMovement, targetDirection, clampedWorldPos);
-        lastAbilityUse[targetingAbilityIndex] = Time.time;
         
         Debug.Log($"{currentTargetingAbility.abilityName} (Stack {currentTargetingAbility.AbilityStacks}) executed with target direction: {targetDirection}");
         
@@ -259,11 +246,8 @@ public class AbilityManager : MonoBehaviour
 
         if (player == null || player.currentStats == null)
             return 0f;
-
-        float cooldownReduction = 1f - (player.currentStats.abilityCooldownReduction / 100f);
-        float adjustedCooldown = equippedAbilities[slotIndex].StackedCooldown * cooldownReduction;
-
-        return Mathf.Max(0f, adjustedCooldown - (Time.time - lastAbilityUse[slotIndex]));
+            
+        return equippedAbilities[slotIndex].GetStackCooldownRemaining();
     }
     
     public bool IsInTargetingMode()

@@ -13,10 +13,14 @@ MonoBehaviour:
   m_Name: FreezeAbility
   m_EditorClassIdentifier: 
   abilityName: Freeze
-  abilityIcon: {fileID: -384397029, guid: e20ffde0bbe61624695318427c9d6d54, type: 3}
+  abilityIcon: {fileID: -392684488, guid: 766cb97207789f04aa2e7cfb164d1f50, type: 3}
+  description: Freeze nearby enemies in place for a short duration.
+  activationMode: 0
   useCodeDefinedMatrix: 1
-  abilityStacks: 1
-  canStackAbility: 1
+  showTargetingLine: 1
+  targetingLineColor: {r: 0, g: 1, b: 1, a: 1}
+  maxTargetingRange: 5
+  targetingCursor: {fileID: 0}
   levelData:
   - cooldown: 12
     damage: 0
@@ -73,12 +77,4 @@ MonoBehaviour:
     specialValue3: 0
     maxStacksAtLevel: 2
     stackRegenTime: 6
-  currentLevel: 1
-  currentStacks: 1
-  activationMode: 1
-  targetingCursor: {fileID: -392684488, guid: 766cb97207789f04aa2e7cfb164d1f50, type: 3}
-  showTargetingLine: 1
-  targetingLineColor: {r: 0, g: 1, b: 1, a: 1}
-  maxTargetingRange: 7
-  description: Freeze nearby enemies in place for a short duration.
   freezeEffectPrefab: {fileID: 6625746139066430653, guid: 64baf16bbfa525f41831c1ed70e92e18, type: 3}

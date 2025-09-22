@@ -8,6 +8,7 @@ public abstract class Entity : MonoBehaviour
     public float maxHealth = 100f;
     public float currentHealth;
     public bool isDead = false;
+    public float pendingLethalDamage = 0f; // New field to hold lethal damage
 
     [Header("Movement")]
     public float moveSpeed = 2f;
@@ -27,15 +28,11 @@ public abstract class Entity : MonoBehaviour
 
     protected virtual void Awake()
     {
-        // Awake() is called immediately when an object is instantiated,
-        // ensuring data is ready before other scripts can access it.
         InitialiseEntity();
     }
 
     protected virtual void Start()
     {
-        // Start can be used for logic that depends on other objects being ready.
-        // The core initialization is now handled in Awake().
     }
 
     protected virtual void InitialiseEntity()
@@ -51,7 +48,6 @@ public abstract class Entity : MonoBehaviour
 
     protected virtual void InitialiseFromCodeMatrix()
     {
-        // Base implementation - subclasses should override
     }
 
     public virtual void SetLevel(int newLevel)
@@ -83,6 +79,24 @@ public abstract class Entity : MonoBehaviour
             Die();
         }
     }
+    
+    // New method to register lethal damage without applying it
+    public void RegisterLethalDamage(float damageAmount)
+    {
+        pendingLethalDamage = damageAmount;
+    }
+
+    // New method to apply the pending lethal damage
+    public void ApplyPendingLethalDamage()
+    {
+        if (!isDead && pendingLethalDamage > 0)
+        {
+            currentHealth = 0;
+            pendingLethalDamage = 0;
+            Die();
+        }
+    }
+
 
     public virtual void Heal(float amount)
     {
@@ -173,14 +187,12 @@ public abstract class Entity : MonoBehaviour
         OnDeath();
     }
 
-    // Virtual methods for subclasses to override
     protected virtual void OnDamageTaken(float damage) { }
     protected virtual void OnHealed(float amount) { }
     protected virtual void OnStunEnded() { }
     protected virtual void OnFreezeEnded() { }
     protected abstract void OnDeath();
 
-    // Utility methods
     protected void MoveTowards(Vector3 targetPosition)
     {
         Vector2 direction = (targetPosition - transform.position).normalized;
@@ -198,6 +210,5 @@ public abstract class Entity : MonoBehaviour
         return Vector2.Distance(transform.position, target.position);
     }
 
-    // Getter methods
     public int GetCurrentLevel() => currentLevel;
 }

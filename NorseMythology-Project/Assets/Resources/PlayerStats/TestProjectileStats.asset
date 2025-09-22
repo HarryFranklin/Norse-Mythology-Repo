@@ -19,7 +19,7 @@ MonoBehaviour:
   maxHealth: 65
   healthRegen: 1.5
   healthRegenDelay: 1
-  meleeRange: 2
+  meleeRange: 1
   attackDamage: 5
   attackSpeed: 1.25
   projectileSpeed: 6

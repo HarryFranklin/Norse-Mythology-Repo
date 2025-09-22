@@ -80,8 +80,15 @@ public class AbilitySlotUI : MonoBehaviour
         }
 
         float remaining = abilityManager.GetAbilityCooldownRemaining(abilityIndex);
-        float reduction = abilityManager.player.currentStats.abilityCooldownReduction;
-        float max = ability.CurrentCooldown * (1f - (reduction / 100f));
+        float max = ability.CurrentStackRegenTime;
+        
+        // Apply cooldown reduction from player stats
+        if (abilityManager.player != null && abilityManager.player.currentStats != null)
+        {
+            float reduction = abilityManager.player.currentStats.abilityCooldownReduction;
+            max *= (1f - (reduction / 100f));
+        }
+        
         if (max <= 0f) max = 0.01f;
 
         cooldownOverlay.fillAmount = Mathf.Clamp01(remaining / max);

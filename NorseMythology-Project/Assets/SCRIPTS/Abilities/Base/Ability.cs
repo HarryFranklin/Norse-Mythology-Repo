@@ -184,6 +184,15 @@ public abstract class Ability : ScriptableObject
             currentStacks--;
         }
     }
+    
+    public float GetStackCooldownRemaining()
+    {
+        if (currentStacks >= MaxStacksAtCurrentLevel)
+        {
+            return 0f;
+        }
+        return Mathf.Max(0f, nextStackRegenTime - Time.time);
+    }
 
     public void AddAbilityStack()
     {
