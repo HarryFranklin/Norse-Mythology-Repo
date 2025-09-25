@@ -103,6 +103,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sortingOrderOffset: -3
   precisionMultiplier: 100
+  isCharacter: 0
+  fadeAmount: 0.25
+  fadeSpeed: 8
+  fadeDistance: 2.25
 --- !u!61 &422930634356129057
 BoxCollider2D:
   m_ObjectHideFlags: 0

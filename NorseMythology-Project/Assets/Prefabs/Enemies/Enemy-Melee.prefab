@@ -211,3 +211,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sortingOrderOffset: 0
   precisionMultiplier: 100
+  isCharacter: 1
+  fadeAmount: 0.25
+  fadeSpeed: 8
+  fadeDistance: 5
