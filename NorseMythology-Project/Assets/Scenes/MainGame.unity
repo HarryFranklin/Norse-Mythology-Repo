@@ -2473,8 +2473,8 @@ TilemapRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -975688019
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -8720,10 +8720,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 5478564124970998827, guid: d18167a91ef11a446afd4d6fcf41c3dd, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5847394599245397699, guid: d18167a91ef11a446afd4d6fcf41c3dd, type: 3}
       propertyPath: healthXPUIManager
       value: 
       objectReference: {fileID: 1928353780}
+    - target: {fileID: 6578566933005478137, guid: d18167a91ef11a446afd4d6fcf41c3dd, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7104373458677022584, guid: d18167a91ef11a446afd4d6fcf41c3dd, type: 3}
+      propertyPath: m_SortingLayer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7104373458677022584, guid: d18167a91ef11a446afd4d6fcf41c3dd, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -445345009
+      objectReference: {fileID: 0}
     - target: {fileID: 7999376983117359208, guid: d18167a91ef11a446afd4d6fcf41c3dd, type: 3}
       propertyPath: playerCamera
       value: 

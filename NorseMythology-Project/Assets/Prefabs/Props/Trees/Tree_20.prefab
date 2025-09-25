@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 1570056421432286227}
   - component: {fileID: 1771697733005613058}
   - component: {fileID: 2714236073187985518}
-  - component: {fileID: 2042644621414311062}
-  m_Layer: 0
+  - component: {fileID: 8658973176058399468}
+  m_Layer: 9
   m_Name: Tree_20
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -75,8 +75,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -445345009
+  m_SortingLayer: 2
   m_SortingOrder: 1
   m_Sprite: {fileID: 205707744, guid: b1eab68e5c0e0fd4cbc94d8072063d23, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -101,9 +101,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d9448619c5cfb4a89313ae4ad88df5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sortingOrderOffset: 0
+  sortingOrderOffset: -4
   precisionMultiplier: 100
---- !u!61 &2042644621414311062
+--- !u!61 &8658973176058399468
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -137,7 +137,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.024273768, y: -1.0417722}
+  m_Offset: {x: -0.060005248, y: -1.170079}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -147,5 +147,5 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.6944561, y: 0.6964557}
+  m_Size: {x: 0.75502944, y: 0.29092884}
   m_EdgeRadius: 0

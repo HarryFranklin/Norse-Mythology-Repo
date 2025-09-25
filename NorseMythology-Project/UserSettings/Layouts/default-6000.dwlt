@@ -332,23 +332,23 @@ MonoBehaviour:
       serializedVersion: 2
       x: 0
       y: 21
-      width: 760.6
-      height: 429
-    m_Scale: {x: 0.49518228, y: 0.49518228}
-    m_Translation: {x: 380.3, y: 214.5}
+      width: 753.4
+      height: 419.4
+    m_Scale: {x: 0.48541665, y: 0.48541665}
+    m_Translation: {x: 376.7, y: 209.7}
     m_MarginLeft: 0
     m_MarginRight: 0
     m_MarginTop: 0
     m_MarginBottom: 0
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
-      x: -768
-      y: -433.17383
-      width: 1536
-      height: 866.34766
+      x: -776.03436
+      y: -432
+      width: 1552.0687
+      height: 864
     m_MinimalGUI: 1
-  m_defaultScale: 0.49518228
-  m_LastWindowPixelSize: {x: 760.6, y: 450}
+  m_defaultScale: 0.48541665
+  m_LastWindowPixelSize: {x: 753.4, y: 440.4}
   m_ClearInEditMode: 1
   m_NoCameraWarning: 1
   m_LowResolutionForAspectRatios: 01000000000000000000
@@ -892,7 +892,7 @@ MonoBehaviour:
   m_AudioPlay: 0
   m_DebugDrawModesUseInteractiveLightBakingData: 0
   m_Position:
-    m_Target: {x: 1320.3334, y: 550.50714, z: -702.721}
+    m_Target: {x: 0, y: 0.5, z: 0}
     speed: 2
     m_Value: {x: 1320.3334, y: 550.50714, z: -702.721}
   m_RenderMode: 0
@@ -944,7 +944,7 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: -0.08331016, y: 0.011655118, z: -0.0009893154, w: -0.9964972}
   m_Size:
-    m_Target: 261.72504
+    m_Target: 16.710775
     speed: 2
     m_Value: 261.72504
   m_Ortho:
@@ -1046,7 +1046,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 109.20001}
     m_SelectedIDs: 18b90000
     m_LastClickedID: 47384
-    m_ExpandedIDs: 00000000bab80000bcb80000beb80000c0b80000c2b80000c4b80000
+    m_ExpandedIDs: 00000000f8bd0000fabd0000fcbd0000febd000000be000002be0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1075,7 +1075,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000bab80000bcb80000beb80000c0b80000c2b80000c4b80000
+    m_ExpandedIDs: 00000000f8bd0000fabd0000fcbd0000febd000000be000002be0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 

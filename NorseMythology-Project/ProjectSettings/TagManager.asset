@@ -16,8 +16,8 @@ TagManager:
   - UI
   - Terrain
   - 
-  - Enemy
-  - 
+  - Entities
+  - Props
   - 
   - 
   - 
@@ -43,6 +43,12 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Ground
+    uniqueID: 3319279277
+    locked: 0
+  - name: Objects
+    uniqueID: 3849622287
     locked: 0
   m_RenderingLayers:
   - Default

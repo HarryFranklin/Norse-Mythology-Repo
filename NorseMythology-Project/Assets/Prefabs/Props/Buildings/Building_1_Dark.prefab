@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7688580585259730591}
   - component: {fileID: 6001966069768364335}
   - component: {fileID: -6931860758221446862}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Building_1_Dark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -74,8 +74,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -445345009
+  m_SortingLayer: 2
   m_SortingOrder: 1
   m_Sprite: {fileID: 1496958089, guid: 75f4f32d2cbe39a47bcb5f83f6eebc7b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

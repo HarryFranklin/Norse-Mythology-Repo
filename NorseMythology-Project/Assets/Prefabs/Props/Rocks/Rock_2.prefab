@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4616610349571263701}
   - component: {fileID: -2372073515842893052}
   - component: {fileID: -7387999697420996063}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Rock_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -75,8 +75,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -445345009
+  m_SortingLayer: 2
   m_SortingOrder: 1
   m_Sprite: {fileID: -2126426228, guid: 660997444988a21479debe64018f4b62, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
