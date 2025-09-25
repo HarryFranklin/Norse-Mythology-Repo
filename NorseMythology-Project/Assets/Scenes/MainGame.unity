@@ -1652,24 +1652,116 @@ MonoBehaviour:
   - {fileID: 405247932}
   - {fileID: 1481384864}
   - {fileID: 690667690}
-  propPrefabs:
-  - {fileID: 240931268636968918, guid: fb7624b28b9e49d49875f281f4e7c00d, type: 3}
-  - {fileID: 6062396259856530460, guid: 51134733c9391b54db99b014631bbdac, type: 3}
-  - {fileID: 4281026318785071883, guid: 6df48b8dad7a71c40b3ed2e7eeabb809, type: 3}
-  - {fileID: 6918447134358885152, guid: b27b75794ffa4c647b695620714a96cb, type: 3}
-  - {fileID: 381619815600230508, guid: 9dfdfb15fdb3e5244a36d4c1476a064e, type: 3}
-  - {fileID: 2413324631184432514, guid: ce551d62220b64e449524d5c0bc67234, type: 3}
-  - {fileID: 4946285252869556569, guid: 891bc6aef60e7784fa4a7328b0011724, type: 3}
-  - {fileID: 6795301119335987507, guid: 1c6e43dc29e9cc74c931777b4d5c1923, type: 3}
-  - {fileID: 1910984594056080903, guid: b66839272eefc864582d24a92c0c642c, type: 3}
-  - {fileID: 8942892637318634783, guid: 8ab60f44e4a70424c9017ac4c5a13313, type: 3}
-  - {fileID: 1617665669636103332, guid: edcad8a1e80c05e43ab743d6df0c3932, type: 3}
-  - {fileID: 404656033044768189, guid: 9b712aec6a3f294428758f12de7c6a7a, type: 3}
-  - {fileID: 7604476041268759690, guid: afed33ebfa112ff49a4e9dd8aab7c426, type: 3}
-  - {fileID: 7628892173507435537, guid: 0fe02fd197a49ed49b418383f6d3dabf, type: 3}
-  - {fileID: 5912539930224490716, guid: daf714393f2264a4ea99a20afcb06355, type: 3}
-  - {fileID: 5037980556316611298, guid: 2c38ce29355abc844b9335c30e6a91de, type: 3}
-  - {fileID: 972188846076302548, guid: cef87a4a43e49584a8e94406176d7d4f, type: 3}
+  autoNormaliseProportions: 1
+  propCategories:
+  - name: Buildings
+    enabled: 0
+    spawnProportion: 0.0027999538
+    allPrefabsEnabled: 1
+    prefabs:
+    - prefab: {fileID: 1276243121565516861, guid: ba561027014099b4f91b0a08d67d4098, type: 3}
+      enabled: 1
+    - prefab: {fileID: 8729616380809038749, guid: 2326e766db9f82a43aff27ce350de6ed, type: 3}
+      enabled: 1
+  - name: Plants
+    enabled: 1
+    spawnProportion: 0.22
+    allPrefabsEnabled: 1
+    prefabs:
+    - prefab: {fileID: 7961344918663516098, guid: 1ed7c4448736b954ca24ed482f614647, type: 3}
+      enabled: 1
+    - prefab: {fileID: 946792620812353613, guid: ef75f321d9246b84781c08c12ecc6d1f, type: 3}
+      enabled: 1
+    - prefab: {fileID: 1321298881631546879, guid: 7fb51085ea1a75340a05dbc88d393fa9, type: 3}
+      enabled: 1
+    - prefab: {fileID: 5701882811446626640, guid: a1e6b4b3eab134f4cb4ddb550a7c82f9, type: 3}
+      enabled: 1
+    - prefab: {fileID: 5912539930224490716, guid: daf714393f2264a4ea99a20afcb06355, type: 3}
+      enabled: 1
+    - prefab: {fileID: 7628892173507435537, guid: 0fe02fd197a49ed49b418383f6d3dabf, type: 3}
+      enabled: 1
+  - name: Rocks
+    enabled: 1
+    spawnProportion: 0.22
+    allPrefabsEnabled: 1
+    prefabs:
+    - prefab: {fileID: 7604476041268759690, guid: afed33ebfa112ff49a4e9dd8aab7c426, type: 3}
+      enabled: 1
+    - prefab: {fileID: 404656033044768189, guid: 9b712aec6a3f294428758f12de7c6a7a, type: 3}
+      enabled: 1
+    - prefab: {fileID: 1617665669636103332, guid: edcad8a1e80c05e43ab743d6df0c3932, type: 3}
+      enabled: 1
+    - prefab: {fileID: 8942892637318634783, guid: 8ab60f44e4a70424c9017ac4c5a13313, type: 3}
+      enabled: 1
+    - prefab: {fileID: 1910984594056080903, guid: b66839272eefc864582d24a92c0c642c, type: 3}
+      enabled: 1
+    - prefab: {fileID: 6795301119335987507, guid: 1c6e43dc29e9cc74c931777b4d5c1923, type: 3}
+      enabled: 1
+    - prefab: {fileID: 7239159560115809900, guid: b50b8d3c82775514d830b58ba5a5f2e7, type: 3}
+      enabled: 1
+    - prefab: {fileID: 2062254047112152113, guid: 992eba43aef892546b9a2daebaa55e73, type: 3}
+      enabled: 1
+    - prefab: {fileID: 7694803348880471972, guid: f2e3f832694fd984da8eca475580556f, type: 3}
+      enabled: 1
+    - prefab: {fileID: 3952800076080892950, guid: 579927d83a4eaf441b733e7256a34e21, type: 3}
+      enabled: 1
+  - name: Trees
+    enabled: 1
+    spawnProportion: 0.56
+    allPrefabsEnabled: 1
+    prefabs:
+    - prefab: {fileID: 240931268636968918, guid: fb7624b28b9e49d49875f281f4e7c00d, type: 3}
+      enabled: 1
+    - prefab: {fileID: 6062396259856530460, guid: 51134733c9391b54db99b014631bbdac, type: 3}
+      enabled: 1
+    - prefab: {fileID: 4281026318785071883, guid: 6df48b8dad7a71c40b3ed2e7eeabb809, type: 3}
+      enabled: 1
+    - prefab: {fileID: 6918447134358885152, guid: b27b75794ffa4c647b695620714a96cb, type: 3}
+      enabled: 1
+    - prefab: {fileID: 3437491967986255704, guid: 8c4f66ee94ef8f0469e1f8dfd98f87ba, type: 3}
+      enabled: 1
+    - prefab: {fileID: 6394346147714186185, guid: 66d5cab54fa30be4d85a34122906d95e, type: 3}
+      enabled: 1
+    - prefab: {fileID: 6102025852576545384, guid: 88bd8938fd40e744192ca5740c61185b, type: 3}
+      enabled: 1
+    - prefab: {fileID: 4332970168846450130, guid: 3a1ad6a2373a0d9429aa995bc453a12f, type: 3}
+      enabled: 1
+    - prefab: {fileID: 3322102471773613815, guid: e7ec721c74d55b9409044e844c2174e6, type: 3}
+      enabled: 1
+    - prefab: {fileID: 9065290681381321652, guid: 48141c1756fb06b43b68a2e961ec381f, type: 3}
+      enabled: 1
+    - prefab: {fileID: 8602630254515686518, guid: 73f2fe685e976e547941f0bd332e4c91, type: 3}
+      enabled: 1
+    - prefab: {fileID: 4946285252869556569, guid: 891bc6aef60e7784fa4a7328b0011724, type: 3}
+      enabled: 1
+    - prefab: {fileID: 2413324631184432514, guid: ce551d62220b64e449524d5c0bc67234, type: 3}
+      enabled: 1
+    - prefab: {fileID: 771937183919581238, guid: bf68fe1d9787b40488b2c33d5d00ab35, type: 3}
+      enabled: 1
+    - prefab: {fileID: 381619815600230508, guid: 9dfdfb15fdb3e5244a36d4c1476a064e, type: 3}
+      enabled: 1
+    - prefab: {fileID: 247551250687589087, guid: 4e952e0e5f6f6dc4da8477e8f305bf31, type: 3}
+      enabled: 1
+    - prefab: {fileID: 3726064358759689361, guid: b3ac068821d6482499a8ac56562e15e6, type: 3}
+      enabled: 1
+    - prefab: {fileID: 255179301852623802, guid: ba9344035745ff94a95d8f7ccf7f3538, type: 3}
+      enabled: 1
+    - prefab: {fileID: 4125375170822526818, guid: 4747fc3a6d4d1934eba8de4cddb11bfa, type: 3}
+      enabled: 1
+    - prefab: {fileID: 6956526908342760272, guid: e293cbd31b141e24bb77b7eeaf5e7f38, type: 3}
+      enabled: 1
+    - prefab: {fileID: 8641930853831924794, guid: 211985df51f6fe7469368831c0865e1c, type: 3}
+      enabled: 1
+    - prefab: {fileID: 7453663391816421008, guid: 41c44e111efdb7743b996ad1d84caa2c, type: 3}
+      enabled: 1
+    - prefab: {fileID: 4424183241651477281, guid: 6d84160dc68d3764fb700a086af5c13e, type: 3}
+      enabled: 1
+    - prefab: {fileID: 4428076832027677312, guid: 5b8ee5472e922564a8d5b85ffdb33c4b, type: 3}
+      enabled: 1
+    - prefab: {fileID: 5037980556316611298, guid: 2c38ce29355abc844b9335c30e6a91de, type: 3}
+      enabled: 1
+    - prefab: {fileID: 972188846076302548, guid: cef87a4a43e49584a8e94406176d7d4f, type: 3}
+      enabled: 1
 --- !u!4 &861679037
 Transform:
   m_ObjectHideFlags: 0
