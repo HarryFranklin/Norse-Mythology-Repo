@@ -1,0 +1,811 @@
+fileFormatVersion: 2
+guid: b1eab68e5c0e0fd4cbc94d8072063d23
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Surplus Trees_0
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 641
+        width: 74
+        height: 144
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 49d7079db922b554f86661360748c0f0
+      internalID: 362260380
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Surplus Trees_1
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 641
+        width: 85
+        height: 130
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5e12dfc319becfd4289b8727eac79859
+      internalID: -823995804
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Surplus Trees_2
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 641
+        width: 101
+        height: 124
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5095d32658edfe243a16773ade8bb605
+      internalID: 778612614
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Surplus Trees_3
+      rect:
+        serializedVersion: 2
+        x: 287
+        y: 641
+        width: 54
+        height: 142
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 80f423046e65b78428bfdd5ca1fa508b
+      internalID: -214874562
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Surplus Trees_7
+      rect:
+        serializedVersion: 2
+        x: 636
+        y: 625
+        width: 133
+        height: 143
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f6f0c9555f83de84292fce8ecc9d4e75
+      internalID: 2142580752
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Surplus Trees_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 481
+        width: 166
+        height: 150
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0738648292ef64245af41edd879c7e71
+      internalID: -1838198248
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Surplus Trees_9
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 241
+        width: 223
+        height: 240
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 914fbba6ba8de694195b706b682d1733
+      internalID: 925803869
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Surplus Trees_12
+      rect:
+        serializedVersion: 2
+        x: 528
+        y: 481
+        width: 102
+        height: 133
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 81c625a1695e2c14cbda955fe7559a8a
+      internalID: 2100671772
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Surplus Trees_13
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 481
+        width: 89
+        height: 116
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 233d410e18b382e4094144406b5d7881
+      internalID: 1751896869
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Surplus Trees_18
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 305
+        width: 175
+        height: 170
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a111c3030659cef47b6f324164e9a005
+      internalID: 109990879
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Surplus Trees_19
+      rect:
+        serializedVersion: 2
+        x: 405
+        y: 289
+        width: 105
+        height: 182
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2bff968f345ce544d8de8fc25ec8fa27
+      internalID: -913930307
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Surplus Trees_20
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 193
+        width: 287
+        height: 278
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a776a28edc9ed1149b238c5d2a217212
+      internalID: 205707744
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Surplus Trees_21
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 241
+        width: 36
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aeb378f63d925b945a4e7230fb7cb381
+      internalID: 952233159
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Surplus Trees_22
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 241
+        width: 36
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7e4a83b1ead2ded43a8d8e0c048b368d
+      internalID: 585290
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Surplus Trees_23
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 241
+        width: 35
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c67efe0009344dd4a99e494f71fe390d
+      internalID: 193632825
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Surplus Trees_24
+      rect:
+        serializedVersion: 2
+        x: 368
+        y: 241
+        width: 36
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 20b8f82698746b343810dc57677a1ffd
+      internalID: 1340425106
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Surplus Trees_39
+      rect:
+        serializedVersion: 2
+        x: 656
+        y: 65
+        width: 47
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 020d7214d5392df4da4b87b01d6939da
+      internalID: 1815764661
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Surplus Trees_44
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 1
+        width: 36
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a1e351c3f2d0ffe4182e058e6cd03ccf
+      internalID: -307607618
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Surplus Trees_45
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 1
+        width: 37
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4119aa9056d3acf48b1b21c0e57607fb
+      internalID: -1765993713
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Surplus Trees_46
+      rect:
+        serializedVersion: 2
+        x: 368
+        y: 1
+        width: 52
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3a94f5e5909e83049ad462bcac67c1ae
+      internalID: -174195431
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Surplus Trees_47
+      rect:
+        serializedVersion: 2
+        x: 544
+        y: 33
+        width: 15
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 28f0a1e8e1fa6834c9bf7f2af246d8f1
+      internalID: -1998921177
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Surplus Trees_48
+      rect:
+        serializedVersion: 2
+        x: 560
+        y: 33
+        width: 13
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1084423579906804bafa723058035000
+      internalID: 824741280
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Surplus Trees_64
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 1
+        width: 55
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b8e09d3737f4c99419ae85e88cc0342e
+      internalID: -667902223
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Surplus Trees_65
+      rect:
+        serializedVersion: 2
+        x: 496
+        y: 1
+        width: 35
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 74d3804fc9e87494a9d4df2d8a685731
+      internalID: -101729051
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Surplus Trees_66
+      rect:
+        serializedVersion: 2
+        x: 544
+        y: 1
+        width: 14
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 83f969eec2433814283a81b26d726a9f
+      internalID: 1931055992
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Surplus Trees_67
+      rect:
+        serializedVersion: 2
+        x: 560
+        y: 1
+        width: 13
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3a42ea5418806ed4f9da074f6a291ddc
+      internalID: 639852027
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Surplus Trees_68
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 1
+        width: 16
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5579abbdf01c8694bac986f313b42c6d
+      internalID: -1475419720
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: aebead893f1ecc743922ef21c3b22c53
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      Surplus Trees_0: 362260380
+      Surplus Trees_1: -823995804
+      Surplus Trees_10: 1224074633
+      Surplus Trees_11: -61900446
+      Surplus Trees_12: 2100671772
+      Surplus Trees_13: 1751896869
+      Surplus Trees_14: 330537456
+      Surplus Trees_15: 630812447
+      Surplus Trees_16: -703497442
+      Surplus Trees_17: 1242266984
+      Surplus Trees_18: 109990879
+      Surplus Trees_19: -913930307
+      Surplus Trees_2: 778612614
+      Surplus Trees_20: 205707744
+      Surplus Trees_21: 952233159
+      Surplus Trees_22: 585290
+      Surplus Trees_23: 193632825
+      Surplus Trees_24: 1340425106
+      Surplus Trees_25: -18720647
+      Surplus Trees_26: -2081386212
+      Surplus Trees_27: -1765349982
+      Surplus Trees_28: -825037136
+      Surplus Trees_29: -1779883430
+      Surplus Trees_3: -214874562
+      Surplus Trees_30: 1443976853
+      Surplus Trees_31: 736650724
+      Surplus Trees_32: 1191827460
+      Surplus Trees_33: 1327764761
+      Surplus Trees_34: -465613071
+      Surplus Trees_35: -1317900752
+      Surplus Trees_36: 1573346804
+      Surplus Trees_37: 348319898
+      Surplus Trees_38: -363753314
+      Surplus Trees_39: 1815764661
+      Surplus Trees_4: -680667800
+      Surplus Trees_40: -1561588708
+      Surplus Trees_41: 2129543432
+      Surplus Trees_42: -774915776
+      Surplus Trees_43: 2045354882
+      Surplus Trees_44: -307607618
+      Surplus Trees_45: -1765993713
+      Surplus Trees_46: -174195431
+      Surplus Trees_47: -1998921177
+      Surplus Trees_48: 824741280
+      Surplus Trees_49: -707331094
+      Surplus Trees_5: 1945800784
+      Surplus Trees_50: 1644609602
+      Surplus Trees_51: 1676963128
+      Surplus Trees_52: 399890927
+      Surplus Trees_53: 1590138961
+      Surplus Trees_54: 1687188871
+      Surplus Trees_55: 1774121363
+      Surplus Trees_56: -71307358
+      Surplus Trees_57: 589696555
+      Surplus Trees_58: 250548743
+      Surplus Trees_59: 3925821
+      Surplus Trees_6: -1944143414
+      Surplus Trees_60: -498716330
+      Surplus Trees_61: -575372207
+      Surplus Trees_62: 406270964
+      Surplus Trees_63: 210313686
+      Surplus Trees_64: -667902223
+      Surplus Trees_65: -101729051
+      Surplus Trees_66: 1931055992
+      Surplus Trees_67: 639852027
+      Surplus Trees_68: -1475419720
+      Surplus Trees_69: 1849620711
+      Surplus Trees_7: 2142580752
+      Surplus Trees_70: 263662715
+      Surplus Trees_71: -1609131922
+      Surplus Trees_72: -1722860436
+      Surplus Trees_73: 1772372100
+      Surplus Trees_74: 1568000501
+      Surplus Trees_75: 150736189
+      Surplus Trees_76: -634755198
+      Surplus Trees_77: 1905925081
+      Surplus Trees_78: 931413447
+      Surplus Trees_79: -1992937918
+      Surplus Trees_8: -1838198248
+      Surplus Trees_80: 1792713298
+      Surplus Trees_81: 532601749
+      Surplus Trees_82: -1936228617
+      Surplus Trees_83: 851776625
+      Surplus Trees_84: -1335450629
+      Surplus Trees_9: 925803869
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
