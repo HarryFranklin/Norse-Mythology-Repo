@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7688580585259730591}
   - component: {fileID: 6001966069768364335}
+  - component: {fileID: -6931860758221446862}
   m_Layer: 0
   m_Name: Building_1_Dark
   m_TagString: Untagged
@@ -87,3 +88,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &-6931860758221446862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1276243121565516861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d9448619c5cfb4a89313ae4ad88df5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sortingOrderOffset: 0
+  precisionMultiplier: 100

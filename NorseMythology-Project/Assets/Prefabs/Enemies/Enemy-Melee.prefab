@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6408606779111123246}
   - component: {fileID: 4647804410163302743}
   - component: {fileID: 8287122349257124399}
+  - component: {fileID: 2967811201045263528}
   m_Layer: 8
   m_Name: Enemy-Melee
   m_TagString: Enemy
@@ -105,6 +106,7 @@ MonoBehaviour:
   maxHealth: 12
   currentHealth: 0
   isDead: 0
+  pendingLethalDamage: 0
   moveSpeed: 2
   damage: 5
   isStunned: 0
@@ -112,7 +114,20 @@ MonoBehaviour:
   isInvincible: 0
   useInspectorLevels: 0
   currentLevel: 1
+  spawner: {fileID: 0}
   enemyType: 0
+  meleeModifiers:
+    healthMultiplier: 1.5
+    moveSpeedMultiplier: 0.7
+    damageMultiplier: 1.5
+    attackCooldownMultiplier: 1.2
+    attackRangeMultiplier: 1
+  projectileModifiers:
+    healthMultiplier: 1
+    moveSpeedMultiplier: 1
+    damageMultiplier: 1
+    attackCooldownMultiplier: 1
+    attackRangeMultiplier: 1
   xpOrbPrefab: {fileID: 6224046307236492347, guid: 24c4895bf94c3db42ab8cd46bf2cafea, type: 3}
   levelData: []
   xpValue: 10
@@ -182,3 +197,17 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &2967811201045263528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6549350566530616831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d9448619c5cfb4a89313ae4ad88df5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sortingOrderOffset: 0
+  precisionMultiplier: 100
