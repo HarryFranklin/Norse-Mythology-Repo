@@ -227,14 +227,14 @@ MonoBehaviour:
   - waveType: 1
     criteria: 20
   - waveType: 1
-    criteria: 20
+    criteria: 25
   - waveType: 0
     criteria: 60
   - waveType: 1
-    criteria: 20
+    criteria: 30
   currentWave: 1
-  currentWaveType: 0
-  waveDuration: 60
+  currentWaveType: 1
+  waveDuration: 80
   enemiesPerWave: 30
   healthScalingMultiplier: 1.05
   xpScalingMultiplier: 1.05
@@ -2445,7 +2445,7 @@ MonoBehaviour:
   minSpawnRadius: 10
   maxSpawnRadius: 15
   baseMaxEnemies: 30
-  maxEnemiesIncrement: 3
+  maxEnemiesIncrement: 4
   absoluteMaxEnemies: 50
   player: {fileID: 2135908895}
   gridLayerMask:
@@ -7701,7 +7701,7 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
+  m_SortingLayerID: -30593953
   m_SortingOrder: 99
   m_TargetDisplay: 0
 --- !u!224 &1755977906
