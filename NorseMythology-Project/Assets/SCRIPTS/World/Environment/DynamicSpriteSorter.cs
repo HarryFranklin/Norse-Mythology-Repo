@@ -23,7 +23,11 @@ public class DynamicSpriteSorter : MonoBehaviour
     [SerializeField] private float fadeSpeed = 8f;
 
     [Tooltip("The maximum distance from the player at which a prop will fade.")]
-    [SerializeField] private float fadeDistance = 5f;
+    [SerializeField] private float fadeDistance = 1f; // Reduced default distance
+
+    [Tooltip("Shrinks the detection box. 1.0 = Full Sprite Size. 0.5 = Inner 50% only. Lower this to prevent fading when standing near outer branches.")]
+    [Range(0.1f, 1f)] 
+    [SerializeField] private float fadeBoundsScale = 0.5f;
 
     private Transform playerTransform;
     private DynamicSpriteSorter playerSorter;
@@ -62,8 +66,21 @@ public class DynamicSpriteSorter : MonoBehaviour
         }
 
         bool shouldBeBehind = false;
-        // Check distance to player first for performance
-        if (Vector2.Distance(transform.position, playerTransform.position) <= fadeDistance)
+
+        // 1. Get the sprite's bounds
+        Bounds checkBounds = spriteRenderer.bounds;
+
+        // 2. Shrink the bounds based on our scale factor
+        // This pulls the "walls" of the box in towards the center
+        checkBounds.extents *= fadeBoundsScale;
+
+        // 3. Find the closest point on this *shrunk* box to the player
+        Vector3 closestPointOnBounds = checkBounds.ClosestPoint(playerTransform.position);
+        
+        // 4. Check distance to that inner point
+        float distanceToInnerBounds = Vector2.Distance(closestPointOnBounds, playerTransform.position);
+
+        if (distanceToInnerBounds <= fadeDistance)
         {
             // A higher sortingOrder means it's rendered ON TOP (in front)
             shouldBeBehind = spriteRenderer.sortingOrder > playerSorter.spriteRenderer.sortingOrder;
@@ -100,14 +117,26 @@ public class DynamicSpriteSorter : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
+        if (spriteRenderer == null) spriteRenderer = GetComponent<SpriteRenderer>();
+
+        // Draw the sorting pivot
         Gizmos.color = Color.cyan;
         Vector3 pivotPosition = transform.position + new Vector3(0, sortingOrderOffset, 0);
         Gizmos.DrawLine(pivotPosition - Vector3.right * 0.25f, pivotPosition + Vector3.right * 0.25f);
 
-        if(!isCharacter)
+        if(!isCharacter && spriteRenderer != null)
         {
-            Gizmos.color = new Color(1f, 0.5f, 0f, 0.25f);
-            Gizmos.DrawWireSphere(transform.position, fadeDistance);
+            // Draw the Shrunk Bounds (Yellow)
+            Bounds drawBounds = spriteRenderer.bounds;
+            drawBounds.extents *= fadeBoundsScale;
+            
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireCube(drawBounds.center, drawBounds.size);
+
+            // Draw the Fade Distance buffer (Orange wire sphere at corners)
+            Gizmos.color = new Color(1f, 0.5f, 0f, 0.5f);
+            // Just visualising the rough area
+            Gizmos.DrawWireSphere(drawBounds.ClosestPoint(drawBounds.center + drawBounds.extents), fadeDistance);
         }
     }
 }
