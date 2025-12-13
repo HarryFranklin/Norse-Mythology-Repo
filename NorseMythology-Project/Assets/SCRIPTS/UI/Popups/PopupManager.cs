@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -74,7 +73,8 @@ public class PopupManager : MonoBehaviour
             canvas.transform.position = Vector3.zero;
             
             // Set sorting layer to ensure it renders above game objects
-            canvas.sortingLayerName = "UI"; // Make sure you have a "UI" sorting layer, or change this
+            // Use the Inspector value or a specific layer like "POPUP" or "UI"
+            // canvas.sortingLayerName = "UI"; 
             canvas.sortingOrder = 100;
 
             Debug.Log($"World Space Canvas setup complete. Scale: {canvasScale}");
@@ -132,7 +132,8 @@ public class PopupManager : MonoBehaviour
 
     public void ShowRegen(float regenAmount, Vector3 worldPosition)
     {
-        ShowPopup($"+{regenAmount:F1}", worldPosition, regenColor, 24f); // Slightly smaller
+        // Changed to F0 to show as Integer (e.g., +1 instead of +1.0)
+        ShowPopup($"+{regenAmount:F0}", worldPosition, regenColor, 24f); 
     }
 
     public void ShowLevelUp(int level, Vector3 worldPosition)

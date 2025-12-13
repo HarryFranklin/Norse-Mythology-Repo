@@ -330,17 +330,48 @@ public class Player : Entity
     
     private IEnumerator HealthRegeneration()
     {
-        float tickInterval = 0.5f;
-        WaitForSeconds wait = new WaitForSeconds(tickInterval);
+        // Settings
+        float minHealAmount = 1f;   // We want to heal at least this much per tick
+        float minInterval = 0.5f;   // Don't tick faster than this (prevents UI spam)
+
         while (!isDead)
         {
-            yield return wait;
-            if (currentHealth < maxHealth && Time.time >= lastDamageTime + healthRegenDelay)
+            // 1. Determine the wait time dynamically based on current regen speed
+            float currentRate = healthRegen;
+            float waitTime;
+
+            if (currentRate > 0f)
             {
-                float regenAmount = healthRegen * tickInterval;
-                currentHealth = Mathf.Min(currentHealth + regenAmount, maxHealth);
-                PopupManager.Instance?.ShowRegen(regenAmount, transform.position);
-                healthXPUIManager?.OnHealthChanged();
+                // Calculate how long we need to wait to get 1.0 HP
+                float timeToAccumulateMinHeal = minHealAmount / currentRate;
+                
+                // Wait at least the calculated time, but never faster than minInterval
+                waitTime = Mathf.Max(minInterval, timeToAccumulateMinHeal);
+            }
+            else
+            {
+                // If no regen, just check again in a second
+                waitTime = 1f;
+            }
+
+            yield return new WaitForSeconds(waitTime);
+
+            // 2. Apply Regeneration
+            if (currentHealth < maxHealth && Time.time >= lastDamageTime + healthRegenDelay && currentRate > 0f)
+            {
+                float potentialRegen = currentRate * waitTime;
+                
+                // Calculate actual amount healed (don't exceed max health)
+                float previousHealth = currentHealth;
+                currentHealth = Mathf.Min(currentHealth + potentialRegen, maxHealth);
+                float actualHealAmount = currentHealth - previousHealth;
+
+                // Only show popup if we actually healed something
+                if (actualHealAmount > 0.01f)
+                {
+                    PopupManager.Instance?.ShowRegen(actualHealAmount, transform.position);
+                    healthXPUIManager?.OnHealthChanged();
+                }
             }
         }
     }
