@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public class AbilityManager : MonoBehaviour
 {
@@ -19,6 +20,11 @@ public class AbilityManager : MonoBehaviour
     // Store original cursor for restoration
     private Texture2D originalCursor;
     private Vector2 originalHotspot;
+
+    // --- EVENTS ---
+    public event Action<int> OnAbilityUsed;
+    public event Action<int> OnAbilityTargetingStarted;
+    public event Action<int> OnAbilityTargetingEnded;
 
     private void Awake()
     {
@@ -148,6 +154,9 @@ public class AbilityManager : MonoBehaviour
         {
             ability.Activate(player, playerMovement);
             Debug.Log($"{ability.abilityName} activated instantly! (Stack {ability.AbilityStacks}) - Remaining charges: {ability.CurrentStacks}/{ability.MaxStacksAtCurrentLevel}");
+            
+            // Notify listeners (UI) that ability was used
+            OnAbilityUsed?.Invoke(index);
         }
         else if (ability.activationMode == ActivationMode.ClickToTarget)
         {
@@ -170,6 +179,9 @@ public class AbilityManager : MonoBehaviour
         }
         
         ability.EnterTargetingMode(player);
+        
+        // Notify listeners (UI) that targeting started
+        OnAbilityTargetingStarted?.Invoke(abilityIndex);
         
         Debug.Log($"Entered targeting mode for {ability.abilityName} (Stack {ability.AbilityStacks}). Click to target or press {abilityIndex + 1} again to cancel!");
     }
@@ -197,6 +209,9 @@ public class AbilityManager : MonoBehaviour
         
         Debug.Log($"{currentTargetingAbility.abilityName} (Stack {currentTargetingAbility.AbilityStacks}) executed with target direction: {targetDirection}");
         
+        // Notify listeners (UI) that ability was successfully used
+        OnAbilityUsed?.Invoke(targetingAbilityIndex);
+        
         ExitTargetingMode();
     }
 
@@ -215,9 +230,17 @@ public class AbilityManager : MonoBehaviour
         
         Cursor.SetCursor(originalCursor, originalHotspot, CursorMode.Auto);
         
+        int endedIndex = targetingAbilityIndex;
+
         isInTargetingMode = false;
         targetingAbilityIndex = -1;
         currentTargetingAbility = null;
+        
+        // Notify listeners (UI) that targeting ended
+        if (endedIndex != -1)
+        {
+            OnAbilityTargetingEnded?.Invoke(endedIndex);
+        }
     }
 
     private Vector3 GetMouseWorldPosition()
