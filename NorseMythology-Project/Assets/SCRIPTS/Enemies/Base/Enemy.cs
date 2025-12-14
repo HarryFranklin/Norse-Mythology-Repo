@@ -28,15 +28,10 @@ public class EnemyLevelData
 [System.Serializable]
 public class EnemyTypeModifiers
 {
-    [Tooltip("Multiplier applied to health")]
     public float healthMultiplier = 1f;
-    [Tooltip("Multiplier applied to movement speed")]
     public float moveSpeedMultiplier = 1f;
-    [Tooltip("Multiplier applied to attack damage")]
     public float damageMultiplier = 1f;
-    [Tooltip("Multiplier applied to attack cooldown")]
     public float attackCooldownMultiplier = 1f;
-    [Tooltip("Multiplier applied to attack range")]
     public float attackRangeMultiplier = 1f;
 }
 
@@ -87,26 +82,47 @@ public class Enemy : Entity
     public Transform firePoint;
     
     private List<GameObject> activeProjectiles = new List<GameObject>();
-    
+
+    // --- NEW ANIMATION VARIABLES ---
+    [Header("Animation")]
+    [SerializeField] private Animator animator;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    [Tooltip("Time to wait after death before disabling object (should match death anim length)")]
+    [SerializeField] private float deathAnimationDuration = 1f;
+
+    private Vector3 lastPosition;
+
     protected override void Awake()
     {
-        // Initialise the dictionary first.
         codeLevelData = new Dictionary<int, EnemyLevelData>();
-        // Now call the base Awake(), which will run InitialiseEntity() and use the dictionary.
         base.Awake();
+
+        if (animator == null) animator = GetComponent<Animator>();
+        if (spriteRenderer == null) spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     public void OnObjectSpawn()
     {
-        // This is called when the object is pulled from the pool.
-        // Reset its state here.
         isDead = false;
         currentHealth = maxHealth;
-        // Find the spawner if it's not set
+        
+        // Re-enable collider if it was disabled during death
+        Collider2D col = GetComponent<Collider2D>();
+        if (col != null) col.enabled = true;
+        
+        // Reset animation state
+        if (animator != null)
+        {
+            animator.Rebind();
+            animator.Update(0f);
+        }
+
         if (spawner == null)
         {
             spawner = FindFirstObjectByType<EnemySpawner>();
         }
+        
+        lastPosition = transform.position;
     }
 
     protected override void InitialiseFromCodeMatrix()
@@ -211,19 +227,24 @@ public class Enemy : Entity
 
     protected override void Start()
     {
-        // base.Start() is called from the Entity class.
-        // We only need to handle logic specific to the enemy here.
         if (target == null)
         {
             GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
             if (playerObj != null)
                 target = playerObj.transform;
         }
+        lastPosition = transform.position;
     }
 
     private void Update()
     {
-        if (isStunned || isFrozen || target == null) return;
+        // Don't update behavior if dead
+        if (isDead || isStunned || isFrozen || target == null) 
+        {
+            // If dead or stunned, we are not moving
+            if (animator != null) animator.SetBool("IsMoving", false);
+            return;
+        }
 
         float distanceToTarget = GetDistanceTo(target);
 
@@ -238,7 +259,31 @@ public class Enemy : Entity
                 break;
         }
         
+        UpdateAnimationState();
         CleanupDestroyedProjectiles();
+    }
+
+    private void UpdateAnimationState()
+    {
+        // Calculate movement
+        float movementThreshold = 0.001f;
+        Vector3 displacement = transform.position - lastPosition;
+        bool isMoving = displacement.sqrMagnitude > movementThreshold;
+
+        // Update Animator
+        if (animator != null)
+        {
+            animator.SetBool("IsMoving", isMoving);
+        }
+
+        // Flip Sprite based on X direction
+        if (spriteRenderer != null && Mathf.Abs(displacement.x) > movementThreshold)
+        {
+            // If moving left (negative x), flip. If moving right (positive x), don't flip.
+            spriteRenderer.flipX = displacement.x < 0;
+        }
+
+        lastPosition = transform.position;
     }
 
     private void HandleMeleeBehavior(float distance)
@@ -273,6 +318,8 @@ public class Enemy : Entity
 
     private void Attack()
     {
+        if (animator != null) animator.SetTrigger("Attack");
+
         Player player = target.GetComponent<Player>();
         if (player != null)
         {
@@ -283,6 +330,8 @@ public class Enemy : Entity
     private void ShootProjectile()
     {
         if (projectilePrefab == null || firePoint == null) return;
+        
+        if (animator != null) animator.SetTrigger("Attack");
 
         Vector2 direction = (target.position - firePoint.position).normalized;
         GameObject projectile = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity, transform);
@@ -307,6 +356,9 @@ public class Enemy : Entity
         Player player = collision.collider.GetComponent<Player>();
         if (player != null && Time.time >= lastAttackTime + attackCooldown)
         {
+            // Trigger attack animation even on collision hit
+            if (animator != null) animator.SetTrigger("Attack");
+            
             player.TakeDamage(damage);
             lastAttackTime = Time.time;
         }
@@ -322,12 +374,34 @@ public class Enemy : Entity
 
     protected override void OnDeath()
     {
-        // Notify the spawner that this enemy has died
+        // Tell spawner immediately so count is updated
         spawner?.EnemyDied(this);
-        
         SpawnXPOrb();
 
-        // Instead of destroying, set inactive to return to the pool
+        // Start the death sequence
+        StartCoroutine(DeathSequence());
+    }
+
+    private IEnumerator DeathSequence()
+    {
+        // 1. Play animation
+        if (animator != null) animator.SetTrigger("Die");
+
+        // 2. Disable collider so player can't hit dead body
+        Collider2D col = GetComponent<Collider2D>();
+        if (col != null) col.enabled = false;
+
+        // 3. Disable Rigidbody physics to stop sliding
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        if (rb != null) rb.simulated = false;
+
+        // 4. Wait for animation to finish
+        yield return new WaitForSeconds(deathAnimationDuration);
+
+        // 5. Restore Rigidbody (important for object pooling re-use)
+        if (rb != null) rb.simulated = true;
+
+        // 6. "Destroy" (return to pool)
         gameObject.SetActive(false);
     }
 
