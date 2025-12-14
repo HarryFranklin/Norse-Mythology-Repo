@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.13725491}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -286,7 +286,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.13725491}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -7852,7 +7852,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.13725491}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -8819,6 +8819,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RarityPanel
       objectReference: {fileID: 0}
+    - target: {fileID: 2828279929427310190, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+      propertyPath: m_Color.a
+      value: 0.13725491
+      objectReference: {fileID: 0}
     - target: {fileID: 3005342722927083024, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
       propertyPath: m_text
       value: '[X]'
@@ -9293,6 +9297,7 @@ MonoBehaviour:
   fadeAmount: 0.25
   fadeSpeed: 8
   fadeDistance: 5
+  fadeBoundsScale: 0.5
 --- !u!61 &6154477034003562299
 BoxCollider2D:
   m_ObjectHideFlags: 0
