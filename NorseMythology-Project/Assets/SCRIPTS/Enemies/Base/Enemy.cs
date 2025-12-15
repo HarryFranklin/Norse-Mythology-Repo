@@ -83,22 +83,23 @@ public class Enemy : Entity
     
     private List<GameObject> activeProjectiles = new List<GameObject>();
 
-    // --- NEW ANIMATION VARIABLES ---
     [Header("Animation")]
     [SerializeField] private Animator animator;
     [SerializeField] private SpriteRenderer spriteRenderer;
-    [Tooltip("Time to wait after death before disabling object (should match death anim length)")]
+    [Tooltip("Time to wait after death before disabling object")]
     [SerializeField] private float deathAnimationDuration = 1f;
 
     private Vector3 lastPosition;
+    private Rigidbody2D rb;
 
     protected override void Awake()
     {
         codeLevelData = new Dictionary<int, EnemyLevelData>();
         base.Awake();
 
-        if (animator == null) animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
         if (spriteRenderer == null) spriteRenderer = GetComponent<SpriteRenderer>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     public void OnObjectSpawn()
@@ -106,11 +107,15 @@ public class Enemy : Entity
         isDead = false;
         currentHealth = maxHealth;
         
-        // Re-enable collider if it was disabled during death
         Collider2D col = GetComponent<Collider2D>();
         if (col != null) col.enabled = true;
         
-        // Reset animation state
+        if (rb != null)
+        {
+            rb.simulated = true;
+            rb.linearVelocity = Vector2.zero;
+        }
+        
         if (animator != null)
         {
             animator.Rebind();
@@ -211,7 +216,7 @@ public class Enemy : Entity
         {
             if (codeLevelData != null && codeLevelData.ContainsKey(level))
                 return codeLevelData[level];
-                
+            
             EnemyLevelData fallback = null;
             if(codeLevelData != null)
             {
@@ -236,84 +241,84 @@ public class Enemy : Entity
         lastPosition = transform.position;
     }
 
+    // --- Prevent Sliding ---
+    private void FixedUpdate()
+    {
+        // Force physics velocity to zero if not stunned. 
+        // This ensures the player cannot "push" the enemy by walking into them.
+        if (!isStunned && !isDead && rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+        }
+    }
+
     private void Update()
     {
-        // Don't update behavior if dead
+        // 1. Status Checks
         if (isDead || isStunned || isFrozen || target == null) 
         {
-            // If dead or stunned, we are not moving
-            if (animator != null) animator.SetBool("IsMoving", false);
+            if (animator != null) animator.SetBool("isMoving", false);
             return;
         }
 
         float distanceToTarget = GetDistanceTo(target);
+        
+        // Intent-Based Animation Flag ---
+        bool isMovingThisFrame = false;
 
+        // 2. Behavior Logic
         switch (enemyType)
         {
             case EnemyType.Melee:
-                HandleMeleeBehavior(distanceToTarget);
+                if (distanceToTarget > meleeAttackRange)
+                {
+                    MoveTowards(target.position);
+                    isMovingThisFrame = true; // We are definitively moving
+                }
+                else if (Time.time >= lastAttackTime + attackCooldown)
+                {
+                    Attack();
+                    lastAttackTime = Time.time;
+                }
                 break;
 
             case EnemyType.Projectile:
-                HandleProjectileBehavior(distanceToTarget);
+                if (distanceToTarget > projectileMaxRange)
+                {
+                    MoveTowards(target.position);
+                    isMovingThisFrame = true; // We are definitively moving
+                }
+                else if (distanceToTarget < projectileMinRange)
+                {
+                    MoveAwayFrom(target.position);
+                    isMovingThisFrame = true; // We are definitively moving
+                }
+                else if (Time.time >= lastAttackTime + attackCooldown)
+                {
+                    ShootProjectile();
+                    lastAttackTime = Time.time;
+                }
                 break;
         }
         
-        UpdateAnimationState();
-        CleanupDestroyedProjectiles();
-    }
-
-    private void UpdateAnimationState()
-    {
-        // Calculate movement
-        float movementThreshold = 0.001f;
-        Vector3 displacement = transform.position - lastPosition;
-        bool isMoving = displacement.sqrMagnitude > movementThreshold;
-
-        // Update Animator
+        // 3. Apply Animation State Directly
         if (animator != null)
         {
-            animator.SetBool("IsMoving", isMoving);
+            animator.SetBool("isMoving", isMovingThisFrame);
         }
 
-        // Flip Sprite based on X direction
-        if (spriteRenderer != null && Mathf.Abs(displacement.x) > movementThreshold)
+        // 4. Handle Sprite Flipping (Still needs position delta to know LEFT vs RIGHT)
+        if (spriteRenderer != null)
         {
-            // If moving left (negative x), flip. If moving right (positive x), don't flip.
-            spriteRenderer.flipX = displacement.x < 0;
+            float deltaX = transform.position.x - lastPosition.x;
+            if (Mathf.Abs(deltaX) > 0.001f)
+            {
+                spriteRenderer.flipX = deltaX < 0;
+            }
         }
-
+        
         lastPosition = transform.position;
-    }
-
-    private void HandleMeleeBehavior(float distance)
-    {
-        if (distance > meleeAttackRange)
-        {
-            MoveTowards(target.position);
-        }
-        else if (Time.time >= lastAttackTime + attackCooldown)
-        {
-            Attack();
-            lastAttackTime = Time.time;
-        }
-    }
-
-    private void HandleProjectileBehavior(float distance)
-    {
-        if (distance > projectileMaxRange)
-        {
-            MoveTowards(target.position);
-        }
-        else if (distance < projectileMinRange)
-        {
-            MoveAwayFrom(target.position);
-        }
-        else if (Time.time >= lastAttackTime + attackCooldown)
-        {
-            ShootProjectile();
-            lastAttackTime = Time.time;
-        }
+        CleanupDestroyedProjectiles();
     }
 
     private void Attack()
@@ -356,7 +361,6 @@ public class Enemy : Entity
         Player player = collision.collider.GetComponent<Player>();
         if (player != null && Time.time >= lastAttackTime + attackCooldown)
         {
-            // Trigger attack animation even on collision hit
             if (animator != null) animator.SetTrigger("Attack");
             
             player.TakeDamage(damage);
@@ -374,34 +378,23 @@ public class Enemy : Entity
 
     protected override void OnDeath()
     {
-        // Tell spawner immediately so count is updated
         spawner?.EnemyDied(this);
         SpawnXPOrb();
-
-        // Start the death sequence
         StartCoroutine(DeathSequence());
     }
 
     private IEnumerator DeathSequence()
     {
-        // 1. Play animation
         if (animator != null) animator.SetTrigger("Die");
 
-        // 2. Disable collider so player can't hit dead body
         Collider2D col = GetComponent<Collider2D>();
         if (col != null) col.enabled = false;
 
-        // 3. Disable Rigidbody physics to stop sliding
-        Rigidbody2D rb = GetComponent<Rigidbody2D>();
         if (rb != null) rb.simulated = false;
 
-        // 4. Wait for animation to finish
         yield return new WaitForSeconds(deathAnimationDuration);
 
-        // 5. Restore Rigidbody (important for object pooling re-use)
         if (rb != null) rb.simulated = true;
-
-        // 6. "Destroy" (return to pool)
         gameObject.SetActive(false);
     }
 
