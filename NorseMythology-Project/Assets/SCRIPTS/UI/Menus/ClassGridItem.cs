@@ -26,6 +26,8 @@ public class ClassGridItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         if (classIconImage != null)
         {
             classIconImage.sprite = CharacterClass.classSprite;
+            classIconImage.preserveAspect = true; 
+            
             iconRectTransform = classIconImage.GetComponent<RectTransform>();
         }
         if (classNameText != null)

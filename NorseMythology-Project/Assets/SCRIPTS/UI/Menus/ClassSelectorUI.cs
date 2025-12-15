@@ -78,7 +78,14 @@ public class ClassSelectorUI : MonoBehaviour
 
         classNameText.text = classToDisplay.className;
         classDescriptionText.text = classToDisplay.description;
-        classSpriteImage.sprite = classToDisplay.classSprite;
+        
+        if (classSpriteImage != null)
+        {
+            classSpriteImage.sprite = classToDisplay.classSprite;
+            // FIX: Ensure the large preview image doesn't stretch
+            classSpriteImage.preserveAspect = true;
+        }
+        
         statsText.text = GenerateStatsComparisonText(classToDisplay);
     }
 

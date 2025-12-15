@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bdf56dd738e8626489522b37895e544e, type: 3}
-  m_Name: TestProjectileStats
+  m_Name: "Bogma\xF0rStats"
   m_EditorClassIdentifier: 
   level: 1
   experience: 0
@@ -27,4 +27,4 @@ MonoBehaviour:
   abilityCooldownReduction: 0
   attackType: 1
   meleeWeaponPrefab: {fileID: 0}
-  projectilePrefab: {fileID: 2236113398867180543, guid: 910b288ce0449324780f44ebd1a82b4a, type: 3}
+  projectilePrefab: {fileID: 8069157385012977378, guid: 707b35287c7ab7145ac43af0da5da04c, type: 3}

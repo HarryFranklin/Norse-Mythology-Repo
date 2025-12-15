@@ -86,11 +86,20 @@ public class Enemy : Entity
     [Header("Animation")]
     [SerializeField] private Animator animator;
     [SerializeField] private SpriteRenderer spriteRenderer;
-    [Tooltip("Time to wait after death before disabling object")]
+    
+    [Tooltip("Time to wait for the death animation to finish playing")]
     [SerializeField] private float deathAnimationDuration = 1f;
+    
+    [Tooltip("Extra time the body stays on the ground before disappearing")]
+    [SerializeField] private float bodyLingerDuration = 3f;
+
+    [Header("Death Fading")]
+    [Tooltip("Defines how the alpha (transparency) changes during the linger duration. Default is Linear fade out.")]
+    [SerializeField] private AnimationCurve deathFadeCurve = AnimationCurve.Linear(0f, 1f, 1f, 0f);
 
     private Vector3 lastPosition;
     private Rigidbody2D rb;
+    private Color originalColor; // Stores the base color to reset after fading
 
     protected override void Awake()
     {
@@ -98,8 +107,14 @@ public class Enemy : Entity
         base.Awake();
 
         animator = GetComponent<Animator>();
-        if (spriteRenderer == null) spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
+
+        // Capture original color (e.g. White) so we can restore it on respawn
+        if (spriteRenderer != null)
+        {
+            originalColor = spriteRenderer.color;
+        }
     }
 
     public void OnObjectSpawn()
@@ -120,6 +135,12 @@ public class Enemy : Entity
         {
             animator.Rebind();
             animator.Update(0f);
+        }
+
+        // Restore color opacity
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.color = originalColor;
         }
 
         if (spawner == null)
@@ -241,11 +262,8 @@ public class Enemy : Entity
         lastPosition = transform.position;
     }
 
-    // --- Prevent Sliding ---
     private void FixedUpdate()
     {
-        // Force physics velocity to zero if not stunned. 
-        // This ensures the player cannot "push" the enemy by walking into them.
         if (!isStunned && !isDead && rb != null)
         {
             rb.linearVelocity = Vector2.zero;
@@ -254,7 +272,6 @@ public class Enemy : Entity
 
     private void Update()
     {
-        // 1. Status Checks
         if (isDead || isStunned || isFrozen || target == null) 
         {
             if (animator != null) animator.SetBool("isMoving", false);
@@ -263,17 +280,15 @@ public class Enemy : Entity
 
         float distanceToTarget = GetDistanceTo(target);
         
-        // Intent-Based Animation Flag ---
         bool isMovingThisFrame = false;
 
-        // 2. Behavior Logic
         switch (enemyType)
         {
             case EnemyType.Melee:
                 if (distanceToTarget > meleeAttackRange)
                 {
                     MoveTowards(target.position);
-                    isMovingThisFrame = true; // We are definitively moving
+                    isMovingThisFrame = true;
                 }
                 else if (Time.time >= lastAttackTime + attackCooldown)
                 {
@@ -286,12 +301,12 @@ public class Enemy : Entity
                 if (distanceToTarget > projectileMaxRange)
                 {
                     MoveTowards(target.position);
-                    isMovingThisFrame = true; // We are definitively moving
+                    isMovingThisFrame = true;
                 }
                 else if (distanceToTarget < projectileMinRange)
                 {
                     MoveAwayFrom(target.position);
-                    isMovingThisFrame = true; // We are definitively moving
+                    isMovingThisFrame = true;
                 }
                 else if (Time.time >= lastAttackTime + attackCooldown)
                 {
@@ -301,13 +316,11 @@ public class Enemy : Entity
                 break;
         }
         
-        // 3. Apply Animation State Directly
         if (animator != null)
         {
             animator.SetBool("isMoving", isMovingThisFrame);
         }
 
-        // 4. Handle Sprite Flipping (Still needs position delta to know LEFT vs RIGHT)
         if (spriteRenderer != null)
         {
             float deltaX = transform.position.x - lastPosition.x;
@@ -380,6 +393,10 @@ public class Enemy : Entity
     {
         spawner?.EnemyDied(this);
         SpawnXPOrb();
+        
+        // Stop other coroutines (like Stun flash) so they don't fight the death fade
+        StopAllCoroutines(); 
+        
         StartCoroutine(DeathSequence());
     }
 
@@ -392,7 +409,31 @@ public class Enemy : Entity
 
         if (rb != null) rb.simulated = false;
 
+        // Ensure color is reset before fading (removes red damage flash if stuck)
+        if (spriteRenderer != null) spriteRenderer.color = originalColor;
+
+        // Wait for the animation
         yield return new WaitForSeconds(deathAnimationDuration);
+
+        // Perform the Fade Out over 'bodyLingerDuration'
+        if (bodyLingerDuration > 0f && spriteRenderer != null)
+        {
+            float elapsed = 0f;
+            while (elapsed < bodyLingerDuration)
+            {
+                elapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(elapsed / bodyLingerDuration);
+                
+                // Evaluate the curve (Inspector controlled)
+                float alpha = deathFadeCurve.Evaluate(t);
+                
+                Color fadedColor = originalColor;
+                fadedColor.a = alpha;
+                spriteRenderer.color = fadedColor;
+                
+                yield return null;
+            }
+        }
 
         if (rb != null) rb.simulated = true;
         gameObject.SetActive(false);
