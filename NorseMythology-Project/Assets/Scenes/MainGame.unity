@@ -9295,8 +9295,8 @@ MonoBehaviour:
   precisionMultiplier: 100
   isCharacter: 0
   fadeAmount: 0.25
-  fadeSpeed: 8
-  fadeDistance: 5
+  fadeSpeed: 6
+  fadeDistance: 4
   fadeBoundsScale: 0.5
 --- !u!61 &6154477034003562299
 BoxCollider2D:
