@@ -17,6 +17,9 @@
 /Test-Ability-Pooling/[Ll]ogs/
 /Test-Ability-Pooling/[Uu]ser[Ss]ettings/
 
+# Ignore Builds Folder
+/Builds
+
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
 /[Mm]emoryCaptures/
