@@ -44,6 +44,7 @@ public class EnemySpawner : MonoBehaviour
 {
     [Header("Spawning and Prefabs")]
     public Transform enemiesParent;
+    public WaveManager waveManager;
 
     [Tooltip("The pool tags for your different melee enemy prefabs, as defined in the ObjectPooler.")]
     [SerializeField] private List<string> meleeEnemyTags = new List<string>();
@@ -147,9 +148,9 @@ public class EnemySpawner : MonoBehaviour
                 playerLevel = playerStats.level;
             }
 
-            if (WaveManager.Instance != null)
+            if (waveManager != null)
             {
-                gameLevel = WaveManager.Instance.GetCurrentWave();
+                gameLevel = waveManager.GetCurrentWave();
             }
         }
         
@@ -276,6 +277,9 @@ public class EnemySpawner : MonoBehaviour
         Enemy enemyScript = enemyGO.GetComponent<Enemy>();
         if (enemyScript != null)
         {
+            // Manually link the spawner so the enemy knows who to notify on death
+            enemyScript.spawner = this; 
+            
             enemyScript.target = player;
             if (!activeEnemies.Contains(enemyScript)) activeEnemies.Add(enemyScript);
 
@@ -304,7 +308,8 @@ public class EnemySpawner : MonoBehaviour
         {
             activeEnemies.Remove(enemyScript);
         }
-        WaveManager.Instance?.OnEnemyKilled();
+
+        waveManager.OnEnemyKilled();
     }
     
     private int DetermineEnemyLevel()

@@ -35,7 +35,7 @@ public class EnemyTypeModifiers
     public float attackRangeMultiplier = 1f;
 }
 
-public class Enemy : Entity
+public class Enemy : Entity, IPooledObject
 {
     public enum EnemyType { Melee, Projectile }
 

@@ -69,16 +69,37 @@ public class WaveManager : MonoBehaviour
         if (Instance == this)
         {
             FindReferences();
+
+            // Sync current wave with the GameManager's game level
+            // If GameManager says it's a new game (Level 1), force WaveManager to Wave 1.
+            if (gameManager != null && gameManager.gameLevel == 1)
+            {
+                currentWave = 1;
+                enemiesKilledThisWave = 0;
+                waveActive = false;
+            }
+
+            // Safety check: Prevent index errors if inspector data was dirty
+            if (currentWave < 1) currentWave = 1;
+            
+            Debug.Log($"WaveManager ready. Current Wave set to: {currentWave}");
         }
     }
-
     public void FindReferences()
     {
         if (gameManager == null)
             gameManager = GameManager.Instance;
 
+        // 1. Find the spawner if we don't have it
         if (enemySpawner == null)
             enemySpawner = FindFirstObjectByType<EnemySpawner>();
+            
+        // 2. Now that we definitely have it (or tried to), set the reference.
+        if (enemySpawner != null)
+        {
+            enemySpawner.waveManager = this;
+            Debug.Log("WaveManager: Linked successfully to Spawner.");
+        }
     }
     
     public void StartWave()
@@ -178,6 +199,7 @@ public class WaveManager : MonoBehaviour
     public void OnEnemyKilled()
     {
         enemiesKilledThisWave++;
+        Debug.Log($"Enemy Killed! Count: {enemiesKilledThisWave} / {waveItems[currentWave-1].criteria}");
     }
     
     private void CompleteWave()
