@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: FreezeAbility
   m_EditorClassIdentifier: 
   abilityName: Freeze
-  abilityIcon: {fileID: -392684488, guid: 766cb97207789f04aa2e7cfb164d1f50, type: 3}
+  abilityIcon: {fileID: 21300000, guid: 19d4d25ba00cabf4cbdcbdcd5c61d39c, type: 3}
   description: Freeze nearby enemies in place for a short duration.
-  activationMode: 0
+  activationMode: 1
   useCodeDefinedMatrix: 1
   showTargetingLine: 1
-  targetingLineColor: {r: 0, g: 1, b: 1, a: 1}
+  targetingLineColor: {r: 0, g: 0.29191613, b: 0.8037735, a: 1}
   maxTargetingRange: 5
-  targetingCursor: {fileID: 0}
+  targetingCursor: {fileID: 21300000, guid: 19d4d25ba00cabf4cbdcbdcd5c61d39c, type: 3}
   levelData:
   - cooldown: 12
     damage: 0
