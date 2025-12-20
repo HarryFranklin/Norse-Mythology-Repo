@@ -7,6 +7,11 @@ using System.Text;
 
 public class AbilitySelectorManager : MonoBehaviour
 {
+    [Header("Debug / Testing")]
+    public bool forceDebugMode = false;
+    [Tooltip("Drag Ability ScriptableObjects here to test the UI without the AbilityPooler.")]
+    public List<Ability> debugAbilities;
+
     [Header("UI Elements")]
     public Button[] abilityButtons = new Button[3];
     public Image[] abilityRarityPanels = new Image[3];
@@ -37,14 +42,17 @@ public class AbilitySelectorManager : MonoBehaviour
     {
         levelUpManager = FindFirstObjectByType<LevelUpManager>();
         
-        if (GameManager.Instance != null)
+        if (GameManager.Instance != null && !forceDebugMode)
         {
             playerData = GameManager.Instance.currentPlayerData;
         }
         else
         {
+            Debug.LogWarning("AbilitySelectorManager: Using Debug Player Data.");
             playerData = new GameManager.PlayerData();
-            Debug.LogWarning("GameManager not found, using empty player data.");
+            // Optional: Add a dummy ability to simulate existing inventory
+            // if (debugAbilities.Count > 0) 
+            //    playerData.abilities.Add(new GameManager.PlayerAbilityState(debugAbilities[0], 1));
         }
         
         SetupUI();
@@ -137,7 +145,14 @@ public class AbilitySelectorManager : MonoBehaviour
 
     void FinaliseAndReturn()
     {
-        GameManager.Instance.currentPlayerData = playerData;
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.currentPlayerData = playerData;
+        }
+        else
+        {
+            Debug.Log("Test Mode: Selection complete. (Not saved to GameManager as it is null)");
+        }
 
         if (levelUpManager != null)
         {
@@ -158,14 +173,34 @@ public class AbilitySelectorManager : MonoBehaviour
 
     void GenerateAbilityOptions()
     {
-        if (AbilityPooler.Instance == null) return;
-        offeredAbilities = AbilityPooler.Instance.GetAbilityChoices(playerData.abilities);
+        // 1. Try normal game flow
+        if (AbilityPooler.Instance != null && !forceDebugMode)
+        {
+            offeredAbilities = AbilityPooler.Instance.GetAbilityChoices(playerData.abilities);
+        }
+        // 2. Fallback to Debug flow
+        else
+        {
+            Debug.LogWarning("AbilitySelectorManager: Generating Debug Ability Options.");
+            offeredAbilities = new List<Ability>();
+            
+            // Pick randoms from your inspector list, or just take the first 3
+            if (debugAbilities != null && debugAbilities.Count > 0)
+            {
+                // Simple logic: just take up to 3 from the debug list
+                for(int i = 0; i < Mathf.Min(3, debugAbilities.Count); i++)
+                {
+                    offeredAbilities.Add(debugAbilities[i]);
+                }
+            }
+        }
         
+        // Update UI elements
         for (int i = 0; i < offeredAbilities.Count; i++)
         {
             if (i < abilityButtons.Length)
             {
-                 UpdateAbilityDisplay(i, offeredAbilities[i]);
+                UpdateAbilityDisplay(i, offeredAbilities[i]);
             }
         }
     }

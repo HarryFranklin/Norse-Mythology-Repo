@@ -5,6 +5,10 @@ using UnityEngine.EventSystems;
 
 public class LevelUpManager : MonoBehaviour
 {
+    [Header("Debug / Testing")]
+    [Tooltip("Tick this to force test data even if Managers exist.")]
+    public bool forceDebugMode = false;
+
     [Header("UI References")]
     public Button continueButton;
     public TextMeshProUGUI waveCompletedText;
@@ -162,25 +166,53 @@ public class LevelUpManager : MonoBehaviour
     
     private void GetPlayerStatsFromGameManager()
     {
-        if (GameManager.Instance != null)
+        // Check if we are in a 'detached' state (no GameManager) or if Debug Mode is forced
+        if (GameManager.Instance == null || forceDebugMode)
+        {
+            Debug.LogWarning("LevelUpManager: Launching in Debug/Test Mode with dummy stats.");
+            GenerateDebugStats();
+        }
+        else
         {
             currentPlayerStats = GameManager.Instance.GetCurrentPlayerStats();
             availableUpgradePoints = GameManager.Instance.GetUpgradePoints();
         }
+    }
+
+    private void GenerateDebugStats()
+    {
+        currentPlayerStats = new PlayerStats
+        {
+            level = 10,
+            experience = 500,
+            experienceToNextLevel = 1000,
+            maxHealth = 100,
+            healthRegen = 1.5f,
+            moveSpeed = 5.0f,
+            attackDamage = 10f,
+            attackSpeed = 1.0f,
+            meleeRange = 2.0f,
+            projectileSpeed = 15f,
+            projectileRange = 10f
+        };
+        availableUpgradePoints = 5; // Give yourself points to test the buttons
     }
     
     private void UpdateUI()
     {
         WaveManager waveManager = WaveManager.Instance;
 
-        if (waveCompletedText != null && waveManager != null)
+        // Handle WaveManager being null (Test Mode)
+        int currentWave = (waveManager != null) ? waveManager.GetCurrentWave() : 99; // 99 as dummy wave
+
+        if (waveCompletedText != null)
         {
-            waveCompletedText.text = $"Wave {waveManager.GetCurrentWave()} Completed!";
+            waveCompletedText.text = $"Wave {currentWave} Completed!";
         }
         
-        if (nextWaveText != null && waveManager != null)
+        if (nextWaveText != null)
         {
-            nextWaveText.text = $"Prepare for Wave {waveManager.GetCurrentWave() + 1}";
+            nextWaveText.text = $"Prepare for Wave {currentWave + 1}";
         }
         
         DisplayPlayerStats();
