@@ -5,10 +5,6 @@ using UnityEngine.EventSystems;
 
 public class LevelUpManager : MonoBehaviour
 {
-    [Header("Debug / Testing")]
-    [Tooltip("Tick this to force test data even if Managers exist.")]
-    public bool forceDebugMode = false;
-
     [Header("UI References")]
     public Button continueButton;
     public TextMeshProUGUI waveCompletedText;
@@ -30,10 +26,19 @@ public class LevelUpManager : MonoBehaviour
     [Header("Upgrade Display Settings")]
     [Tooltip("If true, upgrade amounts show only on hover. If false, they show all the time.")]
     public bool showUpgradeAmountsOnHoverOnly = true;
+
+    // --- NEW: Visual Feedback Settings ---
+    [Header("Visual Feedback")]
+    public Color normalTextColor = Color.white;
+    public Color disabledTextColor = new Color(1f, 1f, 1f, 0.3f); 
     
     [Header("Ability Selector Reference")]
     public GameObject abilitySelectorScreen;
     
+    [Header("Debug Settings")]
+    [Tooltip("Force debug mode even if GameManager exists (useful for testing UI in main game).")]
+    public bool forceDebugMode = false;
+
     private PlayerStats currentPlayerStats;
     private int availableUpgradePoints;
     
@@ -43,17 +48,9 @@ public class LevelUpManager : MonoBehaviour
     
     private void Start()
     {
-        if (levelUpPanel != null)
-        {
-            levelUpPanel.SetActive(false);
-        }
+        if (levelUpPanel != null) levelUpPanel.SetActive(false);
+        if (abilitySelectorScreen != null) abilitySelectorScreen.SetActive(true);
 
-        if (abilitySelectorScreen != null)
-        {
-            abilitySelectorScreen.SetActive(true);
-        }
-
-        // The rest of the setup runs in the background, preparing the data
         InitialiseButtonData();
         SetupUpgradeButtons();
         GetPlayerStatsFromGameManager();
@@ -112,11 +109,7 @@ public class LevelUpManager : MonoBehaviour
             {
                 int index = i; 
                 buttons[i].onClick.AddListener(() => UpgradeStat(statNames[index], upgradeAmounts[index]));
-                
-                if (showUpgradeAmountsOnHoverOnly)
-                {
-                    AddHoverEvents(buttons[i], index);
-                }
+                if (showUpgradeAmountsOnHoverOnly) AddHoverEvents(buttons[i], index);
             }
         }
     }
@@ -124,18 +117,16 @@ public class LevelUpManager : MonoBehaviour
     private void AddHoverEvents(Button button, int index)
     {
         EventTrigger trigger = button.gameObject.GetComponent<EventTrigger>();
-        if (trigger == null)
-        {
-            trigger = button.gameObject.AddComponent<EventTrigger>();
-        }
+        if (trigger == null) trigger = button.gameObject.AddComponent<EventTrigger>();
         
         EventTrigger.Entry pointerEnter = new EventTrigger.Entry();
         pointerEnter.eventID = EventTriggerType.PointerEnter;
         pointerEnter.callback.AddListener((data) => {
-            TextMeshProUGUI buttonText = button.GetComponentInChildren<TextMeshProUGUI>();
-            if (buttonText != null)
+            // Only show hover text if button is interactable (has points)
+            if (button.interactable)
             {
-                buttonText.text = $"(+{FormatUpgradeAmount(upgradeAmounts[index])})"; 
+                TextMeshProUGUI buttonText = button.GetComponentInChildren<TextMeshProUGUI>();
+                if (buttonText != null) buttonText.text = $"(+{FormatUpgradeAmount(upgradeAmounts[index])})"; 
             }
         });
         trigger.triggers.Add(pointerEnter);
@@ -144,32 +135,21 @@ public class LevelUpManager : MonoBehaviour
         pointerExit.eventID = EventTriggerType.PointerExit;
         pointerExit.callback.AddListener((data) => {
             TextMeshProUGUI buttonText = button.GetComponentInChildren<TextMeshProUGUI>();
-            if (buttonText != null)
-            {
-                buttonText.text = originalButtonTexts[index];
-            }
+            if (buttonText != null) buttonText.text = originalButtonTexts[index];
         });
         trigger.triggers.Add(pointerExit);
     }
     
     private string FormatUpgradeAmount(float amount)
     {
-        if (amount >= 1f)
-        {
-            return amount.ToString("F0"); 
-        }
-        else
-        {
-            return amount.ToString("F1");
-        }
+        return (amount >= 1f) ? amount.ToString("F0") : amount.ToString("F1");
     }
     
     private void GetPlayerStatsFromGameManager()
     {
-        // Check if we are in a 'detached' state (no GameManager) or if Debug Mode is forced
         if (GameManager.Instance == null || forceDebugMode)
         {
-            Debug.LogWarning("LevelUpManager: Launching in Debug/Test Mode with dummy stats.");
+            Debug.LogWarning("LevelUpManager: Launching in Debug Mode with dummy stats.");
             GenerateDebugStats();
         }
         else
@@ -183,41 +163,24 @@ public class LevelUpManager : MonoBehaviour
     {
         currentPlayerStats = new PlayerStats
         {
-            level = 10,
-            experience = 500,
-            experienceToNextLevel = 1000,
-            maxHealth = 100,
-            healthRegen = 1.5f,
-            moveSpeed = 5.0f,
-            attackDamage = 10f,
-            attackSpeed = 1.0f,
-            meleeRange = 2.0f,
-            projectileSpeed = 15f,
-            projectileRange = 10f
+            level = 10, experience = 500, experienceToNextLevel = 1000,
+            maxHealth = 100, healthRegen = 1.5f, moveSpeed = 5.0f,
+            attackDamage = 10f, attackSpeed = 1.0f, meleeRange = 2.0f,
+            projectileSpeed = 15f, projectileRange = 10f
         };
-        availableUpgradePoints = 5; // Give yourself points to test the buttons
+        availableUpgradePoints = 10;
     }
     
     private void UpdateUI()
     {
-        WaveManager waveManager = WaveManager.Instance;
+        int waveNum = (WaveManager.Instance != null) ? WaveManager.Instance.GetCurrentWave() : 99;
 
-        // Handle WaveManager being null (Test Mode)
-        int currentWave = (waveManager != null) ? waveManager.GetCurrentWave() : 99; // 99 as dummy wave
-
-        if (waveCompletedText != null)
-        {
-            waveCompletedText.text = $"Wave {currentWave} Completed!";
-        }
-        
-        if (nextWaveText != null)
-        {
-            nextWaveText.text = $"Prepare for Wave {currentWave + 1}";
-        }
+        if (waveCompletedText != null) waveCompletedText.text = $"Wave {waveNum} Completed!";
+        if (nextWaveText != null) nextWaveText.text = $"Prepare for Wave {waveNum + 1}";
         
         DisplayPlayerStats();
         UpdateUpgradePointsDisplay();
-        UpdateButtonStates();
+        UpdateButtonStates(); // This now handles colors
         UpdateButtonTexts();
     }
     
@@ -237,9 +200,7 @@ public class LevelUpManager : MonoBehaviour
                 {
                     TextMeshProUGUI buttonText = buttons[i].GetComponentInChildren<TextMeshProUGUI>();
                     if (buttonText != null)
-                    {
                         buttonText.text = $"{originalButtonTexts[i]} (+{FormatUpgradeAmount(upgradeAmounts[i])})";
-                    }
                 }
             }
         }
@@ -250,10 +211,7 @@ public class LevelUpManager : MonoBehaviour
                 if (buttons[i] != null)
                 {
                     TextMeshProUGUI buttonText = buttons[i].GetComponentInChildren<TextMeshProUGUI>();
-                    if (buttonText != null)
-                    {
-                        buttonText.text = originalButtonTexts[i];
-                    }
+                    if (buttonText != null) buttonText.text = originalButtonTexts[i];
                 }
             }
         }
@@ -262,17 +220,12 @@ public class LevelUpManager : MonoBehaviour
     private void DisplayPlayerStats()
     {
         if (currentPlayerStats == null) return;
-        
-        if (playerStatsText != null)
-        {
-            playerStatsText.text = GenerateStatsText();
-        }
+        if (playerStatsText != null) playerStatsText.text = GenerateStatsText();
     }
     
     private string GenerateStatsText()
     {
         if (currentPlayerStats == null) return "No stats available";
-        
         return $"Level: {currentPlayerStats.level}\n\n\n" +
                $"Experience: {currentPlayerStats.experience:F0} / {currentPlayerStats.experienceToNextLevel:F0}\n\n\n" +
                $"Max Health: {currentPlayerStats.maxHealth:F0}\n\n\n" +
@@ -287,10 +240,7 @@ public class LevelUpManager : MonoBehaviour
     
     private void UpdateUpgradePointsDisplay()
     {
-        if (upgradePointsText != null)
-        {
-            upgradePointsText.text = $"Upgrade Points: {availableUpgradePoints}";
-        }
+        if (upgradePointsText != null) upgradePointsText.text = $"Upgrade Points: {availableUpgradePoints}";
     }
     
     private void UpdateButtonStates()
@@ -307,7 +257,15 @@ public class LevelUpManager : MonoBehaviour
         {
             if (button != null)
             {
+                // Disable the button interaction
                 button.interactable = hasPoints;
+
+                // Change Text Colour so it looks disabled
+                TextMeshProUGUI buttonText = button.GetComponentInChildren<TextMeshProUGUI>();
+                if (buttonText != null)
+                {
+                    buttonText.color = hasPoints ? normalTextColor : disabledTextColor;
+                }
             }
         }
     }
@@ -316,41 +274,25 @@ public class LevelUpManager : MonoBehaviour
     {
         if (currentPlayerStats == null || availableUpgradePoints <= 0) return;
         
-        if (GameManager.Instance != null && GameManager.Instance.SpendUpgradePoint())
+        bool success = (GameManager.Instance != null && !forceDebugMode) ? 
+                       GameManager.Instance.SpendUpgradePoint() : true;
+
+        if (success)
         {
             availableUpgradePoints--; 
             
             switch (statName.ToLower())
             {
-                case "health":
-                    currentPlayerStats.maxHealth += amount;
-                    break;
-                case "damage":
-                    currentPlayerStats.attackDamage += amount;
-                    break;
-                case "speed":
-                    currentPlayerStats.moveSpeed += amount;
-                    break;
-                case "attackspeed":
-                    currentPlayerStats.attackSpeed += amount;
-                    break;
-                case "healthregen":
-                    currentPlayerStats.healthRegen += amount;
-                    break;
-                case "meleerange":
-                    currentPlayerStats.meleeRange += amount;
-                    break;
-                case "projectilespeed":
-                    currentPlayerStats.projectileSpeed += amount;
-                    break;
-                case "projectilerange":
-                    currentPlayerStats.projectileRange += amount;
-                    break;
-                default:
-                    availableUpgradePoints++;
-                    break;
+                case "health": currentPlayerStats.maxHealth += amount; break;
+                case "damage": currentPlayerStats.attackDamage += amount; break;
+                case "speed": currentPlayerStats.moveSpeed += amount; break;
+                case "attackspeed": currentPlayerStats.attackSpeed += amount; break;
+                case "healthregen": currentPlayerStats.healthRegen += amount; break;
+                case "meleerange": currentPlayerStats.meleeRange += amount; break;
+                case "projectilespeed": currentPlayerStats.projectileSpeed += amount; break;
+                case "projectilerange": currentPlayerStats.projectileRange += amount; break;
+                default: availableUpgradePoints++; break;
             }
-            
             UpdateUI();
         }
     }
@@ -359,7 +301,6 @@ public class LevelUpManager : MonoBehaviour
     {
         if (abilitySelectorScreen != null)
         {
-            // Hide this panel and show the ability selector
             levelUpPanel.SetActive(false);
             abilitySelectorScreen.SetActive(true);
         }
@@ -371,25 +312,19 @@ public class LevelUpManager : MonoBehaviour
 
     public void OnAbilitySelectionCompleted()
     {
-        // Re-enable the main level-up panel
         levelUpPanel.SetActive(true);
-
-        // Update the continue button to its final state
         if (continueButton != null)
         {
             continueButton.GetComponentInChildren<TextMeshProUGUI>().text = "Continue";
             continueButton.onClick.RemoveAllListeners();
             continueButton.onClick.AddListener(ContinueToNextWave);
         }
-
         UpdateUI();
     }
 
     private void ContinueToNextWave()
     {
-        if (GameManager.Instance != null)
-        {
-            GameManager.Instance.ContinueToNextWave();
-        }
+        if (GameManager.Instance != null) GameManager.Instance.ContinueToNextWave();
+        else Debug.Log("Debug Mode: Continue button clicked (No scene to load).");
     }
 }

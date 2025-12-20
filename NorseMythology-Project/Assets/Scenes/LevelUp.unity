@@ -2375,7 +2375,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &520920991
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9302,7 +9302,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24d449e8eaa9f664d8575e75142c188f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forceDebugMode: 0
   continueButton: {fileID: 1115674112}
   waveCompletedText: {fileID: 675374548}
   nextWaveText: {fileID: 627332102}
@@ -9319,6 +9318,7 @@ MonoBehaviour:
   upgradeProjectileRangeButton: {fileID: 922009196}
   showUpgradeAmountsOnHoverOnly: 1
   abilitySelectorScreen: {fileID: 1042447020}
+  forceDebugMode: 0
 --- !u!4 &1862888600
 Transform:
   m_ObjectHideFlags: 0
