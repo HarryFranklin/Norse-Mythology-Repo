@@ -4,14 +4,10 @@ using System.Collections.Generic;
 using TMPro;
 using System.Linq;
 using System.Text;
+using UnityEngine.EventSystems;
 
 public class AbilitySelectorManager : MonoBehaviour
 {
-    [Header("Debug / Testing")]
-    public bool forceDebugMode = false;
-    [Tooltip("Drag Ability ScriptableObjects here to test the UI without the AbilityPooler.")]
-    public List<Ability> debugAbilities;
-
     [Header("UI Elements")]
     public Button[] abilityButtons = new Button[3];
     public Image[] abilityRarityPanels = new Image[3];
@@ -20,6 +16,9 @@ public class AbilitySelectorManager : MonoBehaviour
 
     [Header("Selector UI")]
     public GameObject selectorPanel;
+
+    [Header("Tooltips")]
+    public AbilityTooltipPanel[] tooltipPanels; 
 
     [Header("Replacement UI")]
     public GameObject replacementPanel;
@@ -34,22 +33,32 @@ public class AbilitySelectorManager : MonoBehaviour
     public TextMeshProUGUI[] abilityDescriptions = new TextMeshProUGUI[3];
     public Image[] abilityIcons = new Image[3];
     
+    [Header("Debug Settings")]
+    [Tooltip("Tick this to force debug mode even if playing from the main menu.")]
+    public bool forceDebugMode = false;
+    [Tooltip("Drag abilities here to test the menu in isolation.")]
+    public List<Ability> debugAbilities; 
+
     private List<Ability> offeredAbilities;
     private GameManager.PlayerData playerData;
     private LevelUpManager levelUpManager;
     
+    // Automatically treats it as "Debug Mode" if GameManager is missing OR if you forced it.
+    private bool IsDebugMode => GameManager.Instance == null || forceDebugMode;
+
     void Start()
     {
         levelUpManager = FindFirstObjectByType<LevelUpManager>();
         
-        if (GameManager.Instance != null && !forceDebugMode)
+        if (!IsDebugMode)
         {
             playerData = GameManager.Instance.currentPlayerData;
         }
         else
         {
-            Debug.LogWarning("AbilitySelectorManager: Using Debug Player Data.");
+            // Debug Flow: Create empty/dummy data
             playerData = new GameManager.PlayerData();
+            Debug.LogWarning("AbilitySelectorManager: DEBUG MODE ACTIVE (GameManager missing or forced). Using dummy player data.");
         }
         
         SetupUI();
@@ -61,19 +70,69 @@ public class AbilitySelectorManager : MonoBehaviour
         {
             int buttonIndex = i; 
             abilityButtons[i].onClick.AddListener(() => SelectAbility(buttonIndex));
+
+            // Setup Hover Events on the ICONS
+            if (abilityIcons[i] != null)
+            {
+                // Ensure raycast target is ON so the mouse is detected
+                abilityIcons[i].raycastTarget = true; 
+                AddHoverEvents(abilityIcons[i].gameObject, buttonIndex);
+            }
         }
         
         if (skipButton != null) skipButton.onClick.AddListener(SkipSelection);
         
-        if (levelText != null && GameManager.Instance != null)
-            levelText.text = $"Level {GameManager.Instance.gameLevel} -> {GameManager.Instance.gameLevel + 1}";
+        if (levelText != null)
+        {
+             int currentLvl = (GameManager.Instance != null) ? GameManager.Instance.gameLevel : 1;
+             levelText.text = $"Level {currentLvl} -> {currentLvl + 1}";
+        }
 
         GenerateAbilityOptions();
+    }
+
+    private void AddHoverEvents(GameObject targetObject, int index)
+    {
+        EventTrigger trigger = targetObject.GetComponent<EventTrigger>();
+        if (trigger == null) trigger = targetObject.AddComponent<EventTrigger>();
+        
+        trigger.triggers.Clear();
+
+        // HOVER ENTER
+        EventTrigger.Entry pointerEnter = new EventTrigger.Entry();
+        pointerEnter.eventID = EventTriggerType.PointerEnter;
+        pointerEnter.callback.AddListener((data) => {
+            if (offeredAbilities != null && index < offeredAbilities.Count)
+            {
+                if (tooltipPanels != null && index < tooltipPanels.Length && tooltipPanels[index] != null)
+                {
+                    Ability ability = offeredAbilities[index];
+                    int currentLvl = 0;
+                    var existing = playerData.abilities.FirstOrDefault(a => a.ability.abilityName == ability.abilityName);
+                    if (existing != null) currentLvl = existing.level;
+                    
+                    tooltipPanels[index].ShowTooltip(ability, currentLvl);
+                }
+            }
+        });
+        trigger.triggers.Add(pointerEnter);
+        
+        // HOVER EXIT
+        EventTrigger.Entry pointerExit = new EventTrigger.Entry();
+        pointerExit.eventID = EventTriggerType.PointerExit;
+        pointerExit.callback.AddListener((data) => {
+            if (tooltipPanels != null && index < tooltipPanels.Length && tooltipPanels[index] != null)
+            {
+                tooltipPanels[index].HideTooltip();
+            }
+        });
+        trigger.triggers.Add(pointerExit);
     }
 
     public void SelectAbility(int index)
     {
         SetAbilityButtonsInteractable(false);
+        HideAllTooltips(); 
 
         Ability selectedAbility = offeredAbilities[index];
         var existingState = playerData.abilities.FirstOrDefault(state => state.ability != null && state.ability.abilityName == selectedAbility.abilityName);
@@ -100,104 +159,121 @@ public class AbilitySelectorManager : MonoBehaviour
     void ShowReplacementOptions(Ability newAbility)
     {
         if (selectorPanel != null) selectorPanel.SetActive(false);
-        if (replacementPanel == null)
+        if (replacementPanel != null)
         {
-            Debug.LogError("Replacement Panel is not assigned in the Inspector!");
-            return;
-        }
-        replacementPanel.SetActive(true);
-
-        for (int i = 0; i < replaceButtons.Length; i++)
-        {
-            int replaceIndex = i;
-            GameManager.PlayerAbilityState equippedAbilityState = playerData.abilities[i];
-            Ability equippedAbility = equippedAbilityState.ability;
-
-            if (replaceButtonLabels[i] != null)
-                replaceButtonLabels[i].text = equippedAbility.abilityName;
-
-            if (replaceButtonIcons[i] != null)
-                replaceButtonIcons[i].sprite = equippedAbility.abilityIcon;
-            
-            if (replaceButtonLevels[i] != null)
+            replacementPanel.SetActive(true);
+            for (int i = 0; i < replaceButtons.Length; i++)
             {
-                replaceButtonLevels[i].text = $"Lvl {equippedAbilityState.level}";
+                int replaceIndex = i;
+                // Safety check for debug mode where you might have < 4 abilities
+                if (replaceIndex >= playerData.abilities.Count) 
+                {
+                    replaceButtons[i].gameObject.SetActive(false);
+                    continue;
+                }
+                
+                replaceButtons[i].gameObject.SetActive(true);
+                GameManager.PlayerAbilityState equippedAbilityState = playerData.abilities[i];
+                Ability equippedAbility = equippedAbilityState.ability;
+
+                if (replaceButtonLabels[i] != null) replaceButtonLabels[i].text = equippedAbility.abilityName;
+                if (replaceButtonIcons[i] != null) replaceButtonIcons[i].sprite = equippedAbility.abilityIcon;
+                if (replaceButtonLevels[i] != null) replaceButtonLevels[i].text = $"Lvl {equippedAbilityState.level}";
+
+                if(replaceRarityPanels[i] != null)
+                {
+                    AbilityRarity currentRarity = RarityColourMapper.GetRarityFromLevel(equippedAbilityState.level);
+                    replaceRarityPanels[i].color = RarityColourMapper.GetColour(currentRarity);
+                }
+
+                replaceButtons[i].onClick.RemoveAllListeners();
+                replaceButtons[i].onClick.AddListener(() =>
+                {
+                    playerData.abilities[replaceIndex] = new GameManager.PlayerAbilityState(newAbility, 1);
+                    if (replacementPanel != null) replacementPanel.SetActive(false);
+                    FinaliseAndReturn();
+                });
             }
-
-            if(replaceRarityPanels[i] != null)
-            {
-                AbilityRarity currentRarity = RarityColourMapper.GetRarityFromLevel(equippedAbilityState.level);
-                replaceRarityPanels[i].color = RarityColourMapper.GetColour(currentRarity);
-            }
-
-            replaceButtons[i].onClick.RemoveAllListeners();
-            replaceButtons[i].onClick.AddListener(() =>
-            {
-                playerData.abilities[replaceIndex] = new GameManager.PlayerAbilityState(newAbility, 1);
-                if (replacementPanel != null) replacementPanel.SetActive(false);
-                FinaliseAndReturn();
-            });
         }
     }
 
     void FinaliseAndReturn()
     {
-        if (GameManager.Instance != null)
+        // Only save to GameManager if we are NOT in debug mode
+        if (!IsDebugMode && GameManager.Instance != null)
         {
             GameManager.Instance.currentPlayerData = playerData;
         }
         else
         {
-            Debug.Log("Test Mode: Selection complete. (Not saved to GameManager as it is null)");
-        }
-
-        if (levelUpManager != null)
-        {
-            levelUpManager.OnAbilitySelectionCompleted();
+            Debug.Log($"[Debug Mode] Selection Finalised. Picked: {playerData.abilities.LastOrDefault()?.ability.abilityName}");
         }
         
+        if (levelUpManager != null) levelUpManager.OnAbilitySelectionCompleted();
         gameObject.SetActive(false);
     }
     
     private void SetAbilityButtonsInteractable(bool isInteractable)
     {
         foreach (var button in abilityButtons)
-        {
             if (button != null) button.interactable = isInteractable;
-        }
         if (skipButton != null) skipButton.interactable = isInteractable;
+    }
+
+    private void HideAllTooltips()
+    {
+        if (tooltipPanels != null)
+        {
+            foreach (var panel in tooltipPanels)
+            {
+                if (panel != null) panel.HideTooltip();
+            }
+        }
     }
 
     void GenerateAbilityOptions()
     {
-        // 1. Try normal game flow
-        if (AbilityPooler.Instance != null && !forceDebugMode)
+        // If NOT in debug mode (and Pooler exists), use the Pooler.
+        if (!IsDebugMode && AbilityPooler.Instance != null)
         {
             offeredAbilities = AbilityPooler.Instance.GetAbilityChoices(playerData.abilities);
         }
-        // 2. Fallback to Debug flow
+        // Otherwise (Debug Mode OR Pooler missing), use the Inspector List.
         else
         {
-            Debug.LogWarning("AbilitySelectorManager: Generating Debug Ability Options.");
+            Debug.LogWarning("AbilitySelectorManager: Using DEBUG ABILITIES List.");
             offeredAbilities = new List<Ability>();
             
-            // Pick randoms from your inspector list, or just take the first 3
             if (debugAbilities != null && debugAbilities.Count > 0)
             {
-                // Simple logic: just take up to 3 from the debug list
+                // Take up to 3 abilities from the inspector list
                 for(int i = 0; i < Mathf.Min(3, debugAbilities.Count); i++)
                 {
-                    offeredAbilities.Add(debugAbilities[i]);
+                    if (debugAbilities[i] != null)
+                        offeredAbilities.Add(debugAbilities[i]);
                 }
+            }
+            else
+            {
+                Debug.LogError("Debug Mode is active but 'Debug Abilities' list is empty in Inspector!");
             }
         }
         
-        // Update UI elements
-        for (int i = 0; i < offeredAbilities.Count; i++)
+        // Update UI
+        if (offeredAbilities != null)
         {
-            if (i < abilityButtons.Length)
+            for (int i = 0; i < abilityButtons.Length; i++)
             {
-                UpdateAbilityDisplay(i, offeredAbilities[i]);
+                if (i < offeredAbilities.Count)
+                {
+                    abilityButtons[i].gameObject.SetActive(true);
+                    UpdateAbilityDisplay(i, offeredAbilities[i]);
+                }
+                else
+                {
+                    // Hide buttons if we don't have 3 abilities (e.g. only 1 in debug list)
+                    abilityButtons[i].gameObject.SetActive(false);
+                }
             }
         }
     }
@@ -219,22 +295,19 @@ public class AbilitySelectorManager : MonoBehaviour
         }
         else
         {
-            displayRarity = RarityColourMapper.GetRarityFromLevel(1); // New abilities are level 1
+            displayRarity = RarityColourMapper.GetRarityFromLevel(1); 
             abilityNames[index].text = $"{ability.abilityName} (New!)";
             abilityDescriptions[index].text = ability.description;
         }
         
-        if (abilityRarityPanels[index] != null)
-        {
-            abilityRarityPanels[index].color = RarityColourMapper.GetColour(displayRarity);
-        }
-        
+        if (abilityRarityPanels[index] != null) abilityRarityPanels[index].color = RarityColourMapper.GetColour(displayRarity);
         if (abilityIcons[index] != null) abilityIcons[index].sprite = ability.abilityIcon;
     }
 
     public void SkipSelection()
     {
         SetAbilityButtonsInteractable(false);
+        HideAllTooltips();
         FinaliseAndReturn();
     }
     
