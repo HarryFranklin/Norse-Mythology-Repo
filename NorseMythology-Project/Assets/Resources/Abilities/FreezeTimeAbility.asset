@@ -12,11 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d0643c63664d114abf1cd29a634f876, type: 3}
   m_Name: FreezeTimeAbility
   m_EditorClassIdentifier: 
-  abilityName: Freeze Time
+  abilityName: "Ver\xF0andi Lock"
   abilityIcon: {fileID: 1026722573, guid: 766cb97207789f04aa2e7cfb164d1f50, type: 3}
+  description: Drastically slows down time for all enemies and projectiles while
+    you move freely.
+  activationMode: 0
   useCodeDefinedMatrix: 1
-  abilityStacks: 1
-  canStackAbility: 1
+  showTargetingLine: 0
+  targetingLineColor: {r: 1, g: 1, b: 1, a: 1}
+  maxTargetingRange: 10
+  targetingCursor: {fileID: 0}
   levelData:
   - cooldown: 5
     damage: 0
@@ -73,11 +78,11 @@ MonoBehaviour:
     specialValue3: 0
     maxStacksAtLevel: 1
     stackRegenTime: 1
-  currentLevel: 1
-  currentStacks: 1
-  activationMode: 0
-  targetingCursor: {fileID: 0}
-  showTargetingLine: 0
-  targetingLineColor: {r: 1, g: 1, b: 1, a: 1}
-  maxTargetingRange: 10
-  description: 
+  timeScaleIntensity: 0.05
+  entryDuration: 0.1
+  exitDuration: 0.5
+  cameraZoomOffset: 1.5
+  modifyCamera: 1
+  freezeStartSound: {fileID: 0}
+  freezeEndSound: {fileID: 0}
+  screenFilterPrefab: {fileID: 0}

@@ -6,13 +6,13 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rigidBody;
     private Player player;
     public bool isMovementLocked = false;
-    public bool isDashing = false; // NEW: Track when player is dashing
+    public bool isDashing = false;
     
     [HideInInspector] public Vector2 moveDir;
     [HideInInspector] public float lastHorizontalVector = 1f; // Default facing right
     [HideInInspector] public float lastVerticalVector = 0f;
     [HideInInspector] public Vector2 facingDirection = Vector2.right; // Current facing direction
-    [HideInInspector] public Vector2 dashDirection = Vector2.zero; // NEW: Current dash direction
+    [HideInInspector] public Vector2 dashDirection = Vector2.zero;
 
     public Vector2 lastMovementDirection = Vector2.right; // Default facing right
 
@@ -92,7 +92,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // NEW METHOD: Allow external systems (like abilities) to set facing direction
+    // Allow external systems (like abilities) to set facing direction
     public void SetFacingDirection(Vector2 direction)
     {
         if (direction != Vector2.zero)
@@ -137,18 +137,17 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move()
     {
-        // Don't interfere with rigidbody when movement is locked
-        // This allows abilities like dash to control the rigidbody directly
-        if (isMovementLocked)
+        if (isMovementLocked) return;
+
+        float currentSpeed = player.currentStats.moveSpeed;
+
+        // If Time is slowed (e.g. 0.05), divide speed by 0.05 to multiply it by 20.
+        // This keeps "Real Time" speed constant.
+        if (Time.timeScale < 1f && Time.timeScale > 0.001f)
         {
-            return; // Let other systems (like dash) control the rigidbody
+            currentSpeed /= Time.timeScale;
         }
 
-        if (player != null && player.currentStats != null)
-        {
-            moveSpeed = player.currentStats.moveSpeed;
-        }
-
-        rigidBody.linearVelocity = new Vector2(moveDir.x * moveSpeed, moveDir.y * moveSpeed);
+        rigidBody.linearVelocity = new Vector2(moveDir.x * currentSpeed, moveDir.y * currentSpeed);
     }
 }
