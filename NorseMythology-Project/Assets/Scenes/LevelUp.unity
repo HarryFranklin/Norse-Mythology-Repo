@@ -1504,7 +1504,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 758, y: 30}
+  m_AnchoredPosition: {x: 0, y: 30}
   m_SizeDelta: {x: 400, y: 650}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &309986431
@@ -1529,8 +1529,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: PLAYER STATS
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: fd1613a901580804fa957aafdd71ed17, type: 2}
-  m_sharedMaterial: {fileID: -796686315809041859, guid: fd1613a901580804fa957aafdd71ed17, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: b9482fd2ae79a794991711f8935e50ea, type: 2}
+  m_sharedMaterial: {fileID: -6032499055130033092, guid: b9482fd2ae79a794991711f8935e50ea, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1561,7 +1561,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -2375,7 +2375,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &520920991
 RectTransform:
   m_ObjectHideFlags: 0
