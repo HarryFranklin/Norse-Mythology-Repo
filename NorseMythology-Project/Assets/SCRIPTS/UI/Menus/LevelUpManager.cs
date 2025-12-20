@@ -273,15 +273,15 @@ public class LevelUpManager : MonoBehaviour
     {
         if (currentPlayerStats == null) return "No stats available";
         
-        return $"Level: {currentPlayerStats.level}\n\n" +
-               $"Experience: {currentPlayerStats.experience:F0} / {currentPlayerStats.experienceToNextLevel:F0}\n\n" +
-               $"Max Health: {currentPlayerStats.maxHealth:F0}\n\n" +
-               $"Health Regen: {currentPlayerStats.healthRegen:F1}/sec\n\n" +
-               $"Move Speed: {currentPlayerStats.moveSpeed:F1}\n\n" +
-               $"Attack Damage: {currentPlayerStats.attackDamage:F1}\n\n" +
-               $"Attack Speed: {currentPlayerStats.attackSpeed:F1}\n\n" +
-               $"Melee Range: {currentPlayerStats.meleeRange:F1}\n\n" +
-               $"Projectile Speed: {currentPlayerStats.projectileSpeed:F1}\n\n" +
+        return $"Level: {currentPlayerStats.level}\n\n\n" +
+               $"Experience: {currentPlayerStats.experience:F0} / {currentPlayerStats.experienceToNextLevel:F0}\n\n\n" +
+               $"Max Health: {currentPlayerStats.maxHealth:F0}\n\n\n" +
+               $"Health Regen: {currentPlayerStats.healthRegen:F1}/sec\n\n\n" +
+               $"Move Speed: {currentPlayerStats.moveSpeed:F1}\n\n\n" +
+               $"Attack Damage: {currentPlayerStats.attackDamage:F1}\n\n\n" +
+               $"Attack Speed: {currentPlayerStats.attackSpeed:F1}\n\n\n" +
+               $"Melee Range: {currentPlayerStats.meleeRange:F1}\n\n\n" +
+               $"Projectile Speed: {currentPlayerStats.projectileSpeed:F1}\n\n\n" +
                $"Projectile Range: {currentPlayerStats.projectileRange:F1}";
     }
     
