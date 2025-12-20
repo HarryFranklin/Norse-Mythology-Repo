@@ -671,8 +671,8 @@ MonoBehaviour:
 
     Etc. I think three lines works well.'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 20214e886ba5bdd4ab6496f023da241f, type: 2}
-  m_sharedMaterial: {fileID: -5763542882454856610, guid: 20214e886ba5bdd4ab6496f023da241f, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: b9482fd2ae79a794991711f8935e50ea, type: 2}
+  m_sharedMaterial: {fileID: -6032499055130033092, guid: b9482fd2ae79a794991711f8935e50ea, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -967,8 +967,8 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 20214e886ba5bdd4ab6496f023da241f, type: 2}
-  m_sharedMaterial: {fileID: -5763542882454856610, guid: 20214e886ba5bdd4ab6496f023da241f, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: b9482fd2ae79a794991711f8935e50ea, type: 2}
+  m_sharedMaterial: {fileID: -6032499055130033092, guid: b9482fd2ae79a794991711f8935e50ea, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1224,8 +1224,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Class Name
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 20214e886ba5bdd4ab6496f023da241f, type: 2}
-  m_sharedMaterial: {fileID: -5763542882454856610, guid: 20214e886ba5bdd4ab6496f023da241f, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: b9482fd2ae79a794991711f8935e50ea, type: 2}
+  m_sharedMaterial: {fileID: -6032499055130033092, guid: b9482fd2ae79a794991711f8935e50ea, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1360,8 +1360,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Character Selector
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 20214e886ba5bdd4ab6496f023da241f, type: 2}
-  m_sharedMaterial: {fileID: -5763542882454856610, guid: 20214e886ba5bdd4ab6496f023da241f, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: b9482fd2ae79a794991711f8935e50ea, type: 2}
+  m_sharedMaterial: {fileID: -6032499055130033092, guid: b9482fd2ae79a794991711f8935e50ea, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1648,8 +1648,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Select Class
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 20214e886ba5bdd4ab6496f023da241f, type: 2}
-  m_sharedMaterial: {fileID: -5763542882454856610, guid: 20214e886ba5bdd4ab6496f023da241f, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: b9482fd2ae79a794991711f8935e50ea, type: 2}
+  m_sharedMaterial: {fileID: -6032499055130033092, guid: b9482fd2ae79a794991711f8935e50ea, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1673,8 +1673,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 38
-  m_fontSizeBase: 38
+  m_fontSize: 60
+  m_fontSizeBase: 60
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
