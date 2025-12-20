@@ -115,14 +115,12 @@ public class HammerSlamAbility : Ability
                 float stunMultiplier = stunFalloff.Evaluate(1f - normalizedDistance);
                 float stunDuration = Mathf.Lerp(0.8f, StackedDuration, stunMultiplier); // Using duration for max stun
                 
-                // NEW: Check if damage is lethal
+                // Check if damage is lethal
                 bool isLethal = finalDamage >= enemy.currentHealth;
 
                 if (isLethal)
                 {
-                    // Register the lethal damage but don't apply it yet
                     enemy.RegisterLethalDamage(finalDamage);
-                    // Optionally, you might still want to apply a stun effect during the knockback
                     enemy.Stun(stunDuration);
                 }
                 else
@@ -173,7 +171,6 @@ public class HammerSlamAbility : Ability
             Destroy(shockwave, 1f);
         }
 
-        // To do: Add dust cloud effect here when you have the asset
         if (dustCloudPrefab != null)
         {
             GameObject dust = Instantiate(dustCloudPrefab, position, Quaternion.identity);

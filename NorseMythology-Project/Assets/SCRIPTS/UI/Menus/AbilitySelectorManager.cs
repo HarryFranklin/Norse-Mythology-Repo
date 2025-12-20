@@ -50,9 +50,6 @@ public class AbilitySelectorManager : MonoBehaviour
         {
             Debug.LogWarning("AbilitySelectorManager: Using Debug Player Data.");
             playerData = new GameManager.PlayerData();
-            // Optional: Add a dummy ability to simulate existing inventory
-            // if (debugAbilities.Count > 0) 
-            //    playerData.abilities.Add(new GameManager.PlayerAbilityState(debugAbilities[0], 1));
         }
         
         SetupUI();

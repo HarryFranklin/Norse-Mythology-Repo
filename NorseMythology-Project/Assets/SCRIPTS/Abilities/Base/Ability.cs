@@ -34,7 +34,6 @@ public abstract class Ability : ScriptableObject
     [Header("Identity")]
     public string abilityName;
     public Sprite abilityIcon;
-    // The 'rarity' field has been removed. Rarity is now derived from the ability's level.
 
     [Header("Description")]
     [TextArea(2, 4)]

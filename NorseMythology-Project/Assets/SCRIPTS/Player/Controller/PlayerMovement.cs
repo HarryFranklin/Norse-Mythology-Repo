@@ -141,7 +141,7 @@ public class PlayerMovement : MonoBehaviour
 
         float currentSpeed = player.currentStats.moveSpeed;
 
-        // If Time is slowed (e.g. 0.05), divide speed by 0.05 to multiply it by 20.
+        // If Time is slowed (e.g. 0.05), divide speed by 0.05
         // This keeps "Real Time" speed constant.
         if (Time.timeScale < 1f && Time.timeScale > 0.001f)
         {
