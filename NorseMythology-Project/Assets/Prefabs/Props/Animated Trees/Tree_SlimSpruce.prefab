@@ -8,17 +8,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: -502853876834552443, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
-      propertyPath: m_Height
-      value: 0.18
+    - target: {fileID: -8579398445778335927, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
+      propertyPath: m_Size.x
+      value: 0.09
       objectReference: {fileID: 0}
-    - target: {fileID: -502853876834552443, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
-      propertyPath: m_Radius
-      value: 0.03
-      objectReference: {fileID: 0}
-    - target: {fileID: -502853876834552443, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
-      propertyPath: m_Center.x
-      value: 0
+    - target: {fileID: -8579398445778335927, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 1426953693162012842, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
       propertyPath: m_LocalPosition.x
@@ -79,10 +75,6 @@ PrefabInstance:
     - target: {fileID: 3633750150335730869, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
       propertyPath: m_SortingLayerID
       value: -445345009
-      objectReference: {fileID: 0}
-    - target: {fileID: 3633750150335730869, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
-      propertyPath: m_WasSpriteAssigned
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4757638968916205222, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
       propertyPath: fadeDistance

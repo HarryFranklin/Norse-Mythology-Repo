@@ -8,22 +8,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: -502853876834552443, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
-      propertyPath: m_Height
-      value: 0.16
-      objectReference: {fileID: 0}
-    - target: {fileID: -502853876834552443, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
-      propertyPath: m_Radius
-      value: 0.09
-      objectReference: {fileID: 0}
-    - target: {fileID: -502853876834552443, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
-      propertyPath: m_Center.x
-      value: -0.02
-      objectReference: {fileID: 0}
-    - target: {fileID: -502853876834552443, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
-      propertyPath: m_Center.y
-      value: 0.1
-      objectReference: {fileID: 0}
     - target: {fileID: 1426953693162012842, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -87,10 +71,6 @@ PrefabInstance:
     - target: {fileID: 3633750150335730869, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
       propertyPath: m_Color.r
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3633750150335730869, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
-      propertyPath: m_SortingOrder
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3633750150335730869, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
       propertyPath: m_SortingLayerID
