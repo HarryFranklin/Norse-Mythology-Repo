@@ -100,7 +100,8 @@ PrefabInstance:
       propertyPath: attractionDistance
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7221450846272896653, guid: a56d94a595a3da144b353ec5f49a52ae, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:

@@ -18,5 +18,5 @@ MonoBehaviour:
     in battle, and have been brought to Valhalla.'
   startingStats: {fileID: 11400000, guid: 693f296f9727e95409184cda040034a7, type: 2}
   attackType: 0
-  meleeWeaponPrefab: {fileID: 1025216438378162117, guid: 219a9579616a70743bd3c0319a590a5d, type: 3}
+  meleeWeaponPrefab: {fileID: 8028338059532453128, guid: 1ad44eeb31774fe46be8e8c030403434, type: 3}
   projectilePrefab: {fileID: 0}
