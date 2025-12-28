@@ -2048,9 +2048,7 @@ MonoBehaviour:
   statsText: {fileID: 1789037123}
   slideSpeed: 10
   visibleTop: 120
-  visibleBottom: 0
   hiddenTop: 676
-  hiddenBottom: 0
 --- !u!114 &472208849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5554,9 +5552,7 @@ MonoBehaviour:
   statsText: {fileID: 1217143311}
   slideSpeed: 10
   visibleTop: 120
-  visibleBottom: 0
   hiddenTop: 676
-  hiddenBottom: 0
 --- !u!114 &989772798
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9956,9 +9952,7 @@ MonoBehaviour:
   statsText: {fileID: 1416536636}
   slideSpeed: 10
   visibleTop: 120
-  visibleBottom: 0
   hiddenTop: 676
-  hiddenBottom: 0
 --- !u!114 &1793774672
 MonoBehaviour:
   m_ObjectHideFlags: 0
