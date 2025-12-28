@@ -30,10 +30,10 @@ public static class SceneSwitcherToolbar
         SelectCurrentScene();
 
 
-        Debug.Log(
-            "<b><color=green>Thank you for using Scene Switcher Pro</color></b>\n" +
-            "If you find this tool helpful, please consider leaving a review on the Asset Store."
-        );
+        // Debug.Log(
+        //     "<b><color=green>Thank you for using Scene Switcher Pro</color></b>\n" +
+        //     "If you find this tool helpful, please consider leaving a review on the Asset Store."
+        // );
 
         // Hook into scene change events
         EditorSceneManager.activeSceneChangedInEditMode += (prev, current) => UpdateSceneSelection();
