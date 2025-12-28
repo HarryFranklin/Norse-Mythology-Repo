@@ -22,11 +22,11 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     [Header("Scene Names")]
-    [SerializeField] private string characterSelectorSceneName = "CharacterSelector";
-    [SerializeField] private string mainGameSceneName = "MainGame";
-    [SerializeField] private string gameOverSceneName = "GameOver";
-    [SerializeField] private string winSceneName = "Win";
-    [SerializeField] private string levelUpSceneName = "LevelUp";
+    [SerializeField] private string characterSelectorSceneName = "3_CharacterSelector";
+    [SerializeField] private string mainGameSceneName = "4_MainGame";
+    [SerializeField] private string gameOverSceneName = "9_GameOver";
+    [SerializeField] private string winSceneName = "9_Win";
+    [SerializeField] private string levelUpSceneName = "5_LevelUp";
 
     private Player player;
     private AbilityUIManager abilityUIManager;
