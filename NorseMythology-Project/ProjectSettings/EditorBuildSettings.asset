@@ -6,25 +6,25 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Boot.unity
+    path: Assets/Scenes/1_Boot.unity
     guid: d05cd1bb6b9299a42aa235a1311e34eb
   - enabled: 1
-    path: Assets/Scenes/MainMenu.unity
+    path: Assets/Scenes/2_MainMenu.unity
     guid: a56b5637a9b8f3948a05bc53ad9ec59e
   - enabled: 1
-    path: Assets/Scenes/CharacterSelector.unity
+    path: Assets/Scenes/3_CharacterSelector.unity
     guid: b8c214eb09c2d0e409afff1d4a5ca56d
   - enabled: 1
-    path: Assets/Scenes/MainGame.unity
+    path: Assets/Scenes/4_MainGame.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
-    path: Assets/Scenes/LevelUp.unity
+    path: Assets/Scenes/5_LevelUp.unity
     guid: e9ffec1e0965c554ebe7e2c41f409ae4
   - enabled: 1
-    path: Assets/Scenes/GameOver.unity
+    path: Assets/Scenes/9_GameOver.unity
     guid: e5beebe6f85f87e48bc4497658daa328
   - enabled: 1
-    path: Assets/Scenes/Win.unity
+    path: Assets/Scenes/9_Win.unity
     guid: 19baf17ce19c883479c90fe7019db14b
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
