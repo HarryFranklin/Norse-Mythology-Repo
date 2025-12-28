@@ -793,11 +793,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ba3bc2da5334004fa2ce75d91dbc633, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainMenuSceneName: 2_MainMenu
   characterSelectorSceneName: 3_CharacterSelector
   mainGameSceneName: 4_MainGame
+  levelUpSceneName: 5_LevelUp
   gameOverSceneName: 9_GameOver
   winSceneName: 9_Win
-  levelUpSceneName: 5_LevelUp
+  pauseMenuPanel: {fileID: 0}
   basePlayerStats: {fileID: 11400000, guid: d502c6bd20489c74992235336485d903, type: 2}
   currentPlayerStats: {fileID: 0}
   gameLevel: 1
