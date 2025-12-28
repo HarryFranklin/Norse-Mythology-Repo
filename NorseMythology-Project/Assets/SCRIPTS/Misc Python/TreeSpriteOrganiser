@@ -1,0 +1,56 @@
+import os
+import shutil
+
+def organise_tree_sprites(root_folder_path):
+    target_root = os.path.abspath(root_folder_path)
+
+    print(f"Starting cleanup in: {target_root}")
+    print("-" * 40)
+
+    # Walk topdown=False to allow us to modify deep folders safely
+    for dirpath, dirnames, filenames in os.walk(target_root, topdown=False):
+        for dirname in dirnames:
+            if dirname == "Sprites":
+                sprites_path = os.path.join(dirpath, dirname)
+                
+                # Path logic:
+                # Source: .../Large Spruce/Cold/Sprites
+                # 1 up:   .../Large Spruce/Cold
+                # 2 up:   .../Large Spruce (The Destination)
+                
+                parent_folder = os.path.dirname(sprites_path)
+                grandparent_folder = os.path.dirname(parent_folder)
+                
+                # Move PNGs
+                files_in_sprites = os.listdir(sprites_path)
+                
+                for file_name in files_in_sprites:
+                    if file_name.lower().endswith(".png"):
+                        source_file = os.path.join(sprites_path, file_name)
+                        dest_file = os.path.join(grandparent_folder, file_name)
+                        
+                        try:
+                            # Move the file as is (no renaming)
+                            shutil.move(source_file, dest_file)
+                            print(f"Moved: '{file_name}' to '{os.path.basename(grandparent_folder)}/'")
+                        except Exception as e:
+                            print(f"Error moving {file_name}: {e}")
+
+                # Check if 'Sprites' is empty after the move, then delete it
+                if not os.listdir(sprites_path):
+                    os.rmdir(sprites_path)
+                    print(f"Deleted empty folder: {sprites_path}")
+                else:
+                    print(f"Skipped deletion: {sprites_path} is not empty.")
+
+    print("-" * 40)
+    print("Process complete.")
+
+# --- usage ---
+# Replace this string with the exact name of your main folder
+folder_name = r"E:\Game Dev\Norse-Mythology-Repo\NorseMythology-Project\Assets\Art\Sprites\Pixel Art Spruce Tree Pack - Snow Edition"
+
+if os.path.exists(folder_name):
+    organise_tree_sprites(folder_name)
+else:
+    print(f"Could not find the folder: {folder_name}")

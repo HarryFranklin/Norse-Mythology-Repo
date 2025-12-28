@@ -1,0 +1,112 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &6151775107485446116
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -502853876834552443, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
+      propertyPath: m_Height
+      value: 0.09
+      objectReference: {fileID: 0}
+    - target: {fileID: -502853876834552443, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
+      propertyPath: m_Radius
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: -502853876834552443, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
+      propertyPath: m_Center.x
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: -502853876834552443, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
+      propertyPath: m_Center.y
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 1426953693162012842, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1426953693162012842, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1426953693162012842, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1426953693162012842, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1426953693162012842, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1426953693162012842, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1426953693162012842, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1426953693162012842, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1426953693162012842, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1426953693162012842, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3633750150335730869, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
+      propertyPath: m_Size.x
+      value: 0.38
+      objectReference: {fileID: 0}
+    - target: {fileID: 3633750150335730869, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
+      propertyPath: m_Size.y
+      value: 0.68
+      objectReference: {fileID: 0}
+    - target: {fileID: 3633750150335730869, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -1032101539735100412, guid: 90b14f986ced6ea4dbd455b3c65f339d, type: 3}
+    - target: {fileID: 3633750150335730869, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
+      propertyPath: m_SortingOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3633750150335730869, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -445345009
+      objectReference: {fileID: 0}
+    - target: {fileID: 3633750150335730869, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4757638968916205222, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
+      propertyPath: fadeDistance
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 4757638968916205222, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
+      propertyPath: fadeBoundsScale
+      value: 0.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 5920826575244397375, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 22100000, guid: 8a749b4b270bd7c4ea8c57524fa8568e, type: 2}
+    - target: {fileID: 9165771059225675938, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}
+      propertyPath: m_Name
+      value: Tree_TinySpruce
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 0}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ebc19fd27b34b274483a97c639e05ddb, type: 3}

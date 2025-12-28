@@ -1,0 +1,1284 @@
+fileFormatVersion: 2
+guid: 684a9c6947e85ed44b7ad48298e2506e
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -9104866858887039608
+    second: Pine Tree - Night_64
+  - first:
+      213: 3478674344358975023
+    second: Pine Tree - Night_65
+  - first:
+      213: 7134450828367323146
+    second: Pine Tree - Night_66
+  - first:
+      213: 4642287501696862501
+    second: Pine Tree - Night_67
+  - first:
+      213: 4894927227456413357
+    second: Pine Tree - Night_68
+  - first:
+      213: 922478199186610510
+    second: Pine Tree - Night_69
+  - first:
+      213: 6512297972220159311
+    second: Pine Tree - Night_70
+  - first:
+      213: 6022492875356089147
+    second: Pine Tree - Night_71
+  - first:
+      213: -2950986023182357044
+    second: Pine Tree - Night_72
+  - first:
+      213: 5576462309944546337
+    second: Pine Tree - Night_73
+  - first:
+      213: 5668917704353109686
+    second: Pine Tree - Night_74
+  - first:
+      213: -2206316253917625926
+    second: Pine Tree - Night_75
+  - first:
+      213: 2353518192247662385
+    second: Pine Tree - Night_76
+  - first:
+      213: 8432130673063134161
+    second: Pine Tree - Night_77
+  - first:
+      213: 8955750100594018617
+    second: Pine Tree - Night_78
+  - first:
+      213: -6365726916902790797
+    second: Pine Tree - Night_79
+  - first:
+      213: -4405207166480612400
+    second: Pine Tree - Night_80
+  - first:
+      213: -1926370395672629266
+    second: Pine Tree - Night_81
+  - first:
+      213: 7607587779727224962
+    second: Pine Tree - Night_82
+  - first:
+      213: -3667400335936135688
+    second: Pine Tree - Night_83
+  - first:
+      213: 3063078863873984406
+    second: Pine Tree - Night_84
+  - first:
+      213: 8503444135589535929
+    second: Pine Tree - Night_85
+  - first:
+      213: -3249732517500247485
+    second: Pine Tree - Night_86
+  - first:
+      213: -6390751015471401662
+    second: Pine Tree - Night_87
+  - first:
+      213: -1628296629124879375
+    second: Pine Tree - Night_88
+  - first:
+      213: 7883890204041986878
+    second: Pine Tree - Night_89
+  - first:
+      213: -3917927035064558677
+    second: Pine Tree - Night_90
+  - first:
+      213: -7183004259943198760
+    second: Pine Tree - Night_91
+  - first:
+      213: -1625054806735061748
+    second: Pine Tree - Night_92
+  - first:
+      213: 9178942251172848208
+    second: Pine Tree - Night_93
+  - first:
+      213: 6677986286095840809
+    second: Pine Tree - Night_94
+  - first:
+      213: -4385508091408397550
+    second: Pine Tree - Night_95
+  - first:
+      213: -4006906180068863462
+    second: Pine Tree - Night_96
+  - first:
+      213: -578738044057436997
+    second: Pine Tree - Night_97
+  - first:
+      213: -2138648274556314092
+    second: Pine Tree - Night_98
+  - first:
+      213: 3774562499526642414
+    second: Pine Tree - Night_99
+  - first:
+      213: 2356646786884174322
+    second: Pine Tree - Night_100
+  - first:
+      213: 6134931172253104445
+    second: Pine Tree - Night_101
+  - first:
+      213: 4403898702179013731
+    second: Pine Tree - Night_102
+  - first:
+      213: -3648921705673857768
+    second: Pine Tree - Night_103
+  - first:
+      213: -3708836609134652620
+    second: Pine Tree - Night_104
+  - first:
+      213: -6199676060002367053
+    second: Pine Tree - Night_105
+  - first:
+      213: -2336152716710656467
+    second: Pine Tree - Night_106
+  - first:
+      213: 4896100467652540892
+    second: Pine Tree - Night_107
+  - first:
+      213: 979025331876392093
+    second: Pine Tree - Night_108
+  - first:
+      213: 3180657688914765258
+    second: Pine Tree - Night_109
+  - first:
+      213: 4522875924029687735
+    second: Pine Tree - Night_110
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 1
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Pine Tree - Night_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd01ed75a1a378400800000000000000
+      internalID: 326293382825382107
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Night_1
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 222de5467d52531e0800000000000000
+      internalID: -2218825634377969118
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Night_2
+      rect:
+        serializedVersion: 2
+        x: 106
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 41e8b6197bdf5cff0800000000000000
+      internalID: -16328058765341164
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Night_3
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b02816a1957601e20800000000000000
+      internalID: 3319266557764403723
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Night_4
+      rect:
+        serializedVersion: 2
+        x: 212
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a7dd936271183b640800000000000000
+      internalID: 5094557539911720314
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Night_5
+      rect:
+        serializedVersion: 2
+        x: 265
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ad2d4b9a510631880800000000000000
+      internalID: -8641457613836070182
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Night_6
+      rect:
+        serializedVersion: 2
+        x: 318
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c033ab4331161d4d0800000000000000
+      internalID: -3111599132419411188
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Night_7
+      rect:
+        serializedVersion: 2
+        x: 371
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: faf3ca1c3a822e6b0800000000000000
+      internalID: -5268603930275987537
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Night_8
+      rect:
+        serializedVersion: 2
+        x: 424
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a33d9d6e5e45c540800000000000000
+      internalID: 5027510726501938086
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Night_9
+      rect:
+        serializedVersion: 2
+        x: 477
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0963ce18608349100800000000000000
+      internalID: 113777491191805584
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Night_10
+      rect:
+        serializedVersion: 2
+        x: 530
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 94c61853be9710130800000000000000
+      internalID: 3531237633957129289
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Night_11
+      rect:
+        serializedVersion: 2
+        x: 583
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c423219b2cda82610800000000000000
+      internalID: 1596717119743078988
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Night_12
+      rect:
+        serializedVersion: 2
+        x: 636
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d143c6ec1cc4684d0800000000000000
+      internalID: -3132732095514004451
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Night_13
+      rect:
+        serializedVersion: 2
+        x: 689
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aceaa2909cf3293b0800000000000000
+      internalID: -5507269261645926710
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Night_14
+      rect:
+        serializedVersion: 2
+        x: 742
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e42af43472600610800000000000000
+      internalID: 1585375320078951650
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Night_15
+      rect:
+        serializedVersion: 2
+        x: 795
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c201129278f764ca0800000000000000
+      internalID: -6032994432328855508
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Night_16
+      rect:
+        serializedVersion: 2
+        x: 848
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: efb0b2af092c02f00800000000000000
+      internalID: 1090085037751864318
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Night_17
+      rect:
+        serializedVersion: 2
+        x: 901
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d6130026b0c81cc80800000000000000
+      internalID: -8304202257377775251
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Night_18
+      rect:
+        serializedVersion: 2
+        x: 954
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 10326dcf621697120800000000000000
+      internalID: 2412065895512154881
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Night_19
+      rect:
+        serializedVersion: 2
+        x: 1007
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 222fbdc55626d8c60800000000000000
+      internalID: 7822016315301556770
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Night_20
+      rect:
+        serializedVersion: 2
+        x: 1060
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a90e2c16759c72e40800000000000000
+      internalID: 5631691236189593754
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Night_21
+      rect:
+        serializedVersion: 2
+        x: 1113
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 515af855772fbd4e0800000000000000
+      internalID: -1955703018811841259
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Night_22
+      rect:
+        serializedVersion: 2
+        x: 1166
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 693fdf53cd21c5d60800000000000000
+      internalID: 7880194184999465878
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Night_23
+      rect:
+        serializedVersion: 2
+        x: 1219
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1fdc4caa63d609280800000000000000
+      internalID: -9038604370571899407
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Night_24
+      rect:
+        serializedVersion: 2
+        x: 1272
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 377b61d2e0e158df0800000000000000
+      internalID: -178703563976427661
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Night_25
+      rect:
+        serializedVersion: 2
+        x: 1325
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1ee6fda4052a84d90800000000000000
+      internalID: -7113257145694458143
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Night_26
+      rect:
+        serializedVersion: 2
+        x: 1378
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3d6b11423072f6c30800000000000000
+      internalID: 4354742259134084819
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Night_27
+      rect:
+        serializedVersion: 2
+        x: 1431
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6fe181bae8a0b5590800000000000000
+      internalID: -7684536731305500938
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Night_28
+      rect:
+        serializedVersion: 2
+        x: 1484
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 82bac2da01695d3f0800000000000000
+      internalID: -876629554084664536
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Night_29
+      rect:
+        serializedVersion: 2
+        x: 1537
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f37521413c7f8f50800000000000000
+      internalID: 6885858906260993016
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Night_30
+      rect:
+        serializedVersion: 2
+        x: 1590
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 92188fbe95748e8f0800000000000000
+      internalID: -511080106169958103
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Night_31
+      rect:
+        serializedVersion: 2
+        x: 1643
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a739c3ed5c37876e0800000000000000
+      internalID: -1839593154106584198
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Night_32
+      rect:
+        serializedVersion: 2
+        x: 1696
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d6263de0b1b8bf870800000000000000
+      internalID: 8717714452034839149
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Night_33
+      rect:
+        serializedVersion: 2
+        x: 1749
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8234b53d244586950800000000000000
+      internalID: 6442491912944042792
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Night_34
+      rect:
+        serializedVersion: 2
+        x: 1802
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a102fefeaead81680800000000000000
+      internalID: -8784030370603524070
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Night_35
+      rect:
+        serializedVersion: 2
+        x: 1855
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0e6592503342f8b80800000000000000
+      internalID: -8390447779219417376
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Night_36
+      rect:
+        serializedVersion: 2
+        x: 1908
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3bc919ff6295e1110800000000000000
+      internalID: 1233521371977456819
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Night_37
+      rect:
+        serializedVersion: 2
+        x: 1961
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 95deed62857db5e70800000000000000
+      internalID: 9105107845268827481
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Night_38
+      rect:
+        serializedVersion: 2
+        x: 2014
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 13147b1758ea7efe0800000000000000
+      internalID: -1159766490862894799
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Night_39
+      rect:
+        serializedVersion: 2
+        x: 2067
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 17e0298d6efee5ec0800000000000000
+      internalID: -3576157279330627983
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Night_40
+      rect:
+        serializedVersion: 2
+        x: 2120
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b8634b04146447a90800000000000000
+      internalID: -7317146248497842549
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Pine Tree - Night_0: 326293382825382107
+      Pine Tree - Night_1: -2218825634377969118
+      Pine Tree - Night_10: 3531237633957129289
+      Pine Tree - Night_100: 2356646786884174322
+      Pine Tree - Night_101: 6134931172253104445
+      Pine Tree - Night_102: 4403898702179013731
+      Pine Tree - Night_103: -3648921705673857768
+      Pine Tree - Night_104: -3708836609134652620
+      Pine Tree - Night_105: -6199676060002367053
+      Pine Tree - Night_106: -2336152716710656467
+      Pine Tree - Night_107: 4896100467652540892
+      Pine Tree - Night_108: 979025331876392093
+      Pine Tree - Night_109: 3180657688914765258
+      Pine Tree - Night_11: 1596717119743078988
+      Pine Tree - Night_110: 4522875924029687735
+      Pine Tree - Night_12: -3132732095514004451
+      Pine Tree - Night_13: -5507269261645926710
+      Pine Tree - Night_14: 1585375320078951650
+      Pine Tree - Night_15: -6032994432328855508
+      Pine Tree - Night_16: 1090085037751864318
+      Pine Tree - Night_17: -8304202257377775251
+      Pine Tree - Night_18: 2412065895512154881
+      Pine Tree - Night_19: 7822016315301556770
+      Pine Tree - Night_2: -16328058765341164
+      Pine Tree - Night_20: 5631691236189593754
+      Pine Tree - Night_21: -1955703018811841259
+      Pine Tree - Night_22: 7880194184999465878
+      Pine Tree - Night_23: -9038604370571899407
+      Pine Tree - Night_24: -178703563976427661
+      Pine Tree - Night_25: -7113257145694458143
+      Pine Tree - Night_26: 4354742259134084819
+      Pine Tree - Night_27: -7684536731305500938
+      Pine Tree - Night_28: -876629554084664536
+      Pine Tree - Night_29: 6885858906260993016
+      Pine Tree - Night_3: 3319266557764403723
+      Pine Tree - Night_30: -511080106169958103
+      Pine Tree - Night_31: -1839593154106584198
+      Pine Tree - Night_32: 8717714452034839149
+      Pine Tree - Night_33: 6442491912944042792
+      Pine Tree - Night_34: -8784030370603524070
+      Pine Tree - Night_35: -8390447779219417376
+      Pine Tree - Night_36: 1233521371977456819
+      Pine Tree - Night_37: 9105107845268827481
+      Pine Tree - Night_38: -1159766490862894799
+      Pine Tree - Night_39: -3576157279330627983
+      Pine Tree - Night_4: 5094557539911720314
+      Pine Tree - Night_40: -7317146248497842549
+      Pine Tree - Night_41: -3085714151628294051
+      Pine Tree - Night_42: -6956666537841788144
+      Pine Tree - Night_43: -8158615464573333721
+      Pine Tree - Night_44: -2963913698398097673
+      Pine Tree - Night_45: -3070895706040543154
+      Pine Tree - Night_46: 3034546351433105131
+      Pine Tree - Night_47: -5735940793778896308
+      Pine Tree - Night_48: -980566076107300894
+      Pine Tree - Night_49: 8919427789733840850
+      Pine Tree - Night_5: -8641457613836070182
+      Pine Tree - Night_50: 4276311498164726753
+      Pine Tree - Night_51: 5072307041475549283
+      Pine Tree - Night_52: -7017656821531889139
+      Pine Tree - Night_53: 4671502194559504627
+      Pine Tree - Night_54: -4940144119564129683
+      Pine Tree - Night_55: 7949752888124022763
+      Pine Tree - Night_56: -6759097809323259760
+      Pine Tree - Night_57: 997717192192002927
+      Pine Tree - Night_58: 8060661407976203411
+      Pine Tree - Night_59: 4336763021475402095
+      Pine Tree - Night_6: -3111599132419411188
+      Pine Tree - Night_60: 717825705626982228
+      Pine Tree - Night_61: 5400683572343495871
+      Pine Tree - Night_62: -646124151196894966
+      Pine Tree - Night_63: -3695264845203967667
+      Pine Tree - Night_64: -9104866858887039608
+      Pine Tree - Night_65: 3478674344358975023
+      Pine Tree - Night_66: 7134450828367323146
+      Pine Tree - Night_67: 4642287501696862501
+      Pine Tree - Night_68: 4894927227456413357
+      Pine Tree - Night_69: 922478199186610510
+      Pine Tree - Night_7: -5268603930275987537
+      Pine Tree - Night_70: 6512297972220159311
+      Pine Tree - Night_71: 6022492875356089147
+      Pine Tree - Night_72: -2950986023182357044
+      Pine Tree - Night_73: 5576462309944546337
+      Pine Tree - Night_74: 5668917704353109686
+      Pine Tree - Night_75: -2206316253917625926
+      Pine Tree - Night_76: 2353518192247662385
+      Pine Tree - Night_77: 8432130673063134161
+      Pine Tree - Night_78: 8955750100594018617
+      Pine Tree - Night_79: -6365726916902790797
+      Pine Tree - Night_8: 5027510726501938086
+      Pine Tree - Night_80: -4405207166480612400
+      Pine Tree - Night_81: -1926370395672629266
+      Pine Tree - Night_82: 7607587779727224962
+      Pine Tree - Night_83: -3667400335936135688
+      Pine Tree - Night_84: 3063078863873984406
+      Pine Tree - Night_85: 8503444135589535929
+      Pine Tree - Night_86: -3249732517500247485
+      Pine Tree - Night_87: -6390751015471401662
+      Pine Tree - Night_88: -1628296629124879375
+      Pine Tree - Night_89: 7883890204041986878
+      Pine Tree - Night_9: 113777491191805584
+      Pine Tree - Night_90: -3917927035064558677
+      Pine Tree - Night_91: -7183004259943198760
+      Pine Tree - Night_92: -1625054806735061748
+      Pine Tree - Night_93: 9178942251172848208
+      Pine Tree - Night_94: 6677986286095840809
+      Pine Tree - Night_95: -4385508091408397550
+      Pine Tree - Night_96: -4006906180068863462
+      Pine Tree - Night_97: -578738044057436997
+      Pine Tree - Night_98: -2138648274556314092
+      Pine Tree - Night_99: 3774562499526642414
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

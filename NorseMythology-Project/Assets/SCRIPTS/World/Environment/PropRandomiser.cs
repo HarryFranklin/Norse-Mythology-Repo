@@ -112,7 +112,7 @@ public class PropRandomiser : MonoBehaviour
             prop.transform.SetParent(spawnPoint.transform);
 
             // Apply a random scale
-            float randomScale = (float)GetRandomNumber(0.95, 1.5);
+            float randomScale = (float)GetRandomNumber(0.85, 1.15);
             prop.transform.localScale *= randomScale;
         }
     }

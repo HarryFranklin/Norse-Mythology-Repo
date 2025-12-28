@@ -1,0 +1,1284 @@
+fileFormatVersion: 2
+guid: e35b4e5c19b477547b28b30a43a88344
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 5234248514417275448
+    second: Pine Tree - Teal_64
+  - first:
+      213: -8182942542040176801
+    second: Pine Tree - Teal_65
+  - first:
+      213: 943668165770377774
+    second: Pine Tree - Teal_66
+  - first:
+      213: 3132986848977709407
+    second: Pine Tree - Teal_67
+  - first:
+      213: -36976957728188591
+    second: Pine Tree - Teal_68
+  - first:
+      213: 6715500048898693642
+    second: Pine Tree - Teal_69
+  - first:
+      213: 7520613016283845359
+    second: Pine Tree - Teal_70
+  - first:
+      213: -268887240013854448
+    second: Pine Tree - Teal_71
+  - first:
+      213: 2759664207818939741
+    second: Pine Tree - Teal_72
+  - first:
+      213: 7606743223378199100
+    second: Pine Tree - Teal_73
+  - first:
+      213: -4201874980587459560
+    second: Pine Tree - Teal_74
+  - first:
+      213: 5464169441342271111
+    second: Pine Tree - Teal_75
+  - first:
+      213: 5739999324434080427
+    second: Pine Tree - Teal_76
+  - first:
+      213: 2862073769185994616
+    second: Pine Tree - Teal_77
+  - first:
+      213: -7398722190528516654
+    second: Pine Tree - Teal_78
+  - first:
+      213: -4489489257422431257
+    second: Pine Tree - Teal_79
+  - first:
+      213: 4498569103740724323
+    second: Pine Tree - Teal_80
+  - first:
+      213: -5699272031076072813
+    second: Pine Tree - Teal_81
+  - first:
+      213: 1016530872311805572
+    second: Pine Tree - Teal_82
+  - first:
+      213: -7105549970752864479
+    second: Pine Tree - Teal_83
+  - first:
+      213: 6774665196086858476
+    second: Pine Tree - Teal_84
+  - first:
+      213: 7888213431187801666
+    second: Pine Tree - Teal_85
+  - first:
+      213: 967219037669060686
+    second: Pine Tree - Teal_86
+  - first:
+      213: -826564729445883871
+    second: Pine Tree - Teal_87
+  - first:
+      213: 3447604546465097735
+    second: Pine Tree - Teal_88
+  - first:
+      213: 4910254270679802433
+    second: Pine Tree - Teal_89
+  - first:
+      213: -594981233083204309
+    second: Pine Tree - Teal_90
+  - first:
+      213: 5240212650572559719
+    second: Pine Tree - Teal_91
+  - first:
+      213: -3439215347700327131
+    second: Pine Tree - Teal_92
+  - first:
+      213: 5198035530016721845
+    second: Pine Tree - Teal_93
+  - first:
+      213: -8550975158852417866
+    second: Pine Tree - Teal_94
+  - first:
+      213: 9005454862445646397
+    second: Pine Tree - Teal_95
+  - first:
+      213: -4617881246792090889
+    second: Pine Tree - Teal_96
+  - first:
+      213: 4147620102353076892
+    second: Pine Tree - Teal_97
+  - first:
+      213: 3535339716351477801
+    second: Pine Tree - Teal_98
+  - first:
+      213: 5506295326271694588
+    second: Pine Tree - Teal_99
+  - first:
+      213: -5394480855497647187
+    second: Pine Tree - Teal_100
+  - first:
+      213: -922909890770340186
+    second: Pine Tree - Teal_101
+  - first:
+      213: -968912300343285642
+    second: Pine Tree - Teal_102
+  - first:
+      213: -2248709490675036949
+    second: Pine Tree - Teal_103
+  - first:
+      213: -158075993347564219
+    second: Pine Tree - Teal_104
+  - first:
+      213: -4353921032179667820
+    second: Pine Tree - Teal_105
+  - first:
+      213: -5948844162613986165
+    second: Pine Tree - Teal_106
+  - first:
+      213: 7525666534708352261
+    second: Pine Tree - Teal_107
+  - first:
+      213: -4995158472060864325
+    second: Pine Tree - Teal_108
+  - first:
+      213: -5857593319562032509
+    second: Pine Tree - Teal_109
+  - first:
+      213: 8389710941808017
+    second: Pine Tree - Teal_110
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 1
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Pine Tree - Teal_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4cda3be4dea84ffb0800000000000000
+      internalID: -4614910966315635260
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Teal_1
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5426e25d4c10b6100800000000000000
+      internalID: 102177361447772741
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Teal_2
+      rect:
+        serializedVersion: 2
+        x: 106
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 994425f48e704bac0800000000000000
+      internalID: -3840435887895591783
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Teal_3
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 014ab37b4a83ff6e0800000000000000
+      internalID: -1801659045824977904
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Teal_4
+      rect:
+        serializedVersion: 2
+        x: 212
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1444b0bfacc16adc0800000000000000
+      internalID: -3628180791679564735
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Teal_5
+      rect:
+        serializedVersion: 2
+        x: 265
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe49781c4c50624f0800000000000000
+      internalID: -853988736721513233
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Teal_6
+      rect:
+        serializedVersion: 2
+        x: 318
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 86bd021621c952d50800000000000000
+      internalID: 6711942422418479976
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Teal_7
+      rect:
+        serializedVersion: 2
+        x: 371
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 42318c40ee2cab690800000000000000
+      internalID: -7585536294813953244
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Teal_8
+      rect:
+        serializedVersion: 2
+        x: 424
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 924d00f466bb149b0800000000000000
+      internalID: -5097587255120178135
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Teal_9
+      rect:
+        serializedVersion: 2
+        x: 477
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3669dd9a437249120800000000000000
+      internalID: 2419602006946453091
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Teal_10
+      rect:
+        serializedVersion: 2
+        x: 530
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3d9a3ac917c867470800000000000000
+      internalID: 8392049375238662611
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Teal_11
+      rect:
+        serializedVersion: 2
+        x: 583
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f3cd54d696d368e0800000000000000
+      internalID: -1701280290919562252
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Teal_12
+      rect:
+        serializedVersion: 2
+        x: 636
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b9aef975d38053d80800000000000000
+      internalID: -8271696081039922533
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Teal_13
+      rect:
+        serializedVersion: 2
+        x: 689
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9c29ef4e5eddae750800000000000000
+      internalID: 6335119805309162185
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Teal_14
+      rect:
+        serializedVersion: 2
+        x: 742
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 39fb98a28f9eba790800000000000000
+      internalID: -7517657900890079341
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Teal_15
+      rect:
+        serializedVersion: 2
+        x: 795
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bb3c960b1a8895c60800000000000000
+      internalID: 7807421657054299067
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Teal_16
+      rect:
+        serializedVersion: 2
+        x: 848
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5e1f86be566a7d300800000000000000
+      internalID: 276872858778005989
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Teal_17
+      rect:
+        serializedVersion: 2
+        x: 901
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4df827189f1007be0800000000000000
+      internalID: -1481682106274639916
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Teal_18
+      rect:
+        serializedVersion: 2
+        x: 954
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bf343e7fe6681a740800000000000000
+      internalID: 5161554459106690043
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Teal_19
+      rect:
+        serializedVersion: 2
+        x: 1007
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ba069654df8e38f0800000000000000
+      internalID: -558851161598850381
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Teal_20
+      rect:
+        serializedVersion: 2
+        x: 1060
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 86b33646973c0b020800000000000000
+      internalID: 2355597531257453416
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Teal_21
+      rect:
+        serializedVersion: 2
+        x: 1113
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 48f25f2d70ee2fdb0800000000000000
+      internalID: -4759480138805727356
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Teal_22
+      rect:
+        serializedVersion: 2
+        x: 1166
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2863f8a93b1a93720800000000000000
+      internalID: 2826468033915991682
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Teal_23
+      rect:
+        serializedVersion: 2
+        x: 1219
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97b8906922b693ad0800000000000000
+      internalID: -2722026703478486151
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Teal_24
+      rect:
+        serializedVersion: 2
+        x: 1272
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4bdf040cb662ae2b0800000000000000
+      internalID: -5554584946179244620
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Teal_25
+      rect:
+        serializedVersion: 2
+        x: 1325
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b62b499ed2b7a2550800000000000000
+      internalID: 6136852879368303211
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Teal_26
+      rect:
+        serializedVersion: 2
+        x: 1378
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e17a8d13501775310800000000000000
+      internalID: 1393706876819515166
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Teal_27
+      rect:
+        serializedVersion: 2
+        x: 1431
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f0bbb7cd878d458c0800000000000000
+      internalID: -4011343354473497841
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Teal_28
+      rect:
+        serializedVersion: 2
+        x: 1484
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 29c175e7ec4027590800000000000000
+      internalID: -7678069129783862126
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Teal_29
+      rect:
+        serializedVersion: 2
+        x: 1537
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aed017cb52523b240800000000000000
+      internalID: 4806226071339994602
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Teal_30
+      rect:
+        serializedVersion: 2
+        x: 1590
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1fa67ad47bdaec940800000000000000
+      internalID: 5318379212764572401
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Teal_31
+      rect:
+        serializedVersion: 2
+        x: 1643
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d4c1952bf2c38f6b0800000000000000
+      internalID: -5262389989029110707
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Teal_32
+      rect:
+        serializedVersion: 2
+        x: 1696
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 364e79e02568168c0800000000000000
+      internalID: -4007774506392755101
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Teal_33
+      rect:
+        serializedVersion: 2
+        x: 1749
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f1ff5b0958e1c7210800000000000000
+      internalID: 1331973148802154271
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Teal_34
+      rect:
+        serializedVersion: 2
+        x: 1802
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d770a6bbf4b14440800000000000000
+      internalID: 4918411261259053015
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Teal_35
+      rect:
+        serializedVersion: 2
+        x: 1855
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1fb68bdc7c36ca720800000000000000
+      internalID: 2858769573274479601
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Teal_36
+      rect:
+        serializedVersion: 2
+        x: 1908
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6b6865a6eebc42370800000000000000
+      internalID: 8296980638370006710
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Teal_37
+      rect:
+        serializedVersion: 2
+        x: 1961
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f013f5efa0aca4490800000000000000
+      internalID: -7761168859253493489
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Teal_38
+      rect:
+        serializedVersion: 2
+        x: 2014
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a2a45e14f0f80960800000000000000
+      internalID: 7568564105067668137
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Teal_39
+      rect:
+        serializedVersion: 2
+        x: 2067
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ecfad402ed9f53db0800000000000000
+      internalID: -4812665894355488818
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Teal_40
+      rect:
+        serializedVersion: 2
+        x: 2120
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cba86d1025d56f310800000000000000
+      internalID: 1438439737790991036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Pine Tree - Teal_0: -4614910966315635260
+      Pine Tree - Teal_1: 102177361447772741
+      Pine Tree - Teal_10: 8392049375238662611
+      Pine Tree - Teal_100: -5394480855497647187
+      Pine Tree - Teal_101: -922909890770340186
+      Pine Tree - Teal_102: -968912300343285642
+      Pine Tree - Teal_103: -2248709490675036949
+      Pine Tree - Teal_104: -158075993347564219
+      Pine Tree - Teal_105: -4353921032179667820
+      Pine Tree - Teal_106: -5948844162613986165
+      Pine Tree - Teal_107: 7525666534708352261
+      Pine Tree - Teal_108: -4995158472060864325
+      Pine Tree - Teal_109: -5857593319562032509
+      Pine Tree - Teal_11: -1701280290919562252
+      Pine Tree - Teal_110: 8389710941808017
+      Pine Tree - Teal_12: -8271696081039922533
+      Pine Tree - Teal_13: 6335119805309162185
+      Pine Tree - Teal_14: -7517657900890079341
+      Pine Tree - Teal_15: 7807421657054299067
+      Pine Tree - Teal_16: 276872858778005989
+      Pine Tree - Teal_17: -1481682106274639916
+      Pine Tree - Teal_18: 5161554459106690043
+      Pine Tree - Teal_19: -558851161598850381
+      Pine Tree - Teal_2: -3840435887895591783
+      Pine Tree - Teal_20: 2355597531257453416
+      Pine Tree - Teal_21: -4759480138805727356
+      Pine Tree - Teal_22: 2826468033915991682
+      Pine Tree - Teal_23: -2722026703478486151
+      Pine Tree - Teal_24: -5554584946179244620
+      Pine Tree - Teal_25: 6136852879368303211
+      Pine Tree - Teal_26: 1393706876819515166
+      Pine Tree - Teal_27: -4011343354473497841
+      Pine Tree - Teal_28: -7678069129783862126
+      Pine Tree - Teal_29: 4806226071339994602
+      Pine Tree - Teal_3: -1801659045824977904
+      Pine Tree - Teal_30: 5318379212764572401
+      Pine Tree - Teal_31: -5262389989029110707
+      Pine Tree - Teal_32: -4007774506392755101
+      Pine Tree - Teal_33: 1331973148802154271
+      Pine Tree - Teal_34: 4918411261259053015
+      Pine Tree - Teal_35: 2858769573274479601
+      Pine Tree - Teal_36: 8296980638370006710
+      Pine Tree - Teal_37: -7761168859253493489
+      Pine Tree - Teal_38: 7568564105067668137
+      Pine Tree - Teal_39: -4812665894355488818
+      Pine Tree - Teal_4: -3628180791679564735
+      Pine Tree - Teal_40: 1438439737790991036
+      Pine Tree - Teal_41: 2163037838229664759
+      Pine Tree - Teal_42: -5012842589740124181
+      Pine Tree - Teal_43: 4662323672806178589
+      Pine Tree - Teal_44: -1542464343410984825
+      Pine Tree - Teal_45: -4251394172788814585
+      Pine Tree - Teal_46: -4203296479084275689
+      Pine Tree - Teal_47: -689428330259488387
+      Pine Tree - Teal_48: 37204049095328853
+      Pine Tree - Teal_49: 7576743584430807090
+      Pine Tree - Teal_5: -853988736721513233
+      Pine Tree - Teal_50: 6013665826774431070
+      Pine Tree - Teal_51: -6536344042510218237
+      Pine Tree - Teal_52: 1559986642174890159
+      Pine Tree - Teal_53: 7019866960748597753
+      Pine Tree - Teal_54: 4363004421490066251
+      Pine Tree - Teal_55: 5199719761346393047
+      Pine Tree - Teal_56: 1000457087728090554
+      Pine Tree - Teal_57: -5690241301065107155
+      Pine Tree - Teal_58: 5057004716689056692
+      Pine Tree - Teal_59: 4362397335086175131
+      Pine Tree - Teal_6: 6711942422418479976
+      Pine Tree - Teal_60: 7920564384449151577
+      Pine Tree - Teal_61: -2107263537974444723
+      Pine Tree - Teal_62: 1541411692004486900
+      Pine Tree - Teal_63: -7394135005567864159
+      Pine Tree - Teal_64: 5234248514417275448
+      Pine Tree - Teal_65: -8182942542040176801
+      Pine Tree - Teal_66: 943668165770377774
+      Pine Tree - Teal_67: 3132986848977709407
+      Pine Tree - Teal_68: -36976957728188591
+      Pine Tree - Teal_69: 6715500048898693642
+      Pine Tree - Teal_7: -7585536294813953244
+      Pine Tree - Teal_70: 7520613016283845359
+      Pine Tree - Teal_71: -268887240013854448
+      Pine Tree - Teal_72: 2759664207818939741
+      Pine Tree - Teal_73: 7606743223378199100
+      Pine Tree - Teal_74: -4201874980587459560
+      Pine Tree - Teal_75: 5464169441342271111
+      Pine Tree - Teal_76: 5739999324434080427
+      Pine Tree - Teal_77: 2862073769185994616
+      Pine Tree - Teal_78: -7398722190528516654
+      Pine Tree - Teal_79: -4489489257422431257
+      Pine Tree - Teal_8: -5097587255120178135
+      Pine Tree - Teal_80: 4498569103740724323
+      Pine Tree - Teal_81: -5699272031076072813
+      Pine Tree - Teal_82: 1016530872311805572
+      Pine Tree - Teal_83: -7105549970752864479
+      Pine Tree - Teal_84: 6774665196086858476
+      Pine Tree - Teal_85: 7888213431187801666
+      Pine Tree - Teal_86: 967219037669060686
+      Pine Tree - Teal_87: -826564729445883871
+      Pine Tree - Teal_88: 3447604546465097735
+      Pine Tree - Teal_89: 4910254270679802433
+      Pine Tree - Teal_9: 2419602006946453091
+      Pine Tree - Teal_90: -594981233083204309
+      Pine Tree - Teal_91: 5240212650572559719
+      Pine Tree - Teal_92: -3439215347700327131
+      Pine Tree - Teal_93: 5198035530016721845
+      Pine Tree - Teal_94: -8550975158852417866
+      Pine Tree - Teal_95: 9005454862445646397
+      Pine Tree - Teal_96: -4617881246792090889
+      Pine Tree - Teal_97: 4147620102353076892
+      Pine Tree - Teal_98: 3535339716351477801
+      Pine Tree - Teal_99: 5506295326271694588
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

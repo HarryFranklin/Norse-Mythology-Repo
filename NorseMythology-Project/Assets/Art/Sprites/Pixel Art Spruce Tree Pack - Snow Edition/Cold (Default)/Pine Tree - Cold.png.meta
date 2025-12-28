@@ -1,0 +1,1355 @@
+fileFormatVersion: 2
+guid: a49d191df4f09334e8397f0752911627
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 6552857932850646747
+    second: Pine Tree - Cold_41
+  - first:
+      213: 6084729109388135016
+    second: Pine Tree - Cold_42
+  - first:
+      213: 6094916852454837594
+    second: Pine Tree - Cold_43
+  - first:
+      213: 4213439826854457080
+    second: Pine Tree - Cold_44
+  - first:
+      213: -8953432672212530635
+    second: Pine Tree - Cold_45
+  - first:
+      213: 7944978411191790718
+    second: Pine Tree - Cold_46
+  - first:
+      213: -3601929910824193693
+    second: Pine Tree - Cold_47
+  - first:
+      213: 1208163506836212311
+    second: Pine Tree - Cold_48
+  - first:
+      213: 3689211581514768654
+    second: Pine Tree - Cold_49
+  - first:
+      213: 996373471112457789
+    second: Pine Tree - Cold_50
+  - first:
+      213: -5108666973667718496
+    second: Pine Tree - Cold_51
+  - first:
+      213: -4470761887258552324
+    second: Pine Tree - Cold_52
+  - first:
+      213: -1096027864729388959
+    second: Pine Tree - Cold_53
+  - first:
+      213: 7758394199179161727
+    second: Pine Tree - Cold_54
+  - first:
+      213: -4570757818680516885
+    second: Pine Tree - Cold_55
+  - first:
+      213: 5449868701480105612
+    second: Pine Tree - Cold_56
+  - first:
+      213: 8351500859906170754
+    second: Pine Tree - Cold_57
+  - first:
+      213: -4860343658152304073
+    second: Pine Tree - Cold_58
+  - first:
+      213: -1577233393406745501
+    second: Pine Tree - Cold_59
+  - first:
+      213: -7014152506427130972
+    second: Pine Tree - Cold_60
+  - first:
+      213: -6104679662155180859
+    second: Pine Tree - Cold_61
+  - first:
+      213: 4852638065578350052
+    second: Pine Tree - Cold_62
+  - first:
+      213: 6240802598511880605
+    second: Pine Tree - Cold_63
+  - first:
+      213: 6458368995747145191
+    second: Pine Tree - Cold_64
+  - first:
+      213: -2285573998598564627
+    second: Pine Tree - Cold_65
+  - first:
+      213: -2232567537089235241
+    second: Pine Tree - Cold_66
+  - first:
+      213: -5506170558349308949
+    second: Pine Tree - Cold_67
+  - first:
+      213: -8519615078470090705
+    second: Pine Tree - Cold_68
+  - first:
+      213: 3922884578521575869
+    second: Pine Tree - Cold_69
+  - first:
+      213: 5150538322704089231
+    second: Pine Tree - Cold_70
+  - first:
+      213: -5707514841246976325
+    second: Pine Tree - Cold_71
+  - first:
+      213: 8168859858510585569
+    second: Pine Tree - Cold_72
+  - first:
+      213: 505785457308801900
+    second: Pine Tree - Cold_73
+  - first:
+      213: -5458767974989205997
+    second: Pine Tree - Cold_74
+  - first:
+      213: 7850102650154824616
+    second: Pine Tree - Cold_75
+  - first:
+      213: -3756421605093757050
+    second: Pine Tree - Cold_76
+  - first:
+      213: -6306565376270608291
+    second: Pine Tree - Cold_77
+  - first:
+      213: -6958758116076006449
+    second: Pine Tree - Cold_78
+  - first:
+      213: -837220791883207208
+    second: Pine Tree - Cold_79
+  - first:
+      213: 8567931410484171318
+    second: Pine Tree - Cold_80
+  - first:
+      213: -334373202691173693
+    second: Pine Tree - Cold_81
+  - first:
+      213: -881149109999698459
+    second: Pine Tree - Cold_82
+  - first:
+      213: -8704585925182462882
+    second: Pine Tree - Cold_83
+  - first:
+      213: 1678630871123299357
+    second: Pine Tree - Cold_84
+  - first:
+      213: 4249381841312822549
+    second: Pine Tree - Cold_85
+  - first:
+      213: 633990881616744224
+    second: Pine Tree - Cold_86
+  - first:
+      213: 575013851505821982
+    second: Pine Tree - Cold_87
+  - first:
+      213: 6535489971097341151
+    second: Pine Tree - Cold_88
+  - first:
+      213: 7246691087600905516
+    second: Pine Tree - Cold_89
+  - first:
+      213: 2515650317187447049
+    second: Pine Tree - Cold_90
+  - first:
+      213: 6444102764095802117
+    second: Pine Tree - Cold_91
+  - first:
+      213: 8914750060756032727
+    second: Pine Tree - Cold_92
+  - first:
+      213: -2493630053114264568
+    second: Pine Tree - Cold_93
+  - first:
+      213: -4615547407224026175
+    second: Pine Tree - Cold_94
+  - first:
+      213: -6358904742187136842
+    second: Pine Tree - Cold_95
+  - first:
+      213: 7241339709752830626
+    second: Pine Tree - Cold_96
+  - first:
+      213: 1332556020878512564
+    second: Pine Tree - Cold_97
+  - first:
+      213: 3874111892204033761
+    second: Pine Tree - Cold_98
+  - first:
+      213: 4813669832456492768
+    second: Pine Tree - Cold_99
+  - first:
+      213: -3907567160936601213
+    second: Pine Tree - Cold_100
+  - first:
+      213: -7817740248435600949
+    second: Pine Tree - Cold_101
+  - first:
+      213: 3011391813466148585
+    second: Pine Tree - Cold_102
+  - first:
+      213: 8188791956394377651
+    second: Pine Tree - Cold_103
+  - first:
+      213: 7785998160541445375
+    second: Pine Tree - Cold_104
+  - first:
+      213: 7736026333784733923
+    second: Pine Tree - Cold_105
+  - first:
+      213: -7216139903139099328
+    second: Pine Tree - Cold_106
+  - first:
+      213: 7891547744356233648
+    second: Pine Tree - Cold_107
+  - first:
+      213: 4660696019927903134
+    second: Pine Tree - Cold_108
+  - first:
+      213: 3158522229666793367
+    second: Pine Tree - Cold_109
+  - first:
+      213: -6064773889360015386
+    second: Pine Tree - Cold_110
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 1
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Pine Tree - Cold_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bfc84e8ab6eebe4a0800000000000000
+      internalID: -6562889885799904005
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Cold_1
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a63e1997b1015150800000000000000
+      internalID: 5859466478245263014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Cold_2
+      rect:
+        serializedVersion: 2
+        x: 106
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5e203261272b2ce00800000000000000
+      internalID: 1063608665080267493
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Cold_3
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f2ae1aecdf72b1360800000000000000
+      internalID: 7141345605172980271
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Cold_4
+      rect:
+        serializedVersion: 2
+        x: 212
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a2591003e1e8e7a10800000000000000
+      internalID: 1909119552357242154
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Cold_5
+      rect:
+        serializedVersion: 2
+        x: 265
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b943b6e5a37a28fb0800000000000000
+      internalID: -4646967996358904677
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Cold_6
+      rect:
+        serializedVersion: 2
+        x: 318
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d827ab35e2a858500800000000000000
+      internalID: 397876073670013581
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Cold_7
+      rect:
+        serializedVersion: 2
+        x: 371
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: abfc4f006339db7d0800000000000000
+      internalID: -2901000724803170374
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Cold_8
+      rect:
+        serializedVersion: 2
+        x: 424
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 72681d0760e368d70800000000000000
+      internalID: 9044985099003725351
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Cold_9
+      rect:
+        serializedVersion: 2
+        x: 477
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f9cc749b74f18a150800000000000000
+      internalID: 5883987306071182495
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Cold_10
+      rect:
+        serializedVersion: 2
+        x: 530
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a23e971b1069a660800000000000000
+      internalID: 7397549532409377449
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Cold_11
+      rect:
+        serializedVersion: 2
+        x: 583
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: beb307bd4e9250910800000000000000
+      internalID: 1802893288742599659
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Cold_12
+      rect:
+        serializedVersion: 2
+        x: 636
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 33e562108a992c3c0800000000000000
+      internalID: -4340738143978889677
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Cold_13
+      rect:
+        serializedVersion: 2
+        x: 689
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 92e082f8de5cd1d40800000000000000
+      internalID: 5556815139344748073
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Cold_14
+      rect:
+        serializedVersion: 2
+        x: 742
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9c09943c17aa4fd40800000000000000
+      internalID: 5617302040822255817
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Cold_15
+      rect:
+        serializedVersion: 2
+        x: 795
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: db8fd0634190ee080800000000000000
+      internalID: -9156371009986758467
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Cold_16
+      rect:
+        serializedVersion: 2
+        x: 848
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 11047d710be344fb0800000000000000
+      internalID: -4664534388013842415
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Cold_17
+      rect:
+        serializedVersion: 2
+        x: 901
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a81787b385f07bd0800000000000000
+      internalID: -2634335835943135066
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Cold_18
+      rect:
+        serializedVersion: 2
+        x: 954
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e28eca45057114980800000000000000
+      internalID: -8556532183241791442
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Cold_19
+      rect:
+        serializedVersion: 2
+        x: 1007
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 599decf6119e2e640800000000000000
+      internalID: 5107901188491106709
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Cold_20
+      rect:
+        serializedVersion: 2
+        x: 1060
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c5935d1a19fe2a500800000000000000
+      internalID: 406150325181167964
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Cold_21
+      rect:
+        serializedVersion: 2
+        x: 1113
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1cae42bf3e93ae380800000000000000
+      internalID: -8941270458856838463
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Cold_22
+      rect:
+        serializedVersion: 2
+        x: 1166
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 382b9f71ade7e7eb0800000000000000
+      internalID: -4720195884267490685
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Cold_23
+      rect:
+        serializedVersion: 2
+        x: 1219
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d09f29b93e555840800000000000000
+      internalID: 5212175745764266197
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Cold_24
+      rect:
+        serializedVersion: 2
+        x: 1272
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ec5ebbe2e9ac413a0800000000000000
+      internalID: -6695503965255375410
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Cold_25
+      rect:
+        serializedVersion: 2
+        x: 1325
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 87ca2baf5ea600210800000000000000
+      internalID: 1297154228668771448
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Cold_26
+      rect:
+        serializedVersion: 2
+        x: 1378
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 91cf56fecbd9ef040800000000000000
+      internalID: 4683354097307745305
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Cold_27
+      rect:
+        serializedVersion: 2
+        x: 1431
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 520aaaabfab88e330800000000000000
+      internalID: 3740393077398478885
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Cold_28
+      rect:
+        serializedVersion: 2
+        x: 1484
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 05b8f69ad861e8550800000000000000
+      internalID: 6164889737605647184
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Cold_29
+      rect:
+        serializedVersion: 2
+        x: 1537
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 575aa2f2064c76120800000000000000
+      internalID: 2407108443240047989
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Cold_30
+      rect:
+        serializedVersion: 2
+        x: 1590
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 79f7147470800cbf0800000000000000
+      internalID: -306235947307925609
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Cold_31
+      rect:
+        serializedVersion: 2
+        x: 1643
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7663fac987aade600800000000000000
+      internalID: 499242568709518951
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Cold_32
+      rect:
+        serializedVersion: 2
+        x: 1696
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4b3c4906175f5c320800000000000000
+      internalID: 2577736229039948724
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Cold_33
+      rect:
+        serializedVersion: 2
+        x: 1749
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a66cbfedc57328e00800000000000000
+      internalID: 1045458935520937578
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Cold_34
+      rect:
+        serializedVersion: 2
+        x: 1802
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d1c12e94627c84390800000000000000
+      internalID: -7833792584548738019
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Cold_35
+      rect:
+        serializedVersion: 2
+        x: 1855
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 46a2a87145a73eb50800000000000000
+      internalID: 6621270378755533412
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Cold_36
+      rect:
+        serializedVersion: 2
+        x: 1908
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8871f7f6a507215b0800000000000000
+      internalID: -5399129469543835768
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Cold_37
+      rect:
+        serializedVersion: 2
+        x: 1961
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 876cddad685f02e80800000000000000
+      internalID: -8205288561522653576
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Cold_38
+      rect:
+        serializedVersion: 2
+        x: 2014
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5267783ca1e7f2cd0800000000000000
+      internalID: -2580705408045320667
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Cold_39
+      rect:
+        serializedVersion: 2
+        x: 2067
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd2ba45fac78a6860800000000000000
+      internalID: 7523975433244291804
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pine Tree - Cold_40
+      rect:
+        serializedVersion: 2
+        x: 2120
+        y: 0
+        width: 53
+        height: 96
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 22e6cfd965873e9d0800000000000000
+      internalID: -2746219034352783838
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: d46de3637f738624b9c57eceb1119880
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":41.0,"y":1.0},"gridSpriteSize":{"x":53.0,"y":96.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      Pine Tree - Cold_0: -6562889885799904005
+      Pine Tree - Cold_1: 5859466478245263014
+      Pine Tree - Cold_10: 7397549532409377449
+      Pine Tree - Cold_100: -3907567160936601213
+      Pine Tree - Cold_101: -7817740248435600949
+      Pine Tree - Cold_102: 3011391813466148585
+      Pine Tree - Cold_103: 8188791956394377651
+      Pine Tree - Cold_104: 7785998160541445375
+      Pine Tree - Cold_105: 7736026333784733923
+      Pine Tree - Cold_106: -7216139903139099328
+      Pine Tree - Cold_107: 7891547744356233648
+      Pine Tree - Cold_108: 4660696019927903134
+      Pine Tree - Cold_109: 3158522229666793367
+      Pine Tree - Cold_11: 1802893288742599659
+      Pine Tree - Cold_110: -6064773889360015386
+      Pine Tree - Cold_12: -4340738143978889677
+      Pine Tree - Cold_13: 5556815139344748073
+      Pine Tree - Cold_14: 5617302040822255817
+      Pine Tree - Cold_15: -9156371009986758467
+      Pine Tree - Cold_16: -4664534388013842415
+      Pine Tree - Cold_17: -2634335835943135066
+      Pine Tree - Cold_18: -8556532183241791442
+      Pine Tree - Cold_19: 5107901188491106709
+      Pine Tree - Cold_2: 1063608665080267493
+      Pine Tree - Cold_20: 406150325181167964
+      Pine Tree - Cold_21: -8941270458856838463
+      Pine Tree - Cold_22: -4720195884267490685
+      Pine Tree - Cold_23: 5212175745764266197
+      Pine Tree - Cold_24: -6695503965255375410
+      Pine Tree - Cold_25: 1297154228668771448
+      Pine Tree - Cold_26: 4683354097307745305
+      Pine Tree - Cold_27: 3740393077398478885
+      Pine Tree - Cold_28: 6164889737605647184
+      Pine Tree - Cold_29: 2407108443240047989
+      Pine Tree - Cold_3: 7141345605172980271
+      Pine Tree - Cold_30: -306235947307925609
+      Pine Tree - Cold_31: 499242568709518951
+      Pine Tree - Cold_32: 2577736229039948724
+      Pine Tree - Cold_33: 1045458935520937578
+      Pine Tree - Cold_34: -7833792584548738019
+      Pine Tree - Cold_35: 6621270378755533412
+      Pine Tree - Cold_36: -5399129469543835768
+      Pine Tree - Cold_37: -8205288561522653576
+      Pine Tree - Cold_38: -2580705408045320667
+      Pine Tree - Cold_39: 7523975433244291804
+      Pine Tree - Cold_4: 1909119552357242154
+      Pine Tree - Cold_40: -2746219034352783838
+      Pine Tree - Cold_41: 6552857932850646747
+      Pine Tree - Cold_42: 6084729109388135016
+      Pine Tree - Cold_43: 6094916852454837594
+      Pine Tree - Cold_44: 4213439826854457080
+      Pine Tree - Cold_45: -8953432672212530635
+      Pine Tree - Cold_46: 7944978411191790718
+      Pine Tree - Cold_47: -3601929910824193693
+      Pine Tree - Cold_48: 1208163506836212311
+      Pine Tree - Cold_49: 3689211581514768654
+      Pine Tree - Cold_5: -4646967996358904677
+      Pine Tree - Cold_50: 996373471112457789
+      Pine Tree - Cold_51: -5108666973667718496
+      Pine Tree - Cold_52: -4470761887258552324
+      Pine Tree - Cold_53: -1096027864729388959
+      Pine Tree - Cold_54: 7758394199179161727
+      Pine Tree - Cold_55: -4570757818680516885
+      Pine Tree - Cold_56: 5449868701480105612
+      Pine Tree - Cold_57: 8351500859906170754
+      Pine Tree - Cold_58: -4860343658152304073
+      Pine Tree - Cold_59: -1577233393406745501
+      Pine Tree - Cold_6: 397876073670013581
+      Pine Tree - Cold_60: -7014152506427130972
+      Pine Tree - Cold_61: -6104679662155180859
+      Pine Tree - Cold_62: 4852638065578350052
+      Pine Tree - Cold_63: 6240802598511880605
+      Pine Tree - Cold_64: 6458368995747145191
+      Pine Tree - Cold_65: -2285573998598564627
+      Pine Tree - Cold_66: -2232567537089235241
+      Pine Tree - Cold_67: -5506170558349308949
+      Pine Tree - Cold_68: -8519615078470090705
+      Pine Tree - Cold_69: 3922884578521575869
+      Pine Tree - Cold_7: -2901000724803170374
+      Pine Tree - Cold_70: 5150538322704089231
+      Pine Tree - Cold_71: -5707514841246976325
+      Pine Tree - Cold_72: 8168859858510585569
+      Pine Tree - Cold_73: 505785457308801900
+      Pine Tree - Cold_74: -5458767974989205997
+      Pine Tree - Cold_75: 7850102650154824616
+      Pine Tree - Cold_76: -3756421605093757050
+      Pine Tree - Cold_77: -6306565376270608291
+      Pine Tree - Cold_78: -6958758116076006449
+      Pine Tree - Cold_79: -837220791883207208
+      Pine Tree - Cold_8: 9044985099003725351
+      Pine Tree - Cold_80: 8567931410484171318
+      Pine Tree - Cold_81: -334373202691173693
+      Pine Tree - Cold_82: -881149109999698459
+      Pine Tree - Cold_83: -8704585925182462882
+      Pine Tree - Cold_84: 1678630871123299357
+      Pine Tree - Cold_85: 4249381841312822549
+      Pine Tree - Cold_86: 633990881616744224
+      Pine Tree - Cold_87: 575013851505821982
+      Pine Tree - Cold_88: 6535489971097341151
+      Pine Tree - Cold_89: 7246691087600905516
+      Pine Tree - Cold_9: 5883987306071182495
+      Pine Tree - Cold_90: 2515650317187447049
+      Pine Tree - Cold_91: 6444102764095802117
+      Pine Tree - Cold_92: 8914750060756032727
+      Pine Tree - Cold_93: -2493630053114264568
+      Pine Tree - Cold_94: -4615547407224026175
+      Pine Tree - Cold_95: -6358904742187136842
+      Pine Tree - Cold_96: 7241339709752830626
+      Pine Tree - Cold_97: 1332556020878512564
+      Pine Tree - Cold_98: 3874111892204033761
+      Pine Tree - Cold_99: 4813669832456492768
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
