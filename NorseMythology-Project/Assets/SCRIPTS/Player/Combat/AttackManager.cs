@@ -27,6 +27,8 @@ public class AttackManager : MonoBehaviour
             player = transform;
         if (playerComponent == null)
             playerComponent = GetComponent<Player>();
+
+        weaponHolder = playerComponent.weaponHolder;
     }
 
     private void Update()

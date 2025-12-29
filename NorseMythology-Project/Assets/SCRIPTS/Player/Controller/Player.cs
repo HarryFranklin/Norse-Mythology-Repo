@@ -40,6 +40,10 @@ public class Player : Entity
     public AbilityManager abilityManager;
     public HealthXPUIManager healthXPUIManager;
 
+    [Header("Weapon Holders and Offsets")]
+    public Transform weaponHolder;
+    public Transform hammerSpawnPoint; 
+
     [Header("Level Up System")]
     public bool isLevelUpPending = false;
     private float pendingExperience = 0f;
