@@ -1582,9 +1582,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1767810108}
+      - m_Target: {fileID: 2100256689}
         m_TargetAssemblyTypeName: PauseMenuController, Assembly-CSharp
-        m_MethodName: OnQuitPressed
+        m_MethodName: QuitGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2605,9 +2605,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1767810108}
+      - m_Target: {fileID: 2100256689}
         m_TargetAssemblyTypeName: PauseMenuController, Assembly-CSharp
-        m_MethodName: OnResumePressed
+        m_MethodName: Resume
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9747,14 +9747,13 @@ GameObject:
   - component: {fileID: 1767810105}
   - component: {fileID: 1767810107}
   - component: {fileID: 1767810106}
-  - component: {fileID: 1767810108}
   m_Layer: 5
   m_Name: PauseMenuPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1767810105
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9815,18 +9814,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1767810104}
   m_CullTransparentMesh: 1
---- !u!114 &1767810108
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1767810104}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 140a5b88627155746b9d68300a43b4f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PauseMenuController
 --- !u!1 &1775011073
 GameObject:
   m_ObjectHideFlags: 0
@@ -9861,7 +9848,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -1.93}
+  m_AnchoredPosition: {x: 0, y: -1.9300003}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1775011075
@@ -10046,8 +10033,8 @@ Canvas:
   m_GameObject: {fileID: 1801585802}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 330585545}
   m_PlaneDistance: 100
   m_PixelPerfect: 1
   m_ReceivesEvents: 1
@@ -10057,7 +10044,7 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
+  m_SortingLayerID: -30593953
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!224 &1801585806
@@ -10359,8 +10346,8 @@ Canvas:
   m_GameObject: {fileID: 1928353779}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 330585545}
   m_PlaneDistance: 100
   m_PixelPerfect: 1
   m_ReceivesEvents: 1
@@ -10370,7 +10357,7 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
+  m_SortingLayerID: -30593953
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!224 &1928353784
@@ -10793,6 +10780,7 @@ GameObject:
   - component: {fileID: 2100256687}
   - component: {fileID: 2100256686}
   - component: {fileID: 2100256685}
+  - component: {fileID: 2100256689}
   m_Layer: 5
   m_Name: PauseMenu Canvas
   m_TagString: HideOnDeath
@@ -10849,8 +10837,8 @@ Canvas:
   m_GameObject: {fileID: 2100256684}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 330585545}
   m_PlaneDistance: 100
   m_PixelPerfect: 1
   m_ReceivesEvents: 1
@@ -10860,8 +10848,8 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: -30593953
+  m_SortingOrder: 2
   m_TargetDisplay: 0
 --- !u!224 &2100256688
 RectTransform:
@@ -10883,6 +10871,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &2100256689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2100256684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 140a5b88627155746b9d68300a43b4f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PauseMenuController
+  pauseMenuPanel: {fileID: 1767810104}
 --- !u!1 &2132735464
 GameObject:
   m_ObjectHideFlags: 0
@@ -26291,8 +26292,8 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: -445345009
-  m_SortingLayer: 2
+  m_SortingLayerID: -30593953
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_RenderMode: 0
   m_MeshDistribution: 0
@@ -31311,8 +31312,8 @@ SceneRoots:
   - {fileID: 664404181}
   - {fileID: 1801585806}
   - {fileID: 1928353784}
-  - {fileID: 1755977906}
   - {fileID: 2100256688}
+  - {fileID: 1755977906}
   - {fileID: 514065319}
   - {fileID: 1161178990}
   - {fileID: 861679037}

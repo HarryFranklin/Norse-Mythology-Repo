@@ -96,6 +96,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void RegisterPausePanel(GameObject panel)
+    {
+        this.pauseMenuPanel = panel;
+        // Double check it's hidden
+        if (pauseMenuPanel != null) pauseMenuPanel.SetActive(false);
+    }
+
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         Time.timeScale = 1f;
@@ -116,46 +123,49 @@ public class GameManager : MonoBehaviour
     private IEnumerator SetupMainGameScene()
     {
         yield return null; 
-
         FindMainGameReferences();
         
         if (player != null)
         {
             player.currentStats = currentPlayerStats;
-            
             if (currentPlayerData.abilities != null && currentPlayerData.abilities.Count > 0)
-            {
                 LoadPlayerData();
-            }
             else
-            {
-                Debug.Log("New Game: Saving default abilities from AbilityManager into persistent data.");
                 SavePlayerData();
-            }
         }
 
         if (returningFromLevelUp) returningFromLevelUp = false;
-
         gameActive = true;
         WaveManager.Instance?.StartWave();
     }
 
     public void PauseGame()
     {
+        if (pauseMenuPanel == null) return;
+
         isPaused = true;
-        previousTimeScale = Time.timeScale;
+        
+        if (Time.timeScale > 0.0001f)
+        {
+            previousTimeScale = Time.timeScale;
+        }
+
         Time.timeScale = 0f;
         
-        if (pauseMenuPanel != null) pauseMenuPanel.SetActive(true);
+        pauseMenuPanel.SetActive(true);
         ToggleGameplayUI(false); 
     }
+
     public void ResumeGame()
     {
-        isPaused = false;
-        Time.timeScale = (previousTimeScale > 0) ? previousTimeScale : 1f;
+        if (pauseMenuPanel == null) return;
 
-        if (pauseMenuPanel != null) pauseMenuPanel.SetActive(false);
-        ToggleGameplayUI(true); // Show all gameplay canvases
+        isPaused = false;
+        
+        Time.timeScale = (previousTimeScale > 0.0001f) ? previousTimeScale : 1f;
+
+        pauseMenuPanel.SetActive(false);
+        ToggleGameplayUI(true);
     }
 
     public void QuitToMainMenu()
@@ -181,13 +191,6 @@ public class GameManager : MonoBehaviour
         player = FindFirstObjectByType<Player>();
         abilityUIManager = FindFirstObjectByType<AbilityUIManager>();
         enemySpawner = FindFirstObjectByType<EnemySpawner>();
-        
-        // Find Pause Menu
-        if (pauseMenuPanel == null) 
-            pauseMenuPanel = GameObject.Find("PauseMenuPanel");
-
-        if (pauseMenuPanel != null) 
-            pauseMenuPanel.SetActive(false);
 
         gameplayUIElements.Clear();
         foreach (string uiName in uiNamesToHide)
