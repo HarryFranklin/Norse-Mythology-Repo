@@ -73,8 +73,6 @@ public class PopupManager : MonoBehaviour
             canvas.transform.position = Vector3.zero;
             
             // Set sorting layer to ensure it renders above game objects
-            // Use the Inspector value or a specific layer like "POPUP" or "UI"
-            // canvas.sortingLayerName = "UI"; 
             canvas.sortingOrder = 100;
 
             Debug.Log($"World Space Canvas setup complete. Scale: {canvasScale}");

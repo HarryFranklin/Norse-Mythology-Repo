@@ -12,7 +12,7 @@ public class WaveManager : MonoBehaviour
     {
         TimeBased,
         KillCountBased,
-        FixedEnemyCount // New wave type
+        FixedEnemyCount
     }
 
     [System.Serializable]

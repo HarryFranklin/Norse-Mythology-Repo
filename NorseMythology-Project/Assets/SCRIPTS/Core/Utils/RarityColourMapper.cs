@@ -24,7 +24,7 @@ public static class RarityColourMapper
             case AbilityRarity.Legendary:
                 return legendaryColor;
             default:
-                return Color.white; // A fallback color in case of an error.
+                return Color.white; // A fallback colour in case of an error.
         }
     }
 

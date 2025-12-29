@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-// These enums define the types and rarities for your abilities.
+// Enums defining the types and rarities for abilities
 public enum ActivationMode { Instant, ClickToTarget }
 public enum AbilityRarity { Common, Uncommon, Rare, Epic, Legendary }
 
@@ -18,8 +18,8 @@ public class AbilityLevelData
     public float speed = 0f;
     public float distance = 0f;
 
-    [Header("Special Values")]
-    public float specialValue1 = 0f; // For custom ability-specific values
+    [Header("Special Values")] // For custom ability-specific values
+    public float specialValue1 = 0f;
     public float specialValue2 = 0f;
     public float specialValue3 = 0f;
 
@@ -39,12 +39,12 @@ public abstract class Ability : ScriptableObject
     [TextArea(2, 4)]
     public string description;
 
-    [Header("Behavior")]
-    public ActivationMode activationMode = ActivationMode.Instant;
-    public bool useCodeDefinedMatrix = true;
+    [Header("Behaviour")]
+    public ActivationMode activationMode = ActivationMode.Instant; // Default to instant activation
+    public bool useCodeDefinedMatrix = true; // Easier to keep track of through code
 
     [Header("Targeting")]
-    public bool showTargetingLine = false;
+    public bool showTargetingLine = false; // For non-instant abilities
     public Color targetingLineColor = Color.white;
     public float maxTargetingRange = 10f;
     public Sprite targetingCursor;
@@ -53,13 +53,13 @@ public abstract class Ability : ScriptableObject
     // This array holds the stats for each level, from 1 to 5.
     [SerializeField] private AbilityLevelData[] levelData = new AbilityLevelData[5];
 
-    // --- RUNTIME DATA ---
+    // --- Runtime data ---
     [NonSerialized] private int currentLevel = 1;
     [NonSerialized] private int currentStacks = 1;
     [NonSerialized] private float nextStackRegenTime = 0f;
     [NonSerialized] private int abilityStacks = 1;
 
-    // --- PUBLIC PROPERTIES ---
+    // --- Public properties ---
     public int CurrentLevel { get => currentLevel; set => currentLevel = value; }
     public int CurrentStacks { get => currentStacks; }
     public int AbilityStacks { get => abilityStacks; set => abilityStacks = value; }
@@ -68,7 +68,7 @@ public abstract class Ability : ScriptableObject
     public float CurrentStackRegenTime => GetCurrentLevelData().stackRegenTime;
     public int MaxStacksAtCurrentLevel => GetCurrentLevelData().maxStacksAtLevel;
 
-    // --- HELPER METHODS ---
+    // --- Helper methods ---
     public AbilityLevelData GetCurrentLevelData()
     {
         int index = Mathf.Clamp(currentLevel - 1, 0, levelData.Length - 1);
@@ -126,7 +126,7 @@ public abstract class Ability : ScriptableObject
         if (stackRegenTime >= 0) levelData[index].stackRegenTime = stackRegenTime;
     }
 
-    // --- STACKED VALUE PROPERTIES ---
+    // --- Stacked value properties ---
     public float StackedDamage => GetCurrentLevelData().damage * (1f + (abilityStacks - 1) * 0.5f);
     public float StackedDuration => GetCurrentLevelData().duration * abilityStacks;
     public float StackedRadius => GetCurrentLevelData().radius * abilityStacks;
@@ -146,7 +146,7 @@ public abstract class Ability : ScriptableObject
         }
     }
 
-    // --- VIRTUAL & ABSTRACT METHODS ---
+    // --- Virtual and abstract methods ---
     protected virtual void InitialiseFromCodeMatrix() { }
     public abstract void Activate(Player player, PlayerMovement playerMovement);
     public virtual void ActivateWithTarget(Player player, PlayerMovement playerMovement, Vector2 targetDirection, Vector2 worldPosition) { Activate(player, playerMovement); }
@@ -158,7 +158,7 @@ public abstract class Ability : ScriptableObject
         return player != null && !player.isDead && currentStacks > 0;
     }
 
-    // --- STACK REGENERATION LOGIC ---
+    // --- Stack regeneration logic ---
     public void UpdateStackRegeneration()
     {
         var currentLevelStats = GetCurrentLevelData();

@@ -98,7 +98,7 @@ public class AbilitySelectorManager : MonoBehaviour
         
         trigger.triggers.Clear();
 
-        // HOVER ENTER
+        // Hover Exit
         EventTrigger.Entry pointerEnter = new EventTrigger.Entry();
         pointerEnter.eventID = EventTriggerType.PointerEnter;
         pointerEnter.callback.AddListener((data) => {
@@ -117,7 +117,7 @@ public class AbilitySelectorManager : MonoBehaviour
         });
         trigger.triggers.Add(pointerEnter);
         
-        // HOVER EXIT
+        // Hover Exit
         EventTrigger.Entry pointerExit = new EventTrigger.Entry();
         pointerExit.eventID = EventTriggerType.PointerExit;
         pointerExit.callback.AddListener((data) => {

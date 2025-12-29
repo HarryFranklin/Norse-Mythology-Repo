@@ -99,7 +99,7 @@ public class Enemy : Entity, IPooledObject
 
     private Vector3 lastPosition;
     private Rigidbody2D rb;
-    private Color originalColor; // Stores the base color to reset after fading
+    private Color originalColour; // Stores the base colour to reset after fading
 
     protected override void Awake()
     {
@@ -113,7 +113,7 @@ public class Enemy : Entity, IPooledObject
         // Capture original color (e.g. White) so we can restore it on respawn
         if (spriteRenderer != null)
         {
-            originalColor = spriteRenderer.color;
+            originalColour = spriteRenderer.color;
         }
     }
 
@@ -140,7 +140,7 @@ public class Enemy : Entity, IPooledObject
         // Restore color opacity
         if (spriteRenderer != null)
         {
-            spriteRenderer.color = originalColor;
+            spriteRenderer.color = originalColour;
         }
 
         if (spawner == null)
@@ -410,7 +410,7 @@ public class Enemy : Entity, IPooledObject
         if (rb != null) rb.simulated = false;
 
         // Ensure color is reset before fading (removes red damage flash if stuck)
-        if (spriteRenderer != null) spriteRenderer.color = originalColor;
+        if (spriteRenderer != null) spriteRenderer.color = originalColour;
 
         // Wait for the animation
         yield return new WaitForSeconds(deathAnimationDuration);
@@ -427,7 +427,7 @@ public class Enemy : Entity, IPooledObject
                 // Evaluate the curve (Inspector controlled)
                 float alpha = deathFadeCurve.Evaluate(t);
                 
-                Color fadedColor = originalColor;
+                Color fadedColor = originalColour;
                 fadedColor.a = alpha;
                 spriteRenderer.color = fadedColor;
                 

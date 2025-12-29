@@ -80,13 +80,13 @@ public abstract class Entity : MonoBehaviour
         }
     }
     
-    // New method to register lethal damage without applying it
+    // Register lethal damage without applying it
     public void RegisterLethalDamage(float damageAmount)
     {
         pendingLethalDamage = damageAmount;
     }
 
-    // New method to apply the pending lethal damage
+    // Apply the pending lethal damage
     public void ApplyPendingLethalDamage()
     {
         if (!isDead && pendingLethalDamage > 0)

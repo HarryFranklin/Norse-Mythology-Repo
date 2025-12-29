@@ -10,7 +10,6 @@ public class AbilityManager : MonoBehaviour
     
     [Header("Equipped Abilities")]
     public Ability[] equippedAbilities = new Ability[4];
-    private float[] lastAbilityUse = new float[4];
 
     [Header("Targeting Settings")]
     private bool isInTargetingMode = false;
@@ -21,7 +20,7 @@ public class AbilityManager : MonoBehaviour
     private Texture2D originalCursor;
     private Vector2 originalHotspot;
 
-    // --- EVENTS ---
+    // --- Events ---
     public event Action<int> OnAbilityUsed;
     public event Action<int> OnAbilityTargetingStarted;
     public event Action<int> OnAbilityTargetingEnded;
@@ -116,6 +115,7 @@ public class AbilityManager : MonoBehaviour
         Vector3 direction = (mouseWorldPos - playerPos);
         
         // Clamp to max range if specified
+        // Not sure if this is needed
         if (currentTargetingAbility.maxTargetingRange > 0)
         {
             if (direction.magnitude > currentTargetingAbility.maxTargetingRange)
@@ -142,7 +142,7 @@ public class AbilityManager : MonoBehaviour
 
         Ability ability = equippedAbilities[index];
 
-        // Check if ability can activate FIRST (this includes stack checking)
+        // Check if ability can activate first inc. stack checking
         if (!ability.CanActivate(player))
         {
             Debug.Log($"Cannot activate {ability.abilityName} - Stacks: {ability.CurrentStacks}/{ability.MaxStacksAtCurrentLevel}");
