@@ -2034,15 +2034,6 @@ MonoBehaviour:
   - {fileID: 690667690}
   autoNormaliseProportions: 1
   propCategories:
-  - name: Buildings
-    enabled: 0
-    spawnProportion: 0
-    allPrefabsEnabled: 1
-    prefabs:
-    - prefab: {fileID: 1276243121565516861, guid: ba561027014099b4f91b0a08d67d4098, type: 3}
-      enabled: 1
-    - prefab: {fileID: 8729616380809038749, guid: 2326e766db9f82a43aff27ce350de6ed, type: 3}
-      enabled: 1
   - name: Rocks
     enabled: 1
     spawnProportion: 0.25
@@ -16294,9 +16285,9 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: -445345009
-  m_SortingLayer: 2
-  m_SortingOrder: 1
+  m_SortingLayerID: -975688019
+  m_SortingLayer: 1
+  m_SortingOrder: 2
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -26487,9 +26478,9 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: -30593953
-  m_SortingLayer: 3
-  m_SortingOrder: 0
+  m_SortingLayerID: -975688019
+  m_SortingLayer: 1
+  m_SortingOrder: 2
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
@@ -31302,9 +31293,9 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: -445345009
-  m_SortingLayer: 2
-  m_SortingOrder: 1
+  m_SortingLayerID: -975688019
+  m_SortingLayer: 1
+  m_SortingOrder: 2
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
