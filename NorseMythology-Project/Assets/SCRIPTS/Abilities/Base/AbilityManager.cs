@@ -49,6 +49,11 @@ public class AbilityManager : MonoBehaviour
         // Store original cursor
         originalCursor = null;
         originalHotspot = Vector2.zero;
+
+        if (OptionsManager.Instance != null)
+        {
+            this.enableAbilitySwapping = OptionsManager.Instance.EnableAbilitySwapping;
+        }
     }
 
     private void Update()
