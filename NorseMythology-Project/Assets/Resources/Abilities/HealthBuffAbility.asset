@@ -78,5 +78,5 @@ MonoBehaviour:
     specialValue3: 0
     maxStacksAtLevel: 3
     stackRegenTime: 14
-  buffEffectPrefab: {fileID: 2172294401191862685, guid: 727a9e45aa386b04a876a51cf2be82ee, type: 3}
-  flashColor: {r: 0, g: 0.79622644, b: 0, a: 1}
+  buffEffectPrefab: {fileID: 7697260585850505662, guid: a56d94a595a3da144b353ec5f49a52ae, type: 3}
+  flashColor: {r: 0, g: 1, b: 0.011714697, a: 1}
