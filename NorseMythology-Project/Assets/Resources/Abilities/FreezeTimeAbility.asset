@@ -23,66 +23,66 @@ MonoBehaviour:
   maxTargetingRange: 10
   targetingCursor: {fileID: 0}
   levelData:
-  - cooldown: 5
+  - cooldown: 15
     damage: 0
-    duration: 0
+    duration: 3
     radius: 0
     speed: 0
     distance: 0
-    specialValue1: 0
-    specialValue2: 0
+    specialValue1: 5.8
+    specialValue2: 0.1
     specialValue3: 0
     maxStacksAtLevel: 1
-    stackRegenTime: 1
-  - cooldown: 5
+    stackRegenTime: 15
+  - cooldown: 12
     damage: 0
-    duration: 0
+    duration: 4
     radius: 0
     speed: 0
     distance: 0
-    specialValue1: 0
-    specialValue2: 0
+    specialValue1: 6
+    specialValue2: 0.3
     specialValue3: 0
     maxStacksAtLevel: 1
-    stackRegenTime: 1
-  - cooldown: 5
+    stackRegenTime: 12
+  - cooldown: 10
     damage: 0
-    duration: 0
+    duration: 5
     radius: 0
     speed: 0
     distance: 0
-    specialValue1: 0
-    specialValue2: 0
+    specialValue1: 6.2
+    specialValue2: 0.5
     specialValue3: 0
     maxStacksAtLevel: 1
-    stackRegenTime: 1
-  - cooldown: 5
+    stackRegenTime: 10
+  - cooldown: 8
     damage: 0
-    duration: 0
+    duration: 6
     radius: 0
     speed: 0
     distance: 0
-    specialValue1: 0
-    specialValue2: 0
+    specialValue1: 6.4
+    specialValue2: 0.7
     specialValue3: 0
-    maxStacksAtLevel: 1
-    stackRegenTime: 1
-  - cooldown: 5
+    maxStacksAtLevel: 2
+    stackRegenTime: 8
+  - cooldown: 6
     damage: 0
-    duration: 0
+    duration: 7
     radius: 0
     speed: 0
     distance: 0
-    specialValue1: 0
-    specialValue2: 0
+    specialValue1: 6.6
+    specialValue2: 0.8
     specialValue3: 0
-    maxStacksAtLevel: 1
-    stackRegenTime: 1
+    maxStacksAtLevel: 3
+    stackRegenTime: 10
   timeScaleIntensity: 0.05
   entryDuration: 0.1
   exitDuration: 0.5
-  cameraZoomOffset: 1.5
   modifyCamera: 1
+  maxCameraSizeCap: 6.75
   freezeStartSound: {fileID: 0}
   freezeEndSound: {fileID: 0}
   screenFilterPrefab: {fileID: 0}

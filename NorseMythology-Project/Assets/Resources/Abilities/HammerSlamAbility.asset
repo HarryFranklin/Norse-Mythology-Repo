@@ -14,8 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: Hammer Slam
   abilityIcon: {fileID: 21300000, guid: 6a5c4a0883aa42740a38434823b51536, type: 3}
-  description: Slam a massive hammer into the ground, dealing heavy damage to nearby
-    enemies and knocking them back with devastating force.
+  description: Slam a massive hammer into the ground.
   activationMode: 0
   useCodeDefinedMatrix: 1
   showTargetingLine: 0
@@ -23,61 +22,61 @@ MonoBehaviour:
   maxTargetingRange: 10
   targetingCursor: {fileID: 0}
   levelData:
-  - cooldown: 8
-    damage: 5
-    duration: 1.2
-    radius: 3
-    speed: 12
-    distance: 4
-    specialValue1: 1.5
-    specialValue2: 20
-    specialValue3: 0.15
+  - cooldown: 10
+    damage: 4
+    duration: 1
+    radius: 3.5
+    speed: 11
+    distance: 3
+    specialValue1: 1.25
+    specialValue2: 2
+    specialValue3: 0.5
     maxStacksAtLevel: 1
+    stackRegenTime: 10
+  - cooldown: 9
+    damage: 6
+    duration: 1.2
+    radius: 4
+    speed: 13
+    distance: 4
+    specialValue1: 1.75
+    specialValue2: 4
+    specialValue3: 0.5
+    maxStacksAtLevel: 1
+    stackRegenTime: 9
+  - cooldown: 8
+    damage: 9
+    duration: 1.5
+    radius: 4.5
+    speed: 15
+    distance: 5
+    specialValue1: 2.25
+    specialValue2: 6
+    specialValue3: 0.7
+    maxStacksAtLevel: 2
     stackRegenTime: 8
   - cooldown: 7
-    damage: 9
-    duration: 1.4
-    radius: 3.5
-    speed: 14
-    distance: 4.5
-    specialValue1: 2
-    specialValue2: 30
-    specialValue3: 0.18
-    maxStacksAtLevel: 1
-    stackRegenTime: 7
-  - cooldown: 6
     damage: 12
-    duration: 1.6
-    radius: 4
-    speed: 16
-    distance: 5
-    specialValue1: 2.5
-    specialValue2: 40
-    specialValue3: 0.2
-    maxStacksAtLevel: 1
-    stackRegenTime: 6
-  - cooldown: 5
-    damage: 14
     duration: 1.8
-    radius: 4.5
+    radius: 5
     speed: 18
     distance: 5.5
-    specialValue1: 3
-    specialValue2: 50
-    specialValue3: 0.22
-    maxStacksAtLevel: 1
-    stackRegenTime: 5
-  - cooldown: 4
-    damage: 16
+    specialValue1: 2.75
+    specialValue2: 9
+    specialValue3: 0.8
+    maxStacksAtLevel: 2
+    stackRegenTime: 7
+  - cooldown: 6
+    damage: 15
     duration: 2
-    radius: 5
+    radius: 5.5
     speed: 20
     distance: 6
-    specialValue1: 3.5
-    specialValue2: 65
-    specialValue3: 0.25
-    maxStacksAtLevel: 1
-    stackRegenTime: 4
+    specialValue1: 3.25
+    specialValue2: 12
+    specialValue3: 1
+    maxStacksAtLevel: 3
+    stackRegenTime: 6
   hammerPrefab: {fileID: 7752504696187829020, guid: c71af927813254c4c868d018b50b63e6, type: 3}
   shockwavePrefab: {fileID: 6445666186361868711, guid: 9deea548c44c9ac4e94d6932a0d85eaf, type: 3}
   dustCloudPrefab: {fileID: 1967835574231978638, guid: 3e196c9e632c76841a71cb6e2dc6d010, type: 3}

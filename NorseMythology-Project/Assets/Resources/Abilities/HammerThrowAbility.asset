@@ -14,9 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: Hammer Throw
   abilityIcon: {fileID: 21300000, guid: 32f704875c59dd04cb9a5177502454a7, type: 3}
+  description: Throw a spinning hammer that deals damage and returns to you.
+  activationMode: 1
   useCodeDefinedMatrix: 1
-  abilityStacks: 1
-  canStackAbility: 1
+  showTargetingLine: 1
+  targetingLineColor: {r: 1, g: 0, b: 0, a: 1}
+  maxTargetingRange: 6
+  targetingCursor: {fileID: 21300000, guid: 32f704875c59dd04cb9a5177502454a7, type: 3}
   levelData:
   - cooldown: 5
     damage: 4
@@ -73,14 +77,6 @@ MonoBehaviour:
     specialValue3: 0
     maxStacksAtLevel: 3
     stackRegenTime: 2
-  currentLevel: 1
-  currentStacks: 1
-  activationMode: 1
-  targetingCursor: {fileID: 21300000, guid: 32f704875c59dd04cb9a5177502454a7, type: 3}
-  showTargetingLine: 1
-  targetingLineColor: {r: 1, g: 0, b: 0, a: 1}
-  maxTargetingRange: 6
-  description: Throw a spinning hammer that deals damage and returns to you.
   hammerPrefab: {fileID: 5131123301474718387, guid: 4d50b6241863ed942a56c3845040826f, type: 3}
   returnsToPlayer: 1
   rotationSpeed: 720

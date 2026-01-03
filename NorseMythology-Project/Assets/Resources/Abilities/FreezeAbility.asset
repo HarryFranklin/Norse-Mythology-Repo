@@ -18,7 +18,7 @@ MonoBehaviour:
   activationMode: 1
   useCodeDefinedMatrix: 1
   showTargetingLine: 1
-  targetingLineColor: {r: 0, g: 0.29191613, b: 0.8037735, a: 1}
+  targetingLineColor: {r: 0, g: 1, b: 1, a: 1}
   maxTargetingRange: 5
   targetingCursor: {fileID: 21300000, guid: 19d4d25ba00cabf4cbdcbdcd5c61d39c, type: 3}
   levelData:
