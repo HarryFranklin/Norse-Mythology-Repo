@@ -19,7 +19,7 @@ public class FreezeAbility : Ability
         maxTargetingRange = GetStatsForLevel(1).radius * 2f;
     }
 
-    protected override void InitialiseFromCodeMatrix()
+    public override void InitialiseFromCodeMatrix()
     {
         // Define freeze ability values via code matrix
         // Level, cooldown, damage, duration(freeze time), radius, speed, distance, specialValue1(effect scale), specialValue2, specialValue3, maxStacks, stackRegenTime

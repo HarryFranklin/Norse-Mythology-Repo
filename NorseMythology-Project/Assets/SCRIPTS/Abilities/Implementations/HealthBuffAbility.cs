@@ -14,7 +14,7 @@ public class HealthBuffAbility : Ability
         activationMode = ActivationMode.Instant;
     }
 
-    protected override void InitialiseFromCodeMatrix()
+    public override void InitialiseFromCodeMatrix()
     {
         // Initialise ability name and description
         abilityName = "Vitality Boost";

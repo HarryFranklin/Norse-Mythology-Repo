@@ -143,7 +143,7 @@ public abstract class Ability : ScriptableObject
     }
 
     // --- Virtual and abstract methods ---
-    protected virtual void InitialiseFromCodeMatrix() { }
+    public virtual void InitialiseFromCodeMatrix() { }
     public abstract void Activate(Player player, PlayerMovement playerMovement);
     public virtual void ActivateWithTarget(Player player, PlayerMovement playerMovement, Vector2 targetDirection, Vector2 worldPosition) { Activate(player, playerMovement); }
     public virtual void EnterTargetingMode(Player player) { }

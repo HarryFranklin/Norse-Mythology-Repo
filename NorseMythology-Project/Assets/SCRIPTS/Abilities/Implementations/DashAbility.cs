@@ -29,7 +29,7 @@ public class DashAbility : Ability
         maxTargetingRange = GetStatsForLevel(1).distance;
     }
 
-    protected override void InitialiseFromCodeMatrix()
+    public override void InitialiseFromCodeMatrix()
     {
         // Define dash ability values via code matrix
         // Level, cooldown, damage, duration, radius, speed, distance, specialValue1(invincibility), specialValue2, specialValue3, maxStacks, stackRegenTime

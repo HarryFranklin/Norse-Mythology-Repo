@@ -24,7 +24,7 @@ public class HammerSlamAbility : Ability
         activationMode = ActivationMode.Instant;
     }
 
-    protected override void InitialiseFromCodeMatrix()
+    public override void InitialiseFromCodeMatrix()
     {
         SetLevelData(1, cooldown: 10f, damage: 4f, duration: 1.0f, radius: 3.5f, speed: 11f, distance: 3f, specialValue1: 1.25f, specialValue2: 2f, specialValue3: 0.5f, maxStacks: 1, stackRegenTime: 10f);
         SetLevelData(2, cooldown: 9f, damage: 6f, duration: 1.2f, radius: 4.0f, speed: 13f, distance: 4f, specialValue1: 1.75f, specialValue2: 4f, specialValue3: 0.5f, maxStacks: 1, stackRegenTime: 9f);

@@ -20,7 +20,7 @@ public class HammerThrowAbility : Ability
         maxTargetingRange = GetStatsForLevel(1).distance;
     }
 
-    protected override void InitialiseFromCodeMatrix()
+    public override void InitialiseFromCodeMatrix()
     {
         // Define hammer throw ability values via code matrix
         // Level, cooldown, damage, duration, radius, speed(projectile speed), distance(range), specialValue1(rotation multiplier), specialValue2, specialValue3, maxStacks, stackRegenTime

@@ -39,7 +39,7 @@ public class FreezeTimeAbility : Ability
         CleanupGlobalState();
     }
 
-    protected override void InitialiseFromCodeMatrix()
+    public override void InitialiseFromCodeMatrix()
     {
         // SpecialValue1 = Target Camera Size
         // SpecialValue2 = Ability Recharge Factor (0.0 = Locked to Game Time, 1.0 = Realtime)
