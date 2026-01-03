@@ -11,6 +11,10 @@ public class AbilityManager : MonoBehaviour
     [Header("Equipped Abilities")]
     public Ability[] equippedAbilities = new Ability[4];
 
+    [Header("UI Visuals")]
+    [SerializeField] private Color normalCooldownColor = new Color(0, 0, 0, 1f);
+    [SerializeField] private Color timeFrozenCooldownColor = new Color(0, 1, 1, 1f); // Cyan
+
     [Header("Targeting Settings")]
     private bool isInTargetingMode = false;
     private int targetingAbilityIndex = -1;
@@ -27,8 +31,6 @@ public class AbilityManager : MonoBehaviour
 
     private void Awake()
     {
-        // Replace the ScriptableObject assets with runtime clones. This ensures that any changes to an ability, i.e. the level,
-        // are unique to this game session and don't get saved back to the project files.
         for (int i = 0; i < equippedAbilities.Length; i++)
         {
             if (equippedAbilities[i] != null)
@@ -65,11 +67,29 @@ public class AbilityManager : MonoBehaviour
     // Update stack regeneration for all equipped abilities
     private void UpdateAllAbilityStacks()
     {
+        // 1. Calculate the Delta Time we should use for recharging
+        float rechargeDelta = Time.unscaledDeltaTime; 
+
+        // 2. If Time is Frozen, apply the multiplier we calculated in FreezeTimeAbility
+        if (FreezeTimeAbility.IsTimeFrozen)
+        {
+            rechargeDelta *= FreezeTimeAbility.GlobalRechargeMultiplier;
+        }
+        else
+        {
+            // If not frozen, we can match Standard Game Time or Unscaled Time 
+            // depending on if you want Pause to stop cooldowns.
+            // Usually: 
+            if (Time.timeScale == 0) rechargeDelta = 0; // Don't recharge if paused
+            else rechargeDelta = Time.deltaTime; 
+        }
+
+        // 3. Update all abilities with this modified time
         for (int i = 0; i < equippedAbilities.Length; i++)
         {
             if (equippedAbilities[i] != null)
             {
-                equippedAbilities[i].UpdateStackRegeneration();
+                equippedAbilities[i].UpdateCooldownLogic(rechargeDelta);
             }
         }
     }
@@ -88,34 +108,17 @@ public class AbilityManager : MonoBehaviour
     private void HandleTargetingMode()
     {
         UpdateTargetingVisuals();
-        
-        if (Input.GetKeyDown(KeyCode.Alpha1 + targetingAbilityIndex))
-        {
-            CancelTargeting();
-            return;
-        }
-        
-        if (Input.GetMouseButtonDown(0))
-        {
-            ExecuteTargetedAbility();
-        }
-        
-        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetMouseButtonDown(1)) // Right click or escape
-        {
-            CancelTargeting();
-        }
+        if (Input.GetKeyDown(KeyCode.Alpha1 + targetingAbilityIndex)) { CancelTargeting(); return; }
+        if (Input.GetMouseButtonDown(0)) { ExecuteTargetedAbility(); }
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetMouseButtonDown(1)) { CancelTargeting(); }
     }
 
     private void UpdateTargetingVisuals()
     {
         if (currentTargetingAbility == null) return;
-        
         Vector3 mouseWorldPos = GetMouseWorldPosition();
         Vector3 playerPos = player.transform.position;
         Vector3 direction = (mouseWorldPos - playerPos);
-        
-        // Clamp to max range if specified
-        // Not sure if this is needed
         if (currentTargetingAbility.maxTargetingRange > 0)
         {
             if (direction.magnitude > currentTargetingAbility.maxTargetingRange)
@@ -125,7 +128,6 @@ public class AbilityManager : MonoBehaviour
             }
         }
     }
-
     private void TryActivateAbility(int index)
     {
         if (equippedAbilities[index] == null)
@@ -295,7 +297,17 @@ public class AbilityManager : MonoBehaviour
 
         Ability ability = equippedAbilities[slotIndex];
         return $"{ability.abilityName} L{ability.CurrentLevel} (x{ability.AbilityStacks})\n" +
-               $"Cooldown: {ability.StackedCooldown:F1}s\n" +
+               $"Cooldown: {ability.StackedMaxCooldown:F1}s\n" +
                $"Charges: {ability.CurrentStacks}/{ability.MaxStacksAtCurrentLevel}";
+    }
+
+    public Color GetCurrentCooldownColor()
+    {
+        // Check the static state of the FreezeTimeAbility
+        if (FreezeTimeAbility.IsTimeFrozen)
+        {
+            return timeFrozenCooldownColor;
+        }
+        return normalCooldownColor;
     }
 }

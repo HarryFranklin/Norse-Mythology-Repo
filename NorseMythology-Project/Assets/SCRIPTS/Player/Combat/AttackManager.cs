@@ -17,7 +17,7 @@ public class AttackManager : MonoBehaviour
     [Header("Performance")]
     public float enemyScanInterval = 0.1f;
 
-    private float lastAttackTime;
+    private float attackCooldownTimer = 0f;
     private float lastEnemyScan;
     private Enemy closestEnemy;
 
@@ -33,6 +33,11 @@ public class AttackManager : MonoBehaviour
 
     private void Update()
     {
+        if (attackCooldownTimer > 0f)
+        {
+            attackCooldownTimer -= Time.unscaledDeltaTime;
+        }
+
         if (hasBasicAttack && playerComponent != null && !playerComponent.isDead)
         {
             if (Time.time - lastEnemyScan >= enemyScanInterval)
@@ -90,13 +95,18 @@ public class AttackManager : MonoBehaviour
         if (playerComponent == null || playerComponent.currentStats == null)
             return;
             
-        if (Time.time - lastAttackTime < (1f / playerComponent.currentStats.attackSpeed))
+        if (attackCooldownTimer > 0f)
             return;
 
         if (closestEnemy != null)
         {
             PerformBasicAttack(closestEnemy);
-            lastAttackTime = Time.time;
+            
+            float attackSpeed = playerComponent.currentStats.attackSpeed;
+            if (attackSpeed > 0)
+            {
+                attackCooldownTimer = 1f / attackSpeed;
+            }
         }
     }
 
@@ -129,6 +139,7 @@ public class AttackManager : MonoBehaviour
         Vector2 startPos = weaponHolder.localPosition;
         Vector2 attackPos = startPos + (direction * 0.5f);
         
+        // Flip weapon if attacking left
         weapon.transform.localScale = new Vector3(Mathf.Sign(direction.x) * Mathf.Abs(weapon.transform.localScale.x), weapon.transform.localScale.y, weapon.transform.localScale.z);
         
         float duration = 0.1f;
@@ -137,7 +148,7 @@ public class AttackManager : MonoBehaviour
         while (elapsed < duration)
         {
             weapon.transform.localPosition = Vector2.Lerp(startPos, attackPos, elapsed / duration);
-            elapsed += Time.deltaTime;
+            elapsed += Time.unscaledDeltaTime; // UPDATED to Unscaled so the stab is fast
             yield return null;
         }
 
@@ -152,7 +163,7 @@ public class AttackManager : MonoBehaviour
         while (elapsed < duration)
         {
             weapon.transform.localPosition = Vector2.Lerp(attackPos, startPos, elapsed / duration);
-            elapsed += Time.deltaTime;
+            elapsed += Time.unscaledDeltaTime; // UPDATED to Unscaled
             yield return null;
         }
 

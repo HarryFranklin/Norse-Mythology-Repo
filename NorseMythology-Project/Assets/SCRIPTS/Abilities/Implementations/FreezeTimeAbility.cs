@@ -21,7 +21,9 @@ public class FreezeTimeAbility : Ability
     [Header("Visuals")]
     [SerializeField] private GameObject screenFilterPrefab;
 
-    private static bool isTimeFrozen = false;
+    // --- GLOBAL ACCESSORS ---
+    public static bool IsTimeFrozen { get; private set; } = false;
+    public static float GlobalRechargeMultiplier { get; private set; } = 1f;
     
     private void Awake()
     {
@@ -34,21 +36,24 @@ public class FreezeTimeAbility : Ability
     
     private void OnDisable()
     {
-        isTimeFrozen = false;
+        CleanupGlobalState();
     }
 
     protected override void InitialiseFromCodeMatrix()
     {
-        SetLevelData(1, cooldown: 15f, duration: 3f, maxStacks: 1, stackRegenTime: 15f, specialValue1: 5.8f);
-        SetLevelData(2, cooldown: 12f, duration: 4f, maxStacks: 1, stackRegenTime: 12f, specialValue1: 6.0f);
-        SetLevelData(3, cooldown: 10f, duration: 5f, maxStacks: 1, stackRegenTime: 10f, specialValue1: 6.2f);
-        SetLevelData(4, cooldown: 8f, duration: 6f, maxStacks: 2, stackRegenTime: 8f, specialValue1: 6.4f);
-        SetLevelData(5, cooldown: 6f, duration: 7f, maxStacks: 3, stackRegenTime: 10f, specialValue1: 6.6f);
+        // SpecialValue1 = Target Camera Size
+        // SpecialValue2 = Ability Recharge Factor (0.0 = Locked to Game Time, 1.0 = Realtime)
+        
+        SetLevelData(1, cooldown: 15f, duration: 3f, maxStacks: 1, stackRegenTime: 15f, specialValue1: 5.8f, specialValue2: 0.1f); // 10% recovery
+        SetLevelData(2, cooldown: 12f, duration: 4f, maxStacks: 1, stackRegenTime: 12f, specialValue1: 6.0f, specialValue2: 0.3f);
+        SetLevelData(3, cooldown: 10f, duration: 5f, maxStacks: 1, stackRegenTime: 10f, specialValue1: 6.2f, specialValue2: 0.5f);
+        SetLevelData(4, cooldown: 8f, duration: 6f, maxStacks: 2, stackRegenTime: 8f,  specialValue1: 6.4f, specialValue2: 0.7f);
+        SetLevelData(5, cooldown: 6f, duration: 7f, maxStacks: 3, stackRegenTime: 10f, specialValue1: 6.6f, specialValue2: 0.8f); // 80% recovery
     }
 
     public override bool CanActivate(Player player)
     {
-        if (isTimeFrozen) return false;
+        if (IsTimeFrozen) return false;
         return base.CanActivate(player);
     }
 
@@ -61,8 +66,16 @@ public class FreezeTimeAbility : Ability
 
     private IEnumerator ExecuteSmoothTimeFreeze(Player player)
     {
-        isTimeFrozen = true;
-        float initialFixedDeltaTime = 0.02f; // Fallback default
+        IsTimeFrozen = true;
+        
+        // 1. Calculate the Multiplier based on the CURRENT Level's SpecialValue2
+        float recoveryFactor = GetCurrentLevelData().specialValue2; 
+        
+        // If TimeScale is 0.05 and Factor is 0.9, we want result close to 1.0
+        // If Factor is 0.1, we want result close to 0.05
+        GlobalRechargeMultiplier = Mathf.Lerp(timeScaleIntensity, 1f, recoveryFactor);
+
+        float initialFixedDeltaTime = 0.02f;
         if (Time.fixedDeltaTime > 0) initialFixedDeltaTime = Time.fixedDeltaTime;
 
         Animator playerAnimator = player.GetComponentInChildren<Animator>();
@@ -89,27 +102,17 @@ public class FreezeTimeAbility : Ability
         if (targetCamSize > maxCameraSizeCap) targetCamSize = maxCameraSizeCap;
         if (targetCamSize <= 0.1f) targetCamSize = startCamSize; 
 
-
         // --- PHASE 1: FAST ENTRY ---
         float timer = 0f;
         while (timer < entryDuration)
         {
             if (player == null) { Cleanup(initialFixedDeltaTime, activeFilter, null, originalUpdateMode); yield break; }
-
-            // 1. PAUSE CHECK: If TimeScale is 0 (Game Paused), wait and do nothing.
-            // We check for exactly 0, assuming your Pause Menu sets Scale to 0.
-            if (Time.timeScale == 0f)
-            {
-                yield return null;
-                continue; 
-            }
+            if (Time.timeScale == 0f) { yield return null; continue; }
 
             timer += Time.unscaledDeltaTime; 
             float progress = Mathf.Clamp01(timer / entryDuration);
 
             float currentScale = Mathf.Lerp(1f, timeScaleIntensity, progress);
-            
-            // Only apply scale if not paused (redundant check but safe)
             if (Time.timeScale > 0) SetTimeScale(currentScale, initialFixedDeltaTime);
 
             if (cam != null && modifyCamera)
@@ -118,10 +121,8 @@ public class FreezeTimeAbility : Ability
             yield return null;
         }
 
-        // Ensure we hit exact target (only if not paused)
         if (Time.timeScale > 0) SetTimeScale(timeScaleIntensity, initialFixedDeltaTime);
         if (cam != null && modifyCamera) cam.orthographicSize = targetCamSize;
-
 
         // --- PHASE 2: HOLD ---
         float holdDuration = StackedDuration - entryDuration - exitDuration;
@@ -130,26 +131,16 @@ public class FreezeTimeAbility : Ability
         while (holdTimer < holdDuration)
         {
             if (player == null) { Cleanup(initialFixedDeltaTime, activeFilter, null, originalUpdateMode); yield break; }
-
-            // 2. PAUSE CHECK
-            if (Time.timeScale == 0f)
-            {
-                yield return null;
-                continue;
-            }
+            if (Time.timeScale == 0f) { yield return null; continue; }
 
             holdTimer += Time.unscaledDeltaTime;
             
-            // Force TimeScale maintenance in case another script tries to drift it
-            // But only if not paused
+            // Maintain timescale
             if (Time.timeScale != 0f && Time.timeScale != timeScaleIntensity)
-            {
-                 SetTimeScale(timeScaleIntensity, initialFixedDeltaTime);
-            }
+                SetTimeScale(timeScaleIntensity, initialFixedDeltaTime);
 
             yield return null;
         }
-
 
         // --- PHASE 3: SLOW EXIT ---
         if (freezeEndSound != null && player != null) 
@@ -159,13 +150,7 @@ public class FreezeTimeAbility : Ability
         while (timer < exitDuration)
         {
             if (player == null) { Cleanup(initialFixedDeltaTime, activeFilter, null, originalUpdateMode); yield break; }
-
-            // 3. PAUSE CHECK
-            if (Time.timeScale == 0f)
-            {
-                yield return null;
-                continue;
-            }
+            if (Time.timeScale == 0f) { yield return null; continue; }
 
             timer += Time.unscaledDeltaTime;
             float progress = Mathf.Clamp01(timer / exitDuration);
@@ -179,11 +164,8 @@ public class FreezeTimeAbility : Ability
             yield return null;
         }
 
-        // Final Cleanup
         Cleanup(initialFixedDeltaTime, activeFilter, playerAnimator, originalUpdateMode);
         if (cam != null && modifyCamera) cam.orthographicSize = startCamSize;
-
-        Debug.Log("Time Freeze Ended.");
     }
 
     private void SetTimeScale(float scale, float baseFixedDelta)
@@ -194,8 +176,6 @@ public class FreezeTimeAbility : Ability
 
     private void Cleanup(float resetFixedDeltaTime, GameObject filter, Animator anim, AnimatorUpdateMode originalMode)
     {
-        // Only reset time if the game isn't currently paused.
-        // If the player somehow cancels the ability while paused, we don't want to accidentally unpause the game.
         if (Time.timeScale > 0)
         {
             Time.timeScale = 1f;
@@ -204,6 +184,13 @@ public class FreezeTimeAbility : Ability
 
         if (filter != null) Destroy(filter);
         if (anim != null) anim.updateMode = originalMode;
-        isTimeFrozen = false;
+        
+        CleanupGlobalState();
+    }
+    
+    private void CleanupGlobalState()
+    {
+        IsTimeFrozen = false;
+        GlobalRechargeMultiplier = 1f;
     }
 }

@@ -16994,6 +16994,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d0492b93ff50678429418953ac61394a, type: 2}
   - {fileID: 11400000, guid: 31d15f54104a34f45833dc91cbc72dbd, type: 2}
   - {fileID: 11400000, guid: e5cd9d5655eedd3478e5d163138dbb18, type: 2}
+  normalCooldownColor: {r: 0.121568635, g: 0.1137255, b: 0.14117648, a: 1}
+  timeFrozenCooldownColor: {r: 1, g: 0.8264904, b: 0, a: 1}
 --- !u!1 &4279388165806875876
 GameObject:
   m_ObjectHideFlags: 0

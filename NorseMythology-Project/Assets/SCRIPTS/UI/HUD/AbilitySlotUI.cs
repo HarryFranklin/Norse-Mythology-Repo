@@ -177,7 +177,16 @@ public class AbilitySlotUI : MonoBehaviour
         
         if (max <= 0f) max = 0.01f;
 
+        // 1. UPDATE FILL AMOUNT
         cooldownOverlay.fillAmount = Mathf.Clamp01(remaining / max);
+
+        // 2. UPDATE COLOUR
+        // Ask the Manager what color we should display (Normal vs Time Frozen Cyan)
+        if (cooldownOverlay.fillAmount > 0)
+        {
+            cooldownOverlay.color = abilityManager.GetCurrentCooldownColor();
+        }
+
         UpdateStackCount();
     }
     
