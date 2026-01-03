@@ -12,8 +12,8 @@ public class AbilityManager : MonoBehaviour
     public Ability[] equippedAbilities = new Ability[4];
 
     [Header("UI Visuals")]
-    [SerializeField] private Color normalCooldownColor = new Color(0, 0, 0, 1f);
-    [SerializeField] private Color timeFrozenCooldownColor = new Color(1, 0.8f, 0, 1f);
+    [SerializeField] private Color normalCooldownColour = new Color(0, 0, 0, 1f);
+    [SerializeField] private Color timeFrozenCooldownColour = new Color(1, 0.8f, 0, 1f);
 
     [Header("Targeting Settings")]
     private bool isInTargetingMode = false;
@@ -81,9 +81,7 @@ public class AbilityManager : MonoBehaviour
         }
         else
         {
-            // If not frozen, we can match Standard Game Time or Unscaled Time 
-            // depending on if you want Pause to stop cooldowns.
-            // Usually: 
+            // If not frozen, match Standard Game Time or Unscaled Time 
             if (Time.timeScale == 0) rechargeDelta = 0; // Don't recharge if paused
             else rechargeDelta = Time.deltaTime; 
         }
@@ -109,12 +107,54 @@ public class AbilityManager : MonoBehaviour
         }
     }
 
+    // --- UPDATED LOGIC HERE ---
     private void HandleTargetingMode()
     {
         UpdateTargetingVisuals();
-        if (Input.GetKeyDown(KeyCode.Alpha1 + targetingAbilityIndex)) { CancelTargeting(); return; }
-        if (Input.GetMouseButtonDown(0)) { ExecuteTargetedAbility(); }
-        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetMouseButtonDown(1)) { CancelTargeting(); }
+
+        // 1. Check for Ability Keys (1-4)
+        for (int i = 0; i < 4; i++)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1 + i))
+            {
+                if (i == targetingAbilityIndex)
+                {
+                    // Scenario: Player pressed the SAME key again (e.g. 1 while holding 1)
+                    // Result: Toggle Off (Cancel)
+                    CancelTargeting();
+                }
+                else
+                {
+                    // Scenario: Player pressed a DIFFERENT key (e.g. 2 while holding 1)
+                    if (enableAbilitySwapping)
+                    {
+                        // Option A: SWAP
+                        // Cancel current, then immediately pick up the new one
+                        CancelTargeting();
+                        TryActivateAbility(i);
+                    }
+                    else
+                    {
+                        // Option B: CANCEL ONLY
+                        // Just drop the current ability.
+                        CancelTargeting();
+                    }
+                }
+                return; // Input handled, stop processing this frame
+            }
+        }
+
+        // 2. Execute Command (Left Click)
+        if (Input.GetMouseButtonDown(0))
+        {
+            ExecuteTargetedAbility();
+        }
+
+        // 3. Cancel Command (Right Click ONLY - Removed Escape)
+        if (Input.GetMouseButtonDown(1))
+        {
+            CancelTargeting();
+        }
     }
 
     private void UpdateTargetingVisuals()
@@ -132,6 +172,7 @@ public class AbilityManager : MonoBehaviour
             }
         }
     }
+
     private void TryActivateAbility(int index)
     {
         if (equippedAbilities[index] == null)
@@ -284,7 +325,6 @@ public class AbilityManager : MonoBehaviour
         return isInTargetingMode;
     }
 
-    // Method to add ability stack to equipped ability
     public void AddAbilityStack(int slotIndex)
     {
         if (slotIndex >= 0 && slotIndex < equippedAbilities.Length && equippedAbilities[slotIndex] != null)
@@ -293,7 +333,6 @@ public class AbilityManager : MonoBehaviour
         }
     }
 
-    // Method to get ability info including stacking
     public string GetAbilityInfo(int slotIndex)
     {
         if (slotIndex < 0 || slotIndex >= equippedAbilities.Length || equippedAbilities[slotIndex] == null)
@@ -307,11 +346,10 @@ public class AbilityManager : MonoBehaviour
 
     public Color GetCurrentCooldownColor()
     {
-        // Check the static state of the FreezeTimeAbility
         if (FreezeTimeAbility.IsTimeFrozen)
         {
-            return timeFrozenCooldownColor;
+            return timeFrozenCooldownColour;
         }
-        return normalCooldownColor;
+        return normalCooldownColour;
     }
 }

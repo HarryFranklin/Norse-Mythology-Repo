@@ -14,16 +14,28 @@ public class AbilityUIManager : MonoBehaviour
             return;
         }
         
-        for (int i = 0; i < abilitySlots.Length; i++)
+        RefreshAllSlots();
+    }
+
+    private void OnEnable()
+    {
+        if (abilityManager != null)
         {
-            if (abilitySlots[i] != null)
-            {
-                abilitySlots[i].Initialise(abilityManager, i);
-            }
-            else
-            {
-                Debug.LogWarning($"AbilityUIManager: AbilitySlot {i} is null!");
-            }
+            // Subscribe to events so UI text/icons update instantly 
+            // when Targeting Starts, Ends, or Ability is Used
+            abilityManager.OnAbilityTargetingStarted += UpdateSlot;
+            abilityManager.OnAbilityTargetingEnded += UpdateSlot;
+            abilityManager.OnAbilityUsed += UpdateSlot;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (abilityManager != null)
+        {
+            abilityManager.OnAbilityTargetingStarted -= UpdateSlot;
+            abilityManager.OnAbilityTargetingEnded -= UpdateSlot;
+            abilityManager.OnAbilityUsed -= UpdateSlot;
         }
     }
 
