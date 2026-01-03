@@ -17,8 +17,6 @@ public class AbilityChoiceManager : MonoBehaviour
     [Header("UI: Titles")]
     [SerializeField] private TextMeshProUGUI[] abilityTitles = new TextMeshProUGUI[3];
 
-    [Header("UI: Levels")]
-    [SerializeField] private TextMeshProUGUI[] abilityLevels = new TextMeshProUGUI[3];
     
     [Header("UI: Descriptions")]
     [Tooltip("Optional: Assign if you want to display ability descriptions")]
@@ -88,10 +86,6 @@ public class AbilityChoiceManager : MonoBehaviour
             // Update Title
             if (abilityTitles[i] != null) 
                 abilityTitles[i].text = ability.abilityName;
-            
-            // Update Level
-            if (abilityLevels[i] != null) 
-                abilityLevels[i].text = $"Level {ability.CurrentLevel}";
 
             // Update Description (New)
             if (abilityDescriptions[i] != null)
@@ -107,7 +101,6 @@ public class AbilityChoiceManager : MonoBehaviour
     {
         if (abilityIcons[i] != null) abilityIcons[i].sprite = null;
         if (abilityTitles[i] != null) abilityTitles[i].text = "";
-        if (abilityLevels[i] != null) abilityLevels[i].text = "";
         if (abilityDescriptions[i] != null) abilityDescriptions[i].text = "";
     }
     
@@ -158,7 +151,6 @@ public class AbilityChoiceManager : MonoBehaviour
         ResizeArray(ref choicePanels, 3);
         ResizeArray(ref abilityIcons, 3);
         ResizeArray(ref abilityTitles, 3);
-        ResizeArray(ref abilityLevels, 3);
         ResizeArray(ref abilityDescriptions, 3);
         ResizeArray(ref abilities, 3);
     }
