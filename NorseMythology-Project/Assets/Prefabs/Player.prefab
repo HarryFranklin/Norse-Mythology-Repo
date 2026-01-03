@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 7999376983117359208}
   - component: {fileID: 3355738878075777165}
   - component: {fileID: 2210422468025168400}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -61,6 +61,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -82,6 +84,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
@@ -209,6 +212,8 @@ MonoBehaviour:
   rigidBody: {fileID: 4768080365996666720}
   abilityManager: {fileID: 7999376983117359208}
   healthXPUIManager: {fileID: 0}
+  weaponHolder: {fileID: 0}
+  hammerSpawnPoint: {fileID: 0}
   isLevelUpPending: 0
   levelData: []
   healthRegen: 0
@@ -303,7 +308,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3298223956199484588}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: WeaponHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}

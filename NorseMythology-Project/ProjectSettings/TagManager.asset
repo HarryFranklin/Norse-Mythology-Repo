@@ -18,9 +18,9 @@ TagManager:
   - 
   - Entities
   - Props
-  - 
-  - 
-  - 
+  - PlayerProjectile
+  - Enemy
+  - Player
   - 
   - 
   - 

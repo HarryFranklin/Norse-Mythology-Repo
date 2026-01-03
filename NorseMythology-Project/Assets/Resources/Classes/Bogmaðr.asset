@@ -18,4 +18,4 @@ MonoBehaviour:
   startingStats: {fileID: 11400000, guid: 43272052d3ba10044a4795fedac1b2fa, type: 2}
   attackType: 1
   meleeWeaponPrefab: {fileID: 0}
-  projectilePrefab: {fileID: 8069157385012977378, guid: 707b35287c7ab7145ac43af0da5da04c, type: 3}
+  projectilePrefab: {fileID: 8069157385012977378, guid: acb2d54f00cb0334699573d1b528c54d, type: 3}

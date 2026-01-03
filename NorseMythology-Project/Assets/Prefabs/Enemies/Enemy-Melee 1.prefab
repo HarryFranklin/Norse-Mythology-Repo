@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -8163144035803369105}
   - component: {fileID: 8107912527878000944}
   - component: {fileID: 7141219909467034729}
-  m_Layer: 8
+  m_Layer: 11
   m_Name: Enemy-Melee 1
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -83,7 +83,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -445345009
   m_SortingLayer: 2
-  m_SortingOrder: 1
+  m_SortingOrder: -300
   m_Sprite: {fileID: 1155026677, guid: b4846c6d55cc7e04289a4624400db77c, type: 3}
   m_Color: {r: 0.8113208, g: 0.8113208, b: 0.8113208, a: 1}
   m_FlipX: 0
@@ -214,6 +214,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d9448619c5cfb4a89313ae4ad88df5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isStatic: 1
   sortingOrderOffset: 0
   precisionMultiplier: 100
   isCharacter: 1

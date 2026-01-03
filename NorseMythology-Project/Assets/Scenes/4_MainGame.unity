@@ -235,7 +235,6 @@ MonoBehaviour:
   currentWave: 1
   currentWaveType: 1
   waveDuration: 60
-  enemiesPerWave: 15
   healthScalingMultiplier: 1.1
   xpScalingMultiplier: 1.1
   gameManager: {fileID: 0}
@@ -9687,7 +9686,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1523948313}
-  m_Layer: 8
+  m_Layer: 12
   m_Name: HammerSlamPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11801,7 +11800,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8695533301707887517}
-  m_Layer: 8
+  m_Layer: 12
   m_Name: WeaponHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11895,7 +11894,7 @@ GameObject:
   - component: {fileID: 5460024955816791329}
   - component: {fileID: 6154477034003562291}
   - component: {fileID: 6154477034003562299}
-  m_Layer: 8
+  m_Layer: 12
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}

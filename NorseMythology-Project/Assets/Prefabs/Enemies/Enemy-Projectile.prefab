@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8934498446322721066}
-  m_Layer: 8
+  m_Layer: 11
   m_Name: FirePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 524826012584205259}
   - component: {fileID: 743393519591517595}
   - component: {fileID: 4917642506621432870}
-  m_Layer: 8
+  m_Layer: 11
   m_Name: Enemy-Projectile
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -115,7 +115,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -445345009
   m_SortingLayer: 2
-  m_SortingOrder: 1
+  m_SortingOrder: -300
   m_Sprite: {fileID: -507261137, guid: feae56874affbe3409838c0426d2c2e3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -246,6 +246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d9448619c5cfb4a89313ae4ad88df5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isStatic: 1
   sortingOrderOffset: 0
   precisionMultiplier: 100
   isCharacter: 1
