@@ -2,85 +2,38 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-[System.Serializable]
-public class AbilityChoice
-{
-    [Header("Panel Reference")]
-    public GameObject panel;
-    
-    [Header("UI Components")]
-    public Image abilityIconImage;
-    public TextMeshProUGUI abilityNameText;
-    public TextMeshProUGUI abilityLevelText;
-    
-    [Header("Derived Values (Debug)")]
-    [SerializeField] private string abilityName;
-    [SerializeField] private int abilityLevel;
-    [SerializeField] private Sprite abilityIconSprite;
-    
-    public string AbilityName => abilityName;
-    public int AbilityLevel => abilityLevel;
-    public Sprite AbilityIconSprite => abilityIconSprite;
-    
-    public void UpdateDisplay(Ability ability)
-    {
-        if (ability == null)
-        {
-            ClearDisplay();
-            return;
-        }
-        
-        abilityName = ability.abilityName;
-        abilityLevel = ability.CurrentLevel;
-        abilityIconSprite = ability.abilityIcon;
-        
-        if (abilityIconImage != null)
-            abilityIconImage.sprite = ability.abilityIcon;
-            
-        if (abilityNameText != null)
-            abilityNameText.text = ability.abilityName;
-            
-        if (abilityLevelText != null)
-            abilityLevelText.text = $"Level {ability.CurrentLevel}";
-    }
-    
-    public void ClearDisplay()
-    {
-        abilityName = "";
-        abilityLevel = 0;
-        abilityIconSprite = null;
-        
-        if (abilityIconImage != null)
-            abilityIconImage.sprite = null;
-            
-        if (abilityNameText != null)
-            abilityNameText.text = "";
-            
-        if (abilityLevelText != null)
-            abilityLevelText.text = "";
-    }
-}
-
 public class AbilityChoiceManager : MonoBehaviour
 {
-    [Header("Abilities")]
+    [Header("Abilities Data")]
     [SerializeField] private Ability[] abilities = new Ability[3];
+
+    [Header("UI: Panels")]
+    [Tooltip("Element 0 = Left, 1 = Middle, 2 = Right")]
+    [SerializeField] private GameObject[] choicePanels = new GameObject[3];
+
+    [Header("UI: Icons")]
+    [SerializeField] private Image[] abilityIcons = new Image[3];
+
+    [Header("UI: Titles")]
+    [SerializeField] private TextMeshProUGUI[] abilityTitles = new TextMeshProUGUI[3];
+
+    [Header("UI: Levels")]
+    [SerializeField] private TextMeshProUGUI[] abilityLevels = new TextMeshProUGUI[3];
     
-    [Header("Ability Choice Slots")]
-    [SerializeField] private AbilityChoice[] abilityChoices = new AbilityChoice[3];
-    
+    [Header("UI: Descriptions")]
+    [Tooltip("Optional: Assign if you want to display ability descriptions")]
+    [SerializeField] private TextMeshProUGUI[] abilityDescriptions = new TextMeshProUGUI[3];
+
     void Start()
     {
         UpdateAllDisplays();
     }
     
+    // --- Setters & Getters ---
+
     public void SetAbility(int slotIndex, Ability newAbility)
     {
-        if (slotIndex < 0 || slotIndex >= 3)
-        {
-            Debug.LogError($"Invalid slot index: {slotIndex}. Must be 0-2.");
-            return;
-        }
+        if (!IsValidSlot(slotIndex)) return;
         
         abilities[slotIndex] = newAbility;
         UpdateSlotDisplay(slotIndex);
@@ -88,12 +41,7 @@ public class AbilityChoiceManager : MonoBehaviour
     
     public Ability GetAbility(int slotIndex)
     {
-        if (slotIndex < 0 || slotIndex >= 3)
-        {
-            Debug.LogError($"Invalid slot index: {slotIndex}. Must be 0-2.");
-            return null;
-        }
-        
+        if (!IsValidSlot(slotIndex)) return null;
         return abilities[slotIndex];
     }
     
@@ -107,18 +55,14 @@ public class AbilityChoiceManager : MonoBehaviour
     
     public void SetAbilities(Ability[] newAbilities)
     {
-        if (newAbilities == null)
-        {
-            Debug.LogError("Abilities array is null.");
-            return;
-        }
+        if (newAbilities == null) return;
         
         int count = Mathf.Min(newAbilities.Length, 3);
         for (int i = 0; i < count; i++)
         {
             abilities[i] = newAbilities[i];
         }
-        
+        // Clear remaining slots if input array is smaller than 3
         for (int i = count; i < 3; i++)
         {
             abilities[i] = null;
@@ -127,21 +71,44 @@ public class AbilityChoiceManager : MonoBehaviour
         UpdateAllDisplays();
     }
     
-    public void UpdateSlotDisplay(int slotIndex)
+    // --- Display Logic ---
+
+    public void UpdateSlotDisplay(int i)
     {
-        if (slotIndex < 0 || slotIndex >= 3)
-        {
-            Debug.LogError($"Invalid slot index: {slotIndex}. Must be 0-2.");
-            return;
-        }
+        if (!IsValidSlot(i)) return;
         
-        if (abilityChoices[slotIndex] == null)
+        Ability ability = abilities[i];
+
+        if (ability != null)
         {
-            Debug.LogError($"Ability choice {slotIndex} is not assigned.");
-            return;
+            // Update Icon
+            if (abilityIcons[i] != null) 
+                abilityIcons[i].sprite = ability.abilityIcon;
+            
+            // Update Title
+            if (abilityTitles[i] != null) 
+                abilityTitles[i].text = ability.abilityName;
+            
+            // Update Level
+            if (abilityLevels[i] != null) 
+                abilityLevels[i].text = $"Level {ability.CurrentLevel}";
+
+            // Update Description (New)
+            if (abilityDescriptions[i] != null)
+                abilityDescriptions[i].text = ability.description;
         }
-        
-        abilityChoices[slotIndex].UpdateDisplay(abilities[slotIndex]);
+        else
+        {
+            ClearSlotDisplay(i);
+        }
+    }
+    
+    private void ClearSlotDisplay(int i)
+    {
+        if (abilityIcons[i] != null) abilityIcons[i].sprite = null;
+        if (abilityTitles[i] != null) abilityTitles[i].text = "";
+        if (abilityLevels[i] != null) abilityLevels[i].text = "";
+        if (abilityDescriptions[i] != null) abilityDescriptions[i].text = "";
     }
     
     public void UpdateAllDisplays()
@@ -152,19 +119,14 @@ public class AbilityChoiceManager : MonoBehaviour
         }
     }
     
+    // --- Management ---
+
     public void ClearSlot(int slotIndex)
     {
-        if (slotIndex < 0 || slotIndex >= 3)
-        {
-            Debug.LogError($"Invalid slot index: {slotIndex}. Must be 0-2.");
-            return;
-        }
+        if (!IsValidSlot(slotIndex)) return;
         
         abilities[slotIndex] = null;
-        if (abilityChoices[slotIndex] != null)
-        {
-            abilityChoices[slotIndex].ClearDisplay();
-        }
+        ClearSlotDisplay(slotIndex);
     }
     
     public void ClearAllSlots()
@@ -180,16 +142,32 @@ public class AbilityChoiceManager : MonoBehaviour
         UpdateAllDisplays();
     }
     
+    private bool IsValidSlot(int index)
+    {
+        if (index < 0 || index >= 3)
+        {
+            Debug.LogError($"Invalid slot index: {index}. Must be 0, 1, or 2.");
+            return false;
+        }
+        return true;
+    }
+
+    // Ensure arrays are sized correctly in Editor
     void OnValidate()
     {
-        if (abilityChoices == null || abilityChoices.Length != 3)
+        ResizeArray(ref choicePanels, 3);
+        ResizeArray(ref abilityIcons, 3);
+        ResizeArray(ref abilityTitles, 3);
+        ResizeArray(ref abilityLevels, 3);
+        ResizeArray(ref abilityDescriptions, 3);
+        ResizeArray(ref abilities, 3);
+    }
+
+    private void ResizeArray<T>(ref T[] array, int size)
+    {
+        if (array == null || array.Length != size)
         {
-            Debug.LogWarning("AbilityChoiceManager: abilityChoices array should have exactly 3 elements.");
-        }
-        
-        if (abilities == null || abilities.Length != 3)
-        {
-            Debug.LogWarning("AbilityChoiceManager: abilities array should have exactly 3 elements.");
+            System.Array.Resize(ref array, size);
         }
     }
 }
