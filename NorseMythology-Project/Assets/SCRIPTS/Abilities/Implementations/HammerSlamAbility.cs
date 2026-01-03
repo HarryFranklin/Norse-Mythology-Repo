@@ -84,7 +84,7 @@ public class HammerSlamAbility : Ability
 
     private void ApplyHammerSlamDamage(Vector3 center)
     {
-        LayerMask enemyLayerMask = 1 << 8; // Enemy layer
+        LayerMask enemyLayerMask = 1 << 11; // Enemy layer
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(center, StackedRadius, enemyLayerMask);
         
         foreach (var collider in hitColliders)
