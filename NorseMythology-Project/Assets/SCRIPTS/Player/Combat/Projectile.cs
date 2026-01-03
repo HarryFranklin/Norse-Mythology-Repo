@@ -10,6 +10,9 @@ public class Projectile : MonoBehaviour
     private bool isReturning;
     private Transform player;
     
+    // Flag to determine if we respect the custom time scale
+    private bool useAbilityTimeScale = false;
+    
     private Vector2 startPosition;
     private float traveledDistance;
     private bool returningToPlayer;
@@ -18,7 +21,8 @@ public class Projectile : MonoBehaviour
     private HashSet<Enemy> enemiesHitOutbound = new HashSet<Enemy>();
     private HashSet<Enemy> enemiesHitInbound = new HashSet<Enemy>();
     
-    public void Initialise(Vector2 dir, float spd, float range, float dmg, bool returning, Transform playerTransform)
+    // Optional 'useTimeScale' parameter (defaults to false to keep basic attacks working as before)
+    public void Initialise(Vector2 dir, float spd, float range, float dmg, bool returning, Transform playerTransform, bool useTimeScale = false)
     {
         direction = dir;
         speed = spd;
@@ -26,6 +30,7 @@ public class Projectile : MonoBehaviour
         damage = dmg;
         isReturning = returning;
         player = playerTransform;
+        useAbilityTimeScale = useTimeScale; // Store the setting
         startPosition = transform.position;
         
         // Rotate projectile to face direction
@@ -37,10 +42,18 @@ public class Projectile : MonoBehaviour
     
     private void Update()
     {
+        // Calculate the appropriate Delta Time for this frame
+        float deltaTime = Time.deltaTime;
+        if (useAbilityTimeScale && FreezeTimeAbility.IsTimeFrozen)
+        {
+            // Use the multiplier defined by the FreezeTimeAbility level
+            deltaTime = Time.unscaledDeltaTime * FreezeTimeAbility.GlobalRechargeMultiplier;
+        }
+
         if (!returningToPlayer)
         {
-            // Move forward
-            transform.Translate(direction * speed * Time.deltaTime, Space.World);
+            // Move forward using calculated deltaTime
+            transform.Translate(direction * speed * deltaTime, Space.World);
             traveledDistance = Vector2.Distance(startPosition, transform.position);
             
             // Check if should return or be destroyed
@@ -60,9 +73,9 @@ public class Projectile : MonoBehaviour
         }
         else
         {
-            // Return to player
+            // Return to player using calculated deltaTime
             Vector2 returnDirection = (player.position - transform.position).normalized;
-            transform.Translate(returnDirection * speed * Time.deltaTime, Space.World);
+            transform.Translate(returnDirection * speed * deltaTime, Space.World);
             
             // Check if reached player
             if (Vector2.Distance(transform.position, player.position) < 0.5f)
@@ -80,57 +93,34 @@ public class Projectile : MonoBehaviour
             Enemy enemy = other.GetComponent<Enemy>();
             if (enemy != null)
             {
-                Debug.Log($"Collision detected with {enemy.name} - Current Health: {enemy.currentHealth}, Returning: {returningToPlayer}");
-                
                 // Check if we should damage this enemy
                 bool shouldDamage = false;
                 
                 if (!returningToPlayer)
                 {
-                    // Outbound journey - check if we haven't hit this enemy yet
                     if (!enemiesHitOutbound.Contains(enemy))
                     {
                         enemiesHitOutbound.Add(enemy);
                         shouldDamage = true;
-                        Debug.Log($"NEW HIT: Axe hit {enemy.name} on outbound journey");
-                    }
-                    else
-                    {
-                        Debug.Log($"DUPLICATE: Already hit {enemy.name} on outbound journey");
                     }
                 }
                 else
                 {
-                    // Return journey - check if we haven't hit this enemy on return yet
                     if (!enemiesHitInbound.Contains(enemy))
                     {
                         enemiesHitInbound.Add(enemy);
                         shouldDamage = true;
-                        Debug.Log($"NEW HIT: Axe hit {enemy.name} on return journey");
-                    }
-                    else
-                    {
-                        Debug.Log($"DUPLICATE: Already hit {enemy.name} on return journey");
                     }
                 }
                 
                 if (shouldDamage)
                 {
-                    Debug.Log($"BEFORE DAMAGE: {enemy.name} health = {enemy.currentHealth}");
-                    Debug.Log($"Dealing {damage} damage to {enemy.name}");
                     enemy.TakeDamage(damage);
-                    Debug.Log($"AFTER DAMAGE: {enemy.name} health = {enemy.currentHealth}");
                     
-                    // Only destroy on outbound journey if not returning
                     if (!returningToPlayer && !isReturning)
                     {
-                        Debug.Log("Projectile destroyed after hitting enemy");
                         Destroy(gameObject);
                     }
-                }
-                else
-                {
-                    Debug.Log($"SKIPPED: Not damaging {enemy.name} (already hit)");
                 }
             }
         }
