@@ -13,12 +13,16 @@ public class AbilityManager : MonoBehaviour
 
     [Header("UI Visuals")]
     [SerializeField] private Color normalCooldownColor = new Color(0, 0, 0, 1f);
-    [SerializeField] private Color timeFrozenCooldownColor = new Color(0, 1, 1, 1f); // Cyan
+    [SerializeField] private Color timeFrozenCooldownColor = new Color(1, 0.8f, 0, 1f);
 
     [Header("Targeting Settings")]
     private bool isInTargetingMode = false;
     private int targetingAbilityIndex = -1;
     private Ability currentTargetingAbility;
+
+    [Header("Input Settings")]
+    [Tooltip("If true, pressing another ability key while targeting will switch to that ability. If false, it will just cancel the current targeting.")]
+    public bool enableAbilitySwapping = true;
     
     // Store original cursor for restoration
     private Texture2D originalCursor;
