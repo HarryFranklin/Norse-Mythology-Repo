@@ -225,19 +225,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waveItems:
   - waveType: 1
-    criteria: 15
+    criteria: 8
   - waveType: 1
-    criteria: 25
+    criteria: 12
+  - waveType: 1
+    criteria: 15
   - waveType: 0
     criteria: 60
-  - waveType: 1
-    criteria: 40
   currentWave: 1
   currentWaveType: 1
   waveDuration: 100
   enemiesPerWave: 15
-  healthScalingMultiplier: 1.05
-  xpScalingMultiplier: 1.05
+  healthScalingMultiplier: 1.1
+  xpScalingMultiplier: 1.1
   gameManager: {fileID: 0}
   enemySpawner: {fileID: 1261929403}
 --- !u!4 &100481637
@@ -2912,28 +2912,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemiesParent: {fileID: 1442276654}
-  waveManager: {fileID: 0}
+  waveManager: {fileID: 100481636}
   meleeEnemyTags:
   - MeleeEnemy_A
   - MeleeEnemy_B
   projectileEnemyTags:
   - ProjectileEnemy_A
   - ProjectileEnemy_B
-  meleeRatio: 0.8
+  meleeRatio: 0.9
   baseSpawnRate: 1
   playerLevelSpawnReduction: 0.05
   gameLevelSpawnReduction: 0.1
   targetEnemyLevel: 1
   levelDistribution:
-    belowLevelRatio: 0.2
+    belowLevelRatio: 0.25
     targetLevelRatio: 0.6
-    aboveLevelRatio: 0.2
+    aboveLevelRatio: 0.15
     autoNormalise: 1
   minSpawnRadius: 10
-  maxSpawnRadius: 15
-  baseMaxEnemies: 30
+  maxSpawnRadius: 17
+  baseMaxEnemies: 16
   maxEnemiesIncrement: 4
-  absoluteMaxEnemies: 50
+  absoluteMaxEnemies: 30
   player: {fileID: 5532654241855734203}
   gridLayerMask:
     serializedVersion: 2
