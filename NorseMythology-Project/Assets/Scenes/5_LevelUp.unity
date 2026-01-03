@@ -429,7 +429,7 @@ GameObject:
   - component: {fileID: 121652689}
   - component: {fileID: 121652690}
   m_Layer: 5
-  m_Name: RarityPanel
+  m_Name: AbilityPosition 3-RarityPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -982,28 +982,26 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  abilityChoices:
-  - panel: {fileID: 567781566}
-    abilityIconImage: {fileID: 1444228276}
-    abilityNameText: {fileID: 1810833713}
-    abilityLevelText: {fileID: 0}
-    abilityName: 
-    abilityLevel: 0
-    abilityIconSprite: {fileID: 0}
-  - panel: {fileID: 91031713}
-    abilityIconImage: {fileID: 1444228276}
-    abilityNameText: {fileID: 571144070}
-    abilityLevelText: {fileID: 0}
-    abilityName: 
-    abilityLevel: 0
-    abilityIconSprite: {fileID: 0}
-  - panel: {fileID: 26693381}
-    abilityIconImage: {fileID: 787211654}
-    abilityNameText: {fileID: 1837207785}
-    abilityLevelText: {fileID: 0}
-    abilityName: 
-    abilityLevel: 0
-    abilityIconSprite: {fileID: 0}
+  choicePanels:
+  - {fileID: 567781566}
+  - {fileID: 91031713}
+  - {fileID: 26693381}
+  abilityIcons:
+  - {fileID: 1444228276}
+  - {fileID: 1587123689}
+  - {fileID: 787211654}
+  abilityTitles:
+  - {fileID: 1810833713}
+  - {fileID: 571144070}
+  - {fileID: 1837207785}
+  abilityLevels:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  abilityDescriptions:
+  - {fileID: 551443729}
+  - {fileID: 1307353947}
+  - {fileID: 1740340469}
 --- !u!1 &262956651
 GameObject:
   m_ObjectHideFlags: 0
@@ -1753,7 +1751,7 @@ GameObject:
   - component: {fileID: 356351341}
   - component: {fileID: 356351342}
   m_Layer: 5
-  m_Name: RarityPanel
+  m_Name: AbilityPosition 4-RarityPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1967,7 +1965,7 @@ GameObject:
   - component: {fileID: 472208849}
   - component: {fileID: 472208850}
   m_Layer: 5
-  m_Name: TooltipPanel
+  m_Name: RightAbility-TooltipPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2714,7 +2712,7 @@ GameObject:
   - component: {fileID: 551443728}
   - component: {fileID: 551443729}
   m_Layer: 5
-  m_Name: Description
+  m_Name: LeftAbility-Description
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2931,7 +2929,7 @@ GameObject:
   - component: {fileID: 571144069}
   - component: {fileID: 571144070}
   m_Layer: 5
-  m_Name: AbilityTitle
+  m_Name: MiddleAbility-AbilityTitle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4060,7 +4058,7 @@ GameObject:
   - component: {fileID: 698342335}
   - component: {fileID: 698342334}
   m_Layer: 5
-  m_Name: RarityPanel
+  m_Name: LeftAbility-RarityPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4217,7 +4215,7 @@ GameObject:
   - component: {fileID: 698962172}
   - component: {fileID: 698962173}
   m_Layer: 5
-  m_Name: RarityPanel
+  m_Name: AbilityPosition 2-RarityPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4292,7 +4290,7 @@ GameObject:
   - component: {fileID: 772004503}
   - component: {fileID: 772004502}
   m_Layer: 5
-  m_Name: RarityPanel
+  m_Name: RightAbility-RarityPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4367,7 +4365,7 @@ GameObject:
   - component: {fileID: 787211655}
   - component: {fileID: 787211654}
   m_Layer: 5
-  m_Name: AbilitySprite
+  m_Name: RightAbility-AbilitySprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4579,7 +4577,7 @@ GameObject:
   - component: {fileID: 885277175}
   - component: {fileID: 885277177}
   m_Layer: 5
-  m_Name: Button
+  m_Name: LeftAbility-Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4712,7 +4710,7 @@ GameObject:
   - component: {fileID: 885797604}
   - component: {fileID: 885797606}
   m_Layer: 5
-  m_Name: Button
+  m_Name: RightAbility-Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5235,7 +5233,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1224547653379124671, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
       propertyPath: m_Name
-      value: Ability 3 Icon
+      value: AbilityPosition 3-Ability 3 Icon
       objectReference: {fileID: 0}
     - target: {fileID: 1585023917688891226, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
       propertyPath: m_Pivot.x
@@ -5333,6 +5331,14 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1971230580412889362, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+      propertyPath: m_Name
+      value: AbilityPosition 3-Panel
+      objectReference: {fileID: 0}
+    - target: {fileID: 2329853894997726162, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+      propertyPath: m_Name
+      value: AbilityPosition 3-KeyReminder
+      objectReference: {fileID: 0}
     - target: {fileID: 4098965416607616768, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
       propertyPath: m_Name
       value: AbilityPosition 3
@@ -5340,6 +5346,10 @@ PrefabInstance:
     - target: {fileID: 6082212691440741822, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
       propertyPath: cooldownOverlay
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8039525973987067930, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+      propertyPath: m_Name
+      value: AbilityPosition 3-StackCount
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -5393,7 +5403,7 @@ GameObject:
   - component: {fileID: 973553446}
   - component: {fileID: 973553447}
   m_Layer: 5
-  m_Name: RarityPanel
+  m_Name: AbilityPosition 1-RarityPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5471,7 +5481,7 @@ GameObject:
   - component: {fileID: 989772798}
   - component: {fileID: 989772799}
   m_Layer: 5
-  m_Name: TooltipPanel
+  m_Name: MiddleAbility-TooltipPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5959,7 +5969,7 @@ GameObject:
   - component: {fileID: 1061675787}
   - component: {fileID: 1061675786}
   m_Layer: 5
-  m_Name: Replace
+  m_Name: AbilityPosition 3-Replace
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6473,7 +6483,7 @@ GameObject:
   - component: {fileID: 1131557642}
   - component: {fileID: 1131557641}
   m_Layer: 5
-  m_Name: Replace
+  m_Name: AbilityPosition 4-Replace
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6593,7 +6603,7 @@ GameObject:
   - component: {fileID: 1159710452}
   - component: {fileID: 1159710451}
   m_Layer: 5
-  m_Name: RarityPanel
+  m_Name: MiddleAbility-RarityPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6666,7 +6676,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1224547653379124671, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
       propertyPath: m_Name
-      value: Ability 2 Icon
+      value: AbilityPosition 2-Ability 2 Icon
       objectReference: {fileID: 0}
     - target: {fileID: 1585023917688891226, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
       propertyPath: m_Pivot.x
@@ -6764,6 +6774,14 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1971230580412889362, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+      propertyPath: m_Name
+      value: AbilityPosition 2-Panel
+      objectReference: {fileID: 0}
+    - target: {fileID: 2329853894997726162, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+      propertyPath: m_Name
+      value: AbilityPosition 2-KeyReminder
+      objectReference: {fileID: 0}
     - target: {fileID: 4098965416607616768, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
       propertyPath: m_Name
       value: AbilityPosition 2
@@ -6771,6 +6789,10 @@ PrefabInstance:
     - target: {fileID: 6082212691440741822, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
       propertyPath: cooldownOverlay
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8039525973987067930, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+      propertyPath: m_Name
+      value: AbilityPosition 2-StackCount
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -7087,7 +7109,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1224547653379124671, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
       propertyPath: m_Name
-      value: Ability 4 Icon
+      value: AbilityPosition 4-Ability 4 Icon
       objectReference: {fileID: 0}
     - target: {fileID: 1585023917688891226, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
       propertyPath: m_Pivot.x
@@ -7185,6 +7207,14 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1971230580412889362, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+      propertyPath: m_Name
+      value: AbilityPosition 4-Panel
+      objectReference: {fileID: 0}
+    - target: {fileID: 2329853894997726162, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+      propertyPath: m_Name
+      value: AbilityPosition 4-KeyReminder
+      objectReference: {fileID: 0}
     - target: {fileID: 4098965416607616768, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
       propertyPath: m_Name
       value: AbilityPosition 4
@@ -7192,6 +7222,10 @@ PrefabInstance:
     - target: {fileID: 6082212691440741822, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
       propertyPath: cooldownOverlay
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8039525973987067930, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+      propertyPath: m_Name
+      value: AbilityPosition 4-StackCount
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -7389,7 +7423,7 @@ GameObject:
   - component: {fileID: 1307353946}
   - component: {fileID: 1307353947}
   m_Layer: 5
-  m_Name: Description
+  m_Name: MiddleAbility-Description
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8184,7 +8218,7 @@ GameObject:
   - component: {fileID: 1444228277}
   - component: {fileID: 1444228276}
   m_Layer: 5
-  m_Name: AbilitySprite
+  m_Name: LeftAbility-AbilitySprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8516,7 +8550,7 @@ GameObject:
   - component: {fileID: 1587123690}
   - component: {fileID: 1587123689}
   m_Layer: 5
-  m_Name: AbilitySprite
+  m_Name: MiddleAbility-AbilitySprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8708,6 +8742,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 698868453}
     m_Modifications:
+    - target: {fileID: 1224547653379124671, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+      propertyPath: m_Name
+      value: AbilityPosition 1-Ability 1 Icon
+      objectReference: {fileID: 0}
     - target: {fileID: 1585023917688891226, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -8804,6 +8842,14 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1971230580412889362, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+      propertyPath: m_Name
+      value: AbilityPosition 1-Panel
+      objectReference: {fileID: 0}
+    - target: {fileID: 2329853894997726162, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+      propertyPath: m_Name
+      value: AbilityPosition 1-KeyReminder
+      objectReference: {fileID: 0}
     - target: {fileID: 4098965416607616768, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
       propertyPath: m_Name
       value: AbilityPosition 1
@@ -8811,6 +8857,10 @@ PrefabInstance:
     - target: {fileID: 6082212691440741822, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
       propertyPath: cooldownOverlay
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8039525973987067930, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+      propertyPath: m_Name
+      value: AbilityPosition 1-StackCount
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -9001,7 +9051,7 @@ GameObject:
   - component: {fileID: 1684983841}
   - component: {fileID: 1684983843}
   m_Layer: 5
-  m_Name: Button
+  m_Name: MiddleAbility-Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9134,7 +9184,7 @@ GameObject:
   - component: {fileID: 1698210486}
   - component: {fileID: 1698210485}
   m_Layer: 5
-  m_Name: Replace
+  m_Name: AbilityPosition 2-Replace
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9254,7 +9304,7 @@ GameObject:
   - component: {fileID: 1740340468}
   - component: {fileID: 1740340469}
   m_Layer: 5
-  m_Name: Description
+  m_Name: RightAbility-Description
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9604,7 +9654,7 @@ GameObject:
   - component: {fileID: 1774446073}
   - component: {fileID: 1774446072}
   m_Layer: 5
-  m_Name: Replace
+  m_Name: AbilityPosition 1-Replace
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9871,7 +9921,7 @@ GameObject:
   - component: {fileID: 1793774672}
   - component: {fileID: 1793774673}
   m_Layer: 5
-  m_Name: TooltipPanel
+  m_Name: LeftAbility-TooltipPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9991,7 +10041,7 @@ GameObject:
   - component: {fileID: 1810833712}
   - component: {fileID: 1810833713}
   m_Layer: 5
-  m_Name: AbilityTitle
+  m_Name: LeftAbility-AbilityTitle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10271,7 +10321,7 @@ GameObject:
   - component: {fileID: 1837207786}
   - component: {fileID: 1837207785}
   m_Layer: 5
-  m_Name: AbilityTitle
+  m_Name: RightAbility-AbilityTitle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
