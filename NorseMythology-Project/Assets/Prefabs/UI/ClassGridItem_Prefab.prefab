@@ -163,6 +163,7 @@ GameObject:
   - component: {fileID: 6422712240643844933}
   - component: {fileID: 7979896613860876421}
   - component: {fileID: 3213431563879713582}
+  - component: {fileID: 9146775485103641764}
   m_Layer: 5
   m_Name: ClassGridItem_Prefab
   m_TagString: Untagged
@@ -291,6 +292,21 @@ MonoBehaviour:
   classNameText: {fileID: 5396820878468735302}
   selectedSize: {x: 90, y: 90}
   deselectedSize: {x: 100, y: 100}
+--- !u!114 &9146775485103641764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6648944645462226600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 203c974a456f4e643a140aeab8095287, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIElementSound
+  customClickSound: {fileID: 0}
+  customToggleSound: {fileID: 0}
+  hoverSound: {fileID: 0}
 --- !u!1 &8169631791894078403
 GameObject:
   m_ObjectHideFlags: 0
