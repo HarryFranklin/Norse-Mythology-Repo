@@ -80,8 +80,13 @@ MonoBehaviour:
   hammerPrefab: {fileID: 7752504696187829020, guid: c71af927813254c4c868d018b50b63e6, type: 3}
   shockwavePrefab: {fileID: 6445666186361868711, guid: 9deea548c44c9ac4e94d6932a0d85eaf, type: 3}
   dustCloudPrefab: {fileID: 1967835574231978638, guid: 3e196c9e632c76841a71cb6e2dc6d010, type: 3}
-  slamSound: {fileID: 0}
-  shockwaveSound: {fileID: 0}
+  slamSound: {fileID: 8300000, guid: 51593887d26c97c42829da2e987af9d3, type: 3}
+  slamVolume: 1
+  shockwaveSound: {fileID: 8300000, guid: 24a4cc383937b40468eda2fed3a6bd5e, type: 3}
+  shockwaveVolume: 1
+  useRandomPitch: 1
+  shakeMagnitude: 0.2
+  defaultShakeDuration: 0.3
   damageFalloff:
     serializedVersion: 2
     m_Curve:

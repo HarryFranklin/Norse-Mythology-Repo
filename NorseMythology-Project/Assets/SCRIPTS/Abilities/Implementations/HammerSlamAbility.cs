@@ -10,8 +10,23 @@ public class HammerSlamAbility : Ability
     
     [Header("Audio")]
     [SerializeField] private AudioClip slamSound;
+    [Range(0f, 1f)] 
+    [SerializeField] private float slamVolume = 1f;
+
+    [Tooltip("The secondary lightning/shockwave noise.")]
     [SerializeField] private AudioClip shockwaveSound;
+    [Range(0f, 1f)] 
+    [SerializeField] private float shockwaveVolume = 1f;
+
+    [Tooltip("If true, randomises pitch slightly for a heavier, organic feel.")]
+    [SerializeField] private bool useRandomPitch = true;
     
+    [Header("Screen Shake")]
+    [Tooltip("Base shake magnitude.")]
+    [SerializeField] private float shakeMagnitude = 0.4f;
+    [Tooltip("Fallback duration if no shockwave sound is assigned.")]
+    [SerializeField] private float defaultShakeDuration = 0.3f;
+
     [Header("Falloff Curves")]
     [SerializeField] private AnimationCurve damageFalloff = AnimationCurve.EaseInOut(0f, 1f, 1f, 0.3f);
     [SerializeField] private AnimationCurve knockbackFalloff = AnimationCurve.EaseInOut(0f, 1f, 1f, 0.4f);
@@ -47,8 +62,6 @@ public class HammerSlamAbility : Ability
         RemoveStack();
 
         Transform spawnTransform = player.hammerSpawnPoint;
-        
-        // Fallback: Use the player's position if I forgot to drag it in.
         Vector3 slamPosition = (spawnTransform != null) ? spawnTransform.position : player.transform.position;
 
         if (spawnTransform == null)
@@ -56,28 +69,38 @@ public class HammerSlamAbility : Ability
             slamPosition = player.transform.position;
             slamPosition.y -= 0.5f;
         }
-        else
-        {
-            slamPosition = spawnTransform.position;
-        }
 
         Quaternion slamRotation = (spawnTransform != null) ? spawnTransform.rotation : Quaternion.identity;
 
-        // Play sound effects
-        if (slamSound != null)
-            AudioSource.PlayClipAtPoint(slamSound, slamPosition);
-        
+        // --- AUDIO ---
+        if (AudioManager.Instance != null)
+        {
+            if (slamSound != null) AudioManager.Instance.PlaySFX(slamSound, slamVolume, useRandomPitch);
+            if (shockwaveSound != null) AudioManager.Instance.PlaySFX(shockwaveSound, shockwaveVolume, useRandomPitch);
+        }
+
+        // --- SCREEN SHAKE ---
+        if (Camera.main != null)
+        {
+            CameraController cam = Camera.main.GetComponent<CameraController>();
+            if (cam != null)
+            {
+                // Calculate dynamic duration
+                float finalShakeDuration = defaultShakeDuration;
+                if (shockwaveSound != null)
+                {
+                    finalShakeDuration = shockwaveSound.length;
+                }
+
+                cam.TriggerShake(finalShakeDuration, shakeMagnitude);
+            }
+        }
+
         // Spawn visual effects
         SpawnImpactEffects(slamPosition, slamRotation);
         
         // Apply knockback damage 
         ApplyHammerSlamDamage(slamPosition);
-        
-        // Play delayed shockwave sound
-        if (shockwaveSound != null)
-        {
-            player.StartCoroutine(PlayDelayedShockwaveSound(0.2f));
-        }
         
         Debug.Log($"Hammer Slam activated at {slamPosition}");
     }
@@ -132,38 +155,19 @@ public class HammerSlamAbility : Ability
         }
     }
 
-    private System.Collections.IEnumerator PlayDelayedShockwaveSound(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        if (shockwaveSound != null)
-        {
-            Vector3 soundPos = Camera.main != null ? Camera.main.transform.position : Vector3.zero;
-            AudioSource.PlayClipAtPoint(shockwaveSound, soundPos);
-        }
-    }
-
     private void SpawnImpactEffects(Vector3 position, Quaternion rotation)
     {
-        // 1. Hammer Visual
-        if (hammerPrefab != null)
-        {
-            Instantiate(hammerPrefab, position, rotation);
-        }
-
-        // 2. Shockwave
+        if (hammerPrefab != null) Instantiate(hammerPrefab, position, rotation);
+        
         if (shockwavePrefab != null)
         {
             GameObject shockwave = Instantiate(shockwavePrefab, position, Quaternion.identity);
             shockwave.transform.localScale = Vector3.one * (StackedRadius / 4f); 
         }
 
-        // 3. Dust Cloud
-        if (dustCloudPrefab != null)
-        {
-            Instantiate(dustCloudPrefab, position, Quaternion.identity);
-        }
+        if (dustCloudPrefab != null) Instantiate(dustCloudPrefab, position, Quaternion.identity);
     }
-
+    
     [ContextMenu("Test Hammer Slam")]
     private void TestHammerSlam()
     {
