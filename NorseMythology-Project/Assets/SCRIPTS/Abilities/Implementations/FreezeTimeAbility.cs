@@ -16,8 +16,26 @@ public class FreezeTimeAbility : Ability
 
     [Header("Audio")]
     [SerializeField] private AudioClip freezeStartSound;
-    [SerializeField] private AudioClip freezeEndSound;
     
+    [Range(0f, 1f)] 
+    [SerializeField] private float startVolume = 1f;
+
+    [Tooltip("The looping tick sound.")]
+    [SerializeField] private AudioClip freezeLoopSound; 
+    
+    [Tooltip("Controls how loud the tick loop is (0.5 = 50% volume).")]
+    [Range(0f, 1f)] 
+    [SerializeField] private float loopVolumeScale = 0.5f; 
+    
+    [SerializeField] private AudioClip freezeEndSound;
+    // NEW: Volume control for end
+    [Range(0f, 1f)] 
+    [SerializeField] private float endVolume = 1f;
+
+    [Header("Audio Dynamics")]
+    [Tooltip("How high the pitch goes right before the ability ends (1.5 = +50% speed).")]
+    [SerializeField] private float exitPitchTarget = 1.5f;
+
     [Header("Visuals")]
     [SerializeField] private GameObject screenFilterPrefab;
 
@@ -41,14 +59,11 @@ public class FreezeTimeAbility : Ability
 
     public override void InitialiseFromCodeMatrix()
     {
-        // SpecialValue1 = Target Camera Size
-        // SpecialValue2 = Ability Recharge Factor (0.0 = Locked to Game Time, 1.0 = Realtime)
-        
-        SetLevelData(1, cooldown: 15f, duration: 3f, maxStacks: 1, stackRegenTime: 15f, specialValue1: 5.8f, specialValue2: 0.1f); // 10% recovery
+        SetLevelData(1, cooldown: 15f, duration: 3f, maxStacks: 1, stackRegenTime: 15f, specialValue1: 5.8f, specialValue2: 0.1f); 
         SetLevelData(2, cooldown: 12f, duration: 4f, maxStacks: 1, stackRegenTime: 12f, specialValue1: 6.0f, specialValue2: 0.3f);
         SetLevelData(3, cooldown: 10f, duration: 5f, maxStacks: 1, stackRegenTime: 10f, specialValue1: 6.2f, specialValue2: 0.5f);
         SetLevelData(4, cooldown: 8f, duration: 6f, maxStacks: 2, stackRegenTime: 8f,  specialValue1: 6.4f, specialValue2: 0.7f);
-        SetLevelData(5, cooldown: 6f, duration: 7f, maxStacks: 3, stackRegenTime: 10f, specialValue1: 6.6f, specialValue2: 0.8f); // 80% recovery
+        SetLevelData(5, cooldown: 6f, duration: 7f, maxStacks: 3, stackRegenTime: 10f, specialValue1: 6.6f, specialValue2: 0.8f); 
     }
 
     public override bool CanActivate(Player player)
@@ -68,11 +83,7 @@ public class FreezeTimeAbility : Ability
     {
         IsTimeFrozen = true;
         
-        // 1. Calculate the Multiplier based on the CURRENT Level's SpecialValue2
         float recoveryFactor = GetCurrentLevelData().specialValue2; 
-        
-        // If TimeScale is 0.05 and Factor is 0.9, we want result close to 1.0
-        // If Factor is 0.1, we want result close to 0.05
         GlobalRechargeMultiplier = Mathf.Lerp(timeScaleIntensity, 1f, recoveryFactor);
 
         float initialFixedDeltaTime = 0.02f;
@@ -87,8 +98,18 @@ public class FreezeTimeAbility : Ability
             playerAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
         }
 
-        if (freezeStartSound != null) 
-            AudioSource.PlayClipAtPoint(freezeStartSound, player.transform.position);
+        // --- AUDIO START ---
+        if (AudioManager.Instance != null)
+        {
+            // Passing startVolume. Ensure your AudioManager has an overload for this!
+            if (freezeStartSound != null) AudioManager.Instance.PlaySFX(freezeStartSound, startVolume);
+            
+            if (freezeLoopSound != null) 
+            {
+                AudioManager.Instance.PlayLoop(freezeLoopSound, 0f);
+                AudioManager.Instance.SetLoopPitch(1f);
+            }
+        }
 
         GameObject activeFilter = null;
         if (screenFilterPrefab != null)
@@ -102,7 +123,7 @@ public class FreezeTimeAbility : Ability
         if (targetCamSize > maxCameraSizeCap) targetCamSize = maxCameraSizeCap;
         if (targetCamSize <= 0.1f) targetCamSize = startCamSize; 
 
-        // --- PHASE 1: FAST ENTRY ---
+        // --- PHASE 1: ENTRY ---
         float timer = 0f;
         while (timer < entryDuration)
         {
@@ -118,12 +139,17 @@ public class FreezeTimeAbility : Ability
             if (cam != null && modifyCamera)
                 cam.orthographicSize = Mathf.Lerp(startCamSize, targetCamSize, progress);
 
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.SetLoopVolume(progress * loopVolumeScale); 
+            }
+
             yield return null;
         }
 
         if (Time.timeScale > 0) SetTimeScale(timeScaleIntensity, initialFixedDeltaTime);
         if (cam != null && modifyCamera) cam.orthographicSize = targetCamSize;
-
+        
         // --- PHASE 2: HOLD ---
         float holdDuration = StackedDuration - entryDuration - exitDuration;
         float holdTimer = 0f;
@@ -135,16 +161,28 @@ public class FreezeTimeAbility : Ability
 
             holdTimer += Time.unscaledDeltaTime;
             
-            // Maintain timescale
             if (Time.timeScale != 0f && Time.timeScale != timeScaleIntensity)
                 SetTimeScale(timeScaleIntensity, initialFixedDeltaTime);
+
+            if (AudioManager.Instance != null) 
+            {
+                AudioManager.Instance.SetLoopVolume(loopVolumeScale);
+            }
 
             yield return null;
         }
 
-        // --- PHASE 3: SLOW EXIT ---
-        if (freezeEndSound != null && player != null) 
-            AudioSource.PlayClipAtPoint(freezeEndSound, player.transform.position);
+        // --- PHASE 3: EXIT ---
+        if (AudioManager.Instance != null)
+        {
+            // Passing endVolume
+            if (freezeEndSound != null) AudioManager.Instance.PlaySFX(freezeEndSound, endVolume);
+        }
+        else if (freezeEndSound != null && player != null) 
+        {
+            // PlayClipAtPoint natively supports volume as the 3rd argument
+            AudioSource.PlayClipAtPoint(freezeEndSound, player.transform.position, endVolume);
+        }
 
         timer = 0f;
         while (timer < exitDuration)
@@ -160,6 +198,15 @@ public class FreezeTimeAbility : Ability
 
             if (cam != null && modifyCamera)
                 cam.orthographicSize = Mathf.Lerp(targetCamSize, startCamSize, progress);
+
+            if (AudioManager.Instance != null)
+            {
+                float currentVol = (1f - progress) * loopVolumeScale;
+                AudioManager.Instance.SetLoopVolume(currentVol);
+                
+                float currentPitch = Mathf.Lerp(1f, exitPitchTarget, progress);
+                AudioManager.Instance.SetLoopPitch(currentPitch);
+            }
 
             yield return null;
         }
@@ -184,6 +231,12 @@ public class FreezeTimeAbility : Ability
 
         if (filter != null) Destroy(filter);
         if (anim != null) anim.updateMode = originalMode;
+        
+        if (AudioManager.Instance != null) 
+        {
+            AudioManager.Instance.StopLoop(fadeOut: false);
+            AudioManager.Instance.SetLoopPitch(1f);
+        }
         
         CleanupGlobalState();
     }

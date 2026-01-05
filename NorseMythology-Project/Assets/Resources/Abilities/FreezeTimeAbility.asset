@@ -83,6 +83,11 @@ MonoBehaviour:
   exitDuration: 0.5
   modifyCamera: 1
   maxCameraSizeCap: 6.75
-  freezeStartSound: {fileID: 0}
-  freezeEndSound: {fileID: 0}
+  freezeStartSound: {fileID: 8300000, guid: b69eb594b8ee8d74c9d91cd580be849b, type: 3}
+  startVolume: 1
+  freezeLoopSound: {fileID: 8300000, guid: 8057f9a75cd6e44478f1ffe1c40b1ac9, type: 3}
+  loopVolumeScale: 1
+  freezeEndSound: {fileID: 8300000, guid: 49c63d393baae734b82740fa6fc0c2d1, type: 3}
+  endVolume: 1
+  exitPitchTarget: 1.25
   screenFilterPrefab: {fileID: 0}
