@@ -14,19 +14,15 @@ public class AbilitySelectorManager : MonoBehaviour
     public Button skipButton;
     public TextMeshProUGUI levelText;
 
-    [Header("Selector UI")]
-    public GameObject selectorPanel;
+    [Header("UI References")]
+    [SerializeField] private GameObject selectorPanel;
+    [SerializeField] private GameObject replacementPanel;
 
     [Header("Tooltips")]
     public AbilityTooltipPanel[] tooltipPanels; 
 
     [Header("Replacement UI")]
-    public GameObject replacementPanel;
-    public Button[] replaceButtons = new Button[4];
-    public Image[] replaceRarityPanels = new Image[4];
-    public TextMeshProUGUI[] replaceButtonLabels = new TextMeshProUGUI[4];
-    public Image[] replaceButtonIcons = new Image[4];
-    public TextMeshProUGUI[] replaceButtonLevels = new TextMeshProUGUI[4];
+    [SerializeField] private AbilityReplacementSlot[] replacementSlots;
 
     [Header("Ability Display")]
     public TextMeshProUGUI[] abilityNames = new TextMeshProUGUI[3];
@@ -156,45 +152,57 @@ public class AbilitySelectorManager : MonoBehaviour
         }
     }
 
-    void ShowReplacementOptions(Ability newAbility)
+    private void ShowReplacementOptions(Ability newAbility)
     {
         if (selectorPanel != null) selectorPanel.SetActive(false);
+        
         if (replacementPanel != null)
         {
             replacementPanel.SetActive(true);
-            for (int i = 0; i < replaceButtons.Length; i++)
+
+            for (int i = 0; i < replacementSlots.Length; i++)
             {
-                int replaceIndex = i;
-                // Safety check for debug mode where you might have < 4 abilities
-                if (replaceIndex >= playerData.abilities.Count) 
+                // 1. Check if we have an ability in this slot index
+                if (i >= playerData.abilities.Count)
                 {
-                    replaceButtons[i].gameObject.SetActive(false);
+                    replacementSlots[i].Panel.SetActive(false);
                     continue;
                 }
-                
-                replaceButtons[i].gameObject.SetActive(true);
+
+                replacementSlots[i].Panel.SetActive(true);
+
+                // 2. Get the Data
                 GameManager.PlayerAbilityState equippedAbilityState = playerData.abilities[i];
                 Ability equippedAbility = equippedAbilityState.ability;
 
-                if (replaceButtonLabels[i] != null) replaceButtonLabels[i].text = equippedAbility.abilityName;
-                if (replaceButtonIcons[i] != null) replaceButtonIcons[i].sprite = equippedAbility.abilityIcon;
-                if (replaceButtonLevels[i] != null) replaceButtonLevels[i].text = $"Lvl {equippedAbilityState.level}";
+                // Sync level so stats/max stacks are accurate
+                equippedAbility.CurrentLevel = equippedAbilityState.level;
 
-                if(replaceRarityPanels[i] != null)
-                {
-                    AbilityRarity currentRarity = RarityColourMapper.GetRarityFromLevel(equippedAbilityState.level);
-                    replaceRarityPanels[i].color = RarityColourMapper.GetColour(currentRarity);
-                }
+                // 3. Get Colour from your existing Mapper
+                AbilityRarity currentRarity = RarityColourMapper.GetRarityFromLevel(equippedAbility.CurrentLevel);
+                Color uiColour = RarityColourMapper.GetColour(currentRarity);
 
-                replaceButtons[i].onClick.RemoveAllListeners();
-                replaceButtons[i].onClick.AddListener(() =>
+                // 4. Setup the Slot
+                replacementSlots[i].Setup(equippedAbility, uiColour);
+
+                // 5. Setup the Button
+                int replaceIndex = i; 
+                replacementSlots[i].ReplaceButton.onClick.RemoveAllListeners();
+                replacementSlots[i].ReplaceButton.onClick.AddListener(() =>
                 {
-                    playerData.abilities[replaceIndex] = new GameManager.PlayerAbilityState(newAbility, 1);
-                    if (replacementPanel != null) replacementPanel.SetActive(false);
-                    FinaliseAndReturn();
+                    PerformReplacement(replaceIndex, newAbility);
                 });
             }
         }
+    }
+
+    private void PerformReplacement(int indexToReplace, Ability newAbility)
+    {
+        playerData.abilities[indexToReplace] = new GameManager.PlayerAbilityState(newAbility, 1);
+        
+        if (replacementPanel != null) replacementPanel.SetActive(false);
+        
+        FinaliseAndReturn();
     }
 
     void FinaliseAndReturn()

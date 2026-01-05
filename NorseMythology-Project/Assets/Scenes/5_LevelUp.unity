@@ -5561,7 +5561,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2329853894997726162, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
       propertyPath: m_Name
-      value: AbilityPosition 3-KeyReminder
+      value: AbilityPosition 3-Title
       objectReference: {fileID: 0}
     - target: {fileID: 4098965416607616768, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
       propertyPath: m_Name
@@ -5575,7 +5575,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: AbilityPosition 3-StackCount
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6082212691440741822, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
     m_RemovedGameObjects:
     - {fileID: 3522785396076949605, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
     - {fileID: 8844130251531056313, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
@@ -5586,7 +5587,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1585023917688891226, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1061675785}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4098965416607616768, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 972395835}
   m_SourcePrefab: {fileID: 100100000, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
 --- !u!224 &972395829 stripped
 RectTransform:
@@ -5615,6 +5619,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &972395832 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3005342722927083024, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+  m_PrefabInstance: {fileID: 972395828}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!1 &972395833 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1971230580412889362, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+  m_PrefabInstance: {fileID: 972395828}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &972395834 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4098965416607616768, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+  m_PrefabInstance: {fileID: 972395828}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &972395835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 972395834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75c3ca85c24c87841992417bc870329d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AbilityReplacementSlot
+  mainPanel: {fileID: 972395833}
+  rarityPanel: {fileID: 121652690}
+  icon: {fileID: 972395830}
+  stackCountText: {fileID: 972395831}
+  titleText: {fileID: 972395832}
+  replaceButton: {fileID: 1061675786}
 --- !u!1 &973553444
 GameObject:
   m_ObjectHideFlags: 0
@@ -5730,36 +5773,16 @@ MonoBehaviour:
   skipButton: {fileID: 265292755}
   levelText: {fileID: 656055436}
   selectorPanel: {fileID: 204952694}
+  replacementPanel: {fileID: 698868452}
   tooltipPanels:
   - {fileID: 1793774671}
   - {fileID: 1488320212}
   - {fileID: 1064134134}
-  replacementPanel: {fileID: 698868452}
-  replaceButtons:
-  - {fileID: 1774446072}
-  - {fileID: 1698210485}
-  - {fileID: 1061675786}
-  - {fileID: 1131557641}
-  replaceRarityPanels:
-  - {fileID: 973553447}
-  - {fileID: 698962173}
-  - {fileID: 121652690}
-  - {fileID: 356351342}
-  replaceButtonLabels:
-  - {fileID: 1763443840}
-  - {fileID: 931153233}
-  - {fileID: 1455112810}
-  - {fileID: 1677555283}
-  replaceButtonIcons:
-  - {fileID: 1618553325}
-  - {fileID: 1185281547}
-  - {fileID: 972395830}
-  - {fileID: 1222450769}
-  replaceButtonLevels:
-  - {fileID: 1618553326}
-  - {fileID: 1185281548}
-  - {fileID: 972395831}
-  - {fileID: 1222450770}
+  replacementSlots:
+  - {fileID: 1618553330}
+  - {fileID: 1185281552}
+  - {fileID: 972395835}
+  - {fileID: 1222450774}
   abilityNames:
   - {fileID: 1810833713}
   - {fileID: 736040346}
@@ -6961,12 +6984,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2329853894997726162, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
       propertyPath: m_Name
-      value: AbilityPosition 2-KeyReminder
+      value: AbilityPosition 2-Title
       objectReference: {fileID: 0}
+    - target: {fileID: 3005342722927083024, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8b7647af3d492854b8f4309981858ba2, type: 2}
+    - target: {fileID: 3005342722927083024, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -7770192668879239244, guid: 8b7647af3d492854b8f4309981858ba2, type: 2}
     - target: {fileID: 4098965416607616768, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
       propertyPath: m_Name
       value: AbilityPosition 2
       objectReference: {fileID: 0}
+    - target: {fileID: 5085090165641844536, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8b7647af3d492854b8f4309981858ba2, type: 2}
+    - target: {fileID: 5085090165641844536, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -7770192668879239244, guid: 8b7647af3d492854b8f4309981858ba2, type: 2}
     - target: {fileID: 6082212691440741822, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
       propertyPath: cooldownOverlay
       value: 
@@ -6975,7 +7014,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: AbilityPosition 2-StackCount
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6082212691440741822, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
     m_RemovedGameObjects:
     - {fileID: 3522785396076949605, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
     - {fileID: 8844130251531056313, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
@@ -6986,7 +7026,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1585023917688891226, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1698210484}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4098965416607616768, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1185281552}
   m_SourcePrefab: {fileID: 100100000, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
 --- !u!224 &1185281546 stripped
 RectTransform:
@@ -7015,6 +7058,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1185281549 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3005342722927083024, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+  m_PrefabInstance: {fileID: 1185281545}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!1 &1185281550 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1971230580412889362, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+  m_PrefabInstance: {fileID: 1185281545}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1185281551 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4098965416607616768, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+  m_PrefabInstance: {fileID: 1185281545}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1185281552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1185281551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75c3ca85c24c87841992417bc870329d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AbilityReplacementSlot
+  mainPanel: {fileID: 1185281550}
+  rarityPanel: {fileID: 698962173}
+  icon: {fileID: 1185281547}
+  stackCountText: {fileID: 1185281548}
+  titleText: {fileID: 1185281549}
+  replaceButton: {fileID: 1698210485}
 --- !u!1 &1199881807
 GameObject:
   m_ObjectHideFlags: 0
@@ -7266,7 +7348,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2329853894997726162, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
       propertyPath: m_Name
-      value: AbilityPosition 4-KeyReminder
+      value: AbilityPosition 4-Title
       objectReference: {fileID: 0}
     - target: {fileID: 4098965416607616768, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
       propertyPath: m_Name
@@ -7280,7 +7362,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: AbilityPosition 4-StackCount
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6082212691440741822, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
     m_RemovedGameObjects:
     - {fileID: 3522785396076949605, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
     - {fileID: 8844130251531056313, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
@@ -7291,7 +7374,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1585023917688891226, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1131557640}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4098965416607616768, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1222450774}
   m_SourcePrefab: {fileID: 100100000, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
 --- !u!224 &1222450768 stripped
 RectTransform:
@@ -7320,6 +7406,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1222450771 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3005342722927083024, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+  m_PrefabInstance: {fileID: 1222450767}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!1 &1222450772 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1971230580412889362, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+  m_PrefabInstance: {fileID: 1222450767}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1222450773 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4098965416607616768, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+  m_PrefabInstance: {fileID: 1222450767}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1222450774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1222450773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75c3ca85c24c87841992417bc870329d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AbilityReplacementSlot
+  mainPanel: {fileID: 1222450772}
+  rarityPanel: {fileID: 356351342}
+  icon: {fileID: 1222450769}
+  stackCountText: {fileID: 1222450770}
+  titleText: {fileID: 1222450771}
+  replaceButton: {fileID: 1131557641}
 --- !u!1 &1279394154
 GameObject:
   m_ObjectHideFlags: 0
@@ -9167,12 +9292,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2329853894997726162, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
       propertyPath: m_Name
-      value: AbilityPosition 1-KeyReminder
+      value: AbilityPosition 1-Title
       objectReference: {fileID: 0}
+    - target: {fileID: 3005342722927083024, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8b7647af3d492854b8f4309981858ba2, type: 2}
+    - target: {fileID: 3005342722927083024, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -7770192668879239244, guid: 8b7647af3d492854b8f4309981858ba2, type: 2}
     - target: {fileID: 4098965416607616768, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
       propertyPath: m_Name
       value: AbilityPosition 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5085090165641844536, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8b7647af3d492854b8f4309981858ba2, type: 2}
+    - target: {fileID: 5085090165641844536, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -7770192668879239244, guid: 8b7647af3d492854b8f4309981858ba2, type: 2}
     - target: {fileID: 6082212691440741822, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
       propertyPath: cooldownOverlay
       value: 
@@ -9181,7 +9322,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: AbilityPosition 1-StackCount
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6082212691440741822, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
     m_RemovedGameObjects:
     - {fileID: 3522785396076949605, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
     - {fileID: 8844130251531056313, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
@@ -9192,7 +9334,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1585023917688891226, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1774446071}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4098965416607616768, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1618553330}
   m_SourcePrefab: {fileID: 100100000, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
 --- !u!224 &1618553324 stripped
 RectTransform:
@@ -9221,6 +9366,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1618553327 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3005342722927083024, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+  m_PrefabInstance: {fileID: 1618553323}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!1 &1618553328 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1971230580412889362, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+  m_PrefabInstance: {fileID: 1618553323}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1618553329 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4098965416607616768, guid: a709e471afa17654db6f1ecd03419bab, type: 3}
+  m_PrefabInstance: {fileID: 1618553323}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1618553330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1618553329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75c3ca85c24c87841992417bc870329d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AbilityReplacementSlot
+  mainPanel: {fileID: 1618553328}
+  rarityPanel: {fileID: 973553447}
+  icon: {fileID: 1618553325}
+  stackCountText: {fileID: 1618553326}
+  titleText: {fileID: 1618553327}
+  replaceButton: {fileID: 1774446072}
 --- !u!1 &1677555281
 GameObject:
   m_ObjectHideFlags: 0
