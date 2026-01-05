@@ -81,6 +81,9 @@ MonoBehaviour:
   dashTrailPrefab: {fileID: 2172294401191862685, guid: 727a9e45aa386b04a876a51cf2be82ee, type: 3}
   dashTrailColor: {r: 0, g: 1, b: 1, a: 1}
   trailDuration: 0.5
+  dashSound: {fileID: 8300000, guid: f6afc77a74baedd4f92c107980313b42, type: 3}
+  dashVolume: 0.6
+  useRandomPitch: 1
   trailSpawnInterval: 0.05
   trailFadeDuration: 0.3
   maxTrailSprites: 7
