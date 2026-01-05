@@ -12,10 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17a4ee2e63dbaa349b0e55e0cc7358a2, type: 3}
   m_Name: HealthBuffAbility
   m_EditorClassIdentifier: 
-  abilityName: Vitality Boost
+  abilityName: Health Regeneration
   abilityIcon: {fileID: -1513895116, guid: 766cb97207789f04aa2e7cfb164d1f50, type: 3}
-  description: Instantly grants temporary health that decays back to original max
-    health when lost.
+  description: Instantly recover a portion of your health.
   activationMode: 0
   useCodeDefinedMatrix: 1
   showTargetingLine: 0
@@ -79,4 +78,6 @@ MonoBehaviour:
     maxStacksAtLevel: 3
     stackRegenTime: 14
   buffEffectPrefab: {fileID: 7697260585850505662, guid: a56d94a595a3da144b353ec5f49a52ae, type: 3}
-  flashColor: {r: 0, g: 1, b: 0.011714697, a: 1}
+  buffSound: {fileID: 8300000, guid: f5aee83e25020f641a0beac8c0ca3f7b, type: 3}
+  buffVolume: 1
+  useRandomPitch: 0
