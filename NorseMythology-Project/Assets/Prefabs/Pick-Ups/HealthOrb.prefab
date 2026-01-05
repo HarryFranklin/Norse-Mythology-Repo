@@ -101,5 +101,7 @@ MonoBehaviour:
   acceleration: 0
   deceleration: 0
   pickupDistance: 0.5
-  pickupSound: {fileID: 0}
+  pickupSound: {fileID: 8300000, guid: f5aee83e25020f641a0beac8c0ca3f7b, type: 3}
+  pickupVolume: 1
+  useRandomPitch: 1
   pickupEffect: {fileID: 0}

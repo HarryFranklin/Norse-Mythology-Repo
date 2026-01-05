@@ -22,8 +22,15 @@ public abstract class Pickup : MonoBehaviour
     [Header("Pickup Distance")]
     public float pickupDistance = 0.5f;
     
-    [Header("Audio/Visual Effects")]
+    [Header("Audio")]
     public AudioClip pickupSound;
+    [Range(0f, 1f)] 
+    public float pickupVolume = 1f;
+    
+    [Tooltip("If true, pitch varies slightly. Recommended for XP orbs.")]
+    public bool useRandomPitch = true;
+
+    [Header("Visual Effects")]
     public GameObject pickupEffect; // Particle effect or animation
     
     protected Transform player;
@@ -38,21 +45,15 @@ public abstract class Pickup : MonoBehaviour
     
     protected virtual void SetupCollider()
     {
-        // Get or add a CircleCollider2D
         CircleCollider2D circleCollider = GetComponent<CircleCollider2D>();
         if (circleCollider == null)
         {
             circleCollider = gameObject.AddComponent<CircleCollider2D>();
         }
         
-        // Set as trigger
         circleCollider.isTrigger = true;
-
-        // Set radius based on attraction distance (or pickup distance if not chasing)
         float baseRadius = canChasePlayer ? attractionDistance : pickupDistance;
-        circleCollider.radius = baseRadius + 0.2f; // Small buffer
-        
-        Debug.Log($"Pickup collider radius set to: {circleCollider.radius}");
+        circleCollider.radius = baseRadius + 0.2f; 
     }
     
     protected virtual void Update()
@@ -64,18 +65,12 @@ public abstract class Pickup : MonoBehaviour
         // Handle movement logic
         if (distanceToPlayer <= attractionDistance)
         {
-            if (!isMovingToPlayer)
-            {
-                isMovingToPlayer = true;
-            }
+            if (!isMovingToPlayer) isMovingToPlayer = true;
             MoveTowardPlayer();
         }
         else
         {
-            if (isMovingToPlayer)
-            {
-                DeceleratePickup();
-            }
+            if (isMovingToPlayer) DeceleratePickup();
         }
         
         // Check if close enough to be picked up
@@ -88,17 +83,11 @@ public abstract class Pickup : MonoBehaviour
     protected virtual void MoveTowardPlayer()
     {
         Vector2 direction = (player.position - transform.position).normalized;
-        
-        // Accelerate toward the player
         velocity += direction * acceleration * Time.deltaTime;
         
-        // Clamp velocity to max speed
         if (velocity.magnitude > moveSpeed)
-        {
             velocity = velocity.normalized * moveSpeed;
-        }
         
-        // Move the pickup
         transform.position += (Vector3)velocity * Time.deltaTime;
     }
     
@@ -130,33 +119,30 @@ public abstract class Pickup : MonoBehaviour
         Player playerScript = player.GetComponent<Player>();
         if (playerScript != null)
         {
-            // Apply the pickup effect
             ApplyPickupEffect(playerScript);
-            
-            // Play sound and visual effects
             PlayPickupEffects();
-            
-            // Log pickup
             OnPickupCollected();
         }
         
-        // Destroy the pickup
         Destroy(gameObject);
     }
     
-    // Abstract method that derived classes must implement
     protected abstract void ApplyPickupEffect(Player player);
     
-    // Virtual methods that can be overridden
     protected virtual void PlayPickupEffects()
     {
-        // Play sound effect
-        if (pickupSound != null)
+        // --- AUDIO LOGIC ---
+        if (pickupSound != null && AudioManager.Instance != null)
         {
-            AudioSource.PlayClipAtPoint(pickupSound, transform.position);
+            // Use the Manager so we get volume control and pitch variance
+            AudioManager.Instance.PlaySFX(pickupSound, pickupVolume, useRandomPitch);
+        }
+        // Fallback if AudioManager is missing for some reason
+        else if (pickupSound != null)
+        {
+            AudioSource.PlayClipAtPoint(pickupSound, transform.position, pickupVolume);
         }
         
-        // Spawn visual effect
         if (pickupEffect != null)
         {
             Instantiate(pickupEffect, transform.position, Quaternion.identity);
@@ -175,8 +161,6 @@ public abstract class Pickup : MonoBehaviour
             if (player == null)
             {
                 player = other.transform;
-                
-                // Adjust speed based on player speed if chasing is enabled
                 if (canChasePlayer)
                 {
                     Player playerScript = other.GetComponent<Player>();
@@ -188,7 +172,6 @@ public abstract class Pickup : MonoBehaviour
                 }
             }
             
-            // Check for immediate pickup
             float distanceToPlayer = Vector2.Distance(transform.position, other.transform.position);
             if (distanceToPlayer <= pickupDistance)
             {
@@ -201,13 +184,11 @@ public abstract class Pickup : MonoBehaviour
     {
         if (canChasePlayer)
         {
-            // Draw attraction distance
             Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(transform.position, attractionDistance); // Yellow for attraction distance
+            Gizmos.DrawWireSphere(transform.position, attractionDistance); 
         }
         
-        // Draw pickup distance
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, pickupDistance); // Green for pickup distance
+        Gizmos.DrawWireSphere(transform.position, pickupDistance); 
     }
 }
