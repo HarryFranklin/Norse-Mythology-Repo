@@ -64,24 +64,24 @@ public class AudioManager : MonoBehaviour
     }
 
     public void PlaySFX(AudioClip clip, float volume = 1f, bool useRandomPitch = false)
-{
-    if (clip == null || sfxSource == null) return;
-
-    if (useRandomPitch)
     {
-        // Randomise between -1 and +1 semitones
-        // 1 semitone is about 5.9%, 2 is 5.9**2, etc. 
-        float randomSemitone = Random.Range(-1f, 1f);
-        sfxSource.pitch = Mathf.Pow(1.05946f, randomSemitone);
-    }
-    else
-    {
-        // Important: Reset to normal so subsequent non-random sounds don't inherit the weird pitch
-        sfxSource.pitch = 1f;
-    }
+        if (clip == null || sfxSource == null) return;
 
-    sfxSource.PlayOneShot(clip, volume);
-}
+        if (useRandomPitch)
+        {
+            // Randomise between -1 and +1 semitones
+            // 1 semitone is about 5.9%, 2 is 5.9**2, etc. 
+            float randomSemitone = Random.Range(-1f, 1f);
+            sfxSource.pitch = Mathf.Pow(1.05946f, randomSemitone);
+        }
+        else
+        {
+            // Important: Reset to normal so subsequent non-random sounds don't inherit the weird pitch
+            sfxSource.pitch = 1f;
+        }
+
+        sfxSource.PlayOneShot(clip, volume);
+    }
 
     // --- LOOPING METHODS (Time Freeze, etc) ---
 
