@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 [CreateAssetMenu(fileName = "HammerSlamAbility", menuName = "Abilities/HammerSlam")]
 public class HammerSlamAbility : Ability
@@ -27,6 +28,10 @@ public class HammerSlamAbility : Ability
     [Tooltip("Fallback duration if no shockwave sound is assigned.")]
     [SerializeField] private float defaultShakeDuration = 0.3f;
 
+    [Header("Movement")]
+    [Tooltip("How long the player cannot move after activating the slam.")]
+    [SerializeField] private float movementLockDuration = 0.5f;
+
     [Header("Falloff Curves")]
     [SerializeField] private AnimationCurve damageFalloff = AnimationCurve.EaseInOut(0f, 1f, 1f, 0.3f);
     [SerializeField] private AnimationCurve knockbackFalloff = AnimationCurve.EaseInOut(0f, 1f, 1f, 0.4f);
@@ -46,21 +51,58 @@ public class HammerSlamAbility : Ability
         SetLevelData(3, cooldown: 8f, damage: 9f, duration: 1.5f, radius: 4.5f, speed: 15f, distance: 5f, specialValue1: 2.25f, specialValue2: 6f, specialValue3: 0.7f, maxStacks: 2, stackRegenTime: 8f);
         SetLevelData(4, cooldown: 7f, damage: 12f, duration: 1.8f, radius: 5.0f, speed: 18f, distance: 5.5f, specialValue1: 2.75f, specialValue2: 9f, specialValue3: 0.8f, maxStacks: 2, stackRegenTime: 7f);
         SetLevelData(5, cooldown: 6f, damage: 15f, duration: 2.0f, radius: 5.5f, speed: 20f, distance: 6f, specialValue1: 3.25f, specialValue2: 12f, specialValue3: 1.0f, maxStacks: 3, stackRegenTime: 6f);
-        
-        Debug.Log($"HammerSlamAbility Initialised. Level 1: {GetStatsForLevel(1).damage} damage");
     }
 
     public override bool CanActivate(Player player)
     {
+        // Don't allow activation if we are already locked (e.g. dashing or stunned)
+        if (player.GetComponent<PlayerMovement>().isMovementLocked) return false;
+
         return player != null && !player.isDead && CurrentStacks > 0;
     }
 
     public override void Activate(Player player, PlayerMovement playerMovement = null)
     {
         if (player == null) return;
+        if (playerMovement == null) playerMovement = player.GetComponent<PlayerMovement>();
 
         RemoveStack();
 
+        // Start the Coroutine on the Player MonoBehaviour
+        player.StartCoroutine(ExecuteSlamRoutine(player, playerMovement));
+    }
+
+    private IEnumerator ExecuteSlamRoutine(Player player, PlayerMovement playerMovement)
+    {
+        // 1. Lock Movement
+        bool wasLocked = false;
+        if (playerMovement != null)
+        {
+            wasLocked = playerMovement.isMovementLocked;
+            playerMovement.isMovementLocked = true;
+            
+            // Stop existing momentum immediately so they don't slide while slamming
+            if (player.rigidBody != null)
+            {
+                player.rigidBody.linearVelocity = Vector2.zero;
+            }
+        }
+
+        // 2. Perform the Slam (Audio, Visuals, Damage)
+        PerformSlamLogic(player);
+
+        // 3. Wait for animation/recovery
+        yield return new WaitForSeconds(movementLockDuration);
+
+        // 4. Unlock
+        if (playerMovement != null)
+        {
+            playerMovement.isMovementLocked = wasLocked;
+        }
+    }
+
+    private void PerformSlamLogic(Player player)
+    {
         Transform spawnTransform = player.hammerSpawnPoint;
         Vector3 slamPosition = (spawnTransform != null) ? spawnTransform.position : player.transform.position;
 
@@ -85,13 +127,7 @@ public class HammerSlamAbility : Ability
             CameraController cam = Camera.main.GetComponent<CameraController>();
             if (cam != null)
             {
-                // Calculate dynamic duration
-                float finalShakeDuration = defaultShakeDuration;
-                if (shockwaveSound != null)
-                {
-                    finalShakeDuration = shockwaveSound.length;
-                }
-
+                float finalShakeDuration = (shockwaveSound != null) ? shockwaveSound.length : defaultShakeDuration;
                 cam.TriggerShake(finalShakeDuration, shakeMagnitude);
             }
         }
