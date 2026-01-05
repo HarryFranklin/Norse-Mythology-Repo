@@ -62,7 +62,22 @@ public class HammerThrowAbility : Ability
         
         // Create the hammer projectile
         GameObject hammer = Instantiate(hammerPrefab, player.transform.position, Quaternion.identity);
+
+
+        // 1. Projectile
+        Projectile hammerProjectile = hammer.GetComponent<Projectile>();
+        if (hammerProjectile == null) hammerProjectile = hammer.AddComponent<Projectile>();
+
+        // // 2. Audio Controller
+        // HammerAudioController audioCtrl = hammer.GetComponent<HammerAudioController>();
+        // if (audioCtrl == null) audioCtrl = hammer.AddComponent<HammerAudioController>();
+
+        // 3. Sprite Rotation
+        SpriteRotation rotatorScript = hammer.GetComponent<SpriteRotation>();
+        if (rotatorScript == null) rotatorScript = hammer.AddComponent<SpriteRotation>();
         
+        // --- LOGIC CONFIGURATION ---
+
         // Flip the hammer sprite if facing left
         if (throwDirection.x < 0)
         {
@@ -71,25 +86,13 @@ public class HammerThrowAbility : Ability
                 hammerSprite.flipX = true;
         }
         
-        // Set up the projectile component
-        Projectile hammerProjectile = hammer.GetComponent<Projectile>();
-        if (hammerProjectile == null)
-            hammerProjectile = hammer.AddComponent<Projectile>();
-        
-        // Add rotation component for spinning
-        SpriteRotation rotatorScript = hammer.GetComponent<SpriteRotation>();
-        if (rotatorScript == null)
-            rotatorScript = hammer.AddComponent<SpriteRotation>();
-        
+        // Configure Rotation
         // Use stacked specialValue1 for rotation speed multiplier
         float finalRotationSpeed = StackedSpecialValue1 > 0 ? rotationSpeed * StackedSpecialValue1 : rotationSpeed;
         rotatorScript.rotationSpeed = finalRotationSpeed;
-        
-        // Enable time freeze mitigation for the rotation
         rotatorScript.useAbilityTimeScale = true;
         
-        // Initialise projectile with stacked level values
-        // Pass 'true' at the end to enable time freeze mitigation for movement
+        // Configure Projectile
         hammerProjectile.Initialise(
             throwDirection, 
             StackedSpeed,           
@@ -97,7 +100,7 @@ public class HammerThrowAbility : Ability
             StackedDamage,          
             returnsToPlayer, 
             player.transform,
-            true // <--- useTimeScale = true
+            true // useTimeScale
         );
     }
     

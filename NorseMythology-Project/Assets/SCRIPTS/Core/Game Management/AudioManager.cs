@@ -63,23 +63,31 @@ public class AudioManager : MonoBehaviour
         sfxSource.pitch = 1f; 
     }
 
+    // 1. Randomised / Default Pitch Version
     public void PlaySFX(AudioClip clip, float volume = 1f, bool useRandomPitch = false)
     {
         if (clip == null || sfxSource == null) return;
 
         if (useRandomPitch)
         {
-            // Randomise between -1 and +1 semitones
-            // 1 semitone is about 5.9%, 2 is 5.9**2, etc. 
+            // Randomise between -1 and +1 semitones (5.946%)
             float randomSemitone = Random.Range(-1f, 1f);
             sfxSource.pitch = Mathf.Pow(1.05946f, randomSemitone);
         }
         else
         {
-            // Important: Reset to normal so subsequent non-random sounds don't inherit the weird pitch
-            sfxSource.pitch = 1f;
+            sfxSource.pitch = 1f; // Reset to normal
         }
 
+        sfxSource.PlayOneShot(clip, volume);
+    }
+
+    // 2. Specific Pitch Version (For the Hammer)
+    public void PlaySFX(AudioClip clip, float volume, float specificPitch)
+    {
+        if (clip == null || sfxSource == null) return;
+
+        sfxSource.pitch = specificPitch;
         sfxSource.PlayOneShot(clip, volume);
     }
 

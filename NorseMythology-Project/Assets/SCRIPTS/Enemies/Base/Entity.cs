@@ -16,6 +16,9 @@ public abstract class Entity : MonoBehaviour
     [Header("Combat")]
     public float damage = 5f;
 
+    [Header("Audio")]
+    public AudioClip damageSound;
+
     [Header("Status Effects")]
     public bool isStunned = false;
     public bool isFrozen = false;
@@ -58,12 +61,20 @@ public abstract class Entity : MonoBehaviour
 
     protected abstract void ApplyLevelStats(int level);
 
-    public virtual void TakeDamage(float damageAmount, float stunDuration = 0f)
+    public virtual void TakeDamage(float damageAmount, float stunDuration = 0f, bool playSound = true)
     {
         if (isDead || isInvincible) return;
 
         currentHealth -= damageAmount;
         lastDamageTime = Time.time;
+
+        // ----- Audio -----
+        if (playSound && damageSound != null)
+        {
+            // Default behaviour: Play the sound with slight randomisation (The "Tick")
+            AudioManager.Instance.PlaySFX(damageSound, 1f, useRandomPitch: true);
+        }
+        // ----------------
 
         PopupManager.Instance?.ShowDamage(damageAmount, transform.position);
 

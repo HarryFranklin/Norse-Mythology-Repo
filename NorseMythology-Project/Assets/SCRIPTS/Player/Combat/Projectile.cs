@@ -16,6 +16,10 @@ public class Projectile : MonoBehaviour
     private Vector2 startPosition;
     private float traveledDistance;
     private bool returningToPlayer;
+
+    // Audio Handling
+    public System.Action<Enemy> OnEnemyHit; // Action to notify other components (like AudioController) when we hit someone
+    public bool muteImpactSound = false; // Flag to silence the default Entity.TakeDamage sound
     
     // Track enemies hit to prevent multiple damage instances
     private HashSet<Enemy> enemiesHitOutbound = new HashSet<Enemy>();
@@ -62,12 +66,12 @@ public class Projectile : MonoBehaviour
                 if (isReturning && player != null)
                 {
                     returningToPlayer = true;
+                    
+                    // notify audio controller
+                    var audioCtrl = GetComponent<HammerAudioController>();
+                    if (audioCtrl != null) audioCtrl.SetReturningState(true);
+                    
                     Debug.Log("Projectile returning to player");
-                }
-                else
-                {
-                    Debug.Log("Projectile destroyed at max range");
-                    Destroy(gameObject);
                 }
             }
         }
@@ -93,7 +97,6 @@ public class Projectile : MonoBehaviour
             Enemy enemy = other.GetComponent<Enemy>();
             if (enemy != null)
             {
-                // Check if we should damage this enemy
                 bool shouldDamage = false;
                 
                 if (!returningToPlayer)
@@ -115,7 +118,12 @@ public class Projectile : MonoBehaviour
                 
                 if (shouldDamage)
                 {
-                    enemy.TakeDamage(damage);
+                    // Pass '!muteImpactSound' to TakeDamage
+                    // If muteImpactSound is true, playSound becomes false
+                    enemy.TakeDamage(damage, 0f, !muteImpactSound);
+                    
+                    // Notify listeners (The HammerAudioController will be listening here)
+                    OnEnemyHit?.Invoke(enemy);
                     
                     if (!returningToPlayer && !isReturning)
                     {

@@ -145,6 +145,7 @@ MonoBehaviour:
   pendingLethalDamage: 0
   moveSpeed: 2
   damage: 5
+  damageSound: {fileID: 8300000, guid: 73d76dd7b8966e7459bf354bdd4a48d1, type: 3}
   isStunned: 0
   isFrozen: 0
   isInvincible: 0
