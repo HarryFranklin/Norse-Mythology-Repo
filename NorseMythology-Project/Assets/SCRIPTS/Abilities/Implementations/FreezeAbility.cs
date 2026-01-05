@@ -7,6 +7,13 @@ public class FreezeAbility : Ability
     [Header("Freeze Effects")]
     [SerializeField] private GameObject freezeEffectPrefab;
 
+    [Header("Audio")]
+    [SerializeField] private AudioClip freezeSound;
+    [Range(0f, 1f)]
+    [SerializeField] private float freezeVolume = 1f;
+    [Tooltip("If true, pitch will vary slightly to sound more organic.")]
+    [SerializeField] private bool useRandomPitch = true;
+
     private void Awake()
     {
         abilityName = "Freeze";
@@ -58,10 +65,7 @@ public class FreezeAbility : Ability
     {
         if (player == null) return;
         
-        // Use a stack
         RemoveStack();
-        
-        // For instant activation mode
         FreezeEnemies(player.transform.position);
         
         Debug.Log($"Freeze activated instantly! Level {CurrentLevel} (Stack {AbilityStacks}): {StackedDuration}s freeze, {StackedRadius}u radius, {CurrentStacks}/{MaxStacksAtCurrentLevel} charges remaining");
@@ -71,10 +75,7 @@ public class FreezeAbility : Ability
     {
         if (player == null) return;
         
-        // Use a stack
         RemoveStack();
-        
-        // For click-to-target activation mode
         FreezeEnemies(worldPosition);
         
         Debug.Log($"Freeze activated at target! Level {CurrentLevel} (Stack {AbilityStacks}): {StackedDuration}s freeze, {StackedRadius}u radius, {CurrentStacks}/{MaxStacksAtCurrentLevel} charges remaining");
@@ -82,6 +83,14 @@ public class FreezeAbility : Ability
 
     private void FreezeEnemies(Vector3 center)
     {
+        // --- AUDIO START ---
+        if (AudioManager.Instance != null && freezeSound != null)
+        {
+            // Plays the sound with optional random pitch for an "ice shattering" variance
+            AudioManager.Instance.PlaySFX(freezeSound, freezeVolume, useRandomPitch);
+        }
+        // -------------------
+
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(center, StackedRadius);
         int enemiesFrozen = 0;
         

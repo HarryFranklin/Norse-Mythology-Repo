@@ -11793,6 +11793,7 @@ MonoBehaviour:
   pendingLethalDamage: 0
   moveSpeed: 2
   damage: 5
+  damageSound: {fileID: 0}
   isStunned: 0
   isFrozen: 0
   isInvincible: 0

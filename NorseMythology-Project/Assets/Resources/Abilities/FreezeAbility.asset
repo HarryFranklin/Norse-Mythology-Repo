@@ -78,3 +78,6 @@ MonoBehaviour:
     maxStacksAtLevel: 2
     stackRegenTime: 6
   freezeEffectPrefab: {fileID: 6625746139066430653, guid: 64baf16bbfa525f41831c1ed70e92e18, type: 3}
+  freezeSound: {fileID: 8300000, guid: 13837c16834bbe34fb236943e3516cf6, type: 3}
+  freezeVolume: 1
+  useRandomPitch: 1
