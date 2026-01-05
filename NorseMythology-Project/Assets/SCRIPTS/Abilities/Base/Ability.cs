@@ -45,7 +45,7 @@ public abstract class Ability : ScriptableObject
     public bool showTargetingLine = false; 
     public Color targetingLineColor = Color.white;
     public float maxTargetingRange = 10f;
-    public Sprite targetingCursor;
+    public Texture2D targetingCursor;
 
     [Header("Level Progression Data")]
     [SerializeField] private AbilityLevelData[] levelData = new AbilityLevelData[5];

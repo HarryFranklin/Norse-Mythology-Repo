@@ -225,9 +225,8 @@ public class AbilityManager : MonoBehaviour
         // Change cursor if custom cursor is specified
         if (ability.targetingCursor != null)
         {
-            Texture2D cursorTexture = ability.targetingCursor.texture;
-            Vector2 hotspot = new Vector2(cursorTexture.width / 2f, cursorTexture.height / 2f);
-            Cursor.SetCursor(cursorTexture, hotspot, CursorMode.Auto);
+            Vector2 hotspot = new Vector2(ability.targetingCursor.width * 0.5f, ability.targetingCursor.height * 0.5f);
+            Cursor.SetCursor(ability.targetingCursor, hotspot, CursorMode.ForceSoftware);        
         }
         
         ability.EnterTargetingMode(player);
@@ -280,8 +279,7 @@ public class AbilityManager : MonoBehaviour
             currentTargetingAbility.ExitTargetingMode(player);
         }
         
-        Cursor.SetCursor(originalCursor, originalHotspot, CursorMode.Auto);
-        
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.ForceSoftware);        
         int endedIndex = targetingAbilityIndex;
 
         isInTargetingMode = false;
