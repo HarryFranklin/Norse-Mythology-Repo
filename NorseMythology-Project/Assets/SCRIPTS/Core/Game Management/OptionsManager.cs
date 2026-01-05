@@ -7,13 +7,13 @@ public class OptionsManager : MonoBehaviour
     // --- Settings Data ---
     public bool EnableAbilitySwapping { get; private set; } = true;
     
-    // public float MasterVolume { get; private set; } = 1f;
+    public float MasterVolume { get; private set; } = 1f;
 
     private const string PREF_ABILITY_SWAP = "Opt_AbilitySwap";
+    private const string PREF_MASTER_VOLUME = "Opt_MasterVolume";
 
     private void Awake()
     {
-        // Singleton Logic
         if (Instance == null)
         {
             Instance = this;
@@ -22,7 +22,6 @@ public class OptionsManager : MonoBehaviour
         }
         else
         {
-            // If one already exists, destroy this new one
             Destroy(gameObject);
         }
     }
@@ -34,9 +33,23 @@ public class OptionsManager : MonoBehaviour
         PlayerPrefs.Save();
     }
 
+    public void SetMasterVolume(float value)
+    {
+        MasterVolume = Mathf.Clamp01(value);
+        
+        // AudioListener.volume controls the global volume of the scene
+        AudioListener.volume = MasterVolume;
+
+        PlayerPrefs.SetFloat(PREF_MASTER_VOLUME, MasterVolume);
+        PlayerPrefs.Save();
+    }
+
     private void LoadOptions()
     {
-        // Load saved data, default to 1 (true) if key doesn't exist
         EnableAbilitySwapping = PlayerPrefs.GetInt(PREF_ABILITY_SWAP, 1) == 1;
+        
+        // Load saved volume or default to 1f
+        MasterVolume = PlayerPrefs.GetFloat(PREF_MASTER_VOLUME, 1f);
+        AudioListener.volume = MasterVolume;
     }
 }

@@ -9,6 +9,10 @@ public class OptionsMenuUI : MonoBehaviour
     [Header("Settings Toggles")]
     public Toggle abilitySwapToggle;
 
+    [Header("Audio Settings")]
+    // Added Slider reference
+    public Slider volumeSlider;
+
     [Header("Description Panel")]
     [Tooltip("The background object for the description text.")]
     public GameObject infoPanel;
@@ -21,7 +25,6 @@ public class OptionsMenuUI : MonoBehaviour
 
     private void Awake()
     {
-        // Singleton setup so Triggers can find this script
         if (Instance == null)
         {
             Instance = this;
@@ -34,17 +37,23 @@ public class OptionsMenuUI : MonoBehaviour
 
     private void Start()
     {
-        // 1. Setup the Logic (Sync with OptionsManager)
+        // 1. Sync Ability Swap
         if (OptionsManager.Instance != null && abilitySwapToggle != null)
         {
-            // Load saved value
             abilitySwapToggle.isOn = OptionsManager.Instance.EnableAbilitySwapping;
-            
-            // Listen for changes
             abilitySwapToggle.onValueChanged.AddListener(OnSwapToggleChanged);
         }
 
-        // 2. Setup the Visuals (Clear text)
+        // 2. Sync Volume Slider
+        if (OptionsManager.Instance != null && volumeSlider != null)
+        {
+            // Set slider position to match current volume
+            volumeSlider.value = OptionsManager.Instance.MasterVolume;
+            
+            // Listen for player dragging the handle
+            volumeSlider.onValueChanged.AddListener(OnVolumeChanged);
+        }
+
         ClearDescription();
     }
 
@@ -58,7 +67,16 @@ public class OptionsMenuUI : MonoBehaviour
         }
     }
 
-    // --- Visuals Section (Called by Triggers) ---
+    // Called when slider moves
+    public void OnVolumeChanged(float value)
+    {
+        if (OptionsManager.Instance != null)
+        {
+            OptionsManager.Instance.SetMasterVolume(value);
+        }
+    }
+
+    // --- Visuals Section ---
 
     public void ShowDescription(string text)
     {
@@ -70,13 +88,11 @@ public class OptionsMenuUI : MonoBehaviour
     {
         if (!string.IsNullOrEmpty(defaultDescription))
         {
-            // Show default text
             if (descriptionText != null) descriptionText.text = defaultDescription;
             if (infoPanel != null) infoPanel.SetActive(true);
         }
         else
         {
-            // Hide everything
             if (descriptionText != null) descriptionText.text = "";
             if (infoPanel != null) infoPanel.SetActive(false);
         }
@@ -84,9 +100,11 @@ public class OptionsMenuUI : MonoBehaviour
 
     private void OnDestroy()
     {
+        // Clean up listeners
         if (abilitySwapToggle != null)
-        {
             abilitySwapToggle.onValueChanged.RemoveListener(OnSwapToggleChanged);
-        }
+            
+        if (volumeSlider != null)
+            volumeSlider.onValueChanged.RemoveListener(OnVolumeChanged);
     }
 }
