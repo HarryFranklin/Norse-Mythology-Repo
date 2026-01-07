@@ -8,38 +8,26 @@ using UnityEngine.EventSystems;
 
 public class AbilitySelectorManager : MonoBehaviour
 {
-    [Header("UI Elements")]
-    public Button[] abilityButtons = new Button[3];
-    public Image[] abilityRarityPanels = new Image[3];
-    public Button skipButton;
-    public TextMeshProUGUI levelText;
-
-    [Header("UI References")]
+    [Header("Selection UI")]
     [SerializeField] private GameObject selectorPanel;
-    [SerializeField] private GameObject replacementPanel;
-
-    [Header("Tooltips")]
-    public AbilityTooltipPanel[] tooltipPanels; 
+    [SerializeField] private AbilitySelectionSlot[] selectionSlots;
+    public Button skipButton; 
 
     [Header("Replacement UI")]
+    [SerializeField] private GameObject replacementPanel;
     [SerializeField] private AbilityReplacementSlot[] replacementSlots;
 
-    [Header("Ability Display")]
-    public TextMeshProUGUI[] abilityNames = new TextMeshProUGUI[3];
-    public TextMeshProUGUI[] abilityDescriptions = new TextMeshProUGUI[3];
-    public Image[] abilityIcons = new Image[3];
-    
+    [Header("General UI")]
+    public TextMeshProUGUI levelText;
+
     [Header("Debug Settings")]
-    [Tooltip("Tick this to force debug mode even if playing from the main menu.")]
     public bool forceDebugMode = false;
-    [Tooltip("Drag abilities here to test the menu in isolation.")]
     public List<Ability> debugAbilities; 
 
     private List<Ability> offeredAbilities;
     private GameManager.PlayerData playerData;
     private LevelUpManager levelUpManager;
     
-    // Automatically treats it as "Debug Mode" if GameManager is missing OR if you forced it.
     private bool IsDebugMode => GameManager.Instance == null || forceDebugMode;
 
     void Start()
@@ -52,9 +40,8 @@ public class AbilitySelectorManager : MonoBehaviour
         }
         else
         {
-            // Debug Flow: Create empty/dummy data
             playerData = new GameManager.PlayerData();
-            Debug.LogWarning("AbilitySelectorManager: DEBUG MODE ACTIVE (GameManager missing or forced). Using dummy player data.");
+            Debug.LogWarning("AbilitySelectorManager: DEBUG MODE ACTIVE. Using dummy player data.");
         }
         
         SetupUI();
@@ -62,20 +49,6 @@ public class AbilitySelectorManager : MonoBehaviour
     
     void SetupUI()
     {
-        for (int i = 0; i < abilityButtons.Length; i++)
-        {
-            int buttonIndex = i; 
-            abilityButtons[i].onClick.AddListener(() => SelectAbility(buttonIndex));
-
-            // Setup Hover Events on the ICONS
-            if (abilityIcons[i] != null)
-            {
-                // Ensure raycast target is ON so the mouse is detected
-                abilityIcons[i].raycastTarget = true; 
-                AddHoverEvents(abilityIcons[i].gameObject, buttonIndex);
-            }
-        }
-        
         if (skipButton != null) skipButton.onClick.AddListener(SkipSelection);
         
         if (levelText != null)
@@ -87,39 +60,127 @@ public class AbilitySelectorManager : MonoBehaviour
         GenerateAbilityOptions();
     }
 
-    private void AddHoverEvents(GameObject targetObject, int index)
+    void GenerateAbilityOptions()
+    {
+        if (!IsDebugMode && AbilityPooler.Instance != null)
+        {
+            offeredAbilities = AbilityPooler.Instance.GetAbilityChoices(playerData.abilities);
+        }
+        else
+        {
+            offeredAbilities = new List<Ability>();
+            if (debugAbilities != null && debugAbilities.Count > 0)
+            {
+                for(int i = 0; i < Mathf.Min(3, debugAbilities.Count); i++)
+                {
+                    if (debugAbilities[i] != null) offeredAbilities.Add(debugAbilities[i]);
+                }
+            }
+        }
+        
+        ShowSelectionOptions(offeredAbilities);
+    }
+
+    private void ShowSelectionOptions(List<Ability> abilitiesToOffer)
+    {
+        for (int i = 0; i < selectionSlots.Length; i++)
+        {
+            AbilitySelectionSlot slot = selectionSlots[i];
+
+            if (abilitiesToOffer != null && i < abilitiesToOffer.Count)
+            {
+                slot.gameObject.SetActive(true);
+                Ability ability = abilitiesToOffer[i];
+                int index = i; 
+
+                // --- 1. Calculate Text and Rarity ---
+                var existingState = playerData.abilities.FirstOrDefault(state => state.ability != null && state.ability.abilityName == ability.abilityName);
+                
+                string finalTitle;
+                string finalDesc;
+                AbilityRarity displayRarity;
+
+                if (existingState != null)
+                {
+                    // It is an Upgrade
+                    int nextLevel = existingState.level + 1;
+                    displayRarity = RarityColourMapper.GetRarityFromLevel(nextLevel);
+                    
+                    finalTitle = $"{ability.abilityName} (Lvl {existingState.level} -> {nextLevel})";
+                    finalDesc = GetStatUpgradeDescription(
+                        ability.GetStatsForLevel(existingState.level),
+                        ability.GetStatsForLevel(nextLevel)
+                    );
+                }
+                else
+                {
+                    // It is New
+                    displayRarity = RarityColourMapper.GetRarityFromLevel(1); 
+                    finalTitle = $"{ability.abilityName} (New!)";
+                    finalDesc = ability.description;
+                }
+
+                // --- 2. Apply Data to Slot ---
+                Color uiColour = RarityColourMapper.GetColour(displayRarity);
+                
+                // Set Images and Colours
+                slot.SetupVisuals(ability, uiColour);
+
+                // Set Text (Using our calculated strings)
+                slot.SetText(finalTitle, finalDesc);
+
+                // --- 3. Button Logic ---
+                slot.SelectButton.onClick.RemoveAllListeners();
+                slot.SelectButton.onClick.AddListener(() => SelectAbility(index));
+
+                // --- 4. Hover Logic ---
+                // A. Listen to the Button (in case it blocks the root)
+                AddHoverEvents(slot.SelectButton.gameObject, index, slot);
+
+                // B. Listen to the Root Object (catches hover events for the whole panel)
+                AddHoverEvents(slot.gameObject, index, slot);
+            }
+            else
+            {
+                slot.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    private void AddHoverEvents(GameObject targetObject, int index, AbilitySelectionSlot slot)
     {
         EventTrigger trigger = targetObject.GetComponent<EventTrigger>();
         if (trigger == null) trigger = targetObject.AddComponent<EventTrigger>();
         
         trigger.triggers.Clear();
 
-        // Hover Exit
+        // Enter
         EventTrigger.Entry pointerEnter = new EventTrigger.Entry();
         pointerEnter.eventID = EventTriggerType.PointerEnter;
         pointerEnter.callback.AddListener((data) => {
-            if (offeredAbilities != null && index < offeredAbilities.Count)
+            if (offeredAbilities != null && index < offeredAbilities.Count && slot.TooltipPanel != null)
             {
-                if (tooltipPanels != null && index < tooltipPanels.Length && tooltipPanels[index] != null)
-                {
-                    Ability ability = offeredAbilities[index];
-                    int currentLvl = 0;
-                    var existing = playerData.abilities.FirstOrDefault(a => a.ability.abilityName == ability.abilityName);
-                    if (existing != null) currentLvl = existing.level;
-                    
-                    tooltipPanels[index].ShowTooltip(ability, currentLvl);
-                }
+                Ability ability = offeredAbilities[index];
+                int currentLvl = 0;
+                var existing = playerData.abilities.FirstOrDefault(a => a.ability.abilityName == ability.abilityName);
+                if (existing != null) currentLvl = existing.level;
+                
+                var tooltipScript = slot.TooltipPanel.GetComponent<AbilityTooltipPanel>();
+                if (tooltipScript != null) tooltipScript.ShowTooltip(ability, currentLvl);
+                else slot.TooltipPanel.SetActive(true);
             }
         });
         trigger.triggers.Add(pointerEnter);
         
-        // Hover Exit
+        // Exit
         EventTrigger.Entry pointerExit = new EventTrigger.Entry();
         pointerExit.eventID = EventTriggerType.PointerExit;
         pointerExit.callback.AddListener((data) => {
-            if (tooltipPanels != null && index < tooltipPanels.Length && tooltipPanels[index] != null)
+            if (slot.TooltipPanel != null)
             {
-                tooltipPanels[index].HideTooltip();
+                 var tooltipScript = slot.TooltipPanel.GetComponent<AbilityTooltipPanel>();
+                 if (tooltipScript != null) tooltipScript.HideTooltip();
+                 else slot.TooltipPanel.SetActive(false);
             }
         });
         trigger.triggers.Add(pointerExit);
@@ -162,7 +223,6 @@ public class AbilitySelectorManager : MonoBehaviour
 
             for (int i = 0; i < replacementSlots.Length; i++)
             {
-                // 1. Check if we have an ability in this slot index
                 if (i >= playerData.abilities.Count)
                 {
                     replacementSlots[i].Panel.SetActive(false);
@@ -171,21 +231,16 @@ public class AbilitySelectorManager : MonoBehaviour
 
                 replacementSlots[i].Panel.SetActive(true);
 
-                // 2. Get the Data
                 GameManager.PlayerAbilityState equippedAbilityState = playerData.abilities[i];
                 Ability equippedAbility = equippedAbilityState.ability;
 
-                // Sync level so stats/max stacks are accurate
                 equippedAbility.CurrentLevel = equippedAbilityState.level;
 
-                // 3. Get Colour from your existing Mapper
                 AbilityRarity currentRarity = RarityColourMapper.GetRarityFromLevel(equippedAbility.CurrentLevel);
                 Color uiColour = RarityColourMapper.GetColour(currentRarity);
 
-                // 4. Setup the Slot
                 replacementSlots[i].Setup(equippedAbility, uiColour);
 
-                // 5. Setup the Button
                 int replaceIndex = i; 
                 replacementSlots[i].ReplaceButton.onClick.RemoveAllListeners();
                 replacementSlots[i].ReplaceButton.onClick.AddListener(() =>
@@ -199,22 +254,15 @@ public class AbilitySelectorManager : MonoBehaviour
     private void PerformReplacement(int indexToReplace, Ability newAbility)
     {
         playerData.abilities[indexToReplace] = new GameManager.PlayerAbilityState(newAbility, 1);
-        
         if (replacementPanel != null) replacementPanel.SetActive(false);
-        
         FinaliseAndReturn();
     }
 
     void FinaliseAndReturn()
     {
-        // Only save to GameManager if we are NOT in debug mode
         if (!IsDebugMode && GameManager.Instance != null)
         {
             GameManager.Instance.currentPlayerData = playerData;
-        }
-        else
-        {
-            Debug.Log($"[Debug Mode] Selection Finalised. Picked: {playerData.abilities.LastOrDefault()?.ability.abilityName}");
         }
         
         if (levelUpManager != null) levelUpManager.OnAbilitySelectionCompleted();
@@ -223,102 +271,34 @@ public class AbilitySelectorManager : MonoBehaviour
     
     private void SetAbilityButtonsInteractable(bool isInteractable)
     {
-        foreach (var button in abilityButtons)
-            if (button != null) button.interactable = isInteractable;
+        foreach (var slot in selectionSlots)
+        {
+            if (slot != null && slot.SelectButton != null) 
+                slot.SelectButton.interactable = isInteractable;
+        }
         if (skipButton != null) skipButton.interactable = isInteractable;
     }
 
     private void HideAllTooltips()
     {
-        if (tooltipPanels != null)
+        foreach (var slot in selectionSlots)
         {
-            foreach (var panel in tooltipPanels)
+            if (slot != null && slot.TooltipPanel != null)
             {
-                if (panel != null) panel.HideTooltip();
+                var tooltipScript = slot.TooltipPanel.GetComponent<AbilityTooltipPanel>();
+                if (tooltipScript != null) tooltipScript.HideTooltip();
+                else slot.TooltipPanel.SetActive(false);
             }
         }
     }
-
-    void GenerateAbilityOptions()
-    {
-        // If NOT in debug mode (and Pooler exists), use the Pooler.
-        if (!IsDebugMode && AbilityPooler.Instance != null)
-        {
-            offeredAbilities = AbilityPooler.Instance.GetAbilityChoices(playerData.abilities);
-        }
-        // Otherwise (Debug Mode OR Pooler missing), use the Inspector List.
-        else
-        {
-            Debug.LogWarning("AbilitySelectorManager: Using DEBUG ABILITIES List.");
-            offeredAbilities = new List<Ability>();
-            
-            if (debugAbilities != null && debugAbilities.Count > 0)
-            {
-                // Take up to 3 abilities from the inspector list
-                for(int i = 0; i < Mathf.Min(3, debugAbilities.Count); i++)
-                {
-                    if (debugAbilities[i] != null)
-                        offeredAbilities.Add(debugAbilities[i]);
-                }
-            }
-            else
-            {
-                Debug.LogError("Debug Mode is active but 'Debug Abilities' list is empty in Inspector!");
-            }
-        }
-        
-        // Update UI
-        if (offeredAbilities != null)
-        {
-            for (int i = 0; i < abilityButtons.Length; i++)
-            {
-                if (i < offeredAbilities.Count)
-                {
-                    abilityButtons[i].gameObject.SetActive(true);
-                    UpdateAbilityDisplay(i, offeredAbilities[i]);
-                }
-                else
-                {
-                    // Hide buttons if we don't have 3 abilities (e.g. only 1 in debug list)
-                    abilityButtons[i].gameObject.SetActive(false);
-                }
-            }
-        }
-    }
-
-    void UpdateAbilityDisplay(int index, Ability ability)
-    {
-        var existingState = playerData.abilities.FirstOrDefault(state => state.ability != null && state.ability.abilityName == ability.abilityName);
-        AbilityRarity displayRarity;
-
-        if (existingState != null)
-        {
-            int nextLevel = existingState.level + 1;
-            displayRarity = RarityColourMapper.GetRarityFromLevel(nextLevel);
-            abilityNames[index].text = $"{ability.abilityName} (Lvl {existingState.level} -> {nextLevel})";
-            abilityDescriptions[index].text = GetStatUpgradeDescription(
-                ability.GetStatsForLevel(existingState.level),
-                ability.GetStatsForLevel(nextLevel)
-            );
-        }
-        else
-        {
-            displayRarity = RarityColourMapper.GetRarityFromLevel(1); 
-            abilityNames[index].text = $"{ability.abilityName} (New!)";
-            abilityDescriptions[index].text = ability.description;
-        }
-        
-        if (abilityRarityPanels[index] != null) abilityRarityPanels[index].color = RarityColourMapper.GetColour(displayRarity);
-        if (abilityIcons[index] != null) abilityIcons[index].sprite = ability.abilityIcon;
-    }
-
+    
     public void SkipSelection()
     {
         SetAbilityButtonsInteractable(false);
         HideAllTooltips();
         FinaliseAndReturn();
     }
-    
+
     private string GetStatUpgradeDescription(AbilityLevelData oldStats, AbilityLevelData newStats)
     {
         StringBuilder sb = new StringBuilder();
@@ -337,8 +317,10 @@ public class AbilitySelectorManager : MonoBehaviour
             sb.AppendLine($"Max Charges: {oldStats.maxStacksAtLevel} -> <color=green>{newStats.maxStacksAtLevel}</color>");
         if (newStats.stackRegenTime < oldStats.stackRegenTime && newStats.maxStacksAtLevel > 1)
             sb.AppendLine($"Charge Regen: {oldStats.stackRegenTime:F1}s -> <color=green>{newStats.stackRegenTime:F1}s</color>");
+        
         if (sb.Length <= "<b>Upgrades:</b>\n".Length)
             sb.AppendLine("General improvements to effectiveness.");
+        
         return sb.ToString();
     }
 }
