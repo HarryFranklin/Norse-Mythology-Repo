@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1534.4
     height: 764.8
   m_ShowMode: 4
-  m_Title: Hierarchy
+  m_Title: Project
   m_RootView: {fileID: 3}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -293,7 +293,7 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 140c0100
+      m_SelectedIDs: 7ac10000
       m_LastClickedID: 0
       m_ExpandedIDs: d4d0ffff30f1ffff
       m_RenameOverlay:
@@ -857,7 +857,7 @@ MonoBehaviour:
   m_AudioPlay: 0
   m_DebugDrawModesUseInteractiveLightBakingData: 0
   m_Position:
-    m_Target: {x: 474.84042, y: 317.23636, z: 19.015308}
+    m_Target: {x: 688.0608, y: 586.5128, z: -6.583069}
     speed: 2
     m_Value: {x: 1046.7426, y: 536.2201, z: -1048.3475}
   m_RenderMode: 0
@@ -905,11 +905,11 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0.0023924017, y: -0.07193483, z: -0.00019367794, w: -0.99746317}
+    m_Target: {x: 0.2595081, y: 0.046349775, z: 0.012446542, w: -0.96462995}
     speed: 2
     m_Value: {x: 0.0035989147, y: 0.023998069, z: 0.000086890366, w: -0.99972534}
   m_Size:
-    m_Target: 664.75507
+    m_Target: 396.0826
     speed: 2
     m_Value: 0.8660254
   m_Ortho:
@@ -1112,7 +1112,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: aabc0000
     m_LastClickedID: 48298
-    m_ExpandedIDs: 0000000058c100005ac100005cc100005ec1000060c1000062c1000064c1000066c1000068c100006ac100006cc100006ec1000070c1000072c1000074c1000076c1000078c100007ac100007cc100007ec1000080c1000082c1000084c1000086c1000088c100008ac100008cc10000
+    m_ExpandedIDs: 000000004cc000004ec0000050c0000052c0000054c0000056c0000058c000005ac000005cc000005ec0000060c0000062c0000064c0000066c0000068c000006ac000006cc000006ec0000070c0000072c0000074c0000076c0000078c000007ac000007cc000007ec0000080c00000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1141,7 +1141,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 0000000058c100005ac100005cc100005ec1000060c1000062c1000064c1000066c1000068c100006ac100006cc100006ec1000070c1000072c1000074c1000076c1000078c100007ac100007cc100007ec1000080c1000082c1000084c1000086c1000088c100008ac100008cc10000
+    m_ExpandedIDs: 000000004cc000004ec0000050c0000052c0000054c0000056c0000058c000005ac000005cc000005ec0000060c0000062c0000064c0000066c0000068c000006ac000006cc000006ec0000070c0000072c0000074c0000076c0000078c000007ac000007cc000007ec0000080c00000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
