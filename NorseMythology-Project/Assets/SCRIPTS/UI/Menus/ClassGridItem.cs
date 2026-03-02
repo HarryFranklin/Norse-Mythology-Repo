@@ -3,67 +3,62 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 
-public class ClassGridItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class ClassGridItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
+    public CharacterClass myClass;
+    private ClassSelectionManager manager;
+
     [Header("UI References")]
-    [SerializeField] private Image classIconImage;
-    [SerializeField] private Image highlightImage;
-    [SerializeField] private TextMeshProUGUI classNameText;
+    [SerializeField] private Image iconImage;
+    [SerializeField] private TextMeshProUGUI nameText;
+    [SerializeField] private Image borderImage;
+    [SerializeField] private GameObject selectedHighlight;
 
     [Header("Selection Visuals")]
+    [SerializeField] private bool scaleIconOnSelect = false; // Disable this to stop the squashing
     [SerializeField] private Vector2 selectedSize = new Vector2(110, 110);
     [SerializeField] private Vector2 deselectedSize = new Vector2(100, 100);
 
-    public CharacterClass CharacterClass { get; private set; }
-    private ClassSelectorUI selectorUI;
-    private RectTransform iconRectTransform;
+    public void Setup(CharacterClass c, ClassSelectionManager m)
+{
+    myClass = c;
+    manager = m;
 
-    public void Initialise(CharacterClass classData, ClassSelectorUI uiController)
+    if (nameText) nameText.text = c.className;
+    
+    if (iconImage != null)
     {
-        CharacterClass = classData;
-        selectorUI = uiController;
-
-        if (classIconImage != null)
+        if (c.classSprite != null)
         {
-            classIconImage.sprite = CharacterClass.classSprite;
-            classIconImage.preserveAspect = true; 
-            
-            iconRectTransform = classIconImage.GetComponent<RectTransform>();
+            iconImage.sprite = c.classSprite;
+            iconImage.preserveAspect = true; // Keeps the pixel art proportions
+            iconImage.gameObject.SetActive(true);
         }
-        if (classNameText != null)
+        else
         {
-            classNameText.text = CharacterClass.className;
+            Debug.LogWarning($"Sprite missing for class: {c.className}");
+            iconImage.gameObject.SetActive(false);
         }
-
-        GetComponent<Button>().onClick.AddListener(OnSelect);
-        UpdateHighlight(false);
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        selectorUI.DisplayClassInfo(CharacterClass);
-    }
+    UpdateVisuals(false);
+}
 
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        selectorUI.DisplayClassInfo(selectorUI.selectedClass);
-    }
+    public void OnPointerEnter(PointerEventData eventData) => manager.OnHoverEnter(myClass);
+    public void OnPointerExit(PointerEventData eventData) => manager.OnHoverExit();
+    public void OnPointerClick(PointerEventData eventData) => manager.SelectClass(myClass);
 
-    private void OnSelect()
+    public void UpdateVisuals(bool isSelected)
     {
-        selectorUI.SelectClass(CharacterClass);
-    }
+        if (selectedHighlight) selectedHighlight.SetActive(isSelected);
+        
+        if (borderImage) 
+            borderImage.color = isSelected ? Color.yellow : Color.white;
 
-    public void UpdateHighlight(bool isSelected)
-    {
-        if (highlightImage != null)
+        // Only scale the icon if explicitly enabled in inspector
+        if (scaleIconOnSelect && iconImage != null)
         {
-            highlightImage.enabled = isSelected;
-        }
-
-        if (iconRectTransform != null)
-        {
-            iconRectTransform.sizeDelta = isSelected ? selectedSize : deselectedSize;
+            iconImage.rectTransform.sizeDelta = isSelected ? selectedSize : deselectedSize;
         }
     }
 }
