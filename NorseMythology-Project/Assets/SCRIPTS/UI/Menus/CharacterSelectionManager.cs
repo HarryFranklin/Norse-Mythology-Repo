@@ -87,6 +87,6 @@ public class ClassSelectionManager : MonoBehaviour
         if (GameManager.Instance != null)
             GameManager.Instance.SetSelectedClass(selectedClass);
 
-        SceneManager.LoadScene("GameScene");
+        SceneManager.LoadScene("4_MainGame");
     }
 }

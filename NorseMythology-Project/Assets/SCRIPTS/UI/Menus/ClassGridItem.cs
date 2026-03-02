@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 
-public class ClassGridItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+public class ClassGridItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public CharacterClass myClass;
     private ClassSelectionManager manager;
@@ -11,54 +11,39 @@ public class ClassGridItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     [Header("UI References")]
     [SerializeField] private Image iconImage;
     [SerializeField] private TextMeshProUGUI nameText;
-    [SerializeField] private Image borderImage;
-    [SerializeField] private GameObject selectedHighlight;
-
-    [Header("Selection Visuals")]
-    [SerializeField] private bool scaleIconOnSelect = false; // Disable this to stop the squashing
-    [SerializeField] private Vector2 selectedSize = new Vector2(110, 110);
-    [SerializeField] private Vector2 deselectedSize = new Vector2(100, 100);
 
     public void Setup(CharacterClass c, ClassSelectionManager m)
-{
-    myClass = c;
-    manager = m;
-
-    if (nameText) nameText.text = c.className;
-    
-    if (iconImage != null)
     {
-        if (c.classSprite != null)
+        myClass = c;
+        manager = m;
+
+        if (nameText != null) nameText.text = c.className;
+        
+        if (iconImage != null && c.classSprite != null)
         {
             iconImage.sprite = c.classSprite;
-            iconImage.preserveAspect = true; // Keeps the pixel art proportions
+            iconImage.preserveAspect = true;
             iconImage.gameObject.SetActive(true);
         }
-        else
-        {
-            Debug.LogWarning($"Sprite missing for class: {c.className}");
-            iconImage.gameObject.SetActive(false);
-        }
     }
 
-    UpdateVisuals(false);
-}
-
-    public void OnPointerEnter(PointerEventData eventData) => manager.OnHoverEnter(myClass);
-    public void OnPointerExit(PointerEventData eventData) => manager.OnHoverExit();
-    public void OnPointerClick(PointerEventData eventData) => manager.SelectClass(myClass);
-
-    public void UpdateVisuals(bool isSelected)
+    // We still need these to trigger the comparison panel updates
+    public void OnPointerEnter(PointerEventData eventData) 
     {
-        if (selectedHighlight) selectedHighlight.SetActive(isSelected);
-        
-        if (borderImage) 
-            borderImage.color = isSelected ? Color.yellow : Color.white;
-
-        // Only scale the icon if explicitly enabled in inspector
-        if (scaleIconOnSelect && iconImage != null)
-        {
-            iconImage.rectTransform.sizeDelta = isSelected ? selectedSize : deselectedSize;
-        }
+        if (manager != null) manager.OnHoverEnter(myClass);
     }
+
+    public void OnPointerExit(PointerEventData eventData) 
+    {
+        if (manager != null) manager.OnHoverExit();
+    }
+
+    // Link this to the Button's OnClick() event in the Inspector
+    public void OnClick() 
+    {
+        if (manager != null) manager.SelectClass(myClass);
+    }
+
+    // Keep for manager compatibility, but logic is handled by Button Transition
+    public void UpdateVisuals(bool isSelected) { }
 }

@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db020a37ab6c2f14eba1a6e5a5f3c337, type: 3}
+  m_Name: Test 3
+  m_EditorClassIdentifier: 
+  className: Test 3
+  classSprite: {fileID: -1370061712, guid: dff7c2bf28ae77141867d9be107d5d60, type: 3}
+  description: 'TEST
+
+'
+  startingStats: {fileID: 11400000, guid: 693f296f9727e95409184cda040034a7, type: 2}
+  baseXpRequirement: 80
+  xpIncreasePerLevel: 35
+  xpIncreaseIncrementPerLevel: 5
+  healthPerLevel: 10
+  damagePerLevel: 1
+  regenPerLevel: 0
+  attackSpeedPerLevel: 0
+  moveSpeedPerLevel: 0
+  regenDelayPerLevel: 0
+  cooldownReductionPerLevel: 0
+  rangePerLevel: 0
+  maxMoveSpeed: 10
+  maxAttackSpeed: 6
+  minRegenDelay: 0.3
+  maxCooldownReduction: 50
+  maxRange: 8
