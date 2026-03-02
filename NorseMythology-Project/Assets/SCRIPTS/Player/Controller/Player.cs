@@ -1,100 +1,69 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
-using System.Linq;
-
-[System.Serializable]
-public class PlayerLevelData
-{
-    [Header("Level Info")]
-    public int level = 1;
-
-    [Header("Health")]
-    public float maxHealth = 100f;
-    public float healthRegen = 1f;
-    public float healthRegenDelay = 2f;
-
-    [Header("Movement")]
-    public float moveSpeed = 5f;
-
-    [Header("Combat")]
-    public float attackDamage = 10f;
-    public float attackSpeed = 1f;
-    public float meleeRange = 2f;
-    public float projectileSpeed = 8f;
-    public float projectileRange = 10f;
-
-    [Header("Experience")]
-    public float experienceToNextLevel = 100f;
-
-    [Header("Abilities")]
-    public float abilityCooldownReduction = 0f;
-}
 
 public class Player : Entity
 {
-    [Header("Player References")]
-    public PlayerStats baseStats; // This is the fallback/default stats
-    public GameManager gameManager;
-    public Rigidbody2D rigidBody;
-    public AbilityManager abilityManager;
-    public HealthXPUIManager healthXPUIManager;
+    [Header("Configuration")]
+    [Tooltip("The Class asset that dictates stats and leveling progression.")]
+    [SerializeField] private CharacterClass characterClass;
 
-    [Header("Weapon Holders and Offsets")]
-    public Transform weaponHolder;
-    public Transform hammerSpawnPoint; 
-
-    [Header("Level Up System")]
-    public bool isLevelUpPending = false;
-    private float pendingExperience = 0f;
-
-    [Header("Level Configuration")]
-    public List<PlayerLevelData> levelData = new List<PlayerLevelData>();
-    protected Dictionary<int, PlayerLevelData> codeLevelData;
-
-    // Player-specific stats
-    public float healthRegen;
-    public float healthRegenDelay;
-    public float attackSpeed;
-    public float meleeRange;
-    public float projectileSpeed;
-    public float projectileRange;
-    public float experienceToNextLevel;
-    public float abilityCooldownReduction;
-
-    private Coroutine regenCoroutine;
-
-    private PlayerStats _currentStats;
-    [Header("Player Runtime Stats")]
+    [Header("Runtime State")]
+    [SerializeField] private PlayerStats _currentStats;
     public PlayerStats currentStats
     {
         get { return _currentStats; }
         set { _currentStats = value; }
     }
 
+    [Header("References")]
+    public GameManager gameManager;
+    public Rigidbody2D rigidBody;
+    public AbilityManager abilityManager;
+    public HealthXPUIManager healthXPUIManager;
+    public Transform weaponHolder;
+    public Transform hammerSpawnPoint;
+
+    // --- Leveling State ---
+    public bool isLevelUpPending = false;
+    private float pendingExperience = 0f;
+    private Coroutine regenCoroutine;
+
     void Awake()
     {
-        // Initialise the dictionary for level-up data
-        codeLevelData = new Dictionary<int, PlayerLevelData>();
-        
         gameManager = GameManager.Instance;
-
-        // Prioritise loading stats from the GameManager (which holds the class selection)
+        
+        // 1. Determine Source of Stats
         if (gameManager != null && gameManager.GetCurrentPlayerStats() != null)
         {
+            // Case A: Stats passed from Character Selection / Save Data
             currentStats = gameManager.GetCurrentPlayerStats();
-            Debug.Log($"Player stats successfully loaded from GameManager for class: {currentStats.name}");
+            Debug.Log($"Player stats loaded from GameManager: {currentStats.name}");
         }
-        else if (baseStats != null)
+        else if (characterClass != null)
         {
-            // Fallback if the scene is run directly, using the default stats assigned in the Inspector
-            currentStats = baseStats.CreateRuntimeCopy();
-            Debug.LogWarning("GameManager stats not found. Initializing player with local baseStats.");
+            // Case B: Testing directly in scene (use base stats from Class Definition)
+            currentStats = characterClass.GetStatsForLevel(1);
+            Debug.Log($"Player stats initialized from CharacterClass: {characterClass.name}");
         }
-        
-        InitialisePlayer();
-        
-        currentHealth = maxHealth;
+        else if (_currentStats != null)
+        {
+            // Case C: Fallback to whatever is assigned in Inspector (Legacy support)
+            // Ideally, you shouldn't rely on this, but it prevents crashes
+            Debug.LogWarning("Using Inspector-assigned currentStats. Ensure this is intended.");
+        }
+        else
+        {
+            Debug.LogError("CRITICAL: Player has no Stats! Assign a 'Character Class' or 'Current Stats'.");
+        }
+
+        // 2. Initialise Entity Base values
+        if (currentStats != null)
+        {
+            currentHealth = currentStats.maxHealth;
+        }
+
+        InitialiseEntity();
     }
 
     private void OnEnable()
@@ -104,44 +73,13 @@ public class Player : Entity
 
     void Start()
     {
-        if (abilityManager == null)
-        {
-            abilityManager = GetComponent<AbilityManager>();
-        }
-    }
-
-    private void ApplyStatsFromScriptableObject()
-    {
-        if (currentStats == null)
-        {
-            Debug.LogError("currentStats is null! Cannot apply initial stats.");
-            return;
-        }
-
-        maxHealth = currentStats.maxHealth;
-        moveSpeed = currentStats.moveSpeed;
-        damage = currentStats.attackDamage;
-        healthRegen = currentStats.healthRegen;
-        healthRegenDelay = currentStats.healthRegenDelay;
-        attackSpeed = currentStats.attackSpeed;
-        meleeRange = currentStats.meleeRange;
-        projectileSpeed = currentStats.projectileSpeed;
-        projectileRange = currentStats.projectileRange;
-        experienceToNextLevel = currentStats.experienceToNextLevel;
-        abilityCooldownReduction = currentStats.abilityCooldownReduction;
-        currentLevel = currentStats.level;
-    }
-
-    private void InitialisePlayer()
-    {
-        ApplyStatsFromScriptableObject();
-
-        if (!useInspectorLevels)
-        {
-            InitialiseFromCodeMatrix();
-        }
-    }
+        if (abilityManager == null) abilityManager = GetComponent<AbilityManager>();
         
+        // Ensure UI is up to date on start
+        healthXPUIManager?.OnHealthChanged();
+        healthXPUIManager?.OnXPChanged();
+    }
+
     void Update()
     {
         if (gameManager != null && !gameManager.IsGameActive())
@@ -149,6 +87,169 @@ public class Player : Entity
             return;
         }
     }
+
+    // ========================================================================
+    //                         LEVELING & STATS
+    // ========================================================================
+
+    protected override void ApplyLevelStats(int level)
+    {
+        if (characterClass == null) 
+        {
+            Debug.LogWarning("Cannot apply level stats: CharacterClass is missing.");
+            return;
+        }
+
+        // 1. Generate new stats for this specific level
+        PlayerStats newStats = characterClass.GetStatsForLevel(level);
+
+        // 2. Carry over runtime values (XP, Name, etc.)
+        // We preserve the percentage of health, rather than the raw value
+        float healthPercent = (currentStats.maxHealth > 0) ? currentHealth / currentStats.maxHealth : 1f;
+        
+        newStats.experience = currentStats.experience;
+        newStats.attackType = currentStats.attackType; // Preserve weapon type choice if dynamic
+        newStats.meleeWeaponPrefab = currentStats.meleeWeaponPrefab;
+        newStats.projectilePrefab = currentStats.projectilePrefab;
+
+        // 3. Apply
+        currentStats = newStats;
+        currentHealth = currentStats.maxHealth * healthPercent;
+
+        // 4. Update UI & Systems
+        StartHealthRegeneration();
+        healthXPUIManager?.OnHealthChanged();
+        healthXPUIManager?.OnXPChanged();
+    }
+
+    protected override void InitialiseFromCodeMatrix()
+    {
+        // DEPRECATED: Logic moved to CharacterDefinition ScriptableObject.
+        // Kept empty to satisfy base class requirement if necessary.
+    }
+
+    protected override void InitialiseEntity()
+    {
+        // Optional initialization logic
+    }
+
+    // ========================================================================
+    //                         HEALTH & REGEN
+    // ========================================================================
+
+    public void StartHealthRegeneration()
+    {
+        if (regenCoroutine != null) StopCoroutine(regenCoroutine);
+        if (gameObject.activeInHierarchy && !isDead)
+        {
+            regenCoroutine = StartCoroutine(HealthRegenerationRoutine());
+        }
+    }
+
+    private IEnumerator HealthRegenerationRoutine()
+    {
+        WaitForSeconds wait = new WaitForSeconds(1f); // Check every second for efficiency
+
+        while (!isDead)
+        {
+            yield return wait;
+
+            // Use currentStats as the Source of Truth
+            if (currentStats != null && currentHealth < currentStats.maxHealth && 
+                Time.time >= lastDamageTime + currentStats.healthRegenDelay && 
+                currentStats.healthRegen > 0f)
+            {
+                float healAmount = currentStats.healthRegen; // Amount per second
+                float previousHealth = currentHealth;
+                
+                currentHealth = Mathf.Min(currentHealth + healAmount, currentStats.maxHealth);
+                
+                float actualHeal = currentHealth - previousHealth;
+
+                if (actualHeal > 0.01f)
+                {
+                    PopupManager.Instance?.ShowRegen(actualHeal, transform.position);
+                    healthXPUIManager?.OnHealthChanged();
+                }
+            }
+        }
+    }
+
+    protected override void OnHealed(float amount) => healthXPUIManager?.OnHealthChanged();
+
+    protected override void OnDamageTaken(float damageAmount) => healthXPUIManager?.OnHealthChanged();
+
+    protected override void OnDeath()
+    {
+        Debug.Log("Player died!");
+        gameManager?.OnPlayerDied();
+    }
+
+    // ========================================================================
+    //                         EXPERIENCE
+    // ========================================================================
+
+    public void GainExperience(float xp)
+    {
+        if (isDead || currentStats == null) return;
+        
+        PopupManager.Instance?.ShowXP(xp, transform.position);
+        pendingExperience += xp;
+        CheckForPendingLevelUp();
+        healthXPUIManager?.OnXPChanged();
+    }
+    
+    private void CheckForPendingLevelUp()
+    {
+        if (currentStats != null && currentStats.experience + pendingExperience >= currentStats.experienceToNextLevel)
+        {
+            isLevelUpPending = true;
+        }
+    }
+
+    public int ProcessPendingExperienceAndReturnLevelUps()
+    {
+        if (pendingExperience <= 0 || currentStats == null) return 0;
+        
+        currentStats.experience += pendingExperience;
+        pendingExperience = 0f;
+        
+        int levelUpsGained = 0;
+        
+        // Loop in case we gained enough XP for multiple levels at once
+        while (currentStats.experience >= currentStats.experienceToNextLevel)
+        {
+            LevelUp();
+            levelUpsGained++;
+        }
+        
+        isLevelUpPending = false;
+        healthXPUIManager?.OnHealthChanged();
+        healthXPUIManager?.OnXPChanged();
+        
+        return levelUpsGained;
+    }
+
+    private void LevelUp()
+    {
+        if (currentStats == null) return;
+
+        // Carry over excess XP
+        currentStats.experience -= currentStats.experienceToNextLevel;
+        currentStats.level++;
+        
+        // Apply the new stats from the Definition
+        ApplyLevelStats(currentStats.level);
+        
+        // Heal to full on level up (Optional design choice, feels good in roguelikes)
+        currentHealth = currentStats.maxHealth;
+
+        PopupManager.Instance?.ShowPopup($"LEVEL {currentStats.level}!", transform.position + Vector3.up * 1f, Color.magenta, 36, 2f, 100f);
+    }
+
+    // ========================================================================
+    //                         ABILITIES
+    // ========================================================================
 
     public List<GameManager.PlayerAbilityState> GetAbilities()
     {
@@ -191,290 +292,37 @@ public class Player : Entity
         }
     }
 
-    public void StartHealthRegeneration()
-    {
-        if (regenCoroutine != null)
-        {
-            StopCoroutine(regenCoroutine);
-        }
-        if (gameObject.activeInHierarchy && !isDead)
-        {
-            regenCoroutine = StartCoroutine(HealthRegeneration());
-        }
-    }
-
-    protected override void OnDeath()
-    {
-        Debug.Log("Player died!");
-        gameManager?.OnPlayerDied();
-    }
-
-    protected override void InitialiseFromCodeMatrix()
-    {
-        // Define player progression via code
-        SetPlayerLevelData(1, maxHealth: 100f, healthRegen: 1f, healthRegenDelay: 5f, moveSpeed: 5f,
-            attackDamage: 8f, attackSpeed: 1f, meleeRange: 1.25f, projectileSpeed: 8f, projectileRange: 10f,
-            experienceToNextLevel: 100f, abilityCooldownReduction: 0f);
-
-        SetPlayerLevelData(2, maxHealth: 110f, healthRegen: 1.1f, healthRegenDelay: 4.5f, moveSpeed: 5.2f,
-            attackDamage: 10f, attackSpeed: 1.1f, meleeRange: 1.5f, projectileSpeed: 8.5f, projectileRange: 10.5f,
-            experienceToNextLevel: 125f, abilityCooldownReduction: 0.5f);
-
-        SetPlayerLevelData(3, maxHealth: 120f, healthRegen: 1.2f, healthRegenDelay: 4f, moveSpeed: 5.4f,
-            attackDamage: 12f, attackSpeed: 1.2f, meleeRange: 1.75f, projectileSpeed: 9f, projectileRange: 11f,
-            experienceToNextLevel: 150f, abilityCooldownReduction: 0.75f);
-
-        SetPlayerLevelData(4, maxHealth: 130f, healthRegen: 1.3f, healthRegenDelay: 3.5f, moveSpeed: 5.6f,
-            attackDamage: 14f, attackSpeed: 1.3f, meleeRange: 2f, projectileSpeed: 9.5f, projectileRange: 11.5f,
-            experienceToNextLevel: 175f, abilityCooldownReduction: 0.9f);
-
-        SetPlayerLevelData(5, maxHealth: 150f, healthRegen: 1.4f, healthRegenDelay: 3f, moveSpeed: 6f,
-            attackDamage: 16f, attackSpeed: 1.5f, meleeRange: 2.25f, projectileSpeed: 10f, projectileRange: 12f,
-            experienceToNextLevel: 200f, abilityCooldownReduction: 1f);
-    }
+    // ========================================================================
+    //                         GETTERS / SETTERS
+    // ========================================================================
     
-    protected void SetPlayerLevelData(int level, float maxHealth, float healthRegen, float healthRegenDelay, 
-        float moveSpeed, float attackDamage, float attackSpeed, float meleeRange,
-        float projectileSpeed, float projectileRange, float experienceToNextLevel,
-        float abilityCooldownReduction)
-    {
-        PlayerLevelData data = new PlayerLevelData
-        {
-            level = level,
-            maxHealth = maxHealth,
-            healthRegen = healthRegen,
-            healthRegenDelay = healthRegenDelay,
-            moveSpeed = moveSpeed,
-            attackDamage = attackDamage,
-            attackSpeed = attackSpeed,
-            meleeRange = meleeRange,
-            projectileSpeed = projectileSpeed,
-            projectileRange = projectileRange,
-            experienceToNextLevel = experienceToNextLevel,
-            abilityCooldownReduction = abilityCooldownReduction
-        };
-        
-        codeLevelData[level] = data;
-    }
-    
-    protected override void ApplyLevelStats(int level)
-    {
-        PlayerLevelData data = GetPlayerLevelData(level);
-        if (data == null)
-        {
-            Debug.LogWarning($"No player level data found for level {level}");
-            return;
-        }
-        
-        maxHealth = data.maxHealth;
-        moveSpeed = data.moveSpeed;
-        damage = data.attackDamage;
-        healthRegen = data.healthRegen;
-        healthRegenDelay = data.healthRegenDelay;
-        attackSpeed = data.attackSpeed;
-        meleeRange = data.meleeRange;
-        projectileSpeed = data.projectileSpeed;
-        projectileRange = data.projectileRange;
-        experienceToNextLevel = data.experienceToNextLevel;
-        abilityCooldownReduction = data.abilityCooldownReduction;
-        
-        if (currentStats != null)
-        {
-            currentStats.maxHealth = data.maxHealth;
-            currentStats.healthRegen = data.healthRegen;
-            currentStats.healthRegenDelay = data.healthRegenDelay;
-            currentStats.moveSpeed = data.moveSpeed;
-            currentStats.attackDamage = data.attackDamage;
-            currentStats.attackSpeed = data.attackSpeed;
-            currentStats.meleeRange = data.meleeRange;
-            currentStats.projectileSpeed = data.projectileSpeed;
-            currentStats.projectileRange = data.projectileRange;
-            currentStats.abilityCooldownReduction = data.abilityCooldownReduction;
-            currentStats.experienceToNextLevel = data.experienceToNextLevel;
-        }
-        
-        StartHealthRegeneration();
-        
-        if (healthXPUIManager != null)
-        {
-            healthXPUIManager.OnHealthChanged();
-            healthXPUIManager.OnXPChanged();
-        }
-    }
-    
-    protected PlayerLevelData GetPlayerLevelData(int level)
-    {
-        if (useInspectorLevels)
-        {
-            PlayerLevelData fallback = null;
-            foreach (var data in levelData)
-            {
-                if (data.level == level) return data;
-                if (data.level < level && (fallback == null || data.level > fallback.level))
-                    fallback = data;
-            }
-            return fallback;
-        }
-        else
-        {
-            if (codeLevelData.ContainsKey(level)) return codeLevelData[level];
-            PlayerLevelData fallback = null;
-            foreach (var kvp in codeLevelData)
-            {
-                if (kvp.Key <= level && (fallback == null || kvp.Key > fallback.level))
-                    fallback = kvp.Value;
-            }
-            return fallback;
-        }
-    }
-
-    protected override void InitialiseEntity()
-    {
-    }
-    
-    private IEnumerator HealthRegeneration()
-    {
-        // Settings
-        float minHealAmount = 1f;   // We want to heal at least this much per tick
-        float minInterval = 0.5f;   // Don't tick faster than this (prevents UI spam)
-
-        while (!isDead)
-        {
-            // 1. Determine the wait time dynamically based on current regen speed
-            float currentRate = healthRegen;
-            float waitTime;
-
-            if (currentRate > 0f)
-            {
-                // Calculate how long we need to wait to get 1.0 HP
-                float timeToAccumulateMinHeal = minHealAmount / currentRate;
-                
-                // Wait at least the calculated time, but never faster than minInterval
-                waitTime = Mathf.Max(minInterval, timeToAccumulateMinHeal);
-            }
-            else
-            {
-                // If no regen, just check again in a second
-                waitTime = 1f;
-            }
-
-            yield return new WaitForSeconds(waitTime);
-
-            // 2. Apply Regeneration
-            if (currentHealth < maxHealth && Time.time >= lastDamageTime + healthRegenDelay && currentRate > 0f)
-            {
-                float potentialRegen = currentRate * waitTime;
-                
-                // Calculate actual amount healed (don't exceed max health)
-                float previousHealth = currentHealth;
-                currentHealth = Mathf.Min(currentHealth + potentialRegen, maxHealth);
-                float actualHealAmount = currentHealth - previousHealth;
-
-                // Only show popup if we actually healed something
-                if (actualHealAmount > 0.01f)
-                {
-                    PopupManager.Instance?.ShowRegen(actualHealAmount, transform.position);
-                    healthXPUIManager?.OnHealthChanged();
-                }
-            }
-        }
-    }
-
-    protected override void OnHealed(float amount)
-    {
-        healthXPUIManager?.OnHealthChanged();
-    }
-
-    protected override void OnDamageTaken(float damageAmount)
-    {
-        healthXPUIManager?.OnHealthChanged();
-    }
-    
-    public void GainExperience(float xp)
-    {
-        if (isDead || currentStats == null) return;
-        PopupManager.Instance?.ShowXP(xp, transform.position);
-        pendingExperience += xp;
-        CheckForPendingLevelUp();
-        healthXPUIManager?.OnXPChanged();
-    }
-    
-    private void CheckForPendingLevelUp()
-    {
-        if (currentStats != null && currentStats.experience + pendingExperience >= experienceToNextLevel)
-        {
-            isLevelUpPending = true;
-        }
-    }
-    
-    private void LevelUp()
-    {
-        if (currentStats == null) return;
-        currentStats.experience -= experienceToNextLevel;
-        currentStats.level++;
-        currentLevel = currentStats.level;
-        ApplyLevelStats(currentLevel);
-        currentHealth = maxHealth;
-        PopupManager.Instance?.ShowPopup($"LEVEL {currentLevel}!", transform.position + Vector3.up * 1f, Color.magenta, 36, 2f, 100f);
-    }
-    
-    public int ProcessPendingExperienceAndReturnLevelUps()
-    {
-        if (pendingExperience <= 0 || currentStats == null) return 0;
-        
-        currentStats.experience += pendingExperience;
-        pendingExperience = 0f;
-        
-        int levelUpsGained = 0;
-        while (currentStats.experience >= experienceToNextLevel)
-        {
-            LevelUp();
-            levelUpsGained++;
-        }
-        
-        isLevelUpPending = false;
-        healthXPUIManager?.OnHealthChanged();
-        healthXPUIManager?.OnXPChanged();
-        
-        return levelUpsGained;
-    }
-
-    public void ProcessPendingExperience()
-    {
-        ProcessPendingExperienceAndReturnLevelUps();
-    }
+    // These now Proxy directly to currentStats to ensure Single Source of Truth
 
     public int GetPlayerLevel() => currentStats != null ? currentStats.level : 1;
+    
     public void SetPlayerLevel(int level)
     {
         if (currentStats != null) currentStats.level = level;
     }
-    
+
     public void SaveStatsToBase()
     {
-        if (baseStats == null || currentStats == null) return;
-        baseStats.level = currentStats.level;
-        baseStats.experience = currentStats.experience;
-        baseStats.experienceToNextLevel = experienceToNextLevel;
-        baseStats.moveSpeed = moveSpeed;
-        baseStats.maxHealth = maxHealth;
-        baseStats.healthRegen = healthRegen;
-        baseStats.meleeRange = meleeRange;
-        baseStats.attackDamage = damage;
-        baseStats.attackSpeed = attackSpeed;
-        baseStats.projectileSpeed = projectileSpeed;
-        baseStats.projectileRange = projectileRange;
-        baseStats.abilityCooldownReduction = abilityCooldownReduction;
+        if (currentStats == null) return;
+        // Logic to save run data back to persistence if needed
+        // For MVP, usually handled by GameManager saving the PlayerData struct
     }
-    
+
+    // Stats Accessors
     public float GetTotalExperience() => currentStats != null ? currentStats.experience + pendingExperience : 0f;
     public float GetCurrentExperience() => currentStats != null ? currentStats.experience : 0f;
     public float GetPendingExperience() => pendingExperience;
-    public float GetExperienceToNextLevel() => experienceToNextLevel;
-    public float GetHealthRegen() => healthRegen;
-    public float GetAttackSpeed() => attackSpeed;
-    public float GetMeleeRange() => meleeRange;
-    public float GetProjectileSpeed() => projectileSpeed;
-    public float GetProjectileRange() => projectileRange;
-    public float GetAbilityCooldownReduction() => abilityCooldownReduction;
+    public float GetExperienceToNextLevel() => currentStats != null ? currentStats.experienceToNextLevel : 100f;
+    
+    public float GetMoveSpeed() => currentStats != null ? currentStats.moveSpeed : 5f;
+    public float GetHealthRegen() => currentStats != null ? currentStats.healthRegen : 0f;
+    public float GetAttackSpeed() => currentStats != null ? currentStats.attackSpeed : 1f;
+    public float GetMeleeRange() => currentStats != null ? currentStats.meleeRange : 1.5f;
+    public float GetProjectileSpeed() => currentStats != null ? currentStats.projectileSpeed : 10f;
+    public float GetProjectileRange() => currentStats != null ? currentStats.projectileRange : 10f;
+    public float GetAbilityCooldownReduction() => currentStats != null ? currentStats.abilityCooldownReduction : 0f;
 }

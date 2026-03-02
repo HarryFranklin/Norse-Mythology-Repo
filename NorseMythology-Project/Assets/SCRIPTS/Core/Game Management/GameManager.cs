@@ -215,15 +215,14 @@ public class GameManager : MonoBehaviour
         if (selectedClass != null && selectedClass.startingStats != null)
         {
             basePlayerStats = selectedClass.startingStats;
+            
+            // Create a runtime copy for the game to use
             currentPlayerStats = basePlayerStats.CreateRuntimeCopy();
-
-            currentPlayerStats.attackType = selectedClass.attackType;
-            currentPlayerStats.meleeWeaponPrefab = selectedClass.meleeWeaponPrefab;
-            currentPlayerStats.projectilePrefab = selectedClass.projectilePrefab;
         }
         else
         {
-            if (basePlayerStats != null) currentPlayerStats = basePlayerStats.CreateRuntimeCopy();
+            if (basePlayerStats != null) 
+                currentPlayerStats = basePlayerStats.CreateRuntimeCopy();
         }
     }
     

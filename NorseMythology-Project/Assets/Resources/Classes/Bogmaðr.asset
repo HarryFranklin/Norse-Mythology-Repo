@@ -16,6 +16,19 @@ MonoBehaviour:
   classSprite: {fileID: -978791688, guid: e20ffde0bbe61624695318427c9d6d54, type: 3}
   description: Literally "bow-man", a standard archer.
   startingStats: {fileID: 11400000, guid: 43272052d3ba10044a4795fedac1b2fa, type: 2}
-  attackType: 1
-  meleeWeaponPrefab: {fileID: 0}
-  projectilePrefab: {fileID: 8069157385012977378, guid: acb2d54f00cb0334699573d1b528c54d, type: 3}
+  baseXpRequirement: 100
+  xpIncreasePerLevel: 25
+  xpIncreaseIncrementPerLevel: 5
+  healthPerLevel: 10
+  damagePerLevel: 1
+  regenPerLevel: 0
+  attackSpeedPerLevel: 0
+  moveSpeedPerLevel: 0
+  regenDelayPerLevel: 0
+  cooldownReductionPerLevel: 0
+  rangePerLevel: 0
+  maxMoveSpeed: 12
+  maxAttackSpeed: 5
+  minRegenDelay: 0.2
+  maxCooldownReduction: 25
+  maxRange: 12

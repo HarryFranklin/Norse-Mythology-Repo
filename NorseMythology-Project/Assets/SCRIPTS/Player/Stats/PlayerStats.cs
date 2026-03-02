@@ -1,10 +1,18 @@
 using UnityEngine;
 
+// 1. We define the Enum here so it is shared globally
+public enum AttackType
+{
+    Melee,
+    Projectile,
+    ReturningProjectile
+}
+
 [System.Serializable]
 [CreateAssetMenu(fileName = "PlayerStats", menuName = "Game/Player Stats")]
 public class PlayerStats : ScriptableObject
 {
-    [Header("Character")]
+    [Header("Core Character")]
     public int level = 1;
     public float experience = 0f;
     public float experienceToNextLevel = 100f;
@@ -14,43 +22,32 @@ public class PlayerStats : ScriptableObject
     
     [Header("Health")]
     public float maxHealth = 100f;
-    public float healthRegen = 1f; // per second
-    public float healthRegenDelay = 2f; // seconds before health starts regenerating after taking damage
+    public float healthRegen = 1f; 
+    public float healthRegenDelay = 2f; 
     
     [Header("Combat")]
-    public float meleeRange = 2f;
     public float attackDamage = 10f;
-    public float attackSpeed = 1f; // attacks per second
-    public float projectileSpeed = 8f;
-    public float projectileRange = 10f;
+    public float attackSpeed = 1f; 
     
-    [Header("Abilities")]
-    public float abilityCooldownReduction = 0f; // percentage
+    [Header("Range")]
+    public float meleeRange = 1.5f;     
+    public float projectileRange = 8f; 
+    
+    [Header("Projectiles")]
+    public float projectileSpeed = 10f; 
 
-    [Header("Attack Type")]
+    [Header("Abilities")]
+    public float abilityCooldownReduction = 0f;
+
+    [Header("Class Settings")]
     public AttackType attackType = AttackType.Melee;
     public GameObject meleeWeaponPrefab;
     public GameObject projectilePrefab;
-    
-    // Method to create a runtime copy of stats
+
+    // Creates a clean copy so we don't overwrite the asset file during gameplay
     public PlayerStats CreateRuntimeCopy()
     {
-        PlayerStats copy = CreateInstance<PlayerStats>();
-        copy.level = this.level;
-        copy.experience = this.experience;
-        copy.experienceToNextLevel = this.experienceToNextLevel;
-        copy.moveSpeed = this.moveSpeed;
-        copy.maxHealth = this.maxHealth;
-        copy.healthRegen = this.healthRegen;
-        copy.meleeRange = this.meleeRange;
-        copy.attackDamage = this.attackDamage;
-        copy.attackSpeed = this.attackSpeed;
-        copy.projectileSpeed = this.projectileSpeed;
-        copy.projectileRange = this.projectileRange;
-        copy.abilityCooldownReduction = this.abilityCooldownReduction;
-        copy.attackType = this.attackType;
-        copy.meleeWeaponPrefab = this.meleeWeaponPrefab;
-        copy.projectilePrefab = this.projectilePrefab;
+        PlayerStats copy = Instantiate(this);
         return copy;
     }
 }

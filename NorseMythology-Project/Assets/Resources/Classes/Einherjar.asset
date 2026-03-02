@@ -17,6 +17,19 @@ MonoBehaviour:
   description: '"Those who fight alone" \n The einherjar are those who have died
     in battle, and have been brought to Valhalla.'
   startingStats: {fileID: 11400000, guid: 693f296f9727e95409184cda040034a7, type: 2}
-  attackType: 0
-  meleeWeaponPrefab: {fileID: 8028338059532453128, guid: 1ad44eeb31774fe46be8e8c030403434, type: 3}
-  projectilePrefab: {fileID: 0}
+  baseXpRequirement: 80
+  xpIncreasePerLevel: 35
+  xpIncreaseIncrementPerLevel: 5
+  healthPerLevel: 10
+  damagePerLevel: 1
+  regenPerLevel: 0
+  attackSpeedPerLevel: 0
+  moveSpeedPerLevel: 0
+  regenDelayPerLevel: 0
+  cooldownReductionPerLevel: 0
+  rangePerLevel: 0
+  maxMoveSpeed: 10
+  maxAttackSpeed: 6
+  minRegenDelay: 0.3
+  maxCooldownReduction: 50
+  maxRange: 8

@@ -16,6 +16,19 @@ MonoBehaviour:
   classSprite: {fileID: -978791688, guid: e20ffde0bbe61624695318427c9d6d54, type: 3}
   description: Berserkir are said to have fought in a trance-like fury.
   startingStats: {fileID: 11400000, guid: d3368ee2aaa980c42b65a47a1104ef80, type: 2}
-  attackType: 0
-  meleeWeaponPrefab: {fileID: 8028338059532453128, guid: 1ad44eeb31774fe46be8e8c030403434, type: 3}
-  projectilePrefab: {fileID: 0}
+  baseXpRequirement: 120
+  xpIncreasePerLevel: 30
+  xpIncreaseIncrementPerLevel: 10
+  healthPerLevel: 10
+  damagePerLevel: 1
+  regenPerLevel: 0
+  attackSpeedPerLevel: 0
+  moveSpeedPerLevel: 0
+  regenDelayPerLevel: 0
+  cooldownReductionPerLevel: 0
+  rangePerLevel: 0
+  maxMoveSpeed: 10
+  maxAttackSpeed: 5
+  minRegenDelay: 0.4
+  maxCooldownReduction: 50
+  maxRange: 10

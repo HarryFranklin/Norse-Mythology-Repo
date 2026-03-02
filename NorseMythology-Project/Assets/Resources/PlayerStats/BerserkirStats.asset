@@ -16,15 +16,15 @@ MonoBehaviour:
   experience: 0
   experienceToNextLevel: 100
   moveSpeed: 4
-  maxHealth: 110
+  maxHealth: 125
   healthRegen: 1.25
   healthRegenDelay: 2.5
-  meleeRange: 1
-  attackDamage: 6
-  attackSpeed: 1.25
-  projectileSpeed: 8
+  attackDamage: 15
+  attackSpeed: 0.6
+  meleeRange: 2
   projectileRange: 10
+  projectileSpeed: 8
   abilityCooldownReduction: 0
   attackType: 0
-  meleeWeaponPrefab: {fileID: 0}
+  meleeWeaponPrefab: {fileID: 8028338059532453128, guid: 1ad44eeb31774fe46be8e8c030403434, type: 3}
   projectilePrefab: {fileID: 0}
